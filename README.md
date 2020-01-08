@@ -4,22 +4,39 @@ With this project, I intend to explore and examine some of the usefulness of for
 
 So far the intended subsystems for this project hope to include:
 main game loop
+
 cameras
+
 GUI
+
 scripting
+
 lighting
+
 audio
+
 animation
+
 sprites
+
 physics/collision
+
 rendering
+
 resource manager/database
+
 profiler/debugger
+
 localization tools
+
 input/output handling
+
 RNG handling
+
 math library
+
 AI
+
 game logic
 
 Although the list seems long, I intend only to implement them on a fundamental level, doing the basic/fundamental things that would be seen in most game engines, should they include said components, but nothing advanced beyond that. Much of the development process will take inspiration from Cleanroom Software Engineering, which is a development method that utilizes formal methods in its process. 
