@@ -40,4 +40,4 @@ AI
 
 game logic
 
-Although the list seems long, I intend only to implement them on a fundamental level, doing the basic/fundamental things that would be seen in most game engines, should they include said components, but nothing advanced beyond that. Much of the development process will take inspiration from Cleanroom Software Engineering, which is a software development method that utilizes formal methods in its process. 
+Although the list seems long, I intend only to implement them on a fundamental level, doing the basic/fundamental things that would be seen in most game engines, should they include said components, but nothing advanced beyond that. Much of the development process will take inspiration from Cleanroom Software Engineering, which is a software development method that utilizes formal methods in its process. Along with other formal methods for development/design, I will only use parts that make sense in the development of a game engine, or that can be accomplished with a 1 man team.,
