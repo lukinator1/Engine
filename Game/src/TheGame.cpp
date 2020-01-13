@@ -1,5 +1,4 @@
 #include <Engine.h>
-
 class Game : public Engine::Application
 {
 public:

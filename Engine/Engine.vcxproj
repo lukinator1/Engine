@@ -124,6 +124,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Engine\Logger.h" />
+    <ClInclude Include="src\Engine\MemoryHandler.h" />
+    <ClInclude Include="src\Engine\MessageHandler.h" />
+    <ClInclude Include="src\Engine\MathLibrary.h" />
     <ClInclude Include="src\Engine.h" />
     <ClInclude Include="src\Engine\Application.h" />
     <ClInclude Include="src\Engine\Core.h" />
@@ -131,6 +135,10 @@
     <ClInclude Include="src\MainGameLoop.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Engine\Logger.cpp" />
+    <ClCompile Include="src\Engine\MemoryHandler.cpp" />
+    <ClCompile Include="src\Engine\MessageHandler.cpp" />
+    <ClCompile Include="src\Engine\MathLibrary.cpp" />
     <ClCompile Include="src\Engine\Application.cpp" />
     <ClCompile Include="src\MainGameLoop.cpp" />
   </ItemGroup>
