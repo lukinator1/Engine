@@ -7,11 +7,14 @@ class Logger
 {
 private: 
 	int engineverbosity = 3;
+	int enginechannel = 0;  //0 = all
+
 public:
 	Logger();
 	~Logger();
-	void setVerbosity(int &newverbosity);
-	void VerboseEngineLog(int &verbosity, std::string &file, std::string &line, std::string &errormessage);
+	//void setVerbosity(int &newverbosity);
+	void setEngineLoggerSettings(int &newverbosity, int &newchannel);
+	void VerboseEngineLog(std::string &file, std::string &line, std::string &errormessage, int &verbosity, int &channel);
 	//void EngineLog(const char* format, ...);
 };
 

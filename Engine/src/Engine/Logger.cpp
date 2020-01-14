@@ -14,12 +14,14 @@ Logger::~Logger()
 
 //void Logger::EngineLog(const char* format, ...) {
 //}
-void Logger::setVerbosity(int &newverbosity) {
+void Logger::setEngineLoggerSettings(int &newverbosity, int &newchannel) {
 	engineverbosity = newverbosity;
+	enginechannel = newchannel;
 }
-void Logger::VerboseEngineLog(int &verbosity, std::string & file, std::string & line, std::string & errormessage)
+//convert to enum
+void Logger::VerboseEngineLog(std::string & file, std::string & line, std::string & errormessage, int &verbosity, int &channel)
 {
-	if (engineverbosity >= verbosity) {
+	if (engineverbosity >= verbosity && (enginechannel == channel ||  enginechannel == 0)) {
 		std::cout << "ERROR!: " << errormessage << file << ": line " << line << ".";
 	}
 }

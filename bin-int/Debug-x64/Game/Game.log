@@ -1,3 +1,2 @@
 ﻿  TheGame.cpp
-c:\users\lukinator1\desktop\engine\engine\engine\src\engine\logger.h(13): error C2086: 'int Logger::engineverbosity': redefinition
-  c:\users\lukinator1\desktop\engine\engine\engine\src\engine\logger.h(9): note: see declaration of 'Logger::engineverbosity'
+  Game.vcxproj -> C:\Users\lukinator1\Desktop\engine\Engine\bin\Debug-x64\Game\Game.exe
