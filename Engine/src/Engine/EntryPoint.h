@@ -1,9 +1,9 @@
 #pragma once
 #include <iostream>
-//creates game
+#include "Message.h"
+#include "GL/glew.h"
 #ifdef ENGINE_PLATFORM_WINDOWS
-
-
+std::queue<Message> messageque;
 extern Engine::Application* Engine::CreateApplication();
 int main(int argc, char** argv)
 {

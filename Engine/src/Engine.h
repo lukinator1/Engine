@@ -3,3 +3,4 @@
 #include "Engine/Application.h"
 #include "Engine/EntryPoint.h"
 #include "Engine/Logger.h"
+#include "Engine/MemoryHandler.h"

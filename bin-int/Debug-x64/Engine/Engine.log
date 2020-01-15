@@ -1,3 +1,4 @@
-﻿  Logger.cpp
-     Creating library C:\Users\lukinator1\Desktop\engine\Engine\bin\Debug-x64\Engine\Engine.lib and object C:\Users\lukinator1\Desktop\engine\Engine\bin\Debug-x64\Engine\Engine.exp
+﻿  FileHandler.cpp
+  MemoryHandler.cpp
+  Generating Code...
   Engine.vcxproj -> C:\Users\lukinator1\Desktop\engine\Engine\bin\Debug-x64\Engine\Engine.dll

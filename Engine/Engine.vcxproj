@@ -91,8 +91,13 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <PreprocessorDefinitions>ENGINE_PLATFORM_WINDOWS;ENGINE_BUILD_DLL;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ENGINE_PLATFORM_WINDOWS;ENGINE_BUILD_DLL;_WINDLL;SFML_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\lukinator1\Desktop\engine\Engine\include;C:\Users\lukinator1\Desktop\engine\Engine\lib\SFML-2.5.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>C:\Users\lukinator1\Desktop\engine\Engine\lib\SFML-2.5.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-graphics.lib;sfml-window.lib;sfml-system.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -116,31 +121,38 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <PreprocessorDefinitions>ENGINE_PLATFORM_WINDOWS;ENGINE_BUILD_DLL;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ENGINE_PLATFORM_WINDOWS;ENGINE_BUILD_DLL;_WINDLL;SFML_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\lukinator1\Desktop\engine\Engine\include;C:\Users\lukinator1\Desktop\engine\Engine\lib\SFML-2.5.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>C:\Users\lukinator1\Desktop\engine\Engine\lib\SFML-2.5.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-graphics.lib;sfml-window.lib;sfml-system.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Engine\Message.h" />
+    <ClInclude Include="src\Engine\FileHandler.h" />
     <ClInclude Include="src\Engine\Logger.h" />
     <ClInclude Include="src\Engine\MemoryHandler.h" />
-    <ClInclude Include="src\Engine\MessageHandler.h" />
     <ClInclude Include="src\Engine\MathLibrary.h" />
     <ClInclude Include="src\Engine.h" />
     <ClInclude Include="src\Engine\Application.h" />
     <ClInclude Include="src\Engine\Core.h" />
     <ClInclude Include="src\Engine\EntryPoint.h" />
     <ClInclude Include="src\MainGameLoop.h" />
+    <ClInclude Include="src\Engine\Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Engine\Message.cpp" />
+    <ClCompile Include="src\Engine\FileHandler.cpp" />
     <ClCompile Include="src\Engine\Logger.cpp" />
     <ClCompile Include="src\Engine\MemoryHandler.cpp" />
-    <ClCompile Include="src\Engine\MessageHandler.cpp" />
     <ClCompile Include="src\Engine\MathLibrary.cpp" />
     <ClCompile Include="src\Engine\Application.cpp" />
     <ClCompile Include="src\MainGameLoop.cpp" />
+    <ClCompile Include="src\Engine\Window.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
