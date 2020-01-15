@@ -9,9 +9,10 @@ public:
 	~Game() {
 
 	}
-};
 
+};
+/*
 Engine::Application* Engine::CreateApplication()
 {
 	return new Game();
-}
+}*/

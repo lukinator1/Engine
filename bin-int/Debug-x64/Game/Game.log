@@ -1,2 +1,4 @@
-﻿  TheGame.cpp
+﻿  GameLoop.cpp
+  TheGame.cpp
+  Generating Code...
   Game.vcxproj -> C:\Users\lukinator1\Desktop\engine\Engine\bin\Debug-x64\Game\Game.exe

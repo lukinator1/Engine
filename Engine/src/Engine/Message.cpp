@@ -15,7 +15,7 @@ void Message::messagerShutdown() {
 }
 void Message::postMessage(Message message)
 {
-	messageque.push(message);
+	/*messageque.push(message);*/
 }
 void Message::handleMessage(Message msg)
 {

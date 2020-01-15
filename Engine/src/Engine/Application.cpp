@@ -11,7 +11,7 @@ namespace Engine {
 	{
 	}
 
-	void Application::Run() {
+	void Application::Run() { //main game loop
 		while (true)
 		{
 			std::cout << "The game is running.";

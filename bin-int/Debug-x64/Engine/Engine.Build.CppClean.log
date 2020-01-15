@@ -1,7 +1,12 @@
 c:\users\lukinator1\desktop\engine\engine\bin-int\debug-x64\engine\vc141.pdb
 c:\users\lukinator1\desktop\engine\engine\bin-int\debug-x64\engine\vc141.idb
-c:\users\lukinator1\desktop\engine\engine\bin-int\debug-x64\engine\maingameloop.obj
+c:\users\lukinator1\desktop\engine\engine\bin-int\debug-x64\engine\window.obj
 c:\users\lukinator1\desktop\engine\engine\bin-int\debug-x64\engine\application.obj
+c:\users\lukinator1\desktop\engine\engine\bin-int\debug-x64\engine\mathlibrary.obj
+c:\users\lukinator1\desktop\engine\engine\bin-int\debug-x64\engine\memoryhandler.obj
+c:\users\lukinator1\desktop\engine\engine\bin-int\debug-x64\engine\logger.obj
+c:\users\lukinator1\desktop\engine\engine\bin-int\debug-x64\engine\filehandler.obj
+c:\users\lukinator1\desktop\engine\engine\bin-int\debug-x64\engine\message.obj
 c:\users\lukinator1\desktop\engine\engine\bin\debug-x64\engine\engine.lib
 c:\users\lukinator1\desktop\engine\engine\bin\debug-x64\engine\engine.exp
 c:\users\lukinator1\desktop\engine\engine\bin\debug-x64\engine\engine.ilk
