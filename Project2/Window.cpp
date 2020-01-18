@@ -1,6 +1,5 @@
 #include "Window.h"
 //to do: window icon + resolution
-namespace Engine{
 Window::Window(int width, int height, std::string title)
 {
 	windowwidth = height;
@@ -35,28 +34,26 @@ Window::~Window()
 	SDL_GL_DeleteContext(glContext);
 	SDL_DestroyWindow(window);
 }
+void Window::postMessage(Message message) {
+	messagequeue.push(message);
+}
 void Window::handleMessage(Message message)
 {
-	/*SDL_Event sdlevent;
-	while (SDL_PollEvent(&sdlevent)) {
-	}*/
-	Engine::messagequeue.push(message);
-	switch (message->messagetype) { //other window functions possible
+	switch (message.messagetype) { //other window functions
 	case Message::Messagetypes::Windowclose:
-		SDL_GL_DeleteContext(glContext);
-		SDL_DestroyWindow(window);
+		/*close window*/
 		break;
 	}
 }
-void Window::updateWindow()
+void Window::updateWindow()//monitor refresh rate
 {
 	SDL_GL_SwapWindow(window);
-	//SDL_Delay(1); for monitor refresh rate
 	SDL_Event sdlevent;
 	while (SDL_PollEvent(&sdlevent)) {
 		if (sdlevent.type == SDL_QUIT) {
-			setWindow(300, 200, "monkey");
-			std::cout << "window closed";
+			Message message(Message::Messagetypes::Windowclose);
+			postMessage(message);
+			std::cout << "messagequeue size" << messagequeue.size();
 		}
 	}
 	glClearColor(1.0, 0.0, 0.0, 1.0);
@@ -104,5 +101,4 @@ int Window::getWindowWidth(Window window) {
 }
 int Window::getWindowHeight(Window window) {
 	return windowheight;
-}
 }

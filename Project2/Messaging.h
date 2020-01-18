@@ -5,7 +5,6 @@
 class Messaging
 {
 private:
-	std::queue <Message> messagequeue;
 public:
 	void postMessage(Message message);
 	Messaging();

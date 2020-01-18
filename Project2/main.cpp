@@ -1,10 +1,8 @@
 #include "Window.h"
+#include "Engine.h"
 #undef main
 #include <iostream>
-namespace Engine {
-	extern std::queue <Message> messagequeue;
-	int x = 0;
-}
+std::queue <Message> messagequeue;
 int main(int argc, char* argv[]) {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	Window window(800, 600, "hello");

@@ -4,7 +4,6 @@
 
 void Messaging::postMessage(Message message)
 {
-	messagequeue.push(message);
 }
 Messaging::Messaging()
 {
