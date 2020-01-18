@@ -1,0 +1,28 @@
+1-11-19
+Made a tentantive Z specification of the main engine and one of the commponents (the math library). I've chosen my order of implementation based upon the level of dependency iy has with other components of the engine, starting with the baseline things or things that don't depend on other subsystems first. I also got started on engine setup, with an entry point, and made classes of some components although most are just empty.
+
+1-12-19
+plan: do as much as I can on the error handler/logger
+Wrote 1 line of code because I had other work to do. 
+
+1-13-19
+Attempted to make an error manager, but chose not to because of exception handling issues (overhead + stack unraveling), so will put error messages throughout code, using a logger. Added empty filehandler class, which may in the future wrap std file functions. Set up the memory manager class, plan to have a double ended stack allocator and a single frame/double buffered memory allocator. It's at a higher level of abstraction than I thought so I may try to implement these things later. 
+
+1-14-19
+plan:
+implement event/messenger class, window class (with tie in to configuration file), get as far as I can 
+Tried to implement the messenger class, got kind of confused and scared to set it up the wrong way so I tried to implement the window class instead first instead, which would make sense since it's at a lower level of abstraction, but the main game loop wouldn't work anymore so I tried to change where it would be. After this, I tried to reeimplement the window class and I think I caused a bug in visual studio from moving files aronund, making me have to make an entirely new project file (I still have the code). I'll try to implement it as an .exe instead of a .dll since I'm not familiar with how .dll's work this time around.
+
+1-15-19
+plan:
+implement a window class, input receiver handler
+Got a little bit started on the window class;
+
+1-16-19
+plan: finish window class + input handler
+I think I've got most of what I need for the window class (still need to include something for resolutions + the icon), did a little bit of research on how inputs work for SDL2. 
+
+
+possible errors:
+change absolute path in include directories property page
+#undef main

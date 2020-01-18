@@ -1,0 +1,8 @@
+﻿  Message.cpp
+  Messaging.cpp
+  Window.cpp
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\window.cpp(42): error C2039: 'messagequeue': is not a member of '`global namespace''
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\window.cpp(42): error C2065: 'messagequeue': undeclared identifier
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\window.cpp(52): error C2065: 'message': undeclared identifier
+  main.cpp
+  Generating Code...
