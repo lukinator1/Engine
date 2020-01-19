@@ -3,11 +3,16 @@
 class Message {
 public:
 	enum class Messagetypes {
-		Keydown, 
-		Keyup, 
-		Mousemoved, 
-		Mousepressed, 
-		Mouseunpressed, 
+		Keydown,
+		Keyup,
+		Mousemoved,
+		Leftmousepressed,
+		Rightmousepressed,
+		Leftmouseunpressed,
+		Rightmouseunpressed,
+		M3pressed,
+		M3unpressed,
+		Doubleclick,
 		Mousewheel,
 		Windowclose
 		};
