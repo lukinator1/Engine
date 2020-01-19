@@ -37,12 +37,16 @@ Window::~Window()
 void Window::postMessage(Message message) {
 	messagequeue.push(message);
 }
-void Window::handleMessage(Message message)
+void Window::handleMessage() 
 {
-	switch (message.messagetype) { //other window functions
-	case Message::Messagetypes::Windowclose:
-		/*close window*/
-		break;
+	if (!messagequeue.empty()) {
+		Message message = messagequeue.front();
+		switch (message.messagetype) { //other window functions
+		case Message::Messagetypes::Windowclose:
+			std::cout << "Message: windowclose called.";
+			messagequeue.pop();
+			break;
+		}
 	}
 }
 void Window::updateWindow()//monitor refresh rate
@@ -51,9 +55,10 @@ void Window::updateWindow()//monitor refresh rate
 	SDL_Event sdlevent;
 	while (SDL_PollEvent(&sdlevent)) {
 		if (sdlevent.type == SDL_QUIT) {
-			Message message(Message::Messagetypes::Windowclose);
-			postMessage(message);
-			std::cout << "messagequeue size" << messagequeue.size();
+			/*Message message(Message::Messagetypes::Windowclose);
+			postMessage(message);*/
+			handleMessage();
+			std::cout << "messagequeue size: " << messagequeue.size();
 		}
 	}
 	glClearColor(1.0, 0.0, 0.0, 1.0);
