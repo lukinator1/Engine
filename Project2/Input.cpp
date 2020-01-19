@@ -6,6 +6,7 @@ void Input::getInputs() {
 
 		if (sdlevent.type == SDL_MOUSEBUTTONDOWN) { //mouse buttons down
 			if (sdlevent.button.button == SDL_BUTTON_LEFT) {
+					/*leftmousepressed = true;*/
 				if (sdlevent.button.clicks == 2) {
 					Message::Messagetypes::Doubleclick;
 					postMessage(Message::Messagetypes::Rightmousepressed);
@@ -16,10 +17,12 @@ void Input::getInputs() {
 				}
 			}
 			if (sdlevent.button.button == SDL_BUTTON_RIGHT) {
+				/*rightmousepressed = true;*/
 				Message::Messagetypes::Rightmousepressed;
 				postMessage(Message::Messagetypes::Rightmousepressed);
 			}
 			if (sdlevent.button.button == SDL_BUTTON_MIDDLE) {
+				/*middlemousepressed = true;*/
 				Message::Messagetypes::M3pressed;
 				postMessage(Message::Messagetypes::M3pressed);
 			}
@@ -27,14 +30,17 @@ void Input::getInputs() {
 		
 		if (sdlevent.type == SDL_MOUSEBUTTONUP) { //mouse buttons up
 			if (sdlevent.button.button == SDL_BUTTON_LEFT) {
+				/*leftmousepressed = false;*/
 					Message::Messagetypes::Leftmouseunpressed;
 					postMessage(Message::Messagetypes::Leftmouseunpressed);
 			}
 			if (sdlevent.button.button == SDL_BUTTON_RIGHT) {
+				/*rightmousepressed = false;*/
 				Message::Messagetypes::Rightmouseunpressed;
 				postMessage(Message::Messagetypes::Rightmouseunpressed);
 			}
 			if (sdlevent.button.button == SDL_BUTTON_MIDDLE) {
+				/*middlemousepressed = false;*/
 				Message::Messagetypes::M3unpressed;
 				postMessage(Message::Messagetypes::M3unpressed);
 			}
@@ -45,56 +51,69 @@ void Input::getInputs() {
 			postMessage(Message::Messagetypes::Mousemoved);
 		}
 
+		if (sdlevent.type == SDL_KEYDOWN) {
+			Message::Messagetypes::Keydown;
+			postMessage(Message::Messagetypes::Keydown);
+		}
+
+		if (sdlevent.type == SDL_KEYUP) {
+			Message::Messagetypes::Keyup;
+			postMessage(Message::Messagetypes::Keyup);
+		}
 
 
 	}
 }
-void::getMousePosition() {
+
+void::getMousePosition() {  //todo, implement vector2f with math library first
 	
 }
 bool Input::leftMousePressed()
 {
-	SDL_Event sdlevent;
-	if
+	return leftmousepressed;
 }
 bool Input::rightMousePressed()
 {
+	return rightmousepressed;
 }
-
-bool Input::leftMouseReleased()
-{
+bool Input::middleMousePressed() {
+	return middleMousePressed;
 }
-
+/*bool Input::leftMouseReleased()
+{ 
+}
 bool Input::rightMouseReleased()
 {
-}
-
-int* Input::getKeysPressed()
+}*/
+const Uint8* Input::getKeysPressed()
 {
+	return keyboardstate;
 }
-
-int* Input::getKeysReleased()
+bool Input::isKeyPressed(Keys key)
 {
+	if (keyboardstate[key]) {
+		return true;
+	}
 }
-
-std::string Input::getKeyname()
+/*const Uint8* Input::getKeysReleased()
 {
-}
-
+}*/
 void Input::update()
 {
 }
 
-bool Input::isKeyPressed()
-{
-	
-}
-
 Input::Input()
-{
-	
+{	
 }
 Input::~Input()
+{
+}
+
+void Input::inputStartup()
+{
+	keyboardstate = SDL_GetKeyboardState(NULL);
+}
+void Input::inputShutdown()
 {
 }
 
@@ -103,9 +122,24 @@ void Input::handleMessage()
 	if (!messagequeue.empty()) {
 		Message message = messagequeue.front();
 		switch (message.messagetype) { //other window functions
-		case Message::Messagetypes::Windowclose:
+		case Message::Messagetypes::Leftmousepressed:
+			leftmousepressed = true;
 			messagequeue.pop();
-			break;
+		case Message::Messagetypes::Rightmousepressed:
+			rightmousepressed = true;
+			messagequeue.pop();
+		case Message::Messagetypes::M3pressed:
+			middlemousepressed = true;
+			messagequeue.pop();
+		case Message::Messagetypes::Leftmouseunpressed:
+			leftmousepressed = false;
+			messagequeue.pop();
+		case Message::Messagetypes::Rightmouseunpressed:
+			rightmousepressed = false;
+			messagequeue.pop();
+		case Message::Messagetypes::M3unpressed:
+			leftmousepressed = false;
+			messagequeue.pop();
 		}
 	}
 }                     
