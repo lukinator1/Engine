@@ -1,6 +1,6 @@
 #pragma once
-#include <SDL2/SDL.h>
 #include <GL/glew.h>
+#include <SDL2/SDL.h>
 #include <string>
 #include <algorithm>
 #include <iostream>

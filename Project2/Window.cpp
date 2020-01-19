@@ -34,16 +34,14 @@ Window::~Window()
 	SDL_GL_DeleteContext(glContext);
 	SDL_DestroyWindow(window);
 }
-void Window::postMessage(Message message) {
-	messagequeue.push(message);
-}
-void Window::handleMessage() 
+void Window::handleMessage()
 {
 	if (!messagequeue.empty()) {
 		Message message = messagequeue.front();
 		switch (message.messagetype) { //other window functions
 		case Message::Messagetypes::Windowclose:
-			std::cout << "Message: windowclose called.";
+			std::cout << "Message: windowclose called." << std::endl;
+			std::cout << "messagequeue size: " << messagequeue.size() << std::endl;
 			messagequeue.pop();
 			break;
 		}
@@ -52,15 +50,18 @@ void Window::handleMessage()
 void Window::updateWindow()//monitor refresh rate
 {
 	SDL_GL_SwapWindow(window);
-	SDL_Event sdlevent;
+
+	/*SDL_Event sdlevent;
 	while (SDL_PollEvent(&sdlevent)) {
 		if (sdlevent.type == SDL_QUIT) {
-			/*Message message(Message::Messagetypes::Windowclose);
-			postMessage(message);*/
-			handleMessage();
-			std::cout << "messagequeue size: " << messagequeue.size();
+			Message message(Message::Messagetypes::Windowclose);
+			postMessage(message);
+			/*Message message(Windowclose);
+			postMessage(Windowclose);
+			std::cout << "messagequeue size: " << messagequeue.size() << std::endl;
 		}
-	}
+	}*/
+	handleMessage();
 	glClearColor(1.0, 0.0, 0.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 }
@@ -106,4 +107,9 @@ int Window::getWindowWidth(Window window) {
 }
 int Window::getWindowHeight(Window window) {
 	return windowheight;
+}
+void Window::postMessage(Message message) {
+	if (messagequeue.size() <= 32) {
+		messagequeue.push(message);
+	}
 }
