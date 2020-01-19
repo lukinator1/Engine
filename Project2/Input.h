@@ -2,15 +2,14 @@
 #include <SDL2/SDL.h>
 #include "Engine.h"
 #include <string>
+#include <iostream>
 class Input
 {
 private: 
 	bool leftmousepressed;
 	bool rightmousepressed;
 	bool middlemousepressed;
-	/*bool leftmouseunpressed;
-	bool rightmouseunpressed;
-	bool middlemouseunpressed;*/
+	bool doubleclicked;				//todo: mouse position
 
 public:
 	enum Keys {
@@ -99,9 +98,11 @@ public:
 	void inputShutdown();
 
 	void handleMessage();
-	void postMessage(Message message);
+	void postMessage(Message::Messagetypes message);
 
 	void getInputs();
+	void getMousePosition();
+	void updateMousePosition();
 	bool leftMousePressed();
 	bool rightMousePressed();
 	bool middleMousePressed();

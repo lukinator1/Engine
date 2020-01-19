@@ -13,7 +13,7 @@ public:
 		M3pressed,
 		M3unpressed,
 		Doubleclick,
-		Mousewheel,
+		Mousescrolled,
 		Windowclose
 		};
 	Messagetypes messagetype;
