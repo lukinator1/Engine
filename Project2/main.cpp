@@ -15,9 +15,10 @@ int main(int argc, char* argv[]) {
 	Input Inputs;
 	Inputs.inputStartup();
 	Messaging Messages;
+	Messages.messagingStartup();
 	while (true) {
 		Inputs.getInputs();
-		Inputs.handleMessage();
+		Messages.messageUpdate(Inputs, window);
 		window.updateWindow();
 	}
 	SDL_Quit();

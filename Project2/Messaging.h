@@ -10,7 +10,6 @@
 class Messaging
 {
 private:
-	std::queue <Message> messagequeueprocessor;
 public:
 	void messagingStartup();
 	void messageUpdate(Input &Inputs, Window &Window);

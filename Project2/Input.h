@@ -103,7 +103,7 @@ public:
 	void inputStartup();
 	void inputShutdown();
 
-	void handleMessage();
+	void handleMessage(Message &message);
 	void postMessage(Message::Messagetypes messagetype);
 	void postMessage(Message::Messagetypes message, int dataone, int data);
 

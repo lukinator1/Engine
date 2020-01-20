@@ -2,9 +2,10 @@
 //periodic updating
 
 
-Message::Message(Messagetypes incomingmessagetype)
+Message::Message(Messagetypes incomingmessagetype, Category incomingmessagecategory)
 {
 	messagetype = incomingmessagetype;
+	messagecategory = incomingmessagecategory;
 }
 
 

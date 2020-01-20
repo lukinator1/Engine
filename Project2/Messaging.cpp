@@ -8,23 +8,20 @@ Messaging::~Messaging()
 void Messaging::messagingStartup() {
 
 }
-void Messaging::messagingStartup() {
-
-}
-
-
-void Messaging::messageUpdate(Input &Inputs, Window & window)
+void Messaging::messageUpdate(Input &Inputs, Window & window)  //messages serviced here
 {
-	Message messageoutput = messagequeue.front();
-	messageDispatch(messageoutput, Inputs, window);
-
+	if (messagequeue.empty() == false) {
+		Message messageoutput = messagequeue.front();
+		messageoutput.messagedataone = messageoutput.messagedataone + 100;
+		messageoutput.messagedatatwo = messageoutput.messagedatatwo + 100;
+		messageDispatch(messageoutput, Inputs, window);
+	}
 }
-
-void Messaging::messageDispatch(Message &message, Input &Inputs, Window &Window)
-{
-	Inputs.handleMessage();
-	Window.handleMessage(message);
-	messagequeue.pop();
+void Messaging::messageDispatch(Message &message, Input &Inputs, Window &Window){	//messages ordered here, extern
+		Inputs.handleMessage(message);
+		Window.handleMessage(message);
+		messagequeue.pop();
+		std::cout << "event: " << static_cast<std::underlying_type<Message::Messagetypes>::type>(message.messagetype) << "handeled" << std::endl;
 }
 
 

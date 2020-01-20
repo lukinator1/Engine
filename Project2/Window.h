@@ -18,6 +18,7 @@ public:
 	Window(int width, int height, std::string title);
 	virtual ~Window();
 	void postMessage(Message message);
+	/*void postMessage(Message::Messagetypes messagetype, int dataone, int datatwo);*/
 	void updateWindow();
 	void setWindow(int width, int height);
 	void setWindowIcon();

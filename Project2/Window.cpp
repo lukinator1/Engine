@@ -37,7 +37,7 @@ void Window::handleMessage(Message &message)
 {
 	if (!messagequeue.empty()) {
 		switch (message.messagetype) { //other window functions
-		case Message::Messagetypes::Windowclose:
+		case Message::Messagetypes::Closebuttonpressed:
 			std::cout << "Message: windowclose called." << std::endl;
 			std::cout << "messagequeue size: " << messagequeue.size() << std::endl;
 			break;
@@ -105,7 +105,17 @@ int Window::getWindowHeight(Window window) {
 	return windowheight;
 }
 void Window::postMessage(Message message) {
+	
 	if (messagequeue.size() <= 32) {
 		messagequeue.push(message);
 	}
 }
+/*void Window::postMessage(Message::Messagetypes messagetype, int dataone, int datatwo)
+{
+	if (messagequeue.size() < 32) {
+		Message newmessage(messagetype, Message::Category::Window);
+		newmessage.messagedataone = dataone;
+		newmessage.messagedatatwo = datatwo;
+		messagequeue.push(newmessage);
+	}
+}*/

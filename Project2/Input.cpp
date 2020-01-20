@@ -61,7 +61,7 @@ void Input::getInputs() {
 		}
 			
 		if (sdlevent.type == SDL_QUIT) {
-				postMessage(Message::Messagetypes::Windowclose);
+				postMessage(Message::Messagetypes::Closebuttonpressed);
 				/*Message message(Windowclose);
 				postMessage(Windowclose);*/
 				std::cout << "messagequeue size: " << messagequeue.size() << std::endl;
@@ -118,70 +118,58 @@ void Input::inputShutdown()
 void Input::handleMessage(Message &message)
 {
 	if (!messagequeue.empty()) { //handle inputs from event system
-		Message message = messagequeue.front();
 		switch (message.messagetype) { //other window functions
 		case Message::Messagetypes::Mousemoved:
 			updateMousePosition(message.messagedataone, message.messagedatatwo);
 			std::cout << "x mouse position: " << message.messagedataone << ", y mouse position: " << message.messagedatatwo << std::endl;
-			messagequeue.pop();
 			break;
 		case Message::Messagetypes::Leftmousepressed:
 			leftmousepressed = true;
-			messagequeue.pop();
 			break;
 		case Message::Messagetypes::Rightmousepressed:
 			rightmousepressed = true;
-			messagequeue.pop();
 			break;
 		case Message::Messagetypes::Doubleclick:
 			doubleclicked = true;
-			messagequeue.pop();
 			break;
 		case Message::Messagetypes::M3pressed:
 			middlemousepressed = true;
-			messagequeue.pop();
 			break;
 		case Message::Messagetypes::Leftmouseunpressed:
 			leftmousepressed = false;
-			messagequeue.pop();
 			break;
 		case Message::Messagetypes::Rightmouseunpressed:
 			rightmousepressed = false;
-			messagequeue.pop();
 			break;
 		case Message::Messagetypes::M3unpressed:
 			leftmousepressed = false;
-			messagequeue.pop();
 			break;
 		case Message::Messagetypes::Keydown:
 			keyboardstate[message.messagedataone] = 1;
 			std::cout << "Key: " << message.messagedataone << std::endl;
-			messagequeue.pop();
 			break;
 		case Message::Messagetypes::Keyup:
 			keyboardstate[message.messagedataone] = 0;
-			messagequeue.pop();
 			break;
 		case Message::Messagetypes::Mousescrolled:
 			setScrolldistance(message.messagedataone, message.messagedatatwo);
 			std::cout << "x scroll distance: " << message.messagedataone << ", y scroll distance: " << message.messagedatatwo << std::endl;
-			messagequeue.pop();
 			break;
 		}
-		std::cout << "event: " << static_cast<std::underlying_type<Message::Messagetypes>::type>(message.messagetype) << "handeled" << std::endl;
 	}
-}      
+}   
 void Input::postMessage(Message::Messagetypes messagetype)
 {
+
 	if (messagequeue.size() < 32) {
-		Message newmessage(messagetype);
+		Message newmessage(messagetype, Message::Category::Input);
 		messagequeue.push(newmessage);
 	}
 }
 void Input::postMessage(Message::Messagetypes messagetype, int dataone, int datatwo)
 {
 	if (messagequeue.size() < 32) {
-		Message newmessage(messagetype);
+		Message newmessage(messagetype, Message::Category::Input);
 		newmessage.messagedataone = dataone;
 		newmessage.messagedatatwo = datatwo;
 		messagequeue.push(newmessage);

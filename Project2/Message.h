@@ -14,12 +14,22 @@ public:
 		M3unpressed,
 		Doubleclick,
 		Mousescrolled,
-		Windowclose
+		Closebuttonpressed, 
+		User
 	};
+
+	enum Category {
+		All, 
+		Input,
+		Window,
+		User
+	};
+
 	Messagetypes messagetype;
+	Category messagecategory;
 	int messagedataone;
 	int messagedatatwo;
-	Message(Messagetypes incomingmessagetype);
+	Message(Messagetypes incomingmessagetype, Category incomingmessagecategory);
 	~Message();
 };
 
