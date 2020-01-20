@@ -115,7 +115,7 @@ void Input::update()
 void Input::inputShutdown()
 {
 }
-void Input::handleMessage()
+void Input::handleMessage(Message &message)
 {
 	if (!messagequeue.empty()) { //handle inputs from event system
 		Message message = messagequeue.front();

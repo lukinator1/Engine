@@ -1,5 +1,5 @@
 #include "Message.h"
-
+//periodic updating
 
 
 Message::Message(Messagetypes incomingmessagetype)

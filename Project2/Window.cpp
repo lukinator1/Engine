@@ -33,15 +33,13 @@ Window::~Window()
 	SDL_GL_DeleteContext(glContext);
 	SDL_DestroyWindow(window);
 }
-void Window::handleMessage()
+void Window::handleMessage(Message &message)
 {
 	if (!messagequeue.empty()) {
-		Message message = messagequeue.front();
 		switch (message.messagetype) { //other window functions
 		case Message::Messagetypes::Windowclose:
 			std::cout << "Message: windowclose called." << std::endl;
 			std::cout << "messagequeue size: " << messagequeue.size() << std::endl;
-			messagequeue.pop();
 			break;
 		}
 	}
@@ -60,7 +58,6 @@ void Window::updateWindow()//monitor refresh rate
 			std::cout << "messagequeue size: " << messagequeue.size() << std::endl;
 		}
 	}*/
-	handleMessage();
 	glClearColor(1.0, 0.0, 0.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 }

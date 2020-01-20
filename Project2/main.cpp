@@ -1,6 +1,7 @@
 #include "Window.h"
 #include "Engine.h"
 #include "Input.h"
+#include "Messaging.h"
 #undef main
 #include <iostream>
 std::queue <Message> messagequeue;
@@ -13,6 +14,7 @@ int main(int argc, char* argv[]) {
 	}*/
 	Input Inputs;
 	Inputs.inputStartup();
+	Messaging Messages;
 	while (true) {
 		Inputs.getInputs();
 		Inputs.handleMessage();
