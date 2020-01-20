@@ -16,12 +16,20 @@ Tried to implement the messenger class, got kind of confused and scared to set i
 1-15-19
 plan:
 implement a window class, input receiver handler
-Got a little bit started on the window class;
+Got a little bit started on the window class.
 
 1-16-19
 plan: finish window class + input handler
 I think I've got most of what I need for the window class (still need to include something for resolutions + the icon), did a little bit of research on how inputs work for SDL2. 
 
+1-17-19
+Input class, event system.
+
+1-18-19
+Input class, event system progress.
+
+1-19-19
+Input class + event system look for the most part done.
 
 possible errors:
 change absolute path in include directories property page

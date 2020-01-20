@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <iostream>
 #include "Engine.h"
+//to do: window icon + resolution
 class Window
 {
 private:

@@ -3,13 +3,18 @@
 #include "Engine.h"
 #include <string>
 #include <iostream>
+//todo: capturemouse(maybe), textinput, getmouseposition(), getscrolldistance()
 class Input
 {
 private:
 	bool leftmousepressed;
 	bool rightmousepressed;
 	bool middlemousepressed;
-	bool doubleclicked;				//todo: mouse position
+	bool doubleclicked;
+	int xmouseposition;
+	int ymouseposition;
+	int verticalscrolldistance;
+	int horizontalscrolldistance; 
 
 public:
 	enum Keys {
@@ -100,18 +105,17 @@ public:
 
 	void handleMessage();
 	void postMessage(Message::Messagetypes messagetype);
-	void postMessage(Message::Messagetypes message, int data);
+	void postMessage(Message::Messagetypes message, int dataone, int data);
 
 	void getInputs();
 	void getMousePosition();
-	void updateMousePosition();
+	void updateMousePosition(int x, int y);
+	void getScrolldistance();
+	void setScrolldistance(int scrollvertical, int scrollhorizontal);
 	bool leftMousePressed();
 	bool rightMousePressed();
 	bool middleMousePressed();
 	const Uint8* getKeysPressed();
-	/*bool leftMouseReleased();
-	bool rightMouseReleased();*/
-	/*int* getKeysReleased();*/
 	void update();
 	bool isKeyPressed(Keys key);
 

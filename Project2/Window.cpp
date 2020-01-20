@@ -1,5 +1,4 @@
 #include "Window.h"
-//to do: window icon + resolution
 Window::Window(int width, int height, std::string title)
 {
 	windowwidth = height;

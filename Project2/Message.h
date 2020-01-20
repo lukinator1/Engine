@@ -17,7 +17,8 @@ public:
 		Windowclose
 	};
 	Messagetypes messagetype;
-	int messagedata;
+	int messagedataone;
+	int messagedatatwo;
 	Message(Messagetypes incomingmessagetype);
 	~Message();
 };
