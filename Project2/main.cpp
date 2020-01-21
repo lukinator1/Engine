@@ -2,9 +2,11 @@
 #include "Engine.h"
 #include "Input.h"
 #include "Messaging.h"
+#include "Logger.h"
 #undef main
 #include <iostream>
 std::queue <Message> messagequeue;
+
 int main(int argc, char* argv[]) {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	Window window(800, 600, "hello");
