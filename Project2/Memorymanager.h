@@ -1,40 +1,33 @@
 #pragma once
 #include <cstdlib>
-#include "Logger.h"
+#include "Engine.h"
 class Memorymanager
 {
-private:
+public:
 	class DEStackAllocator {
 	private:
 		bool todelete = true;
 	public:
 		DEStackAllocator(int blocksize);  //engine configuration file?
 		~DEStackAllocator();
-
-		void* memoryBlockAddress;
+		void* topAddress;
+		void* bottomAddress;
 		int topmarker;
 		int bottommarker;
+		void* newAllocator(unsigned int numberofbytes, size_t alignment);
+		template <typename T>
+		T* allignPointer(T* ptr, size_t align){	
+			const uintptr_t address = reinterpret_cast<uintptr_t>(ptr);
+			const uintptr_t addressAligned = allignBlock(address, align);
+			return reinterpret_cast<T*>(addressAligned);
+		};
+		uintptr_t allignBlock(uintptr_t address, size_t align);
+		int getTopMarker();
+		int getBottomMarker();
 
-		void* engineAllocate(unsigned int numberofbytes) {
-			
-		}
-		int getTopMarker() {
-			return topmarker;
-		}
-		int getBottomMarker() {
-			return bottommarker;
-		}
-
-		void engineDeallocate() {
-		}
-		void clearAllocator() {
-
-		}
-		void deleteEngineAllocator(void * userallocation) { //remove void pointer?
-			delete memoryBlockAddress;
-			delete userallocation;
-			todelete = false;
-		}
+		void* engineDeallocate();
+		void clearAllocator();
+		void deleteEngineAllocator(void * userallocation);
 	};
 
 	Memorymanager();
@@ -42,8 +35,7 @@ private:
 
 	/*void* engineAllocate(DEStackAllocator destack);*/
 
-	void memoryManagerstartup();
+	/*DEStackAllocator newDEAllocator(int stacksize);*/
+	void memoryManagerstartup(int stacksize);
 	void memoryManagershutdown();
-
 };
-

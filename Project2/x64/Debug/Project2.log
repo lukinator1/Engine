@@ -1,13 +1,2 @@
-﻿  Input.cpp
-  Logger.cpp
-  Memorymanager.cpp
-  Messaging.cpp
-  Window.cpp
-  main.cpp
-  Generating Code...
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\input.cpp(109): warning C4715: 'Input::isKeyPressed': not all control paths return a value
-Logger.obj : error LNK2001: unresolved external symbol "private: static class std::basic_ofstream<char,struct std::char_traits<char> > Logger::EngineLogFile" (?EngineLogFile@Logger@@0V?$basic_ofstream@DU?$char_traits@D@std@@@std@@A)
-Logger.obj : error LNK2001: unresolved external symbol "private: static int Logger::engineverbosity" (?engineverbosity@Logger@@0HA)
-Logger.obj : error LNK2001: unresolved external symbol "private: static int Logger::enginechannel" (?enginechannel@Logger@@0HA)
-Logger.obj : error LNK2001: unresolved external symbol "private: static bool Logger::showwarnings" (?showwarnings@Logger@@0_NA)
-C:\Users\lukinator1\Desktop\engine\The Super Suspension System\Project2\x64\Debug\Project2.exe : fatal error LNK1120: 4 unresolved externals
+﻿  Memorymanager.cpp
+  Project2.vcxproj -> C:\Users\lukinator1\Desktop\engine\The Super Suspension System\Project2\x64\Debug\Project2.exe
