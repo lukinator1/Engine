@@ -1,7 +1,7 @@
 #pragma once
 #include <cstdlib>
 #include "Engine.h"
-class Memorymanager
+class Memorymanager : public Logger
 {
 public:
 	class DEStackAllocator {
@@ -25,7 +25,7 @@ public:
 		int getTopMarker();
 		int getBottomMarker();
 
-		void* engineDeallocate();
+		void engineDeallocate(void* userpointer);
 		void clearAllocator();
 		void deleteEngineAllocator(void * userallocation);
 	};

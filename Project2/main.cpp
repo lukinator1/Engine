@@ -2,6 +2,7 @@
 #include "Engine.h"
 #include "Input.h"
 #include "Messaging.h"
+#include <fstream>
 #undef main
 #include <iostream>
 std::queue <Message> messagequeue;
@@ -12,6 +13,9 @@ int main(int argc, char* argv[]) {
 	if (res != GLEW_OK) {
 		std::cerr << "Glew failed to initialize!" << std::endl;
 	}*/
+
+	Logger logger;
+	logger.startUp();
 	Input Inputs;
 	Inputs.inputStartup();
 	Messaging Messages;
