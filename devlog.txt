@@ -37,3 +37,9 @@ change absolute path in include directories property page
 
 1-20-19
 Made progress on the memory manager, but running into some issues with using the logging function, may just pass it in as an event.
+
+1-21-20 
+Fixed the logging issue, made decent progress on the memory manager class. Got an ok amount done but would've liked to do more. This class is a little bit more complicated at times.
+
+1-22-20
+plan: memory manager, time + enginloop setup, started on math library
