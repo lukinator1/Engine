@@ -1,4 +1,2 @@
-﻿  Memorymanager.cpp
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\memorymanager.cpp(38): warning C4267: '+=': conversion from 'size_t' to 'int', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\memorymanager.cpp(39): warning C4018: '>': signed/unsigned mismatch
+﻿  main.cpp
   Project2.vcxproj -> C:\Users\lukinator1\Desktop\engine\The Super Suspension System\Project2\x64\Debug\Project2.exe

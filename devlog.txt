@@ -42,4 +42,4 @@ Made progress on the memory manager, but running into some issues with using the
 Fixed the logging issue, made decent progress on the memory manager class. Got an ok amount done but would've liked to do more. This class is a little bit more complicated at times.
 
 1-22-20
-plan: memory manager, time + enginloop setup, started on math library
+plan: memory manager, time + engine loop setup, started on math library
