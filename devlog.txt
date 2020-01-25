@@ -31,10 +31,6 @@ Input class, event system progress.
 1-19-19
 Input class + event system look for the most part done.
 
-possible errors:
-change absolute path in include directories property page
-#undef main
-
 1-20-19
 Made progress on the memory manager, but running into some issues with using the logging function, may just pass it in as an event.
 
@@ -43,3 +39,12 @@ Fixed the logging issue, made decent progress on the memory manager class. Got a
 
 1-22-20
 plan: memory manager, time + engine loop setup, started on math library
+Finished the stack allocator. It's a good design to apply formal methods to. 
+
+1-23-20
+Got busy with other classes + things. Wasn't able to do anything today, hope to work on it tommorrow, the plan is the same. 
+
+
+possible errors:
+change absolute path in include directories property page
+#undef main

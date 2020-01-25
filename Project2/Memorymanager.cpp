@@ -1,11 +1,11 @@
 #include "Memorymanager.h"
-Memorymanager::Memorymanager()
+Memorymanager::Memorymanager() : sfAllocator(500, 8), dbAllocator(500, 8)
 {
 }
 Memorymanager::~Memorymanager()
 {
 }
-Memorymanager::DEStackAllocator::DEStackAllocator(int blocksize, size_t alignment) {
+Memorymanager::StackAllocator::StackAllocator(int blocksize = 600, size_t alignment = 8) {
 	const size_t checkpower = alignment - 1;
 	if (((alignment & checkpower) != 0) || alignment < 2 || alignment > 256) {
 		engineLog(__FILE__, __LINE__, "The stack allocator wassn't created, the alignment must be a power of 2, => 2 and <= 256. A nullptr was returned instead.", 3, 1, false);
@@ -32,11 +32,11 @@ Memorymanager::DEStackAllocator::DEStackAllocator(int blocksize, size_t alignmen
 		marker = stackTop;
 	}
 }
-Memorymanager::DEStackAllocator::~DEStackAllocator()
+Memorymanager::StackAllocator::~StackAllocator()
 {
 }
 
-void* Memorymanager::DEStackAllocator::engineAllocate(unsigned int blocksize, size_t alignment, bool setmarker = false)	//allignment must be power of two 
+void* Memorymanager::StackAllocator::engineAllocate(unsigned int blocksize, size_t alignment, bool setmarker = false)	//allignment must be power of two 
 {
 	if (blocksize < 2) {
 		engineLog(__FILE__, __LINE__, "The blocksize was invalid, please use only unsigned integers. A nullptr was returned instead.", 3, 1, false);
@@ -70,15 +70,15 @@ void* Memorymanager::DEStackAllocator::engineAllocate(unsigned int blocksize, si
 
 	return allignedPointer;
 }
-uintptr_t Memorymanager::DEStackAllocator::allignBlock(uintptr_t address, size_t align) {
+uintptr_t Memorymanager::StackAllocator::allignBlock(uintptr_t address, size_t align) {
 	size_t mask = align - 1;
 	return (address + mask) & ~mask;
 }
-uint8_t* Memorymanager::DEStackAllocator::getMarker()
+uint8_t* Memorymanager::StackAllocator::getMarker()
 {
 	return marker;
 }
-void Memorymanager::DEStackAllocator::engineAllocatorPop(void* userpointer)
+void Memorymanager::StackAllocator::engineAllocatorPop(void* userpointer)
 {
 	uint8_t* alignedpointer = reinterpret_cast<uint8_t*>(marker);
 	__int64 shift = alignedpointer[-1];
@@ -90,32 +90,65 @@ void Memorymanager::DEStackAllocator::engineAllocatorPop(void* userpointer)
 	currentallocatorsize = stackTop - bottomAddress;
 }
 
-void Memorymanager::DEStackAllocator::engineDeallocateToMarker()
+void Memorymanager::StackAllocator::engineDeallocateToMarker()
 { 
 	stackTop = marker;
 	currentallocatorsize = stackTop - bottomAddress;
 }
-void Memorymanager::DEStackAllocator::clearAllocator()
+void Memorymanager::StackAllocator::clearAllocator()
 {
 	marker = bottomAddress;
 	stackTop = bottomAddress;
 	currentallocatorsize = 0;
 }
-void Memorymanager::DEStackAllocator::deleteStack() //remove void pointer?
+void Memorymanager::StackAllocator::deleteStack() //remove void pointer?
 {
 	if (bottomAddress == nullptr) {
 		engineLog(__FILE__, __LINE__, "The stackaddress got set to nullptr somehow, the deallocation didn't go through. ", 3, 1, false);
 		return;
 	}
+	this->clearAllocator();
 	delete[] bottomAddress;
 }
 
-Memorymanager::DEStackAllocator* Memorymanager::newAllocator(int stacksize, size_t alignment)
+
+void Memorymanager::DBAllocator::swapBufferrs()
 {
-	DEStackAllocator* allocator = new DEStackAllocator{ {stacksize}, {alignment} };
+	first = !first;
+}
+void Memorymanager::DBAllocator::clearCurrentBuffer()
+{
+	if (first) {
+		firststackallocator.clearAllocator();
+	}
+	else {
+		secondstackallocator.clearAllocator();
+	}
+}
+void * Memorymanager::DBAllocator::engineAllocate(unsigned int numberofbytes, size_t alignment, bool setmarker)
+{
+	if (first) {
+		return firststackallocator.engineAllocate(numberofbytes, alignment, setmarker);
+	}
+	else {
+		return secondstackallocator.engineAllocate(numberofbytes, alignment, setmarker);
+	}
+}
+
+Memorymanager::DBAllocator::DBAllocator(int blocksize, size_t alignment) : firststackallocator(blocksize, alignment), secondstackallocator(blocksize, alignment)
+{
+}
+Memorymanager::DBAllocator::~DBAllocator()
+{
+}
+
+
+Memorymanager::StackAllocator* Memorymanager::newAllocator(int stacksize, size_t alignment)
+{
+	StackAllocator* allocator = new StackAllocator{ {stacksize}, {alignment} };
 	return allocator;
 }
-void Memorymanager::deleteAllocator(DEStackAllocator* &userpointer) {
+void Memorymanager::deleteAllocator(StackAllocator* &userpointer) {
 	if (userpointer == nullptr) {
 		engineLog(__FILE__, __LINE__, "The pointer to the stack allocator got set to nullptr, the deallocatation didn't go through. ", 3, 1, true);
 		return;
@@ -124,11 +157,19 @@ void Memorymanager::deleteAllocator(DEStackAllocator* &userpointer) {
 	delete userpointer;
 }
 
+void Memorymanager::memorymanagerUpdate() {
+	sfAllocator.clearAllocator();
+	dbAllocator.swapBufferrs();
+	dbAllocator.clearCurrentBuffer();
+}
 void Memorymanager::memoryManagerstartup()
 {
 }
 void Memorymanager::memoryManagershutdown()
 {
+	sfAllocator.deleteStack();
+	dbAllocator.firststackallocator.deleteStack();
+	dbAllocator.secondstackallocator.deleteStack();
 }
 
 

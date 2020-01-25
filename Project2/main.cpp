@@ -6,6 +6,7 @@
 #include <fstream>
 #undef main
 #include <iostream>
+//funkey
 std::queue <Message> messagequeue;
 int main(int argc, char* argv[]) {
 	SDL_Init(SDL_INIT_EVERYTHING);
@@ -14,19 +15,24 @@ int main(int argc, char* argv[]) {
 	Window window(800, 600, "hello");
 	Memorymanager memorymanager;
 	memorymanager.memoryManagerstartup();
-	Memorymanager::DEStackAllocator* memory = memorymanager.newAllocator(600, alignof(int));
+	Memorymanager::StackAllocator* stackallocator = memorymanager.newAllocator(500, alignof(int));
 	Input Inputs;
 	Inputs.inputStartup();
-	Messaging Messages;
-	Messages.messagingStartup();
+	int counter = 0;
+	char *temp = nullptr;
+
+
 	while (true) {
+		memorymanager.memorymanagerUpdate();
 		Messages.messageUpdate(Inputs, window);
 		Inputs.getInputs();
 		window.updateWindow();
+		int* test = (int *)memorymanager.sfAllocator.engineAllocate(200, 8, false);
+		char* testme = (char *)memorymanager.dbAllocator.engineAllocate(167, 8, false);
 	}
+
 		SDL_Quit();
 }
-
 
 /*Memorymanager test;
 Memorymanager::DEStackAllocator* memory = test.newAllocator(600, alignof(int));
@@ -43,3 +49,27 @@ omoih[3] = 78;
 memory->clearAllocator();
 test.deleteAllocator(memory);
 std::cout << omoih[3];*/
+/*if (counter < 5) {
+	test[0] = 143;
+	std::cout << test[0] << std::endl;
+	testme[7] = '2';
+	std::cout << testme[7] << std::endl;
+}
+else {
+	test[0] = 1212;
+	std::cout << test[0] << std::endl;
+	testme[7] = 'p';
+	std::cout << testme[7] << std::endl;
+}*/
+/*if (counter % 2 == 0) {
+			testme[7] = '2';
+			temp = &testme[7];
+		}
+		else {
+			testme[7] = 'p';
+		}
+		if (counter > 4) {
+		std::cout << *temp << std::endl;
+	}
+		std::cout << testme[7] << std::endl;
+		counter++;*/

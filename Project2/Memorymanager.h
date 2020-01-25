@@ -2,10 +2,11 @@
 #include <cstdlib>
 #include "Engine.h"
 #include <vector>
+//maybe change the swapbuffers() function to use an array since it might increase performance
 class Memorymanager : public Logger
 {
 public:
-	class DEStackAllocator {
+	class StackAllocator {
 	private:
 	public:
 		int allocatorcapacity;
@@ -23,8 +24,8 @@ public:
 		uintptr_t allignBlock(uintptr_t address, size_t align);
 		uint8_t* getMarker();
 
-		DEStackAllocator(int blocksize, size_t alignment);
-		~DEStackAllocator();
+		StackAllocator(int blocksize, size_t alignment);
+		~StackAllocator();
 
 		void engineAllocatorPop(void* userpointer);
 		void engineDeallocateToMarker();
@@ -32,11 +33,26 @@ public:
 		void deleteStack();
 	};
 
+	class DBAllocator {
+	public:
+		bool first = false;
+		StackAllocator firststackallocator;
+		StackAllocator secondstackallocator;
+		void swapBufferrs();
+		void clearCurrentBuffer();
+		void* engineAllocate(unsigned int numberofbytes, size_t alignment, bool setmarker);
+		DBAllocator(int blocksize, size_t alignment);
+		~DBAllocator();
+	};
+
 	Memorymanager();
 	~Memorymanager();
 
-	DEStackAllocator* newAllocator(int stacksize, size_t alignment);
-	void deleteAllocator(DEStackAllocator* &userpointer);
+	StackAllocator sfAllocator;
+	DBAllocator dbAllocator;
+	StackAllocator* newAllocator(int stacksize, size_t alignment);
+	void deleteAllocator(StackAllocator* &userpointer);
+	void memorymanagerUpdate();
 	void memoryManagerstartup();
 	void memoryManagershutdown();
 };
