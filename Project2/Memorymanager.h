@@ -2,6 +2,8 @@
 #include <cstdlib>
 #include "Engine.h"
 #include <vector>
+#include <map>
+#include <iterator>
 //maybe change the swapbuffers() function to use an array since it might increase performance
 class Memorymanager : public Logger
 {
@@ -52,6 +54,21 @@ public:
 	DBAllocator dbAllocator;
 	StackAllocator* newAllocator(int stacksize, size_t alignment);
 	void deleteAllocator(StackAllocator* &userpointer);
+
+	/*std::vector<void**> currentpointers;
+	std::map<void*, std::pair<size_t,size_t>> pointermap;
+	/*template <typename T>
+	void* engineMalloc(size_t numberofbytes, T datatype) {
+			void* engineblock = std::malloc(numberofbytes);
+			std::pair <size_t, size_t> pair(ceil(_msize(engineblock) / sizeof(datatype)), _msize(engineblock));
+			/*void** blockpointer = &engineblock;
+			currentpointers.push_back(blockpointer)
+			pointermap.emplace(engineblock, pair);
+			return engineblock;
+	}
+	void engineDeallocate(void* userpointer);
+	void engineDefragment();*/
+
 	void memorymanagerUpdate();
 	void memoryManagerstartup();
 	void memoryManagershutdown();

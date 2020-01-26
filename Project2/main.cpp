@@ -8,6 +8,7 @@
 #include <iostream>
 //funkey
 std::queue <Message> messagequeue;
+
 int main(int argc, char* argv[]) {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	Messaging Messages;
@@ -19,16 +20,12 @@ int main(int argc, char* argv[]) {
 	Input Inputs;
 	Inputs.inputStartup();
 	int counter = 0;
-	char *temp = nullptr;
-
-
 	while (true) {
 		memorymanager.memorymanagerUpdate();
 		Messages.messageUpdate(Inputs, window);
 		Inputs.getInputs();
 		window.updateWindow();
-		int* test = (int *)memorymanager.sfAllocator.engineAllocate(200, 8, false);
-		char* testme = (char *)memorymanager.dbAllocator.engineAllocate(167, 8, false);
+
 	}
 
 		SDL_Quit();

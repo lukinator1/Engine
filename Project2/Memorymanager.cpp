@@ -156,6 +156,50 @@ void Memorymanager::deleteAllocator(StackAllocator* &userpointer) {
 	userpointer->deleteStack();
 	delete userpointer;
 }
+/*void* Memorymanager::engineMalloc(size_t numberofbytes, T datatype)
+{
+	void* engineblock = std::malloc(numberofbytes);
+
+	void* blockpointer = &engineblock;
+	if (pointermap.size() != 1) {
+	}
+	return engineblock;
+}
+/*void Memorymanager::engineDefragment() {
+	/*for (int i = 0; i < currentpointers.size() - 1; i++) {
+		int distance = (int)currentpointers[i + 1] - (int)currentpointers[i];
+		if currentpointers[i]
+		if ((int)currentpointers[i + 1] - (int)currentpointers[i] > 
+	}
+	if (pointermap.size() >= 2) {
+		int currentblock = 0;
+		auto u = pointermap.begin();
+		u++;		
+		int counter = 0;
+		bool swapped = false;
+		while (counter < 9 && swapped == false) {
+			swapped = true;
+			/*currentblock = 0;
+			for (auto i = pointermap.begin(); u != pointermap.end(); i++, u++) {
+					if (((int)(u->first) - (int)(i->first)) > (std::get<0>(i->second))){
+					memmove((void *)(((int)i->first) + (int)std::get<0>(i->second)), u->first, std::get<1>(u->second));
+					swapped = true;
+					counter++;
+				}
+				/*currentblock++;
+			}
+		}
+	}
+}*/
+/*void Memorymanager::engineDeallocate(void * userpointer) {
+	for (auto i = pointermap.begin(); i != pointermap.end(); i++) {
+		if (i->first == userpointer) {
+			delete i->first;
+			pointermap.erase(i);
+			return;
+		}
+	}
+}/**/
 
 void Memorymanager::memorymanagerUpdate() {
 	sfAllocator.clearAllocator();
