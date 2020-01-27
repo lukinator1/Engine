@@ -44,6 +44,15 @@ Finished the stack allocator. It's a good design to apply formal methods to.
 1-23-20
 Got busy with other classes + things. Wasn't able to do anything today, hope to work on it tommorrow, the plan is the same. 
 
+1-24-20
+Did work for other classes, decided to take a break today.
+
+1-25-20
+I couldn't quite figure out how to implement the memory defragmenter, it was kind of difficult. I decided to just put it off for now since it was an auxiliary part anyways. But the single frame + dubble buffer allocators got implemented, at least everything else works. 
+
+1-26-20
+plan: look into resource manager/databse, if not, time class, math library, if possible start on rendering
+
 
 possible errors:
 change absolute path in include directories property page

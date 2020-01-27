@@ -7,6 +7,7 @@
 #include "Input.h"
 #include "Window.h"
 //the user should define the logic of this class
+//take off +100
 class Messaging
 {
 private:

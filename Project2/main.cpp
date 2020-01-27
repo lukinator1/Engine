@@ -6,9 +6,9 @@
 #include <fstream>
 #undef main
 #include <iostream>
-//funkey
 std::queue <Message> messagequeue;
-
+double deltatime = 1.0/30.0;
+double gametime = 0.0;
 int main(int argc, char* argv[]) {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	Messaging Messages;
@@ -20,17 +20,37 @@ int main(int argc, char* argv[]) {
 	Input Inputs;
 	Inputs.inputStartup();
 	int counter = 0;
+	std::chrono::high_resolution_clock::time_point starttime;
+	std::chrono::high_resolution_clock::time_point endtime;
+	std::chrono::duration<double> timeduration;
+	std::chrono::duration<double> chronodelta = std::chrono::duration<double>(deltatime);
 	while (true) {
+		starttime = std::chrono::high_resolution_clock::now();
 		memorymanager.memorymanagerUpdate();
 		Messages.messageUpdate(Inputs, window);
 		Inputs.getInputs();
 		window.updateWindow();
 
-	}
 
+
+
+		gametime += chronodelta.count();
+		endtime = std::chrono::high_resolution_clock::now();
+		timeduration = std::chrono::duration_cast<std::chrono::duration<double>> (endtime - starttime);
+		if (timeduration < chronodelta)
+		{
+			std::this_thread::sleep_for(chronodelta - timeduration);
+		}
+		else if (timeduration > chronodelta) {
+			std::this_thread::sleep_for(chronodelta - (timeduration - chronodelta)); //todo: change to division
+			std::cout << "slow" << std::endl;
+		}
+	}
 		SDL_Quit();
 }
 
+/*int* test = (int *)memorymanager.sfAllocator.engineAllocate(200, 8, false);
+char* testme = (char *)memorymanager.dbAllocator.engineAllocate(167, 8, false);*/
 /*Memorymanager test;
 Memorymanager::DEStackAllocator* memory = test.newAllocator(600, alignof(int));
 int* atest = (int*)memory->engineAllocate(50, 4, false);
@@ -70,3 +90,6 @@ else {
 	}
 		std::cout << testme[7] << std::endl;
 		counter++;*/
+		/*if ((gametime > 59 && gametime < 61) || (gametime > 119 && gametime < 121) || (gametime > 179 && gametime < 181) || (gametime > 239 && gametime < 241) || (gametime < 299 && gametime > 301)) {
+			std::cout << "current game time: " << gametime << std::endl;
+		}*/

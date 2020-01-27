@@ -137,6 +137,7 @@
     <ClInclude Include="Memorymanager.h" />
     <ClInclude Include="Message.h" />
     <ClInclude Include="Messaging.h" />
+    <ClInclude Include="Time.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
@@ -146,6 +147,7 @@
     <ClCompile Include="Memorymanager.cpp" />
     <ClCompile Include="Message.cpp" />
     <ClCompile Include="Messaging.cpp" />
+    <ClCompile Include="Time.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
