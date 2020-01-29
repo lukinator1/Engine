@@ -69,20 +69,36 @@ void Input::getInputs() {
 	}
 }
 
-void Input::getMousePosition() {  //todo
-	
+Math::vector2 Input::getMousePosition() {  //todo
+	return mouseposition;
 }
-void Input::updateMousePosition(int x, int y){
-	xmouseposition = x;
-	ymouseposition = y;
+float Input::getxMousePosition()
+{
+	return mouseposition.x;
+}
+float Input::getyMousePosition()
+{
+	return mouseposition.y;
+}
+void Input::updateMousePosition(float newx, float newy)
+{
+	mouseposition.x = newx;
+	mouseposition.y = newy; 
+}
+void Input::updateMousePosition(Math::vector2 newmouseposition){
+	mouseposition = newmouseposition;
 }
 
-void Input::getScrolldistance()
+Math::vector2 Input::getScrolldistance()
 {
-} //todo
-void Input::setScrolldistance(int scrollvertical, int scrollhorizontal) {
-	verticalscrolldistance = scrollvertical;
-	horizontalscrolldistance = scrollhorizontal;
+	return scrolldistance;
+} 
+void Input::setScrolldistance(float newx, float newy) {
+	scrolldistance.x = newx;
+	scrolldistance.y = newy;
+}
+void Input::setScrolldistance(Math::vector2 newscrolldistance) {
+	scrolldistance = newscrolldistance;
 }
 
 bool Input::leftMousePressed()
@@ -121,7 +137,7 @@ void Input::handleMessage(Message &message)
 		switch (message.messagetype) { //other window functions
 		case Message::Messagetypes::Mousemoved:
 			updateMousePosition(message.messagedataone, message.messagedatatwo);
-			std::cout << "x mouse position: " << message.messagedataone << ", y mouse position: " << message.messagedatatwo << std::endl;
+			std::cout << "x mouse position: " << mouseposition.x << ", y mouse position: " << mouseposition.y << std::endl;
 			break;
 		case Message::Messagetypes::Leftmousepressed:
 			leftmousepressed = true;
@@ -153,7 +169,7 @@ void Input::handleMessage(Message &message)
 			break;
 		case Message::Messagetypes::Mousescrolled:
 			setScrolldistance(message.messagedataone, message.messagedatatwo);
-			std::cout << "x scroll distance: " << message.messagedataone << ", y scroll distance: " << message.messagedatatwo << std::endl;
+			std::cout << "x scroll distance: " << scrolldistance.x << ", y scroll distance: " << scrolldistance.y << std::endl;
 			break;
 		}
 	}

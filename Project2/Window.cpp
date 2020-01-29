@@ -20,12 +20,13 @@ Window::Window(int width, int height, std::string title)
 	}
 
 	SDL_GL_SetSwapInterval(1);
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
+	glFrontFace(GL_CW);
 	glCullFace(GL_BACK);
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST);
 
-	glClearColor(1.0, 0.0, 0.0, 1.0);
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClearColor(0.0, 0.0, 0.0, 0.0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 }
 Window::~Window()
@@ -44,10 +45,12 @@ void Window::handleMessage(Message &message)
 		}
 	}
 }
+void Window::swapWindow() {
+	SDL_GL_SwapWindow(window);
+}
 void Window::updateWindow()//monitor refresh rate
 {
 	SDL_GL_SwapWindow(window);
-
 	/*SDL_Event sdlevent;
 	while (SDL_PollEvent(&sdlevent)) {
 		if (sdlevent.type == SDL_QUIT) {
@@ -58,8 +61,8 @@ void Window::updateWindow()//monitor refresh rate
 			std::cout << "messagequeue size: " << messagequeue.size() << std::endl;
 		}
 	}*/
-	glClearColor(1.0, 0.0, 0.0, 1.0);
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClearColor(0.0, 0.0, 0.0, 0.0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 void Window::setWindow(int newwidth, int newheight) {
 	SDL_SetWindowSize(this->window, newwidth, newheight);

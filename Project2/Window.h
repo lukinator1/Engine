@@ -16,6 +16,7 @@ private:
 	SDL_GLContext glContext;
 public:
 	void handleMessage(Message &message);
+	void swapWindow();
 	Window(int width, int height, std::string title);
 	virtual ~Window();
 	void postMessage(Message message);

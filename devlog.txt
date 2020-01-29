@@ -52,7 +52,10 @@ I couldn't quite figure out how to implement the memory defragmenter, it was kin
 
 1-26-20
 plan: look into resource manager/databse, if not, time class, math library, if possible start on rendering
+I did most of what I had planned for today. The time system is there but not a full time class, I've decided to implement the necessary parts of the engine first, and specifically ones in which formal methods could be applied to, the time class can be extended later on if its necessary. Next will be the rendering engine, either the hardest or second hardest part of making the engine, behind physics. I expect the next month alone to be spent upon it, possibly more. My goal is to make it as simple as possible. 
 
+1-27-20
+plan: renderer
 
 possible errors:
 change absolute path in include directories property page

@@ -1,6 +1,7 @@
 #include "Window.h"
 #include "Engine.h"
 #include "Input.h"
+#include "Mesh.h"
 #include "Memorymanager.h"
 #include "Messaging.h"
 #include <fstream>
@@ -19,7 +20,18 @@ int main(int argc, char* argv[]) {
 	Memorymanager::StackAllocator* stackallocator = memorymanager.newAllocator(500, alignof(int));
 	Input Inputs;
 	Inputs.inputStartup();
-	int counter = 0;
+	Vertex testvertices[3];
+	Vertex vertices[] =
+	{
+		Vertex(vector3(-1, -1, 0)),
+		Vertex(vector3(-1, 1, 0)),
+		Vertex(vector3(0, 1, 0))
+	};
+	Mesh meshme(vertices); 
+
+
+	int framerate = 0;
+	double framecounter = 0;
 	std::chrono::high_resolution_clock::time_point starttime;
 	std::chrono::high_resolution_clock::time_point endtime;
 	std::chrono::duration<double> timeduration;
@@ -30,20 +42,28 @@ int main(int argc, char* argv[]) {
 		Messages.messageUpdate(Inputs, window);
 		Inputs.getInputs();
 		window.updateWindow();
+		meshme.drawMesh();
 
 
 
-
+		framerate++;
 		gametime += chronodelta.count();
 		endtime = std::chrono::high_resolution_clock::now();
 		timeduration = std::chrono::duration_cast<std::chrono::duration<double>> (endtime - starttime);
 		if (timeduration < chronodelta)
 		{
 			std::this_thread::sleep_for(chronodelta - timeduration);
+			framecounter += chronodelta.count();
 		}
 		else if (timeduration > chronodelta) {
 			std::this_thread::sleep_for(chronodelta - (timeduration - chronodelta)); //todo: change to division
+			framecounter += chronodelta.count() + chronodelta.count();
 			std::cout << "slow" << std::endl;
+		}
+		if (framecounter >= 1.0) {
+			std::cout << framerate << " FPS" << std::endl;
+			framecounter = 0;
+			framerate = 0;
 		}
 	}
 		SDL_Quit();
@@ -93,3 +113,10 @@ else {
 		/*if ((gametime > 59 && gametime < 61) || (gametime > 119 && gametime < 121) || (gametime > 179 && gametime < 181) || (gametime > 239 && gametime < 241) || (gametime < 299 && gametime > 301)) {
 			std::cout << "current game time: " << gametime << std::endl;
 		}*/
+/*
+glFrontFace(GL_CW);
+glCullface(GL_Back);
+glEnable(GL_CULL_FACE);
+glEnable(GL_DEPTH_TEST);
+glEnable(GL_FRAMEBUFFER_SRGB); //gamma correction
+*/
