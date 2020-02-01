@@ -68,6 +68,12 @@ Rendering.
 1-30-20
 Trying to figure out rendering.
 
+1-31-20
+Got some good tutorials on rendering I made decent progress and managed to render a triangle of different colors. It's important to not get too excited on frontend work since most of the work to this point has been on backend things, which you won't see on the screen.
+
+2-1-20
+plan: rendering
+
 
 possible errors:
 change absolute path in include directories property page

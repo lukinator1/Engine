@@ -60,6 +60,9 @@
     <ClInclude Include="matrix4f.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Transforming.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -105,6 +108,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="matrix4f.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Transforming.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
