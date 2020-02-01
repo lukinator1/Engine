@@ -1,0 +1,110 @@
+#include "Shader.h"
+//darn it
+std::string Shader::loadShader(const std::string& filename)
+{
+	std::ifstream fileopener;
+	fileopener.open((filename).c_str());
+
+	if (fileopener.is_open()) {
+		std::string sourcecode;
+		std::string buffer;
+		while (getline(fileopener, buffer)) {
+			if (fileopener.bad()) {
+				engineLog(__FILE__, __LINE__, "Warning: Shader program failed to load. An empty string was returned instead.", 1, 2, true);
+				return "";
+			}
+			sourcecode.append(buffer + "\n");
+		}
+		return sourcecode;
+	}
+	else
+	{
+		engineLog(__FILE__, __LINE__, "Warning: Shader failed to load. An empty string was return instead.", 1, 2, true);
+		return "";
+	}
+}
+void Shader::useShader()
+{
+	glUseProgram(program);
+}
+void Shader::addVertexShader(const std::string& sourcecode)
+{
+	createShader(sourcecode, GL_VERTEX_SHADER);
+}
+void Shader::addFragmentShader(const std::string& sourcecode)
+{
+	createShader(sourcecode, GL_FRAGMENT_SHADER);
+}
+void Shader::createShader(const std::string& sourcecode, unsigned int type)
+{
+	GLuint shader = glCreateShader(type);
+	if (shader == 0) {
+		engineLog(__FILE__, __LINE__, "Warning: Shader didn't create.", 1, 2, true);
+	}
+
+	const GLchar* p[1];
+	p[0] = sourcecode.c_str();
+	GLint lengths[1];
+	lengths[0] = sourcecode.length();
+	glShaderSource(shader, 1, p, lengths);
+	glCompileShader(shader);
+	int checkerror = 0;
+	glGetShaderiv(shader, GL_COMPILE_STATUS, &checkerror);
+	if (checkerror == GL_FALSE) {
+		engineLog(__FILE__, __LINE__, "Warning: Shader failed to compile.", 1, 2, true);
+		return;
+	}
+	shaders.push_back(shader);
+	/*glAttachShader(program, shader);*/
+	/*glBindAttribLocation(program, 0, "pos");*/
+}
+void Shader::compileShader() {
+	for (int i = 0; i < 2; i++) {
+		glAttachShader(program, shaders[i]);
+	}
+	glLinkProgram(program);
+	int checkerror;
+	glGetProgramiv(program, GL_LINK_STATUS, &checkerror);
+	if (checkerror == GL_FALSE) {
+		engineLog(__FILE__, __LINE__, "Warning: Shader failed to link.", 1, 2, true);
+		return;
+	}
+
+	glValidateProgram(program);
+	glGetProgramiv(program, GL_VALIDATE_STATUS, &checkerror);
+	if (checkerror == GL_FALSE) {
+		engineLog(__FILE__, __LINE__, "Warning: Shader creation unsuccessful.", 1, 2, true);
+		return;
+	}
+}
+Shader::Shader()
+{
+	program = glCreateProgram();
+	if (program == 0) {
+		engineLog(__FILE__, __LINE__, "Warning: Shader program failed to create.", 1, 2, true);
+	}
+	/*for (int i = 0; i < 2; i++) {
+		glAttachShader(program, shaders[i]);
+	}
+	glLinkProgram(program);*/
+	/*glGetProgramiv(program, GL_LINK_STATUS, &checkerror);
+	/GLint checkerror = 0;
+	if (checkerror == GL_FALSE) {
+		engineLog(__FILE__, __LINE__, "Warning: Shader failed to link.", 1, 2, true);
+		return;
+	}*/
+	/*glValidateProgram(program);
+	glGetProgramiv(program, GL_VALIDATE_STATUS, &checkerror);
+	if (checkerror == GL_FALSE) {
+		engineLog(__FILE__, __LINE__, "Warning: Shader creation unsuccessful.", 1, 2, true);
+		return;
+	}*/
+}
+Shader::~Shader()
+{
+	glDeleteProgram(program);
+	for (int i = 0; i < 2; i++) {
+		glDetachShader(program, shaders[i]);
+		glDeleteShader(shaders[i]);
+	}
+}

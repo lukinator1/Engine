@@ -22,6 +22,7 @@ public:
 	void postMessage(Message message);
 	/*void postMessage(Message::Messagetypes messagetype, int dataone, int datatwo);*/
 	void updateWindow();
+	void clearWindow(float r, float g, float b, float a);
 	void setWindow(int width, int height);
 	void setWindowIcon();
 	void setWindowBordered(bool isbordered);

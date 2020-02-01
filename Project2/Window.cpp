@@ -24,6 +24,7 @@ Window::Window(int width, int height, std::string title)
 	glCullFace(GL_BACK);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_FRAMEBUFFER_SRGB);
 
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -61,7 +62,11 @@ void Window::updateWindow()//monitor refresh rate
 			std::cout << "messagequeue size: " << messagequeue.size() << std::endl;
 		}
 	}*/
-	glClearColor(0.0, 0.0, 0.0, 0.0);
+	glClearColor(1.0, 0.0, 0.0, 0.0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+void Window::clearWindow(float r, float g, float b, float a) {
+	glClearColor(r, g, b, a);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 void Window::setWindow(int newwidth, int newheight) {

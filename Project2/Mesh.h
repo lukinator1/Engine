@@ -2,17 +2,17 @@
 #include "Engine.h"
 #include "Vertex.h"
 class Mesh
-{		//vbo
-		//getting size of mesh
+{
+	int size; 
+	unsigned int indexbufferobject;
 public:
-	Mesh(Vertex* vertices);
+	Mesh(Vertex* vertices, unsigned int numvertices, int numindices);
 	~Mesh();
-	void initMesh(Vertex* vertices, unsigned int numvertices);
+	void initMesh(Vertex* vertices, int numvertices);
 	void drawMesh();
-	unsigned int indices;
-	GLuint vertexArrayObject;
-	GLuint vertexArrayBuffers[4];
-
+	void addVertices(Vertex* vertices, int numvertices);
+	GLuint vbo;
+	GLuint vao;
 };
 //glBindBuffer(GL_ARRAY_BUFFER, vbo)
 //glBufferData(GL_ARRAY_BUFFER, size, data, usage)

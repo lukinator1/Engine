@@ -140,6 +140,7 @@
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Message.h" />
     <ClInclude Include="Messaging.h" />
+    <ClInclude Include="Shader.h" />
     <ClInclude Include="Time.h" />
     <ClInclude Include="vector3.h" />
     <ClInclude Include="Vertex.h" />
@@ -155,6 +156,7 @@
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Message.cpp" />
     <ClCompile Include="Messaging.cpp" />
+    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="vector3.cpp" />
     <ClCompile Include="Vertex.cpp" />

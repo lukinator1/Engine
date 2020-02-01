@@ -2,6 +2,7 @@
 #include "Engine.h"
 #include "Input.h"
 #include "Mesh.h"
+#include "Shader.h"
 #include "Memorymanager.h"
 #include "Messaging.h"
 #include <fstream>
@@ -20,15 +21,17 @@ int main(int argc, char* argv[]) {
 	Memorymanager::StackAllocator* stackallocator = memorymanager.newAllocator(500, alignof(int));
 	Input Inputs;
 	Inputs.inputStartup();
-	Vertex testvertices[3];
 	Vertex vertices[] =
 	{
-		Vertex(vector3(-1, -1, 0)),
-		Vertex(vector3(-1, 1, 0)),
-		Vertex(vector3(0, 1, 0))
+		Vertex(vector3(-0.5f, -0.5f, 0.0f)),
+		Vertex(vector3(0.0f, 0.5f, 0.0f)),
+		Vertex(vector3(0.5f, -0.5f, 0.0f))
 	};
-	Mesh meshme(vertices); 
-
+	Mesh meshme(vertices, sizeof(vertices)/sizeof(vertices[0]), 3); 
+	Shader shaderit;
+	shaderit.addVertexShader(shaderit.loadShader("Shaders/Vertex.vs"));
+	shaderit.addFragmentShader(shaderit.loadShader("Shaders/Fragment.fs"));
+	shaderit.compileShader();
 
 	int framerate = 0;
 	double framecounter = 0;
@@ -41,11 +44,11 @@ int main(int argc, char* argv[]) {
 		memorymanager.memorymanagerUpdate();
 		Messages.messageUpdate(Inputs, window);
 		Inputs.getInputs();
-		window.updateWindow();
+		window.clearWindow(0.2f, 0.3f, 0.3f, 0.0f);
+		shaderit.useShader();
 		meshme.drawMesh();
 
-
-
+		window.swapWindow();
 		framerate++;
 		gametime += chronodelta.count();
 		endtime = std::chrono::high_resolution_clock::now();

@@ -56,6 +56,13 @@ I did most of what I had planned for today. The time system is there but not a f
 
 1-27-20
 plan: renderer
+Talked with Mr. Thebaut today about the project, only worked on it a little bit with fixing the last part of the input handler. 
+
+1-28-20
+plan: renderer
+Got started on the rendering engine.
+
+1-29-20
 
 possible errors:
 change absolute path in include directories property page
