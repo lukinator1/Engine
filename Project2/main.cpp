@@ -32,7 +32,9 @@ int main(int argc, char* argv[]) {
 	shaderit.addVertexShader(shaderit.loadShader("Shaders/Vertex.vs"));
 	shaderit.addFragmentShader(shaderit.loadShader("Shaders/Fragment.fs"));
 	shaderit.compileShader();
+	shaderit.addUniform("uniformFloat");
 
+	float unitest = 0.0f;
 	int framerate = 0;
 	double framecounter = 0;
 	std::chrono::high_resolution_clock::time_point starttime;
@@ -44,11 +46,12 @@ int main(int argc, char* argv[]) {
 		memorymanager.memorymanagerUpdate();
 		Messages.messageUpdate(Inputs, window);
 		Inputs.getInputs();
-		window.clearWindow(0.2f, 0.3f, 0.3f, 0.0f);
+		window.updateWindow();
 		shaderit.useShader();
 		meshme.drawMesh();
+		shaderit.setUniform("uniformFloat", (float)sin(unitest));
 
-		window.swapWindow();
+		unitest += deltatime;
 		framerate++;
 		gametime += chronodelta.count();
 		endtime = std::chrono::high_resolution_clock::now();

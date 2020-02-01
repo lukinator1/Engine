@@ -1,5 +1,35 @@
 #include "Shader.h"
-//darn it
+Shader::Shader()
+{
+	program = glCreateProgram();
+	if (program == 0) {
+		engineLog(__FILE__, __LINE__, "Warning: Shader program failed to create.", 1, 2, true);
+	}
+	/*for (int i = 0; i < 2; i++) {
+		glAttachShader(program, shaders[i]);
+	}
+	glLinkProgram(program);*/
+	/*glGetProgramiv(program, GL_LINK_STATUS, &checkerror);
+	/GLint checkerror = 0;
+	if (checkerror == GL_FALSE) {
+		engineLog(__FILE__, __LINE__, "Warning: Shader failed to link.", 1, 2, true);
+		return;
+	}*/
+	/*glValidateProgram(program);
+	glGetProgramiv(program, GL_VALIDATE_STATUS, &checkerror);
+	if (checkerror == GL_FALSE) {
+		engineLog(__FILE__, __LINE__, "Warning: Shader creation unsuccessful.", 1, 2, true);
+		return;
+	}*/
+}
+Shader::~Shader()
+{
+	glDeleteProgram(program);
+	for (int i = 0; i < 2; i++) {
+		glDetachShader(program, shaders[i]);
+		glDeleteShader(shaders[i]);
+	}
+}
 std::string Shader::loadShader(const std::string& filename)
 {
 	std::ifstream fileopener;
@@ -77,34 +107,22 @@ void Shader::compileShader() {
 		return;
 	}
 }
-Shader::Shader()
-{
-	program = glCreateProgram();
-	if (program == 0) {
-		engineLog(__FILE__, __LINE__, "Warning: Shader program failed to create.", 1, 2, true);
+void Shader::addUniform(std::string newuniform) { //may need to cast this to string
+	int uniformlocation = glGetUniformLocation(program, newuniform.c_str());
+	if (uniformlocation == -1) {
+		engineLog(__FILE__, __LINE__, "Uniform failed to add.", 1, 2, true);
 	}
-	/*for (int i = 0; i < 2; i++) {
-		glAttachShader(program, shaders[i]);
-	}
-	glLinkProgram(program);*/
-	/*glGetProgramiv(program, GL_LINK_STATUS, &checkerror);
-	/GLint checkerror = 0;
-	if (checkerror == GL_FALSE) {
-		engineLog(__FILE__, __LINE__, "Warning: Shader failed to link.", 1, 2, true);
-		return;
-	}*/
-	/*glValidateProgram(program);
-	glGetProgramiv(program, GL_VALIDATE_STATUS, &checkerror);
-	if (checkerror == GL_FALSE) {
-		engineLog(__FILE__, __LINE__, "Warning: Shader creation unsuccessful.", 1, 2, true);
-		return;
-	}*/
+	uniforms.emplace(newuniform, uniformlocation);
 }
-Shader::~Shader()
-{
-	glDeleteProgram(program);
-	for (int i = 0; i < 2; i++) {
-		glDetachShader(program, shaders[i]);
-		glDeleteShader(shaders[i]);
-	}
+void Shader::setUniform(std::string newuniform, int newintvalue) {
+	glUniform1i(uniforms.at(newuniform.c_str()), newintvalue);
+}
+void Shader::setUniform(std::string newuniform, float newfloatvalue) {
+	glUniform1f(uniforms.at(newuniform.c_str()), newfloatvalue);
+}
+void Shader::setUniform(std::string newuniform, vector3 newvec3value) {
+	glUniform3f(uniforms.at(newuniform.c_str()), newvec3value.x, newvec3value.y, newvec3value.z);
+}
+void Shader::setUniform(std::string newuniform, matrix4f newmatrixvalue) {
+	glUniformMatrix4fv(uniforms.at(newuniform.c_str()), 1, true, &(newmatrixvalue.m[0][0]));
 }

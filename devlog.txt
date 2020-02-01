@@ -63,7 +63,16 @@ plan: renderer
 Got started on the rendering engine.
 
 1-29-20
+Rendering.
+
+1-30-20
+Trying to figure out rendering.
+
 
 possible errors:
 change absolute path in include directories property page
 #undef main
+
+possible things to add: 
+time
+make things pass by reference

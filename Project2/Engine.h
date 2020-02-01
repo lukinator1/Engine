@@ -8,5 +8,6 @@
 #include "Logger.h"
 #include "Math.h"
 #include "vector3.h"
+#include "matrix4f.h"
 #include <GL/glew.h>
 extern std::queue <Message> messagequeue;
