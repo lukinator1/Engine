@@ -1,16 +1,24 @@
 #pragma once
 #include "Engine.h"
+#include <vector>
 #include "Vertex.h"
-class Mesh
+#include "fstream"
+#include <sstream>
+class Mesh : public Logger  //add name to to the constructors
 {
-	int size; 
+	unsigned int size; 
 	unsigned int indexbufferobject;
 public:
-	Mesh(Vertex* vertices, unsigned int numvertices, int numindices);
+	std::string name;
+	Mesh(Vertex* vertices, unsigned int * indices, unsigned int numvertices, unsigned int numindices);
+	Mesh();
 	~Mesh();
-	void initMesh(Vertex* vertices, int numvertices);
+	void makeMesh(Vertex* vertices, unsigned int *indices, unsigned int numvertices, unsigned int numindices);
 	void drawMesh();
 	void addVertices(Vertex* vertices, int numvertices);
+	void loadMeshObj(std::string file);
+	void makeErrorMesh();
+	GLuint ibo;
 	GLuint vbo;
 	GLuint vao;
 };

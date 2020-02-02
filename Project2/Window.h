@@ -10,8 +10,8 @@
 class Window
 {
 private:
-	int windowwidth;
-	int windowheight;
+	static int windowwidth;
+	static int windowheight;
 	SDL_Window* window;
 	SDL_GLContext glContext;
 public:

@@ -3,6 +3,7 @@
 #include "Input.h"
 #include "Mesh.h"
 #include "Shader.h"
+#include "Transforming.h"
 #include "Memorymanager.h"
 #include "Messaging.h"
 #include <fstream>
@@ -21,18 +22,28 @@ int main(int argc, char* argv[]) {
 	Memorymanager::StackAllocator* stackallocator = memorymanager.newAllocator(500, alignof(int));
 	Input Inputs;
 	Inputs.inputStartup();
-	Vertex vertices[] =
+	/*Vertex vertices[] =
 	{
-		Vertex(vector3(-0.5f, -0.5f, 0.0f)),
-		Vertex(vector3(0.0f, 0.5f, 0.0f)),
-		Vertex(vector3(0.5f, -0.5f, 0.0f))
+		Vertex(vector3(-1.0f, -1.0f, 0.0f)),
+		Vertex(vector3(0.0f, 1.0, 0.0f)),
+		Vertex(vector3(1.0f, -1.0f, 0.0f)),
+		Vertex(vector3(0.0f, -1.0f, 1.0f))
 	};
-	Mesh meshme(vertices, sizeof(vertices)/sizeof(vertices[0]), 3); 
+	unsigned int indices[] = {
+		0, 1, 3, 
+		3, 1, 2, 
+		2, 1, 0, 
+		0, 2, 3
+	};
+	Mesh meshme(vertices, indices, sizeof(vertices) / sizeof(vertices[0]), sizeof(indices) / sizeof(indices[0]));*/
+	Mesh meshme;
+	meshme.loadMeshObj("Models/cube.obj");
 	Shader shaderit;
 	shaderit.addVertexShader(shaderit.loadShader("Shaders/Vertex.vs"));
 	shaderit.addFragmentShader(shaderit.loadShader("Shaders/Fragment.fs"));
 	shaderit.compileShader();
 	shaderit.addUniform("uniformFloat");
+	shaderit.addUniform("transform");
 
 	float unitest = 0.0f;
 	int framerate = 0;
@@ -47,9 +58,19 @@ int main(int argc, char* argv[]) {
 		Messages.messageUpdate(Inputs, window);
 		Inputs.getInputs();
 		window.updateWindow();
+		shaderit.setUniform("uniformFloat", (float)sin(unitest));
+
+		Transforming transform;
+		transform.setTranslationVector(vector3(0, 0, 0));
+		transform.setRotationVector(vector3(0, sin(unitest) * 180, 0));
+		transform.setScalingVector(vector3(0.08f, 0.08f, 0.08f));
+
+		shaderit.setUniform("transform", transform.newTransformationMatrix());
 		shaderit.useShader();
 		meshme.drawMesh();
-		shaderit.setUniform("uniformFloat", (float)sin(unitest));
+		
+
+		meshme.drawMesh();
 
 		unitest += deltatime;
 		framerate++;

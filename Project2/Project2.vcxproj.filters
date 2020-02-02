@@ -63,6 +63,12 @@
     <ClInclude Include="Transforming.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Modelloader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -111,6 +117,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Transforming.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Modelloader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

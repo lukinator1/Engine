@@ -73,12 +73,19 @@ Got some good tutorials on rendering I made decent progress and managed to rende
 
 2-1-20
 plan: rendering
+Made decent progress today, went from a simple triangle the previous day, to a rectangle which can scale and rotate, and then made an .obj loader which can load in models, meaning I could get Quote from Cave Story who can scale and rotate. The .obj loader is not complete, textures + normals aren't being calculated as they aren't a part of the engine yet and so are other things, but it shouldn't be too hard to implement. Gonna continue working tommorow.
+
+2-2-20
+plan: read up on coordinate systems article, then rendering
 
 
 possible errors:
 change absolute path in include directories property page
 #undef main
 
-possible things to add: 
+todo:
 time
 make things pass by reference
+error model
+full/better obj loader
+model viewer
