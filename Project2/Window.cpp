@@ -1,7 +1,7 @@
 #include "Window.h"
 Window::Window(int width, int height, std::string title)
 {
-	windowwidth = height;
+	windowwidth = width;
 	windowheight = height;
 	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
@@ -70,9 +70,13 @@ void Window::clearWindow(float r, float g, float b, float a) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 void Window::setWindow(int newwidth, int newheight) {
+	windowheight = newheight;
+	windowwidth = newwidth;
 	SDL_SetWindowSize(this->window, newwidth, newheight);
 }
 void Window::setWindow(int newwidth, int newheight, const char* newtitle) {
+	windowheight = newheight;
+	windowwidth = newwidth;
 	SDL_SetWindowSize(this->window, newwidth, newheight);
 	SDL_SetWindowTitle(this->window, newtitle);
 }
@@ -106,10 +110,10 @@ void Window::setFullscreen(bool fullscreen, bool desktop) {		//error codes?
 		SDL_SetWindowFullscreen(window, 0);
 	}
 }
-int Window::getWindowWidth(Window window) {
-	return windowheight;
+int Window::getWindowWidth() {
+	return windowwidth;
 }
-int Window::getWindowHeight(Window window) {
+int Window::getWindowHeight() {
 	return windowheight;
 }
 void Window::postMessage(Message message) {
@@ -127,3 +131,5 @@ void Window::postMessage(Message message) {
 		messagequeue.push(newmessage);
 	}
 }*/
+/*int Window::windowwidth = 800;
+int Window::windowheight = 600;*/

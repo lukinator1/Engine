@@ -10,8 +10,8 @@
 class Window
 {
 private:
-	static int windowwidth;
-	static int windowheight;
+	int windowwidth;
+	int windowheight;
 	SDL_Window* window;
 	SDL_GLContext glContext;
 public:
@@ -28,7 +28,7 @@ public:
 	void setWindowBordered(bool isbordered);
 	void setFullscreen(bool fullscreen);
 	void setFullscreen(bool fullscreen, bool desktop);
-	int getWindowWidth(Window window);
-	int getWindowHeight(Window window);
+	int getWindowWidth();
+	int getWindowHeight();
 	void setWindow(int newwidth, int newheight, const char* newtitle);
 };

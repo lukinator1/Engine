@@ -45,6 +45,7 @@ int main(int argc, char* argv[]) {
 	shaderit.addUniform("uniformFloat");
 	shaderit.addUniform("transform");
 
+	Transforming transform;
 	float unitest = 0.0f;
 	int framerate = 0;
 	double framecounter = 0;
@@ -58,19 +59,21 @@ int main(int argc, char* argv[]) {
 		Messages.messageUpdate(Inputs, window);
 		Inputs.getInputs();
 		window.updateWindow();
+
+
 		shaderit.setUniform("uniformFloat", (float)sin(unitest));
 
-		Transforming transform;
-		transform.setTranslationVector(vector3(0, 0, 0));
+		transform.setTranslationVector(vector3(sin(unitest), 0, 5));
 		transform.setRotationVector(vector3(0, sin(unitest) * 180, 0));
-		transform.setScalingVector(vector3(0.08f, 0.08f, 0.08f));
+		transform.setPerspectiveProjectionSettings(70.0f, window.getWindowWidth(), window.getWindowHeight(), 0.1f, 1000.0f);  //integer -> float
+		/*transform.setScalingVector(vector3(.75 * sin(unitest), .75 * sin(unitest), .75 * sin(unitest)));
+		transform.orthographicprojection = false;*/
 
 		shaderit.setUniform("transform", transform.newTransformationMatrix());
 		shaderit.useShader();
 		meshme.drawMesh();
-		
 
-		meshme.drawMesh();
+
 
 		unitest += deltatime;
 		framerate++;

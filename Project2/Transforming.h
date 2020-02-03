@@ -1,9 +1,9 @@
 #pragma once
+#include "Camera.h"
 #include "Engine.h"
-class Transforming
+class Transforming : public Camera
 {
 private:
-
 public:
 	vector3 translation;
 	vector3 rotation;
@@ -21,9 +21,24 @@ public:
 		translationmatrix.makeTranslation(translation);
 		rotationmatrix.makeRotation(rotation);
 		scalematrix.makeScaling(scaling);
-		return translationmatrix * (rotationmatrix * scalematrix);
-	}
 
+		
+		if (orthographicprojection == false) {
+			matrix4f projectionmatrix; 
+			projectionmatrix.makeProjection(fov, aspectratiowidth, aspectratioheight, minviewdistance, maxviewdistance);
+			return projectionmatrix * (translationmatrix * (rotationmatrix * scalematrix));
+		}
+		else {
+			return translationmatrix * (rotationmatrix * scalematrix);
+		}
+	}	
+	void setPerspectiveProjectionSettings(float newfov, float newwidth, float newheight, float newminviewdistance, float newmaxviewdistance) {
+		fov = newfov;
+		aspectratiowidth = newwidth;
+		aspectratioheight = newheight;
+		minviewdistance = newminviewdistance;
+		maxviewdistance = newmaxviewdistance;
+	}
 	vector3 getTranslationVector() {
 		return translation;
 	}
