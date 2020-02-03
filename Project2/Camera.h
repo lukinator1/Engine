@@ -1,14 +1,14 @@
 #pragma once
 #include "Engine.h"
-class Camera	//maybe make this inheret from window?
+class Camera	//maybe make this inheret from window?, integrate with skybox
 {
 private: 
 public:
 	static vector3 position;
 	static vector3 forwardvector;
 	static vector3 upvector;
-	bool firstperson;
-	bool keypressed = false;
+	bool firstperson = false;
+	bool freeformcamera = false;
 	static float fov;
 	static float maxviewdistance;
 	static float minviewdistance;
@@ -32,9 +32,19 @@ public:
 	void moveCamera(vector3 direction, float distance) {
 		position = position.add(direction.multiply(distance));
 	}
+	vector3 getRightVector(){
+		vector3 rightvector = upvector.crossProduct(forwardvector);
+		rightvector.Normalize();
+		return rightvector;
+	}
+	vector3 getLeftVector() {
+		vector3 leftvector = forwardvector.crossProduct(upvector);
+		leftvector.Normalize();
+		return leftvector;
+	}
 	void rotateCamera(vector3 rotation){
-		rotation.y = -rotation.y;
-		rotation.x = -rotation.x;
+		/*rotation.y = -rotation.y;
+		rotation.x = -rotation.x;*/
 		vector3 yaxis = vector3(0.0f, 1.0f, 0.0f);
 		vector3 horizontalaxis = yaxis.crossProduct(forwardvector);
 		horizontalaxis.Normalize();
@@ -53,9 +63,9 @@ public:
 		upvector = forwardvector.crossProduct(horizontalaxis);
 		upvector.Normalize();
 	}
-	void rotateCamera(float y, float x) {
-		y = -y;
-		x = -x;
+	void rotateCamera(float x, float y) {
+		/*y = -y;
+		x = -x;*/
 		vector3 yaxis = vector3(0.0f, 1.0f, 0.0f);
 		vector3 horizontalaxis = yaxis.crossProduct(forwardvector);
 		horizontalaxis.Normalize();
@@ -66,13 +76,13 @@ public:
 		upvector.Normalize();
 
 
-		horizontalaxis = yaxis.crossProduct(forwardvector);
+		/*horizontalaxis = yaxis.crossProduct(forwardvector);
 		horizontalaxis.Normalize();
 
 		forwardvector.Rotate(y, yaxis);
 		forwardvector.Normalize();
 		upvector = forwardvector.crossProduct(horizontalaxis);
-		upvector.Normalize();
+		upvector.Normalize();*/
 	}
 	static vector3 getCameraposition() {
 		return position;
@@ -100,7 +110,7 @@ public:
 		orthographicprojection = project;
 	}
 	void handleMessage(Message &message){
-		if (!messagequeue.empty()) {
+		/*if (!messagequeue.empty()) {
 			switch (message.messagetype) {
 			case Message::Messagetypes::Keydown:
 				switch (message.messagedataone) {
@@ -115,7 +125,7 @@ public:
 					moveCamera(forwardvector, -.3f);
 					break;
 				case 7:
-					/*moveCamera(, 0.3);*/
+					/*moveCamera(, 0.3);
 					break;
 
 				case 80:
@@ -132,7 +142,7 @@ public:
 					break;
 				}
 			}
-	}
+	}*/
 }
 	Camera() {
 		firstperson = false;

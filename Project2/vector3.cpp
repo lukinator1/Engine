@@ -29,8 +29,8 @@ void vector3::setVectorThree(float newx, float newy, float newz) {
 	z = newz;
 }
 vector3 vector3::Rotate(float angle, vector3 axis) {
-	float sinhalfangle = sin((angle / 2.0f) * (3.14159265358979323f / 180));
-	float coshalfangle = cos((angle / 2.0f) * (3.14159265358979323f / 180));
+	float sinhalfangle = sin((angle / 2.0f) * (3.14159265358979323f / 180.0f));
+	float coshalfangle = cos((angle / 2.0f) * (3.14159265358979323f / 180.0f));
 
 	float qx = axis.x * sinhalfangle;		//convert matrix -> quaternion
 	float qy = axis.y * sinhalfangle;

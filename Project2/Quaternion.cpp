@@ -17,7 +17,7 @@ Quaternion Quaternion::Normalize()
 }
 Quaternion Quaternion::Conjugate() {
 	x = -x;
-	y = -x;
+	y = -y;
 	z = -z;
 	return *this;
 }
@@ -28,16 +28,18 @@ Quaternion Quaternion::Multiply(Quaternion inc)
 	float myz = z * inc.w + w * inc.z + x * inc.y - y * inc.x;
 	float myw = w * inc.w - x * inc.x - y * inc.y - z * inc.z;
 
-	return *this;
+	Quaternion newquat(myx, myy, myz, myw);
+	return newquat;
 }
 Quaternion Quaternion::Multiply(float x, float y, float z)
 {
-	float myw = -x * x - y * y - z * z;
 	float myx = w * x + y * z - z * y;
 	float myy = w * y + z * x - x * z;
 	float myz = w * z + x * y - y * x;
+	float myw = -x * x - y * y - z * z;
 
-	return *this;
+	Quaternion newquat(myx, myy, myz, myw);
+	return newquat;
 }
 Quaternion::~Quaternion()
 {

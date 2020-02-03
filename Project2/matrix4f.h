@@ -68,7 +68,7 @@ public:
 		m[2][0] = 0;									m[2][1] = 0;					m[2][2] = (-znear - zfar)/viewrange;		m[2][3] = (2.0f * zfar * znear) / viewrange;
 		m[3][0] = 0;									m[3][1] = 0;					m[3][2] = 1;								m[3][3] = 0;
 }
-	void makeCamera(vector3 forward, vector3 up) { //don't make this referenced
+	void makeCamera(vector3 forward, vector3 up) { //don't make this referenced (maybe)
 		vector3 t = forward;
 		t.Normalize();
 

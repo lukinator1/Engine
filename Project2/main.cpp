@@ -10,8 +10,8 @@
 #undef main
 #include <iostream>
 std::queue <Message> messagequeue;
-double deltatime = 1.0/30.0;
-double gametime = 0.0;
+float deltatime = 1.0/60.0;
+float gametime = 0.0;
 int main(int argc, char* argv[]) {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	Messaging Messages;
@@ -62,9 +62,31 @@ int main(int argc, char* argv[]) {
 		Inputs.getInputs();
 		window.updateWindow();
 
-		if (Inputs.keyboardstate[Input::A] == 1) {
-
+		if (Inputs.keyboardstate[Input::W] == 1) {		//todo: diagnol, canceling out movement
+			thecamera.moveCamera(thecamera.getForwardvector(), .3f);
 		}
+		else if (Inputs.keyboardstate[Input::A] == 1) {
+			thecamera.moveCamera(thecamera.getLeftVector(), .3f);
+		}
+		else if (Inputs.keyboardstate[Input::S] == 1) {
+			thecamera.moveCamera(thecamera.getForwardvector(), -.3f);
+		}
+		else if (Inputs.keyboardstate[Input::D] == 1) {
+			thecamera.moveCamera(thecamera.getLeftVector(), -.3f);
+		}
+		else if (Inputs.keyboardstate[Input::keyup] == 1) {
+			thecamera.rotateCamera(0.0f,0.3f);
+		}
+		else if (Inputs.keyboardstate[Input::keyleft] == 1) {
+			thecamera.rotateCamera(-0.3f, 0.0f);
+		}
+		else if (Inputs.keyboardstate[Input::keydown] == 1) {
+			thecamera.rotateCamera(0.0f, -0.3f);
+		}
+		else if (Inputs.keyboardstate[Input::keyright] == 1) {
+			thecamera.rotateCamera(0.3f, 0.0f);
+		}
+
 
 		shaderit.setUniform("uniformFloat", (float)sin(unitest));
 

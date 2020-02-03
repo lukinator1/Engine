@@ -1,29 +1,9 @@
-﻿  Camera.cpp
-  Input.cpp
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\input.cpp(139): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\input.cpp(171): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-  Memorymanager.cpp
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\memorymanager.cpp(56): warning C4267: '+=': conversion from 'size_t' to 'int', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\memorymanager.cpp(90): warning C4244: '=': conversion from '__int64' to 'int', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\memorymanager.cpp(96): warning C4244: '=': conversion from '__int64' to 'int', possible loss of data
-  Mesh.cpp
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\mesh.cpp(167): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-  Messaging.cpp
-  Shader.cpp
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\shader.cpp(78): warning C4267: '=': conversion from 'size_t' to 'GLint', possible loss of data
-  Transforming.cpp
-  Window.cpp
-  main.cpp
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(70): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(80): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-  matrix4f.cpp
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\matrix4f.h(39): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\matrix4f.h(40): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\matrix4f.h(43): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\matrix4f.h(45): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\matrix4f.h(48): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\matrix4f.h(49): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\matrix4f.h(63): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-  Generating Code...
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\input.cpp(125): warning C4715: 'Input::isKeyPressed': not all control paths return a value
+﻿  main.cpp
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(13): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(95): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(107): warning C4244: '+=': conversion from '_Rep' to 'float', possible loss of data
+          with
+          [
+              _Rep=double
+          ]
   Project2.vcxproj -> C:\Users\lukinator1\Desktop\engine\The Super Suspension System\Project2\x64\Debug\Project2.exe
