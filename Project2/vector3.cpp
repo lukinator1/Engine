@@ -25,6 +25,12 @@ void vector3::setVectorThree(float newx, float newy, float newz) {
 	y = newy;
 	z = newz;
 }
+vector3 vector3::crossProduct(vector3 newv) {
+	float myx = (y * newv.z) - (z * newv.y);
+	float myy = (z * newv.x) - (x * newv.z);
+	float myz = (x * newv.y) - (y * newv.x);
+	return vector3(myx, myy, myz);
+}
 vector3::~vector3()
 {
 }

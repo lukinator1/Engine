@@ -1,7 +1,11 @@
 #pragma once
-#include "Window.h"
-class Camera
+#include "Engine.h"
+class Camera	//maybe make this inheret from window?
 {
+private: 
+	vector3 position;
+	vector3 upvector;
+	vector3 forwardvector;
 public:
 	static float fov;
 	static float maxviewdistance;
@@ -9,6 +13,23 @@ public:
 	static float aspectratiowidth;
 	static float aspectratioheight;
 	static bool orthographicprojection;
+	void setCameraPosition(vector3 newcameraposition) {
+		position = newcameraposition;
+	}
+	void setCameraPosition(float newx, float newy, float newz) {
+		position.x = newx;
+		position.y = newy;
+		position.z = newz;
+	}
+	void zoomCamera(float magnitude) {
+
+	}
+	void moveCamera(vector3 direction, float distance, float multiplier) {
+
+	}
+	vector3 getCameraposition() {
+		return position;
+	}
 	void setAspectRatio(float newheight, float newwidth) {
 		aspectratioheight = newheight;
 		aspectratiowidth = newwidth;

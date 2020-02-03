@@ -8,6 +8,7 @@ public:
 	float getY();
 	float getZ();*/
 	void setVectorThree(float newx, float newy, float newz);
+	vector3 crossProduct(vector3 newv);
 	float x;
 	float y;
 	float z;
