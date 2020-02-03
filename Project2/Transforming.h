@@ -18,18 +18,23 @@ public:
 		matrix4f translationmatrix;
 		matrix4f rotationmatrix;
 		matrix4f scalematrix;
+		matrix4f camerarotation;
+		matrix4f cameratranslation;
 		translationmatrix.makeTranslation(translation);
 		rotationmatrix.makeRotation(rotation);
 		scalematrix.makeScaling(scaling);
-
+		camerarotation.makeCamera(forwardvector, upvector);
+		cameratranslation.makeTranslation(-(position.x), -(position.y), -(position.z));
+		matrix4f transformationmatrix = translationmatrix * (rotationmatrix * scalematrix);
 		
-		if (orthographicprojection == false) {
+		if (orthographicprojection == false) {  //world view?
 			matrix4f projectionmatrix; 
 			projectionmatrix.makeProjection(fov, aspectratiowidth, aspectratioheight, minviewdistance, maxviewdistance);
-			return projectionmatrix * (translationmatrix * (rotationmatrix * scalematrix));
+
+			return projectionmatrix * (camerarotation * (cameratranslation * transformationmatrix));
 		}
 		else {
-			return translationmatrix * (rotationmatrix * scalematrix);
+			return camerarotation * (cameratranslation * transformationmatrix);
 		}
 	}	
 	void setPerspectiveProjectionSettings(float newfov, float newwidth, float newheight, float newminviewdistance, float newmaxviewdistance) {

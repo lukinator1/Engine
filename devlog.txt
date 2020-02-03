@@ -77,6 +77,9 @@ Made decent progress today, went from a simple triangle the previous day, to a r
 
 2-2-20
 plan: read up on coordinate systems article, then rendering
+Made decent progress, did prospective projection and almost finshed the camera. I also gotta make sure to sleep, it's 7:00 a.m. 
+
+2-3-20
 
 
 possible errors:
@@ -89,3 +92,5 @@ make things pass by reference
 error model
 full/better obj loader
 model viewer
+destructors
+error messages

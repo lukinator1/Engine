@@ -22,6 +22,8 @@ int main(int argc, char* argv[]) {
 	Memorymanager::StackAllocator* stackallocator = memorymanager.newAllocator(500, alignof(int));
 	Input Inputs;
 	Inputs.inputStartup();
+	Camera thecamera;
+	Transforming transform;
 	/*Vertex vertices[] =
 	{
 		Vertex(vector3(-1.0f, -1.0f, 0.0f)),
@@ -37,7 +39,7 @@ int main(int argc, char* argv[]) {
 	};
 	Mesh meshme(vertices, indices, sizeof(vertices) / sizeof(vertices[0]), sizeof(indices) / sizeof(indices[0]));*/
 	Mesh meshme;
-	meshme.loadMeshObj("Models/cube.obj");
+	meshme.loadMeshObj("Models/quote.obj");
 	Shader shaderit;
 	shaderit.addVertexShader(shaderit.loadShader("Shaders/Vertex.vs"));
 	shaderit.addFragmentShader(shaderit.loadShader("Shaders/Fragment.fs"));
@@ -45,7 +47,7 @@ int main(int argc, char* argv[]) {
 	shaderit.addUniform("uniformFloat");
 	shaderit.addUniform("transform");
 
-	Transforming transform;
+	
 	float unitest = 0.0f;
 	int framerate = 0;
 	double framecounter = 0;
@@ -56,18 +58,21 @@ int main(int argc, char* argv[]) {
 	while (true) {
 		starttime = std::chrono::high_resolution_clock::now();
 		memorymanager.memorymanagerUpdate();
-		Messages.messageUpdate(Inputs, window);
+		Messages.messageUpdate(Inputs, window, thecamera);
 		Inputs.getInputs();
 		window.updateWindow();
 
+		if (Inputs.keyboardstate[Input::A] == 1) {
+
+		}
 
 		shaderit.setUniform("uniformFloat", (float)sin(unitest));
 
 		transform.setTranslationVector(vector3(sin(unitest), 0, 5));
 		transform.setRotationVector(vector3(0, sin(unitest) * 180, 0));
 		transform.setPerspectiveProjectionSettings(70.0f, window.getWindowWidth(), window.getWindowHeight(), 0.1f, 1000.0f);  //integer -> float
-		/*transform.setScalingVector(vector3(.75 * sin(unitest), .75 * sin(unitest), .75 * sin(unitest)));
-		transform.orthographicprojection = false;*/
+		/*transform.setScalingVector(vector3(.75 * sin(unitest), .75 * sin(unitest), .75 * sin(unitest)));*/
+		/*transform.orthographicprojection = false;*/
 
 		shaderit.setUniform("transform", transform.newTransformationMatrix());
 		shaderit.useShader();

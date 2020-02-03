@@ -13,12 +13,17 @@ public:
 		m[1][0] = 0;	 m[1][1] = 1;	m[1][2] = 0;	m[1][3] = 0;
 		m[2][0] = 0;	 m[2][1] = 0;	m[2][2] = 1;	m[2][3] = 0;
 		m[3][0] = 0;	 m[3][1] = 0;	m[3][2] = 0;	m[3][3] = 1;
-
 	}
 	void makeTranslation(vector3 translationvector) {
 		m[0][0] = 1;	 m[0][1] = 0;	m[0][2] = 0;	m[0][3] = translationvector.x;
 		m[1][0] = 0;	 m[1][1] = 1;	m[1][2] = 0;	m[1][3] = translationvector.y;
 		m[2][0] = 0;	 m[2][1] = 0;	m[2][2] = 1;	m[2][3] = translationvector.z;
+		m[3][0] = 0;	 m[3][1] = 0;	m[3][2] = 0;	m[3][3] = 1;
+	}
+	void makeTranslation(float x, float y, float z) {
+		m[0][0] = 1;	 m[0][1] = 0;	m[0][2] = 0;	m[0][3] = x;
+		m[1][0] = 0;	 m[1][1] = 1;	m[1][2] = 0;	m[1][3] = y;
+		m[2][0] = 0;	 m[2][1] = 0;	m[2][2] = 1;	m[2][3] = z;
 		m[3][0] = 0;	 m[3][1] = 0;	m[3][2] = 0;	m[3][3] = 1;
 	}
 	void makeRotation(vector3 rotationvector) {
@@ -63,6 +68,20 @@ public:
 		m[2][0] = 0;									m[2][1] = 0;					m[2][2] = (-znear - zfar)/viewrange;		m[2][3] = (2.0f * zfar * znear) / viewrange;
 		m[3][0] = 0;									m[3][1] = 0;					m[3][2] = 1;								m[3][3] = 0;
 }
+	void makeCamera(vector3 forward, vector3 up) { //don't make this referenced
+		vector3 t = forward;
+		t.Normalize();
+
+		vector3 u = up;
+		u.Normalize();
+		u = u.crossProduct(t);	//right vector
+		vector3 right = t.crossProduct(u);
+		
+		m[0][0] = u.x;			m[0][1] = u.y;			m[0][2] = u.z;			m[0][3] = 0;
+		m[1][0] = right.x;		m[1][1] = right.y;		m[1][2] = right.z;		m[1][3] = 0;
+		m[2][0] = t.x;			m[2][1] = t.y;			m[2][2] = t.z;			m[2][3] = 0;
+		m[3][0] = 0;			m[3][1] = 0;			m[3][2] = 0;			m[3][3] = 1.0f;
+	}
 	matrix4f operator*(matrix4f rhs) {
 		matrix4f tempmatrix;
 		for (int i = 0; i < 4; i++) {
