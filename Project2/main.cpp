@@ -47,7 +47,8 @@ int main(int argc, char* argv[]) {
 	shaderit.addUniform("uniformFloat");
 	shaderit.addUniform("transform");
 
-	
+
+	float previousscrolldistance;
 	float unitest = 0.0f;
 	int framerate = 0;
 	double framecounter = 0;
@@ -62,7 +63,7 @@ int main(int argc, char* argv[]) {
 		Inputs.getInputs();
 		window.updateWindow();
 
-		if (Inputs.keyboardstate[Input::W] == 1) {		//todo: diagnol, canceling out movement
+		if (Inputs.keyboardstate[Input::W] == 1) {
 			thecamera.moveCamera(thecamera.getForwardvector(), .3f);
 		}
 		if (Inputs.keyboardstate[Input::A] == 1) {
@@ -74,7 +75,6 @@ int main(int argc, char* argv[]) {
 		if (Inputs.keyboardstate[Input::D] == 1) {
 			thecamera.moveCamera(thecamera.getLeftVector(), -.3f);
 		}
-
 		if (Inputs.keyboardstate[Input::keyup] == 1) {
 			thecamera.rotateCamera(0.0f,2.0f);
 		}
@@ -87,6 +87,8 @@ int main(int argc, char* argv[]) {
 		if (Inputs.keyboardstate[Input::keyright] == 1) {
 			thecamera.rotateCamera(2.0f, 0.0);
 		}
+		/*if (Inputs.getScrolldistance() != previousscrolldistance)*/
+			
 
 
 		shaderit.setUniform("uniformFloat", (float)sin(unitest));

@@ -13,6 +13,8 @@ public:
 	static float fov;
 	static float maxviewdistance;
 	static float minviewdistance;
+	float minzoom;
+	float maxzoom;
 	static float aspectratiowidth;
 	static float aspectratioheight;
 	static bool orthographicprojection;
@@ -67,7 +69,7 @@ public:
 		vector3 yaxis = vector3(0.0f, 1.0f, 0.0f);
 		vector3 horizontalaxis;
 		if (x != 0.0f){
-			x = -x;
+		x = -x;
 		vector3 yaxis = vector3(0.0f, 1.0f, 0.0f);
 		horizontalaxis = yaxis.crossProduct(forwardvector);
 		horizontalaxis.Normalize();
@@ -109,6 +111,17 @@ public:
 	void setFov(float newfov) {
 		fov = newfov;
 	}
+	void Zoom(float offset) {
+		if (fov > minviewdistance && fov < maxviewdistance) {
+			fov -= offset;
+		}
+		else if (fov < minviewdistance) {
+			fov = minviewdistance;
+		}
+		else if (fov > maxviewdistance) {
+			fov = maxviewdistance;
+		}
+	}
 	void orthographicProjection(bool project) {
 		orthographicprojection = project;
 	}
@@ -147,6 +160,7 @@ public:
 			}
 	}*/
 }
+
 	Camera() {
 		firstperson = false;
 		upvector.Normalize();

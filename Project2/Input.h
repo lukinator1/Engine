@@ -3,7 +3,7 @@
 #include "Engine.h"
 #include <string>
 #include <iostream>
-#include "Math.h"
+#include "vector2.h"
 //todo: capturemouse(maybe), textinput, getmouseposition(), getscrolldistance()
 class Input
 {
@@ -12,8 +12,8 @@ private:
 	bool rightmousepressed;
 	bool middlemousepressed;
 	bool doubleclicked;
-	Math::vector2 mouseposition;
-	Math::vector2 scrolldistance;
+	vector2 mouseposition;
+	vector2 scrolldistance;
 
 public:
 	enum Keys {
@@ -107,14 +107,14 @@ public:
 	void postMessage(Message::Messagetypes message, int dataone, int data);
 
 	void getInputs();
-	Math::vector2 getMousePosition();
+	vector2 getMousePosition();
 	float getxMousePosition();
 	float getyMousePosition();
 	void updateMousePosition(float newx, float newy);
-	void updateMousePosition(Math::vector2 newmouseposition);
-	Math::vector2 getScrolldistance();
+	void updateMousePosition(vector2 newmouseposition);
+	vector2 getScrolldistance();
 	void setScrolldistance(float scrollvertical, float scrollhorizontal);
-	void setScrolldistance(Math::vector2 newscrolldistance);
+	void setScrolldistance(vector2 newscrolldistance);
 	bool leftMousePressed();
 	bool rightMousePressed();
 	bool middleMousePressed();

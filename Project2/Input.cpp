@@ -7,7 +7,8 @@ Input::~Input()
 }
 void Input::inputStartup()
 {
-	/*keyboardstate = SDL_GetKeyboardState(NULL);*/
+	scrolldistance.setVector(0.0, 0.0);
+	mouseposition.setVector(0.0, 0.0);
 }
 void Input::getInputs() {
 	int xscrolldistance = 0;
@@ -69,7 +70,7 @@ void Input::getInputs() {
 	}
 }
 
-Math::vector2 Input::getMousePosition() {  //todo
+vector2 Input::getMousePosition() {  //todo
 	return mouseposition;
 }
 float Input::getxMousePosition()
@@ -85,11 +86,11 @@ void Input::updateMousePosition(float newx, float newy)
 	mouseposition.x = newx;
 	mouseposition.y = newy; 
 }
-void Input::updateMousePosition(Math::vector2 newmouseposition){
+void Input::updateMousePosition(vector2 newmouseposition){
 	mouseposition = newmouseposition;
 }
 
-Math::vector2 Input::getScrolldistance()
+vector2 Input::getScrolldistance()
 {
 	return scrolldistance;
 } 
@@ -97,7 +98,7 @@ void Input::setScrolldistance(float newx, float newy) {
 	scrolldistance.x = newx;
 	scrolldistance.y = newy;
 }
-void Input::setScrolldistance(Math::vector2 newscrolldistance) {
+void Input::setScrolldistance(vector2 newscrolldistance) {
 	scrolldistance = newscrolldistance;
 }
 
