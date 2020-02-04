@@ -65,26 +65,27 @@ int main(int argc, char* argv[]) {
 		if (Inputs.keyboardstate[Input::W] == 1) {		//todo: diagnol, canceling out movement
 			thecamera.moveCamera(thecamera.getForwardvector(), .3f);
 		}
-		else if (Inputs.keyboardstate[Input::A] == 1) {
+		if (Inputs.keyboardstate[Input::A] == 1) {
 			thecamera.moveCamera(thecamera.getLeftVector(), .3f);
 		}
-		else if (Inputs.keyboardstate[Input::S] == 1) {
+		if (Inputs.keyboardstate[Input::S] == 1) {
 			thecamera.moveCamera(thecamera.getForwardvector(), -.3f);
 		}
-		else if (Inputs.keyboardstate[Input::D] == 1) {
+		if (Inputs.keyboardstate[Input::D] == 1) {
 			thecamera.moveCamera(thecamera.getLeftVector(), -.3f);
 		}
-		else if (Inputs.keyboardstate[Input::keyup] == 1) {
-			thecamera.rotateCamera(0.0f,0.3f);
+
+		if (Inputs.keyboardstate[Input::keyup] == 1) {
+			thecamera.rotateCamera(0.0f,2.0f);
 		}
-		else if (Inputs.keyboardstate[Input::keyleft] == 1) {
-			thecamera.rotateCamera(-0.3f, 0.0f);
+		if (Inputs.keyboardstate[Input::keyleft] == 1) {
+			thecamera.rotateCamera(-2.0f, 0.0f);
 		}
-		else if (Inputs.keyboardstate[Input::keydown] == 1) {
-			thecamera.rotateCamera(0.0f, -0.3f);
+		if (Inputs.keyboardstate[Input::keydown] == 1) {
+			thecamera.rotateCamera(0.0f, -2.0f);
 		}
-		else if (Inputs.keyboardstate[Input::keyright] == 1) {
-			thecamera.rotateCamera(0.3f, 0.0f);
+		if (Inputs.keyboardstate[Input::keyright] == 1) {
+			thecamera.rotateCamera(2.0f, 0.0);
 		}
 
 

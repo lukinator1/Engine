@@ -1,7 +1,7 @@
 ﻿  main.cpp
 c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(13): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(95): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(107): warning C4244: '+=': conversion from '_Rep' to 'float', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(96): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(108): warning C4244: '+=': conversion from '_Rep' to 'float', possible loss of data
           with
           [
               _Rep=double

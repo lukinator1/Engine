@@ -1,6 +1,7 @@
 #pragma once
 #include "Engine.h"
-class Camera	//maybe make this inheret from window?, integrate with skybox
+class Camera	//maybe make this inheret from window?, integrate with skybox	
+				//todo: inverted controls
 {
 private: 
 public:
@@ -43,8 +44,8 @@ public:
 		return leftvector;
 	}
 	void rotateCamera(vector3 rotation){
-		/*rotation.y = -rotation.y;
-		rotation.x = -rotation.x;*/
+		rotation.y = -rotation.y;
+		rotation.x = -rotation.x;
 		vector3 yaxis = vector3(0.0f, 1.0f, 0.0f);
 		vector3 horizontalaxis = yaxis.crossProduct(forwardvector);
 		horizontalaxis.Normalize();
@@ -54,7 +55,6 @@ public:
 		upvector = forwardvector.crossProduct(horizontalaxis);  //maybe can take this out
 		upvector.Normalize();
 
-
 		horizontalaxis = yaxis.crossProduct(forwardvector);
 		horizontalaxis.Normalize();
 
@@ -63,26 +63,29 @@ public:
 		upvector = forwardvector.crossProduct(horizontalaxis);
 		upvector.Normalize();
 	}
-	void rotateCamera(float x, float y) {
-		/*y = -y;
-		x = -x;*/
+	void rotateCamera(float y, float x) {
 		vector3 yaxis = vector3(0.0f, 1.0f, 0.0f);
-		vector3 horizontalaxis = yaxis.crossProduct(forwardvector);
+		vector3 horizontalaxis;
+		if (x != 0.0f){
+			x = -x;
+		vector3 yaxis = vector3(0.0f, 1.0f, 0.0f);
+		horizontalaxis = yaxis.crossProduct(forwardvector);
 		horizontalaxis.Normalize();
 
-		forwardvector.Rotate(x, horizontalaxis);
+		forwardvector = forwardvector.Rotate(x, horizontalaxis);
 		forwardvector.Normalize();
-		upvector = forwardvector.crossProduct(horizontalaxis);  //maybe can take this out
-		upvector.Normalize();
-
-
-		/*horizontalaxis = yaxis.crossProduct(forwardvector);
-		horizontalaxis.Normalize();
-
-		forwardvector.Rotate(y, yaxis);
-		forwardvector.Normalize();
-		upvector = forwardvector.crossProduct(horizontalaxis);
+	}
+		/*upvector = forwardvector.crossProduct(horizontalaxis);  //maybe can take this out
 		upvector.Normalize();*/
+		if (y != 0.0f) {
+			horizontalaxis = yaxis.crossProduct(forwardvector);
+			horizontalaxis.Normalize();
+
+			forwardvector = forwardvector.Rotate(y, yaxis);
+			forwardvector.Normalize();
+			upvector = forwardvector.crossProduct(horizontalaxis);
+			upvector.Normalize();
+		}
 	}
 	static vector3 getCameraposition() {
 		return position;

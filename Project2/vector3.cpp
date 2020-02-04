@@ -29,8 +29,8 @@ void vector3::setVectorThree(float newx, float newy, float newz) {
 	z = newz;
 }
 vector3 vector3::Rotate(float angle, vector3 axis) {
-	float sinhalfangle = sin((angle / 2.0f) * (3.14159265358979323f / 180.0f));
-	float coshalfangle = cos((angle / 2.0f) * (3.14159265358979323f / 180.0f));
+	float sinhalfangle = sinf((angle / 2.0f) * (3.14159265358979323f / 180.0f));
+	float coshalfangle = cosf((angle / 2.0f) * (3.14159265358979323f / 180.0f));
 
 	float qx = axis.x * sinhalfangle;		//convert matrix -> quaternion
 	float qy = axis.y * sinhalfangle;
@@ -41,11 +41,14 @@ vector3 vector3::Rotate(float angle, vector3 axis) {
 	Quaternion rotationconjugate = rotation.Conjugate();
 
 	Quaternion newquat = (rotation.Multiply(x,y,z)).Multiply(rotationconjugate);
-	x = newquat.x;
-	y = newquat.y;
-	z = newquat.z;
+	vector3 newvector(newquat.x, newquat.y, newquat.z);
 
-	return *this;
+	/*x = newquat.x;
+	y = newquat.y;
+	z = newquat.z;*/
+
+	return newvector;
+	/*return *this;*/
 }
 vector3 vector3::crossProduct(vector3 newv) {
 	float myx = (y * newv.z) - (z * newv.y);
