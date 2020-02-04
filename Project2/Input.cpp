@@ -11,8 +11,6 @@ void Input::inputStartup()
 	mouseposition.setVector(0.0, 0.0);
 }
 void Input::getInputs() {
-	int xscrolldistance = 0;
-	int yscrolldistance = 0;
 	SDL_Event sdlevent;
 	while (SDL_PollEvent(&sdlevent)) {
 
@@ -33,7 +31,8 @@ void Input::getInputs() {
 			}
 		}
 
-		if (sdlevent.type == SDL_KEYDOWN && sdlevent.key.repeat == 0) {;
+		if (sdlevent.type == SDL_KEYDOWN && sdlevent.key.repeat == 0) {
+			;
 			postMessage(Message::Messagetypes::Keydown, SDL_GetScancodeFromKey(sdlevent.key.keysym.sym), 0);
 		}
 
@@ -43,7 +42,7 @@ void Input::getInputs() {
 
 		if (sdlevent.type == SDL_MOUSEBUTTONUP) { //mouse buttons up
 			if (sdlevent.button.button == SDL_BUTTON_LEFT) {
-					postMessage(Message::Messagetypes::Leftmouseunpressed);
+				postMessage(Message::Messagetypes::Leftmouseunpressed);
 			}
 			if (sdlevent.button.button == SDL_BUTTON_RIGHT) {
 				postMessage(Message::Messagetypes::Rightmouseunpressed);
@@ -60,13 +59,13 @@ void Input::getInputs() {
 		if (sdlevent.type == SDL_MOUSEWHEEL) {
 			postMessage(Message::Messagetypes::Mousescrolled, sdlevent.wheel.x, sdlevent.wheel.y);
 		}
-			
+
 		if (sdlevent.type == SDL_QUIT) {
-				postMessage(Message::Messagetypes::Closebuttonpressed);
-				/*Message message(Windowclose);
-				postMessage(Windowclose);*/
-				std::cout << "messagequeue size: " << messagequeue.size() << std::endl;
-			}
+			postMessage(Message::Messagetypes::Closebuttonpressed);
+			/*Message message(Windowclose);
+			postMessage(Windowclose);*/
+			std::cout << "messagequeue size: " << messagequeue.size() << std::endl;
+		}
 	}
 }
 
@@ -84,16 +83,16 @@ float Input::getyMousePosition()
 void Input::updateMousePosition(float newx, float newy)
 {
 	mouseposition.x = newx;
-	mouseposition.y = newy; 
+	mouseposition.y = newy;
 }
-void Input::updateMousePosition(vector2 newmouseposition){
+void Input::updateMousePosition(vector2 newmouseposition) {
 	mouseposition = newmouseposition;
 }
 
 vector2 Input::getScrolldistance()
 {
 	return scrolldistance;
-} 
+}
 void Input::setScrolldistance(float newx, float newy) {
 	scrolldistance.x = newx;
 	scrolldistance.y = newy;
@@ -134,6 +133,7 @@ void Input::inputShutdown()
 }
 void Input::handleMessage(Message &message)
 {
+	scrolled = false;
 	if (!messagequeue.empty()) { //handle inputs from event system
 		switch (message.messagetype) { //other window functions
 		case Message::Messagetypes::Mousemoved:
@@ -171,10 +171,14 @@ void Input::handleMessage(Message &message)
 		case Message::Messagetypes::Mousescrolled:
 			setScrolldistance(message.messagedataone, message.messagedatatwo);
 			std::cout << "x scroll distance: " << scrolldistance.x << ", y scroll distance: " << scrolldistance.y << std::endl;
+			scrolled = true;
 			break;
 		}
 	}
-}   
+	if (scrolled == false) {
+		setScrolldistance(0.0f, 0.0f);
+	}
+}
 void Input::postMessage(Message::Messagetypes messagetype)
 {
 

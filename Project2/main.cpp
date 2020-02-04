@@ -87,7 +87,9 @@ int main(int argc, char* argv[]) {
 		if (Inputs.keyboardstate[Input::keyright] == 1) {
 			thecamera.rotateCamera(2.0f, 0.0);
 		}
-		/*if (Inputs.getScrolldistance() != previousscrolldistance)*/
+		if (Inputs.getScrolldistance().y != 0) {
+			thecamera.Zoom(Inputs.getScrolldistance().y);
+		}
 			
 
 
@@ -95,7 +97,7 @@ int main(int argc, char* argv[]) {
 
 		transform.setTranslationVector(vector3(sin(unitest), 0, 5));
 		transform.setRotationVector(vector3(0, sin(unitest) * 180, 0));
-		transform.setPerspectiveProjectionSettings(70.0f, window.getWindowWidth(), window.getWindowHeight(), 0.1f, 1000.0f);  //integer -> float
+		transform.setPerspectiveProjectionSettings(thecamera.fov, window.getWindowWidth(), window.getWindowHeight(), thecamera.minviewdistance, thecamera.maxviewdistance);  //integer -> float
 		/*transform.setScalingVector(vector3(.75 * sin(unitest), .75 * sin(unitest), .75 * sin(unitest)));*/
 		/*transform.orthographicprojection = false;*/
 

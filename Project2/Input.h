@@ -4,7 +4,7 @@
 #include <string>
 #include <iostream>
 #include "vector2.h"
-//todo: capturemouse(maybe), textinput, getmouseposition(), getscrolldistance()
+//todo: capturemouse(maybe), textinput, mousemovementdistance
 class Input
 {
 private:
@@ -14,6 +14,7 @@ private:
 	bool doubleclicked;
 	vector2 mouseposition;
 	vector2 scrolldistance;
+	bool scrolled;
 
 public:
 	enum Keys {
@@ -121,5 +122,4 @@ public:
 	const Uint8* getKeysPressed();
 	void update();
 	bool isKeyPressed(Keys key);
-
 };

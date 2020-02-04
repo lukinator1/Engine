@@ -111,8 +111,8 @@ public:
 	void setFov(float newfov) {
 		fov = newfov;
 	}
-	void Zoom(float offset) {
-		if (fov > minviewdistance && fov < maxviewdistance) {
+	void Zoom(int offset) {
+		if (fov >= minviewdistance && fov <= maxviewdistance) {
 			fov -= offset;
 		}
 		else if (fov < minviewdistance) {
@@ -120,6 +120,12 @@ public:
 		}
 		else if (fov > maxviewdistance) {
 			fov = maxviewdistance;
+		}
+		else if (fov == minviewdistance && offset <= 0) {
+			fov -= offset;
+		}
+		else if (fov == maxviewdistance && offset >= 0) {
+			fov -= offset;
 		}
 	}
 	void orthographicProjection(bool project) {
