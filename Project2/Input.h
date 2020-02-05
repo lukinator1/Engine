@@ -4,16 +4,20 @@
 #include <string>
 #include <iostream>
 #include "vector2.h"
-//todo: capturemouse(maybe), textinput, mousemovementdistance
+//todo: capturemouse(maybe), textinput, custom cursor
 class Input
 {
 private:
+	SDL_Event sdlevent;
 	bool leftmousepressed;
 	bool rightmousepressed;
 	bool middlemousepressed;
 	bool doubleclicked;
+	vector2 previousmouseposition;
 	vector2 mouseposition;
+	vector2 mousemovementdistance;
 	vector2 scrolldistance;
+	bool moved;
 	bool scrolled;
 
 public:
@@ -107,15 +111,24 @@ public:
 	void postMessage(Message::Messagetypes messagetype);
 	void postMessage(Message::Messagetypes message, int dataone, int data);
 
+	void postMessage(Message::Messagetypes messagetype, int dataone, int datatwo, int datathreex, int datathreey);
+
 	void getInputs();
+	void hideCursor(bool curse);
 	vector2 getMousePosition();
 	float getxMousePosition();
 	float getyMousePosition();
+	void setMousePosition(int x, int y);
 	void updateMousePosition(float newx, float newy);
 	void updateMousePosition(vector2 newmouseposition);
 	vector2 getScrolldistance();
 	void setScrolldistance(float scrollvertical, float scrollhorizontal);
 	void setScrolldistance(vector2 newscrolldistance);
+	void setMouseMovementDistance(float newx, float newy);
+	void setMouseMovementDistance(vector2 newmovementdistance);
+	vector2 getMouseMovementDistance();
+	float getXMouseMovementDistance();
+	float getYMouseMovementDistance();
 	bool leftMousePressed();
 	bool rightMousePressed();
 	bool middleMousePressed();

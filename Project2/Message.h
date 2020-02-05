@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include "vector2.h"
 class Message {
 public:
 	enum class Messagetypes {
@@ -29,6 +30,7 @@ public:
 	Category messagecategory;
 	int messagedataone;
 	int messagedatatwo;
+	vector2 messagedatathree;
 	Message(Messagetypes incomingmessagetype, Category incomingmessagecategory);
 	~Message();
 };

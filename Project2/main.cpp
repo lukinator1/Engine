@@ -59,6 +59,7 @@ int main(int argc, char* argv[]) {
 	std::chrono::high_resolution_clock::time_point endtime;
 	std::chrono::duration<double> timeduration;
 	std::chrono::duration<double> chronodelta = std::chrono::duration<double>(deltatime);
+	thecamera.setMouseLook(true);
 	while (true) {
 		starttime = std::chrono::high_resolution_clock::now();
 		memorymanager.memorymanagerUpdate();
@@ -88,12 +89,14 @@ int main(int argc, char* argv[]) {
 			thecamera.rotateCamera(0.0f, -2.0f);
 		}
 		if (Inputs.keyboardstate[Input::keyright] == 1) {
-			thecamera.rotateCamera(2.0f, 0.0);
+			thecamera.rotateCamera(2.0f, 0.0f);
 		}
 		if (Inputs.getScrolldistance().y != 0) {
 			thecamera.Zoom(Inputs.getScrolldistance().y);
 		}
-			
+		if (Inputs.getMouseMovementDistance().x != 0 || Inputs.getMouseMovementDistance().y != 0) {
+			thecamera.rotateCamera(Inputs.getXMouseMovementDistance(), Inputs.getYMouseMovementDistance());
+		}
 
 
 		shaderit.setUniform("uniformFloat", (float)sin(unitest));

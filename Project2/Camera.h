@@ -1,5 +1,6 @@
 #pragma once
 #include "Engine.h"
+#include "SDL2/SDL.h"
 class Camera	//maybe make this inheret from window?, integrate with skybox	
 				//todo: inverted controls
 {
@@ -9,6 +10,7 @@ public:
 	static vector3 forwardvector;
 	static vector3 upvector;
 	bool firstperson = false;
+	bool mouselook = false;
 	bool freeformcamera = false;
 	static float fov;
 	static float maxviewdistance;
@@ -130,6 +132,9 @@ public:
 	}
 	void orthographicProjection(bool project) {
 		orthographicprojection = project;
+	}
+	void setMouseLook(bool look) {
+		SDL_SetRelativeMouseMode(SDL_TRUE);
 	}
 	void handleMessage(Message &message){
 		/*if (!messagequeue.empty()) {
