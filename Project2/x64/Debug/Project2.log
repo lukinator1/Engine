@@ -1,15 +1,11 @@
-﻿  Camera.cpp
-  Messaging.cpp
-  Transforming.cpp
-  main.cpp
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(13): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(91): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(100): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(112): warning C4244: '+=': conversion from '_Rep' to 'float', possible loss of data
+﻿  main.cpp
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(14): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(94): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(103): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(116): warning C4244: '+=': conversion from '_Rep' to 'float', possible loss of data
           with
           [
               _Rep=double
           ]
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(51): warning C4101: 'previousscrolldistance': unreferenced local variable
-  Generating Code...
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(54): warning C4101: 'previousscrolldistance': unreferenced local variable
   Project2.vcxproj -> C:\Users\lukinator1\Desktop\engine\The Super Suspension System\Project2\x64\Debug\Project2.exe

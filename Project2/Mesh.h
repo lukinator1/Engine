@@ -18,8 +18,9 @@ public:
 	void addVertices(Vertex* vertices, int numvertices);
 	void loadMeshObj(std::string file);
 	void makeErrorMesh();
-	GLuint ibo;
 	GLuint vbo;
+	GLuint tbo;
+	GLuint ibo;
 	GLuint vao;
 };
 //glBindBuffer(GL_ARRAY_BUFFER, vbo)

@@ -95,3 +95,11 @@ model viewer
 destructors
 error messages
 skybox
+
+#in vec4 color;
+#color = vec4(clamp(position, 0.0, uniformFloat), 1.0);
+	#fragcolor = vec4(0.0f, 1.0f, 1.0f, 1.0f);
+	#fragcolor = color;
+
+#out vec4 color;
+#out vec4 fragcolor;

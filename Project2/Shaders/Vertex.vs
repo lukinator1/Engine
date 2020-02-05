@@ -1,11 +1,12 @@
 #version 330
 layout (location = 0) in vec3 position;
-out vec4 color;
+layout (location = 1) in vec2 texcoordinates;
+out vec2 texcoordinates0;
 uniform float uniformFloat;
 uniform mat4 transform;
 
 void main ()
 {
-	color = vec4(clamp(position, 0.0, uniformFloat), 1.0);
+	texcoordinates0 = texcoordinates;
 	gl_Position = transform * vec4(position, 1.0);
 }

@@ -1,9 +1,7 @@
 #version 330
-in vec4 color;
-out vec4 fragcolor;
-
+in vec2 texcoordinates0;
+uniform sampler2D sampler;
 void main()
 {
-	fragcolor = vec4(0.0f, 1.0f, 1.0f, 1.0f);
-	fragcolor = color;
+	gl_FragColor = texture2D(sampler, texcoordinates0.xy);
 }

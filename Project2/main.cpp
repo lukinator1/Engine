@@ -3,6 +3,7 @@
 #include "Input.h"
 #include "Mesh.h"
 #include "Shader.h"
+#include "Texture.h"
 #include "Transforming.h"
 #include "Memorymanager.h"
 #include "Messaging.h"
@@ -22,24 +23,26 @@ int main(int argc, char* argv[]) {
 	Memorymanager::StackAllocator* stackallocator = memorymanager.newAllocator(500, alignof(int));
 	Input Inputs;
 	Inputs.inputStartup();
+	glEnable(GL_TEXTURE_2D);
 	Camera thecamera;
 	Transforming transform;
-	/*Vertex vertices[] =
-	{
-		Vertex(vector3(-1.0f, -1.0f, 0.0f)),
-		Vertex(vector3(0.0f, 1.0, 0.0f)),
-		Vertex(vector3(1.0f, -1.0f, 0.0f)),
-		Vertex(vector3(0.0f, -1.0f, 1.0f))
+	Vertex vertices[] =
+	{					//position, texture
+		Vertex(vector3(-1.0f, -1.0f, 0.0f), vector2 (0.0f,0.0f)),
+		Vertex(vector3(0.0f, 1.0, 0.0f), vector2 (0.5f , 0.0f)),
+		Vertex(vector3(1.0f, -1.0f, 0.0f), vector2 (1.0f, 0.0f)),
+		Vertex(vector3(0.0f, -1.0f, 1.0f), vector2 (0.0f, 0.5f))
 	};
 	unsigned int indices[] = {
-		0, 1, 3, 
-		3, 1, 2, 
-		2, 1, 0, 
+		3, 1, 0, 
+		2, 1, 3, 
+		0, 1, 2, 
 		0, 2, 3
 	};
-	Mesh meshme(vertices, indices, sizeof(vertices) / sizeof(vertices[0]), sizeof(indices) / sizeof(indices[0]));*/
-	Mesh meshme;
-	meshme.loadMeshObj("Models/quote.obj");
+	Texture atexture("Textures/test.png");
+	Mesh meshme(vertices, indices, sizeof(vertices) / sizeof(vertices[0]), sizeof(indices) / sizeof(indices[0]));
+	/*Mesh meshme;
+	meshme.loadMeshObj("Models/quote.obj");*/
 	Shader shaderit;
 	shaderit.addVertexShader(shaderit.loadShader("Shaders/Vertex.vs"));
 	shaderit.addFragmentShader(shaderit.loadShader("Shaders/Fragment.fs"));
@@ -103,6 +106,7 @@ int main(int argc, char* argv[]) {
 
 		shaderit.setUniform("transform", transform.newTransformationMatrix());
 		shaderit.useShader();
+		atexture.bindTexture();
 		meshme.drawMesh();
 
 
