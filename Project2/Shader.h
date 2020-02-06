@@ -4,6 +4,7 @@
 #include <vector>
 #include <map>
 #include "Engine.h"
+#include "Materials.h"
 class Shader : public Logger
 {
 private:
@@ -24,6 +25,7 @@ public:
 	void setUniform(std::string newuniform, float newfloatvalue);
 	void setUniform(std::string newuniform, vector3 newvec3value);
 	void setUniform(std::string newuniform, matrix4f newmatrixvalue);
+	void updateUniforms(matrix4f worldmatrix, matrix4f projectedmatrix, Materials &material);
 
 	Shader();
 	~Shader();

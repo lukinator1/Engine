@@ -1,11 +1,11 @@
 #pragma once
 #include "Engine.h"
-#include <string>  //todo: error texture
+#include <string>  //todo: error texture, = overload, .setTexture()
 class Texture : public Logger
 {
 public:
 	GLuint textureid;
-	void loadTexture(std::string &filename);
+	void loadTexture(std::string filename);
 	void bindTexture();
 	Texture();
 	Texture(std::string filename);

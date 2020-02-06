@@ -136,6 +136,8 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Logger.h" />
+    <ClInclude Include="Materials.h" />
+    <ClInclude Include="Rendering.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="vector2.h" />
@@ -159,6 +161,8 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Materials.cpp" />
+    <ClCompile Include="Rendering.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="vector2.cpp" />
     <ClCompile Include="matrix4f.cpp" />

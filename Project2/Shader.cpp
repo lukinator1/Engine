@@ -126,3 +126,8 @@ void Shader::setUniform(std::string newuniform, vector3 newvec3value) {
 void Shader::setUniform(std::string newuniform, matrix4f newmatrixvalue) {
 	glUniformMatrix4fv(uniforms.at(newuniform.c_str()), 1, true, &(newmatrixvalue.m[0][0]));
 }
+void Shader::updateUniforms(matrix4f worldmatrix, matrix4f projectedmatrix, Materials &material) { //make case for colors? (and in vertex shader)
+	setUniform("transform", projectedmatrix);
+	setUniform("color", material.getColor());
+	material.texture.bindTexture();
+}

@@ -1,7 +1,7 @@
 #include "Texture.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
-void Texture::loadTexture(std::string &filename)
+void Texture::loadTexture(std::string filename)
 {
 	int width, height, components;
 	unsigned char* data = stbi_load((filename).c_str(), &width, &height, &components, 4);
@@ -20,6 +20,7 @@ void Texture::loadTexture(std::string &filename)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 
+	glBindTexture(GL_TEXTURE_2D, 0);
 	stbi_image_free(data);
 }
 void Texture::bindTexture()

@@ -99,8 +99,8 @@ float Input::getyMousePosition()
 }
 void Input::setMousePosition(int x, int y) { //could be an error here
 	SDL_WarpMouseInWindow(nullptr, x, y);
-	/*mouseposition.x = x;
-	mouseposition.y = y;*/
+	mouseposition.x = x;
+	mouseposition.y = y;
 }
 void Input::updateMousePosition(float newx, float newy)
 {

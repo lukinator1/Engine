@@ -27,16 +27,29 @@ public:
 		cameratranslation.makeTranslation(-(position.x), -(position.y), -(position.z));
 		matrix4f transformationmatrix = translationmatrix * (rotationmatrix * scalematrix);
 		
-		if (orthographicprojection == false) {  //world view?
-			matrix4f projectionmatrix; 
-			projectionmatrix.makeProjection(fov, aspectratiowidth, aspectratioheight, minviewdistance, maxviewdistance);
+	/*	if (orthographicprojection == false) {  //world view? */
+		matrix4f projectionmatrix; 
+		projectionmatrix.makeProjection(fov, aspectratiowidth, aspectratioheight, minviewdistance, maxviewdistance);
 
-			return projectionmatrix * (camerarotation * (cameratranslation * transformationmatrix));
-		}
+		return projectionmatrix * (camerarotation * (cameratranslation * transformationmatrix));
+	/*	}
 		else {
 			return camerarotation * (cameratranslation * transformationmatrix);
-		}
+		}*/
 	}	
+	matrix4f newUnprojectedMatrix(){
+		matrix4f translationmatrix;
+		matrix4f rotationmatrix;
+		matrix4f scalematrix;
+		matrix4f camerarotation;
+		matrix4f cameratranslation;
+		translationmatrix.makeTranslation(translation);
+		rotationmatrix.makeRotation(rotation);
+		scalematrix.makeScaling(scaling);
+		camerarotation.makeCamera(forwardvector, upvector);
+		cameratranslation.makeTranslation(-(position.x), -(position.y), -(position.z));
+		return camerarotation * (cameratranslation * (translationmatrix * (rotationmatrix * scalematrix)));
+	}
 	void setPerspectiveProjectionSettings(float newfov, float newwidth, float newheight, float newminviewdistance, float newmaxviewdistance) {
 		fov = newfov;
 		aspectratiowidth = newwidth;

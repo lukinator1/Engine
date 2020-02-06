@@ -80,6 +80,12 @@ plan: read up on coordinate systems article, then rendering
 Made decent progress, did prospective projection and almost finshed the camera. I also gotta make sure to sleep, it's 7:00 a.m. 
 
 2-3-20
+Fixed the camera. Tommorrow doing textures. 
+
+2-4-20
+Figured out how to load textures and got functional mouse base camera movement, I also might've fixed the visual anomalies that were being caused yesterday. 
+
+2-5-20
 
 
 possible errors:
@@ -95,6 +101,7 @@ model viewer
 destructors
 error messages
 skybox
+fps counter
 
 #in vec4 color;
 #color = vec4(clamp(position, 0.0, uniformFloat), 1.0);

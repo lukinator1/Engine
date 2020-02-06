@@ -3,6 +3,7 @@
 #include "Input.h"
 #include "Mesh.h"
 #include "Shader.h"
+#include "Materials.h"
 #include "Texture.h"
 #include "Transforming.h"
 #include "Memorymanager.h"
@@ -28,28 +29,30 @@ int main(int argc, char* argv[]) {
 	Transforming transform;
 	Vertex vertices[] =
 	{					//position, texture
-		Vertex(vector3(-1.0f, -1.0f, 0.0f), vector2 (0.0f,0.0f)),
-		Vertex(vector3(0.0f, 1.0, 0.0f), vector2 (0.5f , 0.0f)),
-		Vertex(vector3(1.0f, -1.0f, 0.0f), vector2 (1.0f, 0.0f)),
-		Vertex(vector3(0.0f, -1.0f, 1.0f), vector2 (0.0f, 0.5f))
+		Vertex(vector3(-1.0f, -1.0f, 0.0f), vector2(0.0f,0.0f)),
+		Vertex(vector3(0.0f, 1.0, 0.0f), vector2(0.5f , 0.0f)),
+		Vertex(vector3(1.0f, -1.0f, 0.0f), vector2(1.0f, 0.0f)),
+		Vertex(vector3(0.0f, -1.0f, 1.0f), vector2(0.0f, 0.5f))
 	};
 	unsigned int indices[] = {
-		3, 1, 0, 
-		2, 1, 3, 
-		0, 1, 2, 
+		3, 1, 0,
+		2, 1, 3,
+		0, 1, 2,
 		0, 2, 3
 	};
-	Texture atexture("Textures/test.png");
 	Mesh meshme(vertices, indices, sizeof(vertices) / sizeof(vertices[0]), sizeof(indices) / sizeof(indices[0]));
 	/*Mesh meshme;
 	meshme.loadMeshObj("Models/quote.obj");*/
 	Shader shaderit;
+	/*Texture text;
+	text.loadTexture("Textures/test.png");*/
 	shaderit.addVertexShader(shaderit.loadShader("Shaders/Vertex.vs"));
 	shaderit.addFragmentShader(shaderit.loadShader("Shaders/Fragment.fs"));
 	shaderit.compileShader();
-	shaderit.addUniform("uniformFloat");
+	shaderit.addUniform("color");
 	shaderit.addUniform("transform");
-
+	shaderit.addUniform("uniformFloat");
+	Materials material("Textures/test.png", vector3(0.0f, 1.0f, 1.0f));		// from basicshader change to render manager startup?
 
 	float previousscrolldistance;
 	float unitest = 0.0f;
@@ -66,7 +69,6 @@ int main(int argc, char* argv[]) {
 		Messages.messageUpdate(Inputs, window, thecamera);
 		Inputs.getInputs();
 		window.updateWindow();
-
 		if (Inputs.keyboardstate[Input::W] == 1) {
 			thecamera.moveCamera(thecamera.getForwardvector(), .3f);
 		}
@@ -99,17 +101,17 @@ int main(int argc, char* argv[]) {
 		}
 
 
-		shaderit.setUniform("uniformFloat", (float)sin(unitest));
-
+		shaderit.setUniform("uniformFloat", (float)sin(unitest)); 
 		transform.setTranslationVector(vector3(sin(unitest), 0, 5));
 		transform.setRotationVector(vector3(0, sin(unitest) * 180, 0));
 		transform.setPerspectiveProjectionSettings(thecamera.fov, window.getWindowWidth(), window.getWindowHeight(), thecamera.minviewdistance, thecamera.maxviewdistance);  //integer -> float
 		/*transform.setScalingVector(vector3(.75 * sin(unitest), .75 * sin(unitest), .75 * sin(unitest)));*/
 		/*transform.orthographicprojection = false;*/
-
-		shaderit.setUniform("transform", transform.newTransformationMatrix());
 		shaderit.useShader();
-		atexture.bindTexture();
+		/*shaderit.setUniform("transform", transform.newTransformationMatrix());
+		shaderit.setUniform("color", vector3(0.0f, 1.0f, 1.0f));
+		text.bindTexture();*/
+		shaderit.updateUniforms(transform.newUnprojectedMatrix(), transform.newTransformationMatrix(), material);
 		meshme.drawMesh();
 
 
