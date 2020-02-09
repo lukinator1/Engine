@@ -5,6 +5,7 @@
 #include "Shader.h"
 #include "Materials.h"
 #include "Texture.h"
+#include "Directionallight.h"
 #include "Transforming.h"
 #include "Memorymanager.h"
 #include "Messaging.h"
@@ -12,8 +13,8 @@
 #undef main
 #include <iostream>
 std::queue <Message> messagequeue;
-float deltatime = 1.0/60.0;
-float gametime = 0.0;
+float deltatime = 1.0f/60.0f;
+float gametime = 0.0f;
 int main(int argc, char* argv[]) {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	Messaging Messages;
@@ -46,12 +47,19 @@ int main(int argc, char* argv[]) {
 	Shader shaderit;
 	/*Texture text;
 	text.loadTexture("Textures/test.png");*/
-	shaderit.addVertexShader(shaderit.loadShader("Shaders/Vertex.vs"));
-	shaderit.addFragmentShader(shaderit.loadShader("Shaders/Fragment.fs"));
+	shaderit.addVertexShader(shaderit.loadShader("Shaders/Phongvertexshader.vs"));
+	shaderit.addFragmentShader(shaderit.loadShader("Shaders/Phongfragmentshader.fs"));
 	shaderit.compileShader();
 	shaderit.addUniform("color");
 	shaderit.addUniform("transform");
 	shaderit.addUniform("uniformFloat");
+	shaderit.addUniform("ambientlight");
+	shaderit.addUniform("directionallight.color");
+	shaderit.addUniform("directionallight.intensity");
+	shaderit.addUniform("directionallight.direction");
+	shaderit.setAmbientLight(vector3(0.1f, 0.1f, 0.1f));
+	shaderit.setDirectionalLight(Directionallight(vector3(1.0f, 1.0f, 1.0f), vector3(1.0f, 1.0f, 1.0f), 0.8f));
+
 	Materials material("Textures/test.png", vector3(0.0f, 1.0f, 1.0f));		// from basicshader change to render manager startup?
 
 	float previousscrolldistance;

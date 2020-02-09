@@ -1,1 +1,3 @@
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\shader.cpp Line: 113 Engine warning!: Uniform failed to add.
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\shader.cpp
+ Line: 127
+Engine warning!: Uniform: uniformFloat failed to add.

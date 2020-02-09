@@ -1,6 +1,7 @@
 #include "Shader.h"
-Shader::Shader()
+Shader::Shader() : directionallight(vector3(0.0f, 0.0f, 0.0f), vector3(0.0f, 0.0f, 0.0f))
 {
+	ambientlight = vector3(1.0f, 1.0f, 1.0f);
 	program = glCreateProgram();
 	if (program == 0) {
 		engineLog(__FILE__, __LINE__, "Warning: Shader program failed to create.", 1, 2, true);
@@ -67,6 +68,7 @@ void Shader::addFragmentShader(const std::string& sourcecode)
 }
 void Shader::createShader(const std::string& sourcecode, unsigned int type)
 {
+	char errorlog[512];
 	GLuint shader = glCreateShader(type);
 	if (shader == 0) {
 		engineLog(__FILE__, __LINE__, "Warning: Shader didn't create.", 1, 2, true);
@@ -82,6 +84,8 @@ void Shader::createShader(const std::string& sourcecode, unsigned int type)
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &checkerror);
 	if (checkerror == GL_FALSE) {
 		engineLog(__FILE__, __LINE__, "Warning: Shader failed to compile.", 1, 2, true);
+		glGetShaderInfoLog(shader, 512, NULL, errorlog);
+		engineLog(__FILE__, __LINE__, errorlog, 1, 2, true);
 		return;
 	}
 	shaders.push_back(shader);
@@ -89,6 +93,7 @@ void Shader::createShader(const std::string& sourcecode, unsigned int type)
 	/*glBindAttribLocation(program, 0, "pos");*/
 }
 void Shader::compileShader() {
+	char errorlog[512];
 	for (int i = 0; i < 2; i++) {
 		glAttachShader(program, shaders[i]);
 	}
@@ -97,6 +102,8 @@ void Shader::compileShader() {
 	glGetProgramiv(program, GL_LINK_STATUS, &checkerror);
 	if (checkerror == GL_FALSE) {
 		engineLog(__FILE__, __LINE__, "Warning: Shader failed to link.", 1, 2, true);
+		glGetShaderInfoLog(program, 512, NULL, errorlog);
+		engineLog(__FILE__, __LINE__, errorlog, 1, 2, true);
 		return;
 	}
 
@@ -108,9 +115,16 @@ void Shader::compileShader() {
 	}
 }
 void Shader::addUniform(std::string newuniform) { //may need to cast this to string
+	/*if (newuniform == "directionallight") {
+	int uniformlocation = glGetUniformLocation(program, (newuniform + ".color").c_str());
+	uniforms.emplace(newuniform + ".color", uniformlocation);
+	int uniformlocation = glGetUniformLocation(program, (newuniform + ".color").c_str());
+	uniforms.emplace(newuniform, uniformlocation);
+	return;
+	}*/
 	int uniformlocation = glGetUniformLocation(program, newuniform.c_str());
 	if (uniformlocation == -1) {
-		engineLog(__FILE__, __LINE__, "Uniform failed to add.", 1, 2, true);
+		engineLog(__FILE__, __LINE__, "Uniform: " + newuniform + " failed to add.", 1, 2, true);
 	}
 	uniforms.emplace(newuniform, uniformlocation);
 }
@@ -126,8 +140,32 @@ void Shader::setUniform(std::string newuniform, vector3 newvec3value) {
 void Shader::setUniform(std::string newuniform, matrix4f newmatrixvalue) {
 	glUniformMatrix4fv(uniforms.at(newuniform.c_str()), 1, true, &(newmatrixvalue.m[0][0]));
 }
+/*void Shader::setUniform(std::string newuniform, Light alight) {
+	setUniform(newuniform + ".base", alight.color);
+	setUniform(newuniform + ".direction", alight.direction);
+} directional*/
+void Shader::setUniform(std::string newuniform, Directionallight alight) {
+	setUniform(newuniform + ".color", alight.getColor());
+	setUniform(newuniform + ".direction", alight.getDirection());
+	setUniform(newuniform + ".intensity", alight.getIntensity());
+}
 void Shader::updateUniforms(matrix4f worldmatrix, matrix4f projectedmatrix, Materials &material) { //make case for colors? (and in vertex shader)
 	setUniform("transform", projectedmatrix);
 	setUniform("color", material.getColor());
+	setUniform("ambientlight", ambientlight);
+	setUniform("directionallight", directionallight);
 	material.texture.bindTexture();
+}
+void Shader::setAmbientLight(vector3 newambientlight) {
+	newambientlight = newambientlight.Normalize();
+	ambientlight = newambientlight;
+}
+void Shader::setDirectionalLight(Directionallight newdlight) {
+	directionallight = newdlight;
+}
+vector3 Shader::getAmbientLight() {
+	return ambientlight;
+}
+Directionallight Shader::getDirectionalLight() {
+	return directionallight;
 }

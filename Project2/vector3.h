@@ -20,5 +20,7 @@ public:
 	vector3 add(float adder);
 	vector3 multiply(vector3 multiplier);
 	vector3 multiply(float multiplier);
+	vector3 subtract(vector3 sub);
+	vector3 subtract(float sub);
 };
 

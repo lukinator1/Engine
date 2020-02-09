@@ -26,12 +26,12 @@ void Logger::engineLog(std::string file, unsigned int line, std::string errormes
 {
 	if (engineverbosity >= verbosity && (enginechannel == channel || enginechannel == 0)) {
 		if (iswarning && (showwarnings == true)) {
-			std::cout << file << " Line: " << line << " Engine warning!: " << errormessage << std::endl;
-			EngineLogFile << file << " Line: " << line << " Engine warning!: " << errormessage << std::endl;
+			std::cout << file << std::endl << " Line: " << line << std::endl << "Engine warning!: " << errormessage << std::endl;
+			EngineLogFile << file << std::endl <<  " Line: " << line << std::endl <<"Engine warning!: " << errormessage << std::endl;
 		}
 		else {
-			std::cout << file << " Line: " << line << " Engine ERROR!: " << errormessage << std::endl;
-			EngineLogFile << file << " Line: " << line << " Engine ERROR!: " << errormessage << std::endl;
+			std::cout << file << std::endl << " Line: " << line << std::endl << "Engine ERROR!: " << errormessage << std::endl;
+			EngineLogFile << file << std::endl << " Line: " << line << std::endl << "Engine ERROR!: " << errormessage << std::endl;
 		}
 	}
 }

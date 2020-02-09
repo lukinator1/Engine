@@ -4,6 +4,7 @@ Mesh::Mesh() {
 	glGenBuffers(1, &vbo);
 	glGenBuffers(1, &tbo);
 	glGenBuffers(1, &ibo);
+	//default/error mesh
 }
 Mesh::Mesh(Vertex* vertices, unsigned int *indices, unsigned int numvertices, unsigned int numindices)
 {
@@ -16,6 +17,7 @@ Mesh::~Mesh()
 void Mesh::makeMesh(Vertex* vertices, unsigned int *indices, unsigned int numvertices, unsigned int numindices) //error message can go here
 {
 	size = numindices;
+	/*calculateNormals(vertices, indices, numvertices, numindices);*/
 	glGenVertexArrays(1, &vao);
 	glGenBuffers(1, &vbo);
 	glGenBuffers(1, &ibo);
@@ -23,10 +25,12 @@ void Mesh::makeMesh(Vertex* vertices, unsigned int *indices, unsigned int numver
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * numvertices, vertices, GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)0);  //change 8 * size of float to size of vertex?
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)sizeof(Vertex::position));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)sizeof(Vertex::position));
 	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(sizeof(Vertex::position) + sizeof(Vertex::texture)));
+	glEnableVertexAttribArray(2);
 	/*glBindBuffer(GL_ARRAY_BUFFER, tbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex::texture) * numvertices, vertices, GL_STATIC_DRAW);*/
 
@@ -149,4 +153,33 @@ void Mesh::loadMeshObj(std::string file) //max size of vector?
 }
 void Mesh::makeErrorMesh() //todo
 {
+}
+void Mesh::calculateNormals(Vertex* vertices, unsigned int* indices, unsigned int numvertices, unsigned int numindices){
+	for (unsigned int i = 0; i < numindices; i += 3) {
+		int i0 = indices[i];
+		int i1 = indices[i + 1];
+		int i2 = indices[i + 2];
+		vector3 edge1 = vertices[i1].position.subtract(vertices[i0].position);
+		vector3 edge2 = vertices[i2].position.subtract(vertices[i0].position);
+		vector3 normal = (edge1.crossProduct(edge2)).Normalize();
+
+		vertices[i0].normal = vertices[i0].normal.add(normal);
+		vertices[i1].normal = vertices[i1].normal.add(normal);
+		vertices[i2].normal = vertices[i2].normal.add(normal);
+
+		normalizeNormalVertices(vertices, numvertices);
+		/*int i0 = indices[i];
+		int i1 = indices[i + 1];
+		int i2 = indices[i + 2];
+
+		vector3 edge1 = vertices[i1].position.subtract(vertices[i0].position);
+		vector3 edge2 = vertices[i2].position.subtract(vertices[i0].position);
+
+		vector3 normal = (edge1.crossProduct(edge2)).Normalize();*/
+	}
+}
+void Mesh::normalizeNormalVertices(Vertex *vertices, int numvertices) {
+	for (int i = 0; i < numvertices; i++) {
+		vertices[i].normal = (vertices[i].normal).Normalize();
+	}
 }

@@ -91,6 +91,18 @@ vector3 vector3::multiply(float multiplier)
 	z = z * multiplier;
 	return *this;
 }
+vector3 vector3::subtract(vector3 sub) {
+	x -= sub.x;
+	y -= sub.y;
+	z -= sub.z;
+	return *this;
+}
+vector3 vector3::subtract(float sub) {
+	x -= sub;
+	y -= sub;
+	z -= sub;
+	return *this;
+}
 vector3::~vector3()
 {
 }

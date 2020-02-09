@@ -86,6 +86,10 @@ Fixed the camera. Tommorrow doing textures.
 Figured out how to load textures and got functional mouse base camera movement, I also might've fixed the visual anomalies that were being caused yesterday. 
 
 2-5-20
+Materials for managing multipiple graphics attributes.
+
+2-6-20
+
 
 
 possible errors:
@@ -95,18 +99,18 @@ change absolute path in include directories property page
 todo:
 time
 make things pass by reference
-error model
+error model/texture
 full/better obj loader
 model viewer
 destructors
 error messages
 skybox
 fps counter
+improve error logger
 
 #in vec4 color;
 #color = vec4(clamp(position, 0.0, uniformFloat), 1.0);
 	#fragcolor = vec4(0.0f, 1.0f, 1.0f, 1.0f);
 	#fragcolor = color;
-
 #out vec4 color;
 #out vec4 fragcolor;

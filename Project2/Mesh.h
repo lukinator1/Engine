@@ -18,6 +18,8 @@ public:
 	void addVertices(Vertex* vertices, int numvertices);
 	void loadMeshObj(std::string file);
 	void makeErrorMesh();
+	void normalizeNormalVertices(Vertex * vertices, int numvertices);
+	void calculateNormals(Vertex* vertices, unsigned int* indices, unsigned int numvertices, unsigned int numindices);
 	GLuint vbo;
 	GLuint tbo;
 	GLuint ibo;
