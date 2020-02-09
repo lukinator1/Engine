@@ -13,6 +13,7 @@ Vertex::Vertex(vector3 newposition, vector2 newtexture)
 {
 	position = newposition;
 	texture = newtexture;
+	normal = vector3(0.0f, 0.0f, 0.0f);
 }
 Vertex::Vertex(vector3 newposition) {		//both temporariy/probably will be deleted
 	position = newposition;

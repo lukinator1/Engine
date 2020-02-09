@@ -17,7 +17,7 @@ Mesh::~Mesh()
 void Mesh::makeMesh(Vertex* vertices, unsigned int *indices, unsigned int numvertices, unsigned int numindices) //error message can go here
 {
 	size = numindices;
-	/*calculateNormals(vertices, indices, numvertices, numindices);*/
+	calculateNormals(vertices, indices, numvertices, numindices);
 	glGenVertexArrays(1, &vao);
 	glGenBuffers(1, &vbo);
 	glGenBuffers(1, &ibo);
@@ -156,9 +156,9 @@ void Mesh::makeErrorMesh() //todo
 }
 void Mesh::calculateNormals(Vertex* vertices, unsigned int* indices, unsigned int numvertices, unsigned int numindices){
 	for (unsigned int i = 0; i < numindices; i += 3) {
-		int i0 = indices[i];
-		int i1 = indices[i + 1];
-		int i2 = indices[i + 2];
+		unsigned int i0 = indices[i];
+		unsigned int i1 = indices[i + 1];
+		unsigned int i2 = indices[i + 2];
 		vector3 edge1 = vertices[i1].position.subtract(vertices[i0].position);
 		vector3 edge2 = vertices[i2].position.subtract(vertices[i0].position);
 		vector3 normal = (edge1.crossProduct(edge2)).Normalize();
@@ -166,8 +166,11 @@ void Mesh::calculateNormals(Vertex* vertices, unsigned int* indices, unsigned in
 		vertices[i0].normal = vertices[i0].normal.add(normal);
 		vertices[i1].normal = vertices[i1].normal.add(normal);
 		vertices[i2].normal = vertices[i2].normal.add(normal);
-
-		normalizeNormalVertices(vertices, numvertices);
+	}
+	for (int i = 0; i < numvertices; i++) {
+		vertices[i].normal = (vertices[i].normal).Normalize();
+	}
+		/*normalizeNormalVertices(vertices, numvertices);*/
 		/*int i0 = indices[i];
 		int i1 = indices[i + 1];
 		int i2 = indices[i + 2];
@@ -176,7 +179,6 @@ void Mesh::calculateNormals(Vertex* vertices, unsigned int* indices, unsigned in
 		vector3 edge2 = vertices[i2].position.subtract(vertices[i0].position);
 
 		vector3 normal = (edge1.crossProduct(edge2)).Normalize();*/
-	}
 }
 void Mesh::normalizeNormalVertices(Vertex *vertices, int numvertices) {
 	for (int i = 0; i < numvertices; i++) {

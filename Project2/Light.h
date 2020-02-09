@@ -6,22 +6,22 @@ public:
 	vector3 color;
 	float intensity;
 	Light(vector3 newlightcolor, float newintensity) {
-		color = newlightcolor.Normalize();
+		color = newlightcolor;;
 		intensity = newintensity;
 	}
 	Light(vector3 newlightcolor) {
-		color = newlightcolor.Normalize();
+		color = newlightcolor;
 		intensity = 0.0f;
 	}
 	void setLight(vector3 newcolor, float newintensity) {
-		color = newcolor.Normalize();
+		color = newcolor;
 		intensity = newintensity;
 	}
 	void setLight(Light newlight) {
 		*this = newlight;
 	}
 	void setColor(vector3 newcolor) {
-		color = newcolor.Normalize();
+		color = newcolor;
 	}
 	void setIntensity(float newintensity) {
 		intensity = newintensity;

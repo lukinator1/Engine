@@ -58,50 +58,33 @@ vector3 vector3::crossProduct(vector3 newv) {
 }
 vector3 vector3::Normalize() {
 	float length = sqrt((x * x) + (y * y) + (z * z));
-	x /= length;
-	y /= length;
-	z /= length;
-	return *this;
+	return vector3(x/length, y/length, z/length);
 }
 vector3 vector3::add(vector3 adder)
 {
-	x += adder.x;
-	y += adder.y;
-	z += adder.z;
-	return *this;
+	return vector3(x + adder.x, y + adder.y, z + adder.z);
 }
 vector3 vector3::add(float adder)
 {
-	x += adder;
-	y += adder;
-	z += adder;
-	return *this;
+	return vector3(x + adder, y + adder, z + adder);
 }
 vector3 vector3::multiply(vector3 multiplier)
 {
-	x = x * multiplier.x;
+	/*x = x * multiplier.x;
 	y = y * multiplier.y;
 	z = z * multiplier.z;
-	return *this;
+	return *this;*/
+	return vector3(x * multiplier.x, y * multiplier.y, z * multiplier.z);
 }
 vector3 vector3::multiply(float multiplier)
 {
-	x = x * multiplier;
-	y = y * multiplier;
-	z = z * multiplier;
-	return *this;
+	return vector3(x * multiplier, y * multiplier, z * multiplier);
 }
 vector3 vector3::subtract(vector3 sub) {
-	x -= sub.x;
-	y -= sub.y;
-	z -= sub.z;
-	return *this;
+	return vector3(x - sub.x, y - sub.y, z - sub.z);
 }
 vector3 vector3::subtract(float sub) {
-	x -= sub;
-	y -= sub;
-	z -= sub;
-	return *this;
+	return vector3(x - sub, y - sub, z - sub);
 }
 vector3::~vector3()
 {

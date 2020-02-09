@@ -13,7 +13,7 @@ uniform Directionallight directionallight;
 
 vec4 caluclateDirectionalLight(Directionallight dlight, vec3 normal)
 {
-	float diffusefactor = dot(vec3(1.0, 0.5, 0.2), vec3(1.0, 1.0, 1.0));
+	float diffusefactor = dot(normal, -dlight.direction);
 	if (diffusefactor > 0) {
 	vec4 diffuse = vec4(dlight.color, 1.0) * dlight.intensity * diffusefactor;
 	return diffuse;

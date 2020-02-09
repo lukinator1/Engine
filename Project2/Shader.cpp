@@ -145,19 +145,19 @@ void Shader::setUniform(std::string newuniform, matrix4f newmatrixvalue) {
 	setUniform(newuniform + ".direction", alight.direction);
 } directional*/
 void Shader::setUniform(std::string newuniform, Directionallight alight) {
-	setUniform(newuniform + ".color", alight.getColor());
-	setUniform(newuniform + ".direction", alight.getDirection());
-	setUniform(newuniform + ".intensity", alight.getIntensity());
+	setUniform(newuniform + ".color", alight.color);
+	setUniform(newuniform + ".direction", alight.direction);
+	setUniform(newuniform + ".intensity", alight.intensity);
 }
 void Shader::updateUniforms(matrix4f worldmatrix, matrix4f projectedmatrix, Materials &material) { //make case for colors? (and in vertex shader)
-	setUniform("transform", projectedmatrix);
+	setUniform("transform", worldmatrix);
+	setUniform("projectedtransform", projectedmatrix);
 	setUniform("color", material.getColor());
 	setUniform("ambientlight", ambientlight);
 	setUniform("directionallight", directionallight);
 	material.texture.bindTexture();
 }
 void Shader::setAmbientLight(vector3 newambientlight) {
-	newambientlight = newambientlight.Normalize();
 	ambientlight = newambientlight;
 }
 void Shader::setDirectionalLight(Directionallight newdlight) {

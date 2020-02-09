@@ -2,9 +2,8 @@
 #include "Light.h"
 #include "vector3.h"
 class Directionallight : public Light
-{	private: 
+{	public:
 	vector3 direction;
-	public:
 	Directionallight(vector3 newlightcolor, vector3 newdirection, float newintensity) : Light(newlightcolor, newintensity){
 		direction = newdirection.Normalize();
 	}
@@ -12,8 +11,8 @@ class Directionallight : public Light
 		direction = newdirection.Normalize();
 	}
 	virtual void setLight(vector3 newcolor, vector3 newdirection, float newintensity) {
-		color = newcolor.Normalize();
-		direction = newdirection.Normalize();
+		color = newcolor;
+		direction = newdirection;
 		intensity = newintensity;
 	}
 	virtual void setLight(Directionallight newlight) {
@@ -23,7 +22,7 @@ class Directionallight : public Light
 		color = newcolor;
 	}*/
 	void setDirection(vector3 newdirection) {
-		direction = newdirection.Normalize();
+		direction = newdirection;
 	}
 	/*void setIntensity(float newintensity) {
 		intensity = newintensity;

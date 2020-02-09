@@ -6,10 +6,11 @@ out vec2 texcoordinates0;
 out vec3 normal0;
 uniform float uniformFloat;
 uniform mat4 transform;
+uniform mat4 projectedtransform;
 
 void main ()
 {
+	gl_Position = projectedtransform * vec4(position, 1.0);
 	texcoordinates0 = texcoordinates;
-normal0 = normal;
-	gl_Position = transform * vec4(position, 1.0);
+	normal0 = (transform * vec4(normal, 0.0)).xyz;
 }

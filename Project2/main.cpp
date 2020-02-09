@@ -52,13 +52,14 @@ int main(int argc, char* argv[]) {
 	shaderit.compileShader();
 	shaderit.addUniform("color");
 	shaderit.addUniform("transform");
+	shaderit.addUniform("projectedtransform");
 	shaderit.addUniform("uniformFloat");
 	shaderit.addUniform("ambientlight");
 	shaderit.addUniform("directionallight.color");
 	shaderit.addUniform("directionallight.intensity");
 	shaderit.addUniform("directionallight.direction");
 	shaderit.setAmbientLight(vector3(0.1f, 0.1f, 0.1f));
-	shaderit.setDirectionalLight(Directionallight(vector3(1.0f, 1.0f, 1.0f), vector3(1.0f, 1.0f, 1.0f), 0.8f));
+	shaderit.setDirectionalLight(Directionallight(vector3(1.0f, 1.0f, 1.0f), vector3(1.0f, 1.0f, 1.0f), 1.0f));
 
 	Materials material("Textures/test.png", vector3(0.0f, 1.0f, 1.0f));		// from basicshader change to render manager startup?
 
