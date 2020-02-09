@@ -1,6 +1,10 @@
-﻿  Mesh.cpp
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\mesh.cpp(152): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-  Quaternion.cpp
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\quaternion.cpp(11): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-  Generating Code...
+﻿  main.cpp
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(119): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(129): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(143): warning C4244: '+=': conversion from '_Rep' to 'float', possible loss of data
+          with
+          [
+              _Rep=double
+          ]
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(79): warning C4101: 'previousscrolldistance': unreferenced local variable
   Project2.vcxproj -> C:\Users\lukinator1\Desktop\engine\The Super Suspension System\Project2\x64\Debug\Project2.exe

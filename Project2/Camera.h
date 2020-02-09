@@ -117,7 +117,7 @@ public:
 			fov -= offset;
 		}
 	}
-	void orthographicProjection(bool project) {
+	void orthographicProjection(bool project) { //this (probably) won't work as is, need to multiply camera matrix to what's there
 		orthographicprojection = project;
 	}
 	void setMouseLook(bool look) {

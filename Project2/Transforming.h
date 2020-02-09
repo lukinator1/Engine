@@ -48,7 +48,7 @@ public:
 		scalematrix.makeScaling(scaling);
 		camerarotation.makeCamera(forwardvector, upvector);
 		cameratranslation.makeTranslation(-(position.x), -(position.y), -(position.z));
-		return camerarotation * (cameratranslation * (translationmatrix * (rotationmatrix * scalematrix)));
+		return translationmatrix * (rotationmatrix * scalematrix);
 	}
 	void setPerspectiveProjectionSettings(float newfov, float newwidth, float newheight, float newminviewdistance, float newmaxviewdistance) {
 		fov = newfov;

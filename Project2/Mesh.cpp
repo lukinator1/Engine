@@ -17,7 +17,7 @@ Mesh::~Mesh()
 void Mesh::makeMesh(Vertex* vertices, unsigned int *indices, unsigned int numvertices, unsigned int numindices) //error message can go here
 {
 	size = numindices;
-	/*calculateNormals(vertices, indices, numvertices, numindices);*/
+	calculateNormals(vertices, indices, numvertices, numindices);
 	glGenVertexArrays(1, &vao);
 	glGenBuffers(1, &vbo);
 	glGenBuffers(1, &ibo);

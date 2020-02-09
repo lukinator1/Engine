@@ -28,7 +28,7 @@ int main(int argc, char* argv[]) {
 	glEnable(GL_TEXTURE_2D);
 	Camera thecamera;
 	Transforming transform;
-	Vertex vertices[] =
+	/*Vertex vertices[] =
 	{					//position, texture
 		Vertex(vector3(-1.0f, -1.0f, 0.0f), vector2(0.0f,0.0f)),
 		Vertex(vector3(0.0f, 1.0, 0.0f), vector2(0.5f , 0.0f)),
@@ -40,7 +40,17 @@ int main(int argc, char* argv[]) {
 		2, 1, 3,
 		0, 1, 2,
 		0, 2, 3
-	};
+	};*/
+	Vertex vertices[] = 
+	{Vertex(vector3(-1.0f, -1.0f, 0.5773f), vector2(0.0f, 0.0f)),
+	Vertex(vector3(0.0f, -1.0f, -1.15475f), vector2(0.5f, 0.0f)),
+	Vertex(vector3(1.0f, -1.0f, 0.5773f), vector2(1.0f, 0.0f)),
+	Vertex(vector3(0.0f, 1.0f, 0.0f), vector2(0.5f, 1.0f))};
+
+	unsigned int indices[] = { 0, 3, 1,
+	1, 3, 2,
+	2, 3, 0,
+	1, 2, 0 };
 	Mesh meshme(vertices, indices, sizeof(vertices) / sizeof(vertices[0]), sizeof(indices) / sizeof(indices[0]));
 	/*Mesh meshme;
 	meshme.loadMeshObj("Models/quote.obj");*/
@@ -50,11 +60,14 @@ int main(int argc, char* argv[]) {
 	shaderit.addVertexShader(shaderit.loadShader("Shaders/Phongvertexshader.vs"));
 	shaderit.addFragmentShader(shaderit.loadShader("Shaders/Phongfragmentshader.fs"));
 	shaderit.compileShader();
+	shaderit.addUniform("cameraposition");
 	shaderit.addUniform("color");
 	shaderit.addUniform("transform");
 	shaderit.addUniform("projectedtransform");
 	shaderit.addUniform("uniformFloat");
 	shaderit.addUniform("ambientlight");
+	shaderit.addUniform("specularintensity");
+	shaderit.addUniform("specularexponent");
 	shaderit.addUniform("directionallight.color");
 	shaderit.addUniform("directionallight.intensity");
 	shaderit.addUniform("directionallight.direction");
@@ -111,8 +124,8 @@ int main(int argc, char* argv[]) {
 
 
 		shaderit.setUniform("uniformFloat", (float)sin(unitest)); 
-		transform.setTranslationVector(vector3(sin(unitest), 0, 5));
-		transform.setRotationVector(vector3(0, sin(unitest) * 180, 0));
+		transform.setTranslationVector(vector3(0, 0, 5));
+		transform.setRotationVector(vector3(0, (float)sin(unitest) * 180, 0));
 		transform.setPerspectiveProjectionSettings(thecamera.fov, window.getWindowWidth(), window.getWindowHeight(), thecamera.minviewdistance, thecamera.maxviewdistance);  //integer -> float
 		/*transform.setScalingVector(vector3(.75 * sin(unitest), .75 * sin(unitest), .75 * sin(unitest)));*/
 		/*transform.orthographicprojection = false;*/
@@ -120,7 +133,7 @@ int main(int argc, char* argv[]) {
 		/*shaderit.setUniform("transform", transform.newTransformationMatrix());
 		shaderit.setUniform("color", vector3(0.0f, 1.0f, 1.0f));
 		text.bindTexture();*/
-		shaderit.updateUniforms(transform.newUnprojectedMatrix(), transform.newTransformationMatrix(), material);
+		shaderit.updateUniforms(transform.newUnprojectedMatrix(), transform.newTransformationMatrix(), transform.position , material);
 		meshme.drawMesh();
 
 

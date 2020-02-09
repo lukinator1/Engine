@@ -7,6 +7,7 @@
 #include "Materials.h"
 #include "Directionallight.h"
 #include "Light.h"
+#include "Camera.h"
 class Shader : public Logger
 {
 private:
@@ -30,7 +31,7 @@ public:
 	void setUniform(std::string newuniform, vector3 newvec3value);
 	void setUniform(std::string newuniform, matrix4f newmatrixvalue);
 	void setUniform(std::string newuniform, Directionallight alight);
-	void updateUniforms(matrix4f worldmatrix, matrix4f projectedmatrix, Materials &material);
+	void updateUniforms(matrix4f worldmatrix, matrix4f projectedmatrix, vector3 position, Materials &material);
 	vector3 getAmbientLight();
 	Directionallight getDirectionalLight();
 	void setDirectionalLight(Directionallight newdlight);
