@@ -58,14 +58,26 @@ vector3 vector3::crossProduct(vector3 newv) {
 }
 vector3 vector3::Normalize() {
 	float length = sqrt((x * x) + (y * y) + (z * z));
+	/*x = x / length;
+	y = y / length;
+	z = z / length;
+	return *this;*/
 	return vector3(x/length, y/length, z/length);
 }
 vector3 vector3::add(vector3 adder)
 {
+	/*x = x + adder.x;
+	y = y + adder.y;
+	z = z + adder.z;
+	return *this;*/
 	return vector3(x + adder.x, y + adder.y, z + adder.z);
 }
 vector3 vector3::add(float adder)
 {
+	/*x = x + adder;
+	y = y + adder;
+	z = z + adder;
+	return *this;*/
 	return vector3(x + adder, y + adder, z + adder);
 }
 vector3 vector3::multiply(vector3 multiplier)
@@ -78,6 +90,10 @@ vector3 vector3::multiply(vector3 multiplier)
 }
 vector3 vector3::multiply(float multiplier)
 {
+	/*x = x * multiplier;
+	y = y * multiplier;
+	z = z * multiplier;
+	return *this;*/
 	return vector3(x * multiplier, y * multiplier, z * multiplier);
 }
 vector3 vector3::subtract(vector3 sub) {

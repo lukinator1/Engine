@@ -38,58 +38,45 @@ public:
 		position = position.add(direction.multiply(distance));
 	}
 	vector3 getRightVector(){
-		vector3 rightvector = upvector.crossProduct(forwardvector);
-		rightvector.Normalize();
+		vector3 rightvector = upvector.crossProduct(forwardvector).Normalize();
 		return rightvector;
 	}
 	vector3 getLeftVector() {
-		vector3 leftvector = forwardvector.crossProduct(upvector);
-		leftvector.Normalize();
+		vector3 leftvector = forwardvector.crossProduct(upvector).Normalize();
 		return leftvector;
 	}
-	void rotateCamera(vector3 rotation){
-		rotation.y = -rotation.y;
-		rotation.x = -rotation.x;
+	void rotateCamera(vector2 rotation){
 		vector3 yaxis = vector3(0.0f, 1.0f, 0.0f);
-		vector3 horizontalaxis = yaxis.crossProduct(forwardvector);
-		horizontalaxis.Normalize();
+		vector3 horizontalaxis;
+		if (rotation.x != 0.0f) {
+			rotation.x = -rotation.x;
+			horizontalaxis = yaxis.crossProduct(forwardvector).Normalize();
+			forwardvector.Rotate(rotation.x, horizontalaxis).Normalize();
+		}
 
-		forwardvector.Rotate(rotation.x, horizontalaxis);
-		forwardvector.Normalize();
-		upvector = forwardvector.crossProduct(horizontalaxis);  //maybe can take this out
-		upvector.Normalize();
+		if (rotation.y != 0.0f) {
+			horizontalaxis = yaxis.crossProduct(forwardvector).Normalize();
+			forwardvector.Rotate(rotation.y, yaxis).Normalize();
+		}
 
-		horizontalaxis = yaxis.crossProduct(forwardvector);
-		horizontalaxis.Normalize();
-
-		forwardvector.Rotate(rotation.y, yaxis);
-		forwardvector.Normalize();
-		upvector = forwardvector.crossProduct(horizontalaxis);
-		upvector.Normalize();
+		upvector = forwardvector.crossProduct(horizontalaxis).Normalize();
 	}
 	void rotateCamera(float y, float x) {
 		vector3 yaxis = vector3(0.0f, 1.0f, 0.0f);
 		vector3 horizontalaxis;
 		if (x != 0.0f){
-		x = -x;
-		vector3 yaxis = vector3(0.0f, 1.0f, 0.0f);
-		horizontalaxis = yaxis.crossProduct(forwardvector);
-		horizontalaxis.Normalize();
-
-		forwardvector = forwardvector.Rotate(x, horizontalaxis);
-		forwardvector.Normalize();
-	}
+			x = -x;
+			horizontalaxis = yaxis.crossProduct(forwardvector).Normalize();
+			forwardvector = forwardvector.Rotate(x, horizontalaxis).Normalize();
+		}
 		/*upvector = forwardvector.crossProduct(horizontalaxis);  //maybe can take this out
 		upvector.Normalize();*/
 		if (y != 0.0f) {
-			horizontalaxis = yaxis.crossProduct(forwardvector);
-			horizontalaxis.Normalize();
-
-			forwardvector = forwardvector.Rotate(y, yaxis);
-			forwardvector.Normalize();
-			upvector = forwardvector.crossProduct(horizontalaxis);
-			upvector.Normalize();
+			horizontalaxis = yaxis.crossProduct(forwardvector).Normalize();
+			forwardvector = forwardvector.Rotate(y, yaxis).Normalize();
 		}
+
+		upvector = forwardvector.crossProduct(horizontalaxis).Normalize();
 	}
 	static vector3 getCameraposition() {
 		return position;
@@ -174,16 +161,16 @@ public:
 
 	Camera() {
 		firstperson = false;
-		upvector.Normalize();
-		forwardvector.Normalize();
+		upvector = upvector.Normalize();
+		forwardvector = forwardvector.Normalize();
 	}
 	Camera(vector3 newposition, vector3 newupvector, vector3 newforwardvector) { //check if falls within world space
 		position = newposition;
 		upvector = newupvector;
 		forwardvector = newforwardvector;
 
-		upvector.Normalize();
-		forwardvector.Normalize();
+		upvector = upvector.Normalize();
+		forwardvector = forwardvector.Normalize();
 	};
 	Camera(vector3 newposition, vector3 newupvector, vector3 newforwardvector, float newfov, float max, float min, float w, float h, bool o = false) { //check if falls within world space
 		position = newposition;
@@ -196,8 +183,8 @@ public:
 		aspectratioheight = h;
 		orthographicprojection = o;
 
-		upvector.Normalize();
-		forwardvector.Normalize();
+		upvector = upvector.Normalize();
+		forwardvector = forwardvector.Normalize();
 	};
 	~Camera();
 };

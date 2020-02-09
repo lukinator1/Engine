@@ -9,11 +9,7 @@ Quaternion::Quaternion(float newx, float newy, float newz, float neww)
 Quaternion Quaternion::Normalize()
 {
 	float length = sqrt((x * x) + (y * y) + (z * z) + (w * w));
-	x /= length;
-	y /= length;
-	z /= length;
-	w /= length;
-	return *this;
+	return Quaternion(x/length, y/length, z/length, w/length);
 }
 Quaternion Quaternion::Conjugate() {
 	float newx = -x;
