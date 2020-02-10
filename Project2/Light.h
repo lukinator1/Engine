@@ -5,8 +5,10 @@ class Light //default constructors?
 public:
 	vector3 color;
 	float intensity;
+	Light() {
+	}
 	Light(vector3 newlightcolor, float newintensity) {
-		color = newlightcolor;;
+		color = newlightcolor;
 		intensity = newintensity;
 	}
 	Light(vector3 newlightcolor) {
@@ -31,6 +33,9 @@ public:
 	}
 	float getIntensity() {
 		return intensity;
+	}
+	void deleteLight() {
+
 	}
 	virtual ~Light();
 };

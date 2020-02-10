@@ -140,6 +140,7 @@
     <ClInclude Include="Logger.h" />
     <ClInclude Include="Materials.h" />
     <ClInclude Include="Phongshader.h" />
+    <ClInclude Include="Pointlight.h" />
     <ClInclude Include="Rendering.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="Texture.h" />
@@ -168,6 +169,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Materials.cpp" />
     <ClCompile Include="Phongshader.cpp" />
+    <ClCompile Include="Pointlight.cpp" />
     <ClCompile Include="Rendering.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="vector2.cpp" />

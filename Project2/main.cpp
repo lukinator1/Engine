@@ -22,13 +22,13 @@ int main(int argc, char* argv[]) {
 	Window window(800, 600, "hello");
 	Memorymanager memorymanager;
 	memorymanager.memoryManagerstartup();
-	Memorymanager::StackAllocator* stackallocator = memorymanager.newAllocator(500, alignof(int));
+	Memorymanager::StackAllocator* stackallocator = memorymanager.newAllocator(1000, alignof(int));
 	Input Inputs;
 	Inputs.inputStartup();
 	glEnable(GL_TEXTURE_2D);
 	Camera thecamera;
 	Transforming transform;
-	/*Vertex vertices[] =
+	/*Vertex vertices[] = half pyramid
 	{					//position, texture
 		Vertex(vector3(-1.0f, -1.0f, 0.0f), vector2(0.0f,0.0f)),
 		Vertex(vector3(0.0f, 1.0, 0.0f), vector2(0.5f , 0.0f)),
@@ -41,7 +41,7 @@ int main(int argc, char* argv[]) {
 		0, 1, 2,
 		0, 2, 3
 	};*/
-	Vertex vertices[] = 
+	/*Vertex vertices[] = 
 	{Vertex(vector3(-1.0f, -1.0f, 0.5773f), vector2(0.0f, 0.0f)),
 	Vertex(vector3(0.0f, -1.0f, -1.15475f), vector2(0.5f, 0.0f)),
 	Vertex(vector3(1.0f, -1.0f, 0.5773f), vector2(1.0f, 0.0f)),
@@ -50,7 +50,16 @@ int main(int argc, char* argv[]) {
 	unsigned int indices[] = { 0, 3, 1,
 	1, 3, 2,
 	2, 3, 0,
-	1, 2, 0 };
+	1, 2, 0 };*/
+	float fieldDepth = 10.0f;
+	float fieldWidth = 10.0f;
+	Vertex vertices[] = {Vertex(vector3(-fieldWidth, 0.0f, -fieldDepth), vector2(0.0f, 0.0f)),
+						Vertex(vector3(-fieldWidth, 0.0f, fieldDepth * 3), vector2(0.0f, 1.0f)),
+						Vertex(vector3(fieldWidth * 3, 0.0f, -fieldDepth), vector2(1.0f, 0.0f)),
+						Vertex(vector3(fieldWidth * 3, 0.0f, fieldDepth * 3), vector2(1.0f, 1.0f)) };
+
+	unsigned int indices[] = { 0, 1, 2,
+					  2, 1, 3 };
 	Mesh meshme(vertices, indices, sizeof(vertices) / sizeof(vertices[0]), sizeof(indices) / sizeof(indices[0]));
 	/*Mesh meshme;
 	meshme.loadMeshObj("Models/quote.obj");*/
@@ -68,13 +77,20 @@ int main(int argc, char* argv[]) {
 	shaderit.addUniform("ambientlight");
 	shaderit.addUniform("specularintensity");
 	shaderit.addUniform("specularexponent");
-	shaderit.addUniform("directionallight.color");
-	shaderit.addUniform("directionallight.intensity");
-	shaderit.addUniform("directionallight.direction");
+	shaderit.addUniform("directionallight");
+	shaderit.addUniform("pointlights");
 	shaderit.setAmbientLight(vector3(0.1f, 0.1f, 0.1f));
-	shaderit.setDirectionalLight(Directionallight(vector3(1.0f, 1.0f, 1.0f), vector3(1.0f, 1.0f, 1.0f), 1.0f));
-
-	Materials material("Textures/test.png", vector3(0.0f, 1.0f, 1.0f));		// from basicshader change to render manager startup?
+	shaderit.getDirectionalLight().setLight(Directionallight(vector3(0.0f, 0.0f, 0.0f), vector3(0.0f, 0.0f, 0.0f), 0.0f));
+	/*Pointlight* plight1 = (Pointlight *)stackallocator->engineAllocate(sizeof(Pointlight), alignof(Pointlight), false);
+	*plight1 = Pointlight(vector3(1.0f, 0.5f, 0.0f), vector3(-2.0f, 0.0f, 5.0f), 0.8f, 0.0f, 1.0f);
+	Pointlight* plight2 = (Pointlight *)stackallocator->engineAllocate(sizeof(Pointlight), alignof(Pointlight), false);
+	*plight2 = Pointlight(vector3(0.0f, 0.5f, 1.0f), vector3(2.0f, 0.0f, 7.0f), 0.8f, 0.0f, 1.0f);*/
+	Pointlight *plights = new Pointlight[2];
+	plights[0] = Pointlight(vector3(1.0f, 0.5f, 0.0f), vector3(-2.0f, 0.0f, 5.0f), 0.8f, 0.0f, 1.0f);
+	plights[1] = Pointlight(vector3(0.0f, 0.5f, 1.0f), vector3(2.0f, 0.0f, 7.0f), 0.8f, 0.0f, 1.0f);
+	shaderit.getPointLights()[0] = &plights[0];
+	shaderit.getPointLights()[1] = &plights[1];
+	Materials material("Textures/test.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f);		// from basicshader change to render manager startup?
 
 	float previousscrolldistance;
 	float unitest = 0.0f;
@@ -124,8 +140,10 @@ int main(int argc, char* argv[]) {
 
 
 		shaderit.setUniform("uniformFloat", (float)sin(unitest)); 
-		transform.setTranslationVector(vector3(0, 0, 5));
-		transform.setRotationVector(vector3(0, (float)sin(unitest) * 180, 0));
+		transform.setTranslationVector(vector3(0.0f, -1.0f, 5.0f));
+		/*transform.setRotationVector(vector3(0, (float)sin(unitest) * 180, 0));*/
+		plights[0].setPosition(vector3(3.0f, 0.0f, 8.0 * (float)(sin(unitest) + 1.0f / 2.0f) + 10.0f));
+		plights[1].setPosition(vector3(7.0f, 0.0f, 8.0 * (float)(cos(unitest) + 1.0f / 2.0f) + 10.0f));
 		transform.setPerspectiveProjectionSettings(thecamera.fov, window.getWindowWidth(), window.getWindowHeight(), thecamera.minviewdistance, thecamera.maxviewdistance);  //integer -> float
 		/*transform.setScalingVector(vector3(.75 * sin(unitest), .75 * sin(unitest), .75 * sin(unitest)));*/
 		/*transform.orthographicprojection = false;*/
@@ -133,7 +151,7 @@ int main(int argc, char* argv[]) {
 		/*shaderit.setUniform("transform", transform.newTransformationMatrix());
 		shaderit.setUniform("color", vector3(0.0f, 1.0f, 1.0f));
 		text.bindTexture();*/
-		shaderit.updateUniforms(transform.newUnprojectedMatrix(), transform.newTransformationMatrix(), transform.position , material);
+		shaderit.updateUniforms(transform.newUnprojectedMatrix(), transform.newTransformationMatrix(), transform.position, material);
 		meshme.drawMesh();
 
 
