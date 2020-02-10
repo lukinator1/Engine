@@ -46,6 +46,6 @@ public:
 	float getQuadraticTerm() {
 		return quadraticterm;
 	}
-	~Pointlight();
+	virtual ~Pointlight();
 };
 

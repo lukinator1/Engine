@@ -37,7 +37,8 @@ public:
 	vector3 getAmbientLight();
 	Directionallight getDirectionalLight();
 	Pointlight** getPointLights();
-	/*void setDirectionalLight(Directionallight newdlight);*/
+	/*void setDirectionalLight(Directionallight newdlight);
+	void setPointLight(Pointlight* newplight);*/
 	void setAmbientLight(vector3 newambientlight);
 
 	Shader();

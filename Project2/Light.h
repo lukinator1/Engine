@@ -37,6 +37,6 @@ public:
 	void deleteLight() {
 
 	}
-	virtual ~Light();
+	~Light();
 };
 

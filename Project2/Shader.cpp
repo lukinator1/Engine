@@ -187,8 +187,8 @@ void Shader::setAmbientLight(vector3 newambientlight) {
 /*void Shader::setDirectionalLight(Directionallight newdlight) {
 	directionallight.setLight(newdlight);
 }
-void Shader::setDirectionalLight(Directionallight newdlight) {
-	directionallight.setLight(newdlight);
+void Shader::setPointLight(Pointlight* newplight) {
+	pointlights = newplight;
 }*/
 vector3 Shader::getAmbientLight() {
 	return ambientlight;

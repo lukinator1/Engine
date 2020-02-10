@@ -80,7 +80,7 @@ int main(int argc, char* argv[]) {
 	shaderit.addUniform("directionallight");
 	shaderit.addUniform("pointlights");
 	shaderit.setAmbientLight(vector3(0.1f, 0.1f, 0.1f));
-	shaderit.getDirectionalLight().setLight(Directionallight(vector3(0.0f, 0.0f, 0.0f), vector3(0.0f, 0.0f, 0.0f), 0.0f));
+	shaderit.getDirectionalLight() = (Directionallight(vector3(0.0f, 0.0f, 0.0f), vector3(0.0f, 0.0f, 0.0f), 0.0f));
 	/*Pointlight* plight1 = (Pointlight *)stackallocator->engineAllocate(sizeof(Pointlight), alignof(Pointlight), false);
 	*plight1 = Pointlight(vector3(1.0f, 0.5f, 0.0f), vector3(-2.0f, 0.0f, 5.0f), 0.8f, 0.0f, 1.0f);
 	Pointlight* plight2 = (Pointlight *)stackallocator->engineAllocate(sizeof(Pointlight), alignof(Pointlight), false);
@@ -101,6 +101,7 @@ int main(int argc, char* argv[]) {
 	std::chrono::duration<double> timeduration;
 	std::chrono::duration<double> chronodelta = std::chrono::duration<double>(deltatime);
 	thecamera.setMouseLook(true);
+	int counter = 0;
 	while (true) {
 		starttime = std::chrono::high_resolution_clock::now();
 		memorymanager.memorymanagerUpdate();
@@ -129,6 +130,7 @@ int main(int argc, char* argv[]) {
 			thecamera.rotateCamera(0.0f, -2.0f);
 		}
 		if (Inputs.keyboardstate[Input::keyright] == 1) {
+			counter++;
 			thecamera.rotateCamera(2.0f, 0.0f);
 		}
 		if (Inputs.getScrolldistance().y != 0) {

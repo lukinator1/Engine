@@ -5,6 +5,7 @@
 #include <map>
 #include <iterator>
 //maybe change the swapbuffers() function to use an array since it might increase performance
+//improve syntax on engineallocate, take in template + no. elements instead? (sizeof(t) * elements)
 class Memorymanager : public Logger
 {
 public:
