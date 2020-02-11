@@ -105,6 +105,7 @@ model viewer
 destructors
 error messages
 skybox
+unlock the fps (keep framerate lock)
 fps counter
 improve error logger
 

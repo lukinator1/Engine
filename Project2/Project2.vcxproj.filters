@@ -96,6 +96,9 @@
     <ClInclude Include="Pointlight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Spotlight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -174,6 +177,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Pointlight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Spotlight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

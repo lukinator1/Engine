@@ -22,7 +22,7 @@ class Directionallight : public Light
 		color = newcolor;
 	}*/
 	void setDirection(vector3 newdirection) {
-		direction = newdirection;
+		direction = newdirection.Normalize();
 	}
 	/*void setIntensity(float newintensity) {
 		intensity = newintensity;

@@ -128,7 +128,21 @@ void Shader::addUniform(std::string newuniform) { //may need to cast this to str
 			addUniform("pointlights[" + std::to_string(i) + "].attenuation.linearterm");
 			addUniform("pointlights[" + std::to_string(i) + "].attenuation.quadraticterm");
 			addUniform("pointlights[" + std::to_string(i) + "].position");
+			addUniform("pointlights[" + std::to_string(i) + "].range");
 		}
+	return;
+	}
+	else if (newuniform == "spotlights") {
+		for (int i = 0; i < 5; i++) {
+			addUniform("spotlights[" + std::to_string(i) + "].color");
+			addUniform("spotlights[" + std::to_string(i) + "].intensity");
+			addUniform("spotlights[" + std::to_string(i) + "].attenuation.linearterm");
+			addUniform("spotlights[" + std::to_string(i) + "].attenuation.quadraticterm");
+			addUniform("spotlights[" + std::to_string(i) + "].position");
+			addUniform("spotlights[" + std::to_string(i) + "].range");
+			addUniform("spotlights[" + std::to_string(i) + "].direction");
+			addUniform("spotlights[" + std::to_string(i) + "].cutoff");
+			}
 	return;
 	}
 	int uniformlocation = glGetUniformLocation(program, newuniform.c_str());
@@ -153,17 +167,28 @@ void Shader::setUniform(std::string newuniform, matrix4f newmatrixvalue) {
 	setUniform(newuniform + ".base", alight.color);
 	setUniform(newuniform + ".direction", alight.direction);
 } directional*/
-void Shader::setUniform(std::string newuniform, Directionallight alight) {
+void Shader::setUniform(std::string newuniform, Directionallight alight) { //directionallight
 	setUniform(newuniform + ".color", alight.color);
 	setUniform(newuniform + ".direction", alight.direction);
 	setUniform(newuniform + ".intensity", alight.intensity);
 }
-void Shader::setUniform(std::string newuniform, Pointlight alight) {
+void Shader::setUniform(std::string newuniform, Pointlight alight) {  //pointlight
 	setUniform(newuniform + ".color", alight.color);
 	setUniform(newuniform + ".intensity", alight.intensity);
 	setUniform(newuniform + ".attenuation.linearterm", alight.linearterm);
 	setUniform(newuniform + ".attenuation.quadraticterm", alight.quadraticterm);
 	setUniform(newuniform + ".position", alight.position);
+	setUniform(newuniform + ".range", alight.range);
+}
+void Shader::setUniform(std::string newuniform, Spotlight alight) {  //spotlight
+	setUniform(newuniform + ".color", alight.color);
+	setUniform(newuniform + ".intensity", alight.intensity);
+	setUniform(newuniform + ".attenuation.linearterm", alight.linearterm);
+	setUniform(newuniform + ".attenuation.quadraticterm", alight.quadraticterm);
+	setUniform(newuniform + ".position", alight.position);
+	setUniform(newuniform + ".range", alight.range);
+	setUniform(newuniform + ".direction", alight.direction);
+	setUniform(newuniform + ".cutoff", alight.cutoff);
 }
 void Shader::updateUniforms(matrix4f worldmatrix, matrix4f projectedmatrix, vector3 position, Materials &material) { //make case for colors? (and in vertex shader)
 	setUniform("transform", worldmatrix);
@@ -174,6 +199,9 @@ void Shader::updateUniforms(matrix4f worldmatrix, matrix4f projectedmatrix, vect
 	for (int i = 0; i < 5; i++) {
 		if (pointlights[i] != nullptr) {
 			setUniform("pointlights[" + std::to_string(i) + ']', *pointlights[i]);
+		}
+		if (spotlights[i] != nullptr) {
+			setUniform("spotlights[" + std::to_string(i) + ']', *spotlights[i]);
 		}
 	}
 	setUniform("specularintensity", material.specularintensity);
@@ -198,5 +226,8 @@ Directionallight Shader::getDirectionalLight() {
 }
 Pointlight** Shader::getPointLights() {
 	return pointlights;
+}
+Spotlight** Shader::getSpotLights() {
+	return spotlights;
 }
 

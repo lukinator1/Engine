@@ -4,7 +4,7 @@
 #include <string>
 #include <iostream>
 #include "vector2.h"
-//todo: capturemouse(maybe), textinput, custom cursor
+//todo: capturemouse(maybe), textinput, custom cursor, keyheld
 class Input
 {
 private:
@@ -102,6 +102,7 @@ public:
 	Input();
 	~Input();
 	Uint8 keyboardstate[230] = { 0 };
+	bool repeatstate[230] = { false };
 	const Uint8 *sdlkeyboard = SDL_GetKeyboardState(NULL);
 
 	void inputStartup();

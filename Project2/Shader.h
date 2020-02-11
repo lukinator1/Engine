@@ -7,6 +7,7 @@
 #include "Materials.h"
 #include "Directionallight.h"
 #include "Pointlight.h"
+#include "Spotlight.h"
 #include "Camera.h"
 class Shader : public Logger
 {
@@ -19,6 +20,7 @@ public:
 	vector3 ambientlight;
 	Directionallight directionallight;
 	Pointlight* pointlights[5];
+	Spotlight* spotlights[5];
 	std::string loadShader(const std::string& filename);
 	void useShader();
 	void addVertexShader(const std::string& program);
@@ -33,10 +35,12 @@ public:
 	void setUniform(std::string newuniform, matrix4f newmatrixvalue);
 	void setUniform(std::string newuniform, Directionallight alight);
 	void setUniform(std::string newuniform, Pointlight alight);
+	void setUniform(std::string newuniform, Spotlight alight);
 	void updateUniforms(matrix4f worldmatrix, matrix4f projectedmatrix, vector3 position, Materials &material);
 	vector3 getAmbientLight();
 	Directionallight getDirectionalLight();
 	Pointlight** getPointLights();
+	Spotlight ** getSpotLights();
 	/*void setDirectionalLight(Directionallight newdlight);
 	void setPointLight(Pointlight* newplight);*/
 	void setAmbientLight(vector3 newambientlight);

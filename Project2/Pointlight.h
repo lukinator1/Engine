@@ -6,20 +6,25 @@ public:
 	vector3 position;
 	float linearterm;
 	float quadraticterm;
+	float range;
 	Pointlight(){
 		color = vector3(0.0f, 0.0f, 0.0f);
-		intensity = 0.0f;
 		position = vector3(0.0f, 0.0f, 0.0f);
-		linearterm = .22;
-		quadraticterm = .20;
+		range = 12.0f;
+		intensity = 0.0f;
+		
+		linearterm = .22f;
+		quadraticterm = .20f;
 	}
-	Pointlight(vector3 newcolor, vector3 newposition, float newintensity, float newlinearterm, float newquadraticterm) : Light(newcolor, newintensity){
+	Pointlight(vector3 newcolor, vector3 newposition, float newrange, float newintensity, float newlinearterm, float newquadraticterm) : Light(newcolor, newintensity){
 		position = newposition;
+		range = newrange;
 		linearterm = newlinearterm;
 		quadraticterm = newquadraticterm;
 	}
-	virtual void setLight(vector3 newcolor, vector3 newposition, float newintensity, float newlinearterm, float newquadraticterm) {
+	virtual void setLight(vector3 newcolor, vector3 newposition, float newrange, float newintensity, float newlinearterm, float newquadraticterm) {
 		color = newcolor;
+		range = newrange;
 		intensity = newintensity;
 		position = newposition;
 		linearterm = newlinearterm;
@@ -31,6 +36,9 @@ public:
 	void setPosition(vector3 newposition) {
 		position = newposition;
 	}
+	void setRange(float newrange) {
+		range = newrange;
+	}
 	void setLinearTerm(float newlinearterm) {
 		linearterm = newlinearterm;
 	}
@@ -39,6 +47,9 @@ public:
 	}
 	vector3 getPosition() {
 		return position;
+	}
+	float getRange() {
+		return range;
 	}
 	float getLinearTerm() {
 		return linearterm;
