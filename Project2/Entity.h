@@ -8,12 +8,12 @@ private:
 public:
 	Transforming transform;
 	std::vector <Entity> children;
-	std::vector <Component> components; //maybe make a map?
+	std::vector <Component *> components; //maybe make a map?
 	Entity();
 	~Entity();
 	void updateEntity() {
 		for (int i = 0; i < components.size(); i++) {
-			components[i].updateComponent(transform);
+			components[i]->updateComponent(transform);
 		}
 		for (int i = 0; i < children.size(); i++) {
 			children[i].updateEntity();
@@ -21,7 +21,7 @@ public:
 	}
 	void entityInput() {
 		for (int i = 0; i < components.size(); i++) {
-			components[i].componentInput(transform);
+			components[i]->componentInput(transform);
 		}
 		for (int i = 0; i < children.size(); i++) {
 			children[i].entityInput();
@@ -29,16 +29,16 @@ public:
 	}
 	void renderEntity() {
 		for (int i = 0; i < components.size(); i++) {
-			components[i].renderComponent(transform);
+			components[i]->renderComponent(transform);
 		}
 		for (int i = 0; i < children.size(); i++) {
 			children[i].renderEntity();
 		}
 	}
-	void addSubEntity(Entity subentity) {
+	void addSubEntity(Entity &subentity) {
 		children.push_back(subentity);
 	}
-	void addComponent(Component component) {
+	void addComponent(Component* component) {
 		components.push_back(component);
 	}
 };

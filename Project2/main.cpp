@@ -36,7 +36,8 @@ int main(int argc, char* argv[]) {
 	Mesh quote;
 	quote.loadMeshObj("quote.obj");
 	Meshrenderer component(quote, material);
-	root.addComponent(component);
+	Meshrenderer* componentobject = &component;
+	root.addComponent(componentobject);
 
 	Vertex vertices[] = { Vertex(vector3(-fieldWidth, 0.0f, -fieldDepth), vector2(0.0f, 0.0f)),
 						Vertex(vector3(-fieldWidth, 0.0f, fieldDepth * 3), vector2(0.0f, 1.0f)),
@@ -157,7 +158,8 @@ int main(int argc, char* argv[]) {
 		shaderit.useShader();
 		shaderit.updateUniforms(transform.newUnprojectedMatrix(), transform.newTransformationMatrix(), transform.position, material);
 		meshme.drawMesh();
-		component.renderComponent(transform);
+		root.transform.setTranslationVector(vector3(10.0f, 17.5f, 12.0f));
+		root.renderEntity();
 
 
 		unitest += deltatime;

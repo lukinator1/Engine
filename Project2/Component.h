@@ -8,7 +8,7 @@ public:
 	void componentInput(Transforming t) {
 
 	}
-	void renderComponent(Transforming t) {
+	virtual void renderComponent(Transforming t) {
 
 	}
 	Component();
