@@ -6,6 +6,8 @@ public:
 	vector3 color;
 	float intensity;
 	Light() {
+		color = vector3(1.0f, 1.0f, 1.0f);
+		intensity = .75f;
 	}
 	Light(vector3 newlightcolor, float newintensity) {
 		color = newlightcolor;

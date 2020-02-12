@@ -22,7 +22,9 @@ public:
 	}
 	Spotlight(vector3 newcolor, vector3 newposition, vector3 newdirection, float newrange, float newcutoff, float newintensity, float newlinearterm, float newquadraticterm) : Light(newcolor, newintensity) {
 		position = newposition;
-		direction = newdirection.Normalize();
+		if (newdirection != vector3(0.0f, 0.0f, 0.0f)) {
+			direction = newdirection.Normalize();
+		}
 		range = newrange;
 		cutoff = newcutoff;
 		linearterm = newlinearterm;
@@ -30,7 +32,9 @@ public:
 	}
 	virtual void setLight(vector3 newcolor, vector3 newposition, vector3 newdirection, float newrange, float newcutoff, float newintensity, float newlinearterm, float newquadraticterm) {
 		color = newcolor;
-		direction = newdirection.Normalize();
+		if (newdirection != vector3(0.0f, 0.0f, 0.0f)) {
+			direction = newdirection.Normalize();
+		}
 		range = newrange;
 		cutoff = newcutoff;
 		intensity = newintensity;
@@ -45,7 +49,9 @@ public:
 		position = newposition;
 	}
 	void setDirection(vector3 newdirection) {
-		direction = newdirection.Normalize();
+		if (newdirection != vector3(0.0f, 0.0f, 0.0f)) {
+			direction = newdirection.Normalize();
+		}
 	}
 	void setRange(float newrange) {
 		range = newrange;

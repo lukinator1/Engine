@@ -7,7 +7,7 @@ class Logger
 public:
 	static std::ofstream EngineLogFile; //configuration file?
 	static int engineverbosity;
-	static int enginechannel;  //0 = all, 1 = memorymanager, // 2 = rendering
+	static int enginechannel;  //0 = all, 1 = memorymanager, // 2 = rendering, 3 = other/miscellaneous
 	static bool showwarnings;
 
 	Logger();

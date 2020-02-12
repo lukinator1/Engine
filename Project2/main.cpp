@@ -63,7 +63,8 @@ int main(int argc, char* argv[]) {
 	Mesh meshme(vertices, indices, sizeof(vertices) / sizeof(vertices[0]), sizeof(indices) / sizeof(indices[0]));
 	Mesh quote;
 	quote.loadMeshObj("Models/quote.obj");
-	Spotlight flashlight(vector3(0.9f, 0.9f, 0.9f), vector3(0.0f, 0.0f, 0.0f), vector3(0.0f, 0.0f, 0.0f), 30.0f, 0.7f, 3.5f, 0.0f, 0.1f);
+	/*Spotlight flashlight(vector3(0.9f, 0.9f, 0.9f), vector3(0.0f, 0.0f, 0.0f), vector3(0.0f, 0.0f, 0.0f), 30.0f, 0.7f, 3.5f, 0.0f, 0.1f);*/
+	Spotlight flashlight(vector3(0.0f, 1.0f, 1.0f), vector3(0.0f, 0.0f, 0.0f), vector3(0.0f, 0.0f, 0.0f), 30.0f, 0.7f, 0.8f, 0.0f, 0.1f);
 
 	Shader shaderit;
 	/*Texture text;
@@ -83,16 +84,16 @@ int main(int argc, char* argv[]) {
 	shaderit.addUniform("pointlights");
 	shaderit.addUniform("spotlights");
 	shaderit.setAmbientLight(vector3(0.1f, 0.1f, 0.1f));
-	shaderit.getDirectionalLight() = (Directionallight(vector3(0.0f, 0.0f, 0.0f), vector3(0.0f, 0.0f, 0.0f), 0.0f));
-	/*Pointlight *plights = new Pointlight[6];
+	shaderit.directionallight = Directionallight(vector3(1.0f, 1.0f, 1.0f), vector3(1.0f, 1.0f, 1.0f), 0.1f);
+	Pointlight *plights = new Pointlight[6];
 	plights[0] = Pointlight(vector3(1.0f, 0.5f, 0.0f), vector3(-2.0f, 0.0f, 5.0f), 4.0f, 0.8f, 0.0f, 1.0f);
 	plights[1] = Pointlight(vector3(0.0f, 0.5f, 1.0f), vector3(2.0f, 0.0f, 7.0f), 4.0f, 0.8f, 0.0f, 1.0f);
 	shaderit.getPointLights()[0] = &plights[0];
-	shaderit.getPointLights()[1] = &plights[1];*/
+	shaderit.getPointLights()[1] = &plights[1];
 	Spotlight *slights = new Spotlight[1];
 	
-	/*slights[0] = Spotlight(vector3(0.0f, 1.0f, 1.0f), vector3(-2.0f, 0.0f, 5.0f), vector3(1.0f, 1.0f, 1.0f), 30.0f, 0.7f, 0.8f, 0.0f, 0.1f);*/
-	shaderit.getSpotLights()[0] = &flashlight;
+	slights[0] = Spotlight(vector3(0.0f, 1.0f, 1.0f), vector3(-2.0f, 0.0f, 5.0f), vector3(1.0f, 1.0f, 1.0f), 30.0f, 0.7f, 0.8f, 0.0f, 0.1f);
+	shaderit.getSpotLights()[0] = &slights[0];
 	Materials material("Textures/test.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f);		// from basicshader change to render manager startup?
 
 	float previousscrolldistance;
@@ -131,7 +132,7 @@ int main(int argc, char* argv[]) {
 		}
 		if (Inputs.keyboardstate[Input::keyleft] == 1) {
 			thecamera.rotateCamera(-2.0f, 0.0f);
-		}
+		}        
 		if (Inputs.keyboardstate[Input::keydown] == 1) {
 			thecamera.rotateCamera(0.0f, -2.0f);
 		}
@@ -166,10 +167,10 @@ int main(int argc, char* argv[]) {
 		shaderit.setUniform("uniformFloat", (float)sin(unitest));
 		transform.setTranslationVector(vector3(0.0f, -1.0f, 5.0f));
 		/*transform.setRotationVector(vector3(0, (float)sin(unitest) * 180, 0));*/
-		/*plights[0].setPosition(vector3(3.0f, 0.0f, 8.0 * (float)(sin(unitest) + 1.0f / 2.0f) + 10.0f));
-		plights[1].setPosition(vector3(7.0f, 0.0f, 8.0 * (float)(cos(unitest) + 1.0f / 2.0f) + 10.0f));*/
-		flashlight.setPosition(thecamera.getCameraposition());
-		flashlight.setDirection(thecamera.forwardvector);
+		plights[0].setPosition(vector3(3.0f, 0.0f, 8.0 * (float)(sin(unitest) + 1.0f / 2.0f) + 10.0f));
+		plights[1].setPosition(vector3(7.0f, 0.0f, 8.0 * (float)(cos(unitest) + 1.0f / 2.0f) + 10.0f));
+		slights[0].setPosition(thecamera.getCameraposition());
+		slights[0].setDirection(thecamera.forwardvector);
 		transform.setPerspectiveProjectionSettings(thecamera.fov, window.getWindowWidth(), window.getWindowHeight(), thecamera.minviewdistance, thecamera.maxviewdistance);  //integer -> float
 		/*transform.setScalingVector(vector3(.75 * sin(unitest), .75 * sin(unitest), .75 * sin(unitest)));*/
 		shaderit.useShader();

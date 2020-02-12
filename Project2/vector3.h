@@ -1,7 +1,8 @@
 #pragma once
 #include <math.h>
 #include "Quaternion.h"
-class vector3 {
+#include "Logger.h"
+class vector3 : public Logger {
 public:
 	~vector3();
 	vector3();
@@ -22,5 +23,6 @@ public:
 	vector3 multiply(float multiplier);
 	vector3 subtract(vector3 sub);
 	vector3 subtract(float sub);
+	bool operator!= (vector3 rhs);
 };
 

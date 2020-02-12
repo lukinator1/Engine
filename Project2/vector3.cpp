@@ -62,7 +62,11 @@ vector3 vector3::Normalize() {
 	y = y / length;
 	z = z / length;
 	return *this;*/
-	return vector3(x/length, y/length, z/length);
+	if (length == 0) {
+		/*engineLog(__FILE__, __LINE__, "A direction vector of 0, 0, 0 was passed in. This is undefined behavior and may break related code as 0, 0, 0 doesn't have a direction. ", 3, 3, true);*/
+		return *this;
+	}
+	else return vector3(x / length, y / length, z / length);
 }
 vector3 vector3::add(vector3 adder)
 {
@@ -101,6 +105,15 @@ vector3 vector3::subtract(vector3 sub) {
 }
 vector3 vector3::subtract(float sub) {
 	return vector3(x - sub, y - sub, z - sub);
+}
+bool vector3::operator!=(vector3 rhs)
+{
+	if (x == rhs.x && y == rhs.y && z == rhs.z) {
+		return false;
+	}
+	else {
+		return true;
+	}
 }
 vector3::~vector3()
 {

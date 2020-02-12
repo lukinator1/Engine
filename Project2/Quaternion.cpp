@@ -9,7 +9,13 @@ Quaternion::Quaternion(float newx, float newy, float newz, float neww)
 Quaternion Quaternion::Normalize()
 {
 	float length = sqrt((x * x) + (y * y) + (z * z) + (w * w));
-	return Quaternion(x/length, y/length, z/length, w/length);
+	if (length == 0) {
+		/*engineLog(__FILE__, __LINE__, "The stack allocator wassn't created, the alignment must be a power of 2, => 2 and <= 256. A nullptr was returned instead.", 3, 1, false);*/
+		return *this;
+	}
+	else {
+		return Quaternion(x / length, y / length, z / length, w / length);
+	}
 }
 Quaternion Quaternion::Conjugate() {
 	float newx = -x;

@@ -58,13 +58,13 @@ vec4 calculateLight(Directionallight dlight, vec3 normal)
 	vec4 diffuse = vec4(0, 0, 0, 0);
 	vec4 specular = vec4(0, 0, 0, 0);
 
-	float diffusefactor = dot(normal, -dlight.direction);  
+	float diffusefactor = dot(normal, dlight.direction);  
 	if (diffusefactor > 0) 
 	{
 	diffuse = vec4(dlight.color, 1.0) * dlight.intensity * diffusefactor;
 	
 	vec3 viewvector = normalize(cameraposition - worldpos0);
-	vec3 reflection = normalize(reflect(dlight.direction, normal));
+	vec3 reflection = normalize(reflect(-dlight.direction, normal));
 	float specfactor = dot(viewvector, reflection);
 
 	if (specfactor > 0)
@@ -158,7 +158,7 @@ vec4 calculateSpotLight (Spotlight spot, vec3 normal){
 	vec4 lighting = calculateLight(spot, lightdirection, normal);
 	float attenuation = calculateAttenuation(spot, lightdistance);
 
-	color = (lighting * attenuation) * (1.0 - (1.0 - spotfactor)/(1.0 - spot.cutoff)); 
+	color = (lighting * attenuation) * (1.0 - (1.0 - spotfactor)/(1.0 - spot.cutoff)); 	//change equation for bettter look?
 	}
 	return color;
 }
