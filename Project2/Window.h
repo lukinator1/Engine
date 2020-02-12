@@ -4,7 +4,8 @@
 #include <string>
 #include <algorithm>
 #include <iostream>
-#include "Engine.h"
+#include "Global.h"
+#include "Messaging/Message.h"
 //to do: window icon + resolution
 //momerykl monkeyr
 class Window
@@ -18,6 +19,7 @@ public:
 	void handleMessage(Message &message);
 	void swapWindow();
 	Window(int width, int height, std::string title);
+	Window();
 	virtual ~Window();
 	void postMessage(Message message);
 	/*void postMessage(Message::Messagetypes messagetype, int dataone, int datatwo);*/

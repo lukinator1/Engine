@@ -1,24 +1,27 @@
+#include <fstream>
+#include "Engine.h"
 #include "Window.h"
 #include "Engine.h"
 #include "Input.h"
-#include "Mesh.h"
-#include "Shader.h"
-#include "Materials.h"
-#include "Texture.h"
-#include "Directionallight.h"
-#include "Transforming.h"
-#include "Memorymanager.h"
-#include "Messaging.h"
-#include <fstream>
+#include "Rendering/Rendering.h"
+#include "Mathlibrary/Mathlibrary.h"
+#include "CustomMemoryAllocation/Memorymanager.h"
+#include "Messaging/Messaging.h"
+#include "Meshrenderer.h"
+#include "Scene.h"
+#include "Logger.h"
+#include "Global.h"
 #undef main
 #include <iostream>
 std::queue <Message> messagequeue;
-float deltatime = 1.0f/60.0f;
+float deltatime = 1.0f / 60.0f;
 float gametime = 0.0f;
+float fieldDepth = 10.0f;
+float fieldWidth = 10.0f;
 int main(int argc, char* argv[]) {
 	SDL_Init(SDL_INIT_EVERYTHING);
-	Messaging Messages;
-	Messages.messagingStartup();
+	Messagesystem Messages;
+	Messages.messageSystemStartup();
 	Window window(800, 600, "hello");
 	Memorymanager memorymanager;
 	memorymanager.memoryManagerstartup();
@@ -28,48 +31,26 @@ int main(int argc, char* argv[]) {
 	glEnable(GL_TEXTURE_2D);
 	Camera thecamera;
 	Transforming transform;
-	/*Vertex vertices[] = half pyramid
-	{					//position, texture
-		Vertex(vector3(-1.0f, -1.0f, 0.0f), vector2(0.0f,0.0f)),
-		Vertex(vector3(0.0f, 1.0, 0.0f), vector2(0.5f , 0.0f)),
-		Vertex(vector3(1.0f, -1.0f, 0.0f), vector2(1.0f, 0.0f)),
-		Vertex(vector3(0.0f, -1.0f, 1.0f), vector2(0.0f, 0.5f))
-	};
-	unsigned int indices[] = {
-		3, 1, 0,
-		2, 1, 3,
-		0, 1, 2,
-		0, 2, 3
-	};*/
-	/*Vertex vertices[] = 
-	{Vertex(vector3(-1.0f, -1.0f, 0.5773f), vector2(0.0f, 0.0f)),
-	Vertex(vector3(0.0f, -1.0f, -1.15475f), vector2(0.5f, 0.0f)),
-	Vertex(vector3(1.0f, -1.0f, 0.5773f), vector2(1.0f, 0.0f)),
-	Vertex(vector3(0.0f, 1.0f, 0.0f), vector2(0.5f, 1.0f))};
+	Materials material("test.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f);		// from basicshader change to render manager startup?
+	Entity root;
+	Mesh quote;
+	quote.loadMeshObj("quote.obj");
+	Meshrenderer component(quote, material);
+	root.addComponent(component);
 
-	unsigned int indices[] = { 0, 3, 1,
-	1, 3, 2,
-	2, 3, 0,
-	1, 2, 0 };*/
-	float fieldDepth = 10.0f;
-	float fieldWidth = 10.0f;
-	Vertex vertices[] = {Vertex(vector3(-fieldWidth, 0.0f, -fieldDepth), vector2(0.0f, 0.0f)),
+	Vertex vertices[] = { Vertex(vector3(-fieldWidth, 0.0f, -fieldDepth), vector2(0.0f, 0.0f)),
 						Vertex(vector3(-fieldWidth, 0.0f, fieldDepth * 3), vector2(0.0f, 1.0f)),
 						Vertex(vector3(fieldWidth * 3, 0.0f, -fieldDepth), vector2(1.0f, 0.0f)),
 						Vertex(vector3(fieldWidth * 3, 0.0f, fieldDepth * 3), vector2(1.0f, 1.0f)) };
-
 	unsigned int indices[] = { 0, 1, 2,
 					  2, 1, 3 };
 	Mesh meshme(vertices, indices, sizeof(vertices) / sizeof(vertices[0]), sizeof(indices) / sizeof(indices[0]));
-	Mesh quote;
-	quote.loadMeshObj("Models/quote.obj");
+	
 	/*Spotlight flashlight(vector3(0.9f, 0.9f, 0.9f), vector3(0.0f, 0.0f, 0.0f), vector3(0.0f, 0.0f, 0.0f), 30.0f, 0.7f, 3.5f, 0.0f, 0.1f);*/
 	Spotlight flashlight(vector3(0.0f, 1.0f, 1.0f), vector3(0.0f, 0.0f, 0.0f), vector3(0.0f, 0.0f, 0.0f), 30.0f, 0.7f, 0.8f, 0.0f, 0.1f);
 
 	Shader shaderit;
-	/*Texture text;
-	text.loadTexture("Textures/test.png");*/
-	shaderit.addVertexShader(shaderit.loadShader("Shaders/Phongvertexshader.vs"));
+	/*shaderit.addVertexShader(shaderit.loadShader("Shaders/Phongvertexshader.vs"));
 	shaderit.addFragmentShader(shaderit.loadShader("Shaders/Phongfragmentshader.fs"));
 	shaderit.compileShader();
 	shaderit.addUniform("cameraposition");
@@ -82,7 +63,7 @@ int main(int argc, char* argv[]) {
 	shaderit.addUniform("specularexponent");
 	shaderit.addUniform("directionallight");
 	shaderit.addUniform("pointlights");
-	shaderit.addUniform("spotlights");
+	shaderit.addUniform("spotlights");*/
 	shaderit.setAmbientLight(vector3(0.1f, 0.1f, 0.1f));
 	shaderit.directionallight = Directionallight(vector3(1.0f, 1.0f, 1.0f), vector3(1.0f, 1.0f, 1.0f), 0.1f);
 	Pointlight *plights = new Pointlight[6];
@@ -91,10 +72,9 @@ int main(int argc, char* argv[]) {
 	shaderit.getPointLights()[0] = &plights[0];
 	shaderit.getPointLights()[1] = &plights[1];
 	Spotlight *slights = new Spotlight[1];
-	
+
 	slights[0] = Spotlight(vector3(0.0f, 1.0f, 1.0f), vector3(-2.0f, 0.0f, 5.0f), vector3(1.0f, 1.0f, 1.0f), 30.0f, 0.7f, 0.8f, 0.0f, 0.1f);
 	shaderit.getSpotLights()[0] = &slights[0];
-	Materials material("Textures/test.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f);		// from basicshader change to render manager startup?
 
 	float previousscrolldistance;
 	float unitest = 0.0f;
@@ -112,7 +92,7 @@ int main(int argc, char* argv[]) {
 	while (true) {
 		starttime = std::chrono::high_resolution_clock::now();
 		memorymanager.memorymanagerUpdate();
-		Messages.messageUpdate(Inputs, window, thecamera);
+		Messages.messageSystemUpdate(Inputs, window, thecamera);
 		Inputs.getInputs();
 		window.updateWindow();
 		if (Inputs.keyboardstate[Input::W] == 1) {
@@ -132,7 +112,7 @@ int main(int argc, char* argv[]) {
 		}
 		if (Inputs.keyboardstate[Input::keyleft] == 1) {
 			thecamera.rotateCamera(-2.0f, 0.0f);
-		}        
+		}
 		if (Inputs.keyboardstate[Input::keydown] == 1) {
 			thecamera.rotateCamera(0.0f, -2.0f);
 		}
@@ -154,7 +134,7 @@ int main(int argc, char* argv[]) {
 		}
 		else {
 			lastpressed = false;
-		}	
+		}
 
 		if (Inputs.getScrolldistance().y != 0) {
 			thecamera.Zoom(Inputs.getScrolldistance().y);
@@ -164,22 +144,20 @@ int main(int argc, char* argv[]) {
 		}
 
 
-		shaderit.setUniform("uniformFloat", (float)sin(unitest));
 		transform.setTranslationVector(vector3(0.0f, -1.0f, 5.0f));
-		/*transform.setRotationVector(vector3(0, (float)sin(unitest) * 180, 0));*/
 		plights[0].setPosition(vector3(3.0f, 0.0f, 8.0 * (float)(sin(unitest) + 1.0f / 2.0f) + 10.0f));
 		plights[1].setPosition(vector3(7.0f, 0.0f, 8.0 * (float)(cos(unitest) + 1.0f / 2.0f) + 10.0f));
 		slights[0].setPosition(thecamera.getCameraposition());
 		slights[0].setDirection(thecamera.forwardvector);
 		transform.setPerspectiveProjectionSettings(thecamera.fov, window.getWindowWidth(), window.getWindowHeight(), thecamera.minviewdistance, thecamera.maxviewdistance);  //integer -> float
-		/*transform.setScalingVector(vector3(.75 * sin(unitest), .75 * sin(unitest), .75 * sin(unitest)));*/
-		shaderit.useShader();
+		/*transform.setScalingVector(vector3(.75 * sin(unitest), .75 * sin(unitest), .75 * sin(unitest)));*/	
 		/*shaderit.setUniform("transform", transform.newTransformationMatrix());
 		shaderit.setUniform("color", vector3(0.0f, 1.0f, 1.0f));
 		text.bindTexture();*/
+		shaderit.useShader();
 		shaderit.updateUniforms(transform.newUnprojectedMatrix(), transform.newTransformationMatrix(), transform.position, material);
 		meshme.drawMesh();
-
+		component.renderComponent(transform);
 
 
 		unitest += deltatime;
@@ -205,9 +183,38 @@ int main(int argc, char* argv[]) {
 			framerate = 0;
 		}
 	}
-		SDL_Quit();
+	SDL_Quit();
 }
 
+
+
+
+
+
+
+
+	/*Vertex vertices[] = half pyramid
+	{					//position, texture
+		Vertex(vector3(-1.0f, -1.0f, 0.0f), vector2(0.0f,0.0f)),
+		Vertex(vector3(0.0f, 1.0, 0.0f), vector2(0.5f , 0.0f)),
+		Vertex(vector3(1.0f, -1.0f, 0.0f), vector2(1.0f, 0.0f)),
+		Vertex(vector3(0.0f, -1.0f, 1.0f), vector2(0.0f, 0.5f))
+	};
+	unsigned int indices[] = {
+		3, 1, 0,
+		2, 1, 3,
+		0, 1, 2,
+		0, 2, 3
+	};*/
+	/*Vertex vertices[] =
+	{Vertex(vector3(-1.0f, -1.0f, 0.5773f), vector2(0.0f, 0.0f)),
+	Vertex(vector3(0.0f, -1.0f, -1.15475f), vector2(0.5f, 0.0f)),
+	Vertex(vector3(1.0f, -1.0f, 0.5773f), vector2(1.0f, 0.0f)),
+	Vertex(vector3(0.0f, 1.0f, 0.0f), vector2(0.5f, 1.0f))};
+	unsigned int indices[] = { 0, 3, 1,
+	1, 3, 2,
+	2, 3, 0,
+	1, 2, 0 };*/
 /*int* test = (int *)memorymanager.sfAllocator.engineAllocate(200, 8, false);
 char* testme = (char *)memorymanager.dbAllocator.engineAllocate(167, 8, false);*/
 /*Memorymanager test;

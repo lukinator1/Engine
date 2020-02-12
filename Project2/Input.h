@@ -1,9 +1,10 @@
 #pragma once
 #include <SDL2/SDL.h>
-#include "Engine.h"
 #include <string>
 #include <iostream>
-#include "vector2.h"
+#include "Messaging/Message.h"
+#include "Mathlibrary/vector2.h"
+#include "Global.h"
 //todo: capturemouse(maybe), textinput, custom cursor, keyheld
 class Input
 {

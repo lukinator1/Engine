@@ -1,7 +1,12 @@
 ﻿  main.cpp
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(160): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(170): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(171): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(174): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(99): warning C4101: 'previousscrolldistance': unreferenced local variable
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(140): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(148): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(149): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(152): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(79): warning C4101: 'previousscrolldistance': unreferenced local variable
+  Meshrenderer.cpp
+  Rendering.cpp
+  Shader.cpp
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\rendering\shader.cpp(95): warning C4267: '=': conversion from 'size_t' to 'GLint', possible loss of data
+  Generating Code...
   Project2.vcxproj -> C:\Users\lukinator1\Desktop\engine\The Super Suspension System\Project2\x64\Debug\Project2.exe

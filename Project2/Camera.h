@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine.h"
+#include "Mathlibrary/Mathlibrary.h"
 #include "SDL2/SDL.h"
 class Camera	//maybe make this inheret from window?, integrate with skybox	
 				//todo: inverted controls
@@ -123,8 +123,8 @@ public:
 	void setMouseLook(bool look) {
 		SDL_SetRelativeMouseMode(SDL_TRUE);
 	}
-	void handleMessage(Message &message){
-		/*if (!messagequeue.empty()) {
+	/*void handleMessage(Message &message){
+		if (!messagequeue.empty()) {
 			switch (message.messagetype) {
 			case Message::Messagetypes::Keydown:
 				switch (message.messagedataone) {
@@ -139,7 +139,7 @@ public:
 					moveCamera(forwardvector, -.3f);
 					break;
 				case 7:
-					/*moveCamera(, 0.3);
+					moveCamera(, 0.3);
 					break;
 
 				case 80:
@@ -156,8 +156,8 @@ public:
 					break;
 				}
 			}
-	}*/
-}
+	}
+}*/
 
 	Camera() {
 		firstperson = false;
