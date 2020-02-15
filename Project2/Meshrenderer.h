@@ -15,7 +15,7 @@ public:
 		this->materials = materials;
 	}
 	~Meshrenderer();
-	void renderComponent(Transforming transform) {
+	void renderComponent(Transforming transform, Shader shader) {
 		shader.useShader();
 		shader.updateUniforms(transform.newUnprojectedMatrix(), transform.newTransformationMatrix(), transform.position, materials);
 		mesh.drawMesh();

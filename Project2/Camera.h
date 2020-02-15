@@ -164,6 +164,11 @@ public:
 		upvector = upvector.Normalize();
 		forwardvector = forwardvector.Normalize();
 	}
+	Camera(vector3 newposition) { //check if falls within world space
+		position = newposition;
+		upvector = vector3(0.0f, 1.0f, 0.0f);
+		forwardvector = vector3(0.0f, 0.0f, 1.0f);
+	};
 	Camera(vector3 newposition, vector3 newupvector, vector3 newforwardvector) { //check if falls within world space
 		position = newposition;
 		upvector = newupvector;

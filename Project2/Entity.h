@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "Rendering/Transforming.h"
+#include "Rendering/Shader.h"
 #include "Component.h"
 class Entity
 {
@@ -27,12 +28,12 @@ public:
 			children[i].entityInput();
 		}
 	}
-	void renderEntity() {
+	void renderEntity(Shader s) {
 		for (int i = 0; i < components.size(); i++) {
-			components[i]->renderComponent(transform);
+			components[i]->renderComponent(transform, s);
 		}
 		for (int i = 0; i < children.size(); i++) {
-			children[i].renderEntity();
+			children[i].renderEntity(s);
 		}
 	}
 	void addSubEntity(Entity &subentity) {

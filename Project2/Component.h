@@ -1,5 +1,6 @@
 #pragma once
 #include "Rendering/Transforming.h"
+#include "Rendering/Shader.h"
 class Component{
 public:
 	void updateComponent(Transforming t) {
@@ -8,7 +9,7 @@ public:
 	void componentInput(Transforming t) {
 
 	}
-	virtual void renderComponent(Transforming t) {
+	virtual void renderComponent(Transforming t, Shader s) {
 
 	}
 	Component();

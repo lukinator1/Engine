@@ -108,6 +108,7 @@ skybox
 unlock the fps (keep framerate lock)
 fps counter
 improve error logger
+resizing/moving window
 
 #in vec4 color;
 #color = vec4(clamp(position, 0.0, uniformFloat), 1.0);

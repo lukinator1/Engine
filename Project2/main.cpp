@@ -22,7 +22,10 @@ int main(int argc, char* argv[]) {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	Messagesystem Messages;
 	Messages.messageSystemStartup();
+	Scene currentscene;
 	Window window(800, 600, "hello");
+	Rendering Renderer;
+	Renderer.renderingStartup();
 	Memorymanager memorymanager;
 	memorymanager.memoryManagerstartup();
 	Memorymanager::StackAllocator* stackallocator = memorymanager.newAllocator(1000, alignof(int));
@@ -38,6 +41,7 @@ int main(int argc, char* argv[]) {
 	Meshrenderer component(quote, material);
 	Meshrenderer* componentobject = &component;
 	root.addComponent(componentobject);
+	currentscene.root = root;
 
 	Vertex vertices[] = { Vertex(vector3(-fieldWidth, 0.0f, -fieldDepth), vector2(0.0f, 0.0f)),
 						Vertex(vector3(-fieldWidth, 0.0f, fieldDepth * 3), vector2(0.0f, 1.0f)),
@@ -158,8 +162,9 @@ int main(int argc, char* argv[]) {
 		shaderit.useShader();
 		shaderit.updateUniforms(transform.newUnprojectedMatrix(), transform.newTransformationMatrix(), transform.position, material);
 		meshme.drawMesh();
-		root.transform.setTranslationVector(vector3(10.0f, 17.5f, 12.0f));
-		root.renderEntity();
+		Renderer.renderEntity(currentscene.root);
+		/*root.transform.setTranslationVector(vector3(10.0f, 17.5f, 12.0f));
+		root.renderEntity(shaderit);*/
 
 
 		unitest += deltatime;
@@ -185,6 +190,7 @@ int main(int argc, char* argv[]) {
 			framerate = 0;
 		}
 	}
+	Renderer.renderingShutdown();
 	SDL_Quit();
 }
 

@@ -137,6 +137,7 @@
     <ClInclude Include="Mathlibrary\Mathlibrary.h" />
     <ClInclude Include="Messaging\Messaging.h" />
     <ClInclude Include="Global.h" />
+    <ClInclude Include="Rendering\Rendering.h" />
     <ClInclude Include="Rendering\Lighting\Directionallight.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Entity.h" />
@@ -147,7 +148,7 @@
     <ClInclude Include="Rendering\Materials.h" />
     <ClInclude Include="Meshrenderer.h" />
     <ClInclude Include="Rendering\Lighting\Pointlight.h" />
-    <ClInclude Include="Rendering\Rendering.h" />
+    <ClInclude Include="Rendering\Rendermanager.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Rendering\Lighting\Spotlight.h" />
     <ClInclude Include="Rendering\stb_image.h" />
@@ -179,7 +180,7 @@
     <ClCompile Include="Rendering\Materials.cpp" />
     <ClCompile Include="Meshrenderer.cpp" />
     <ClCompile Include="Rendering\Lighting\Pointlight.cpp" />
-    <ClCompile Include="Rendering\Rendering.cpp" />
+    <ClCompile Include="Rendering\Rendermanager.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Rendering\Lighting\Spotlight.cpp" />
     <ClCompile Include="Rendering\Texture.cpp" />
