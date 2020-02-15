@@ -106,6 +106,33 @@ vector3 vector3::subtract(vector3 sub) {
 vector3 vector3::subtract(float sub) {
 	return vector3(x - sub, y - sub, z - sub);
 }
+vector2 vector3::getXY()
+{
+	return vector2(x, y);
+}
+vector2 vector3::getYX()
+{
+	return vector2(y, x);
+}
+vector2 vector3::getYZ()
+{
+	return vector2(y, z);
+}
+vector2 vector3::getZY()
+{
+	return vector2(z, y);
+}
+vector2 vector3::getZX()
+{
+	return vector2(z, x);
+}
+vector2 vector3::getXZ()
+{
+	return vector2(x, z);
+}
+vector3 vector3::interpolateVector(vector3 destination, float interpfactor) {
+	return destination.subtract(*this).multiply(interpfactor).add(*this);
+}
 bool vector3::operator!=(vector3 rhs)
 {
 	if (x == rhs.x && y == rhs.y && z == rhs.z) {

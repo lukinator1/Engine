@@ -12,7 +12,7 @@ public:
 	std::vector <Component *> components; //maybe make a map?
 	Entity();
 	~Entity();
-	void updateEntity() {
+	void updateEntity() { //deltas passed in here
 		for (int i = 0; i < components.size(); i++) {
 			components[i]->updateComponent(transform);
 		}
