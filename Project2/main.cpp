@@ -35,15 +35,18 @@ int main(int argc, char* argv[]) {
 	Transforming transform;
 	Materials material("test.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f);		// from basicshader change to render manager startup?
 
-	Scene currentscene;
-	currentscene.setSkybox("right", "left", "top", "bottom", "front", "back");
-	Entity root;
-	Mesh quote;
-	quote.loadMeshObj("quote.obj");
-	Meshrenderer component(quote, material);
+	Scene sceneone;
+	sceneone.setSkybox("right.jpg", "left.jpg", "top.jpg", "bottom.jpg", "front.jpg", "back.jpg");
+
+
+	Entity Quote;
+	Quote.transform.setTranslationVector(vector3(10.0f, 17.5f, 12.0f));
+	Mesh quotemodel;
+	quotemodel.loadMeshObj("quote.obj");
+	Meshrenderer component(quotemodel, material);
 	Meshrenderer* componentobject = &component;
-	root.addComponent(componentobject);
-	currentscene.root = root;
+	Quote.addComponent(componentobject);
+	sceneone.root = Quote;
 
 	Vertex vertices[] = { Vertex(vector3(-fieldWidth, 0.0f, -fieldDepth), vector2(0.0f, 0.0f)),
 						Vertex(vector3(-fieldWidth, 0.0f, fieldDepth * 3), vector2(0.0f, 1.0f)),
@@ -85,7 +88,7 @@ int main(int argc, char* argv[]) {
 
 
 
-
+	Scene currentscene;
 	while (true) {
 		starttime = std::chrono::high_resolution_clock::now();
 		memorymanager.memorymanagerUpdate();
@@ -141,10 +144,10 @@ int main(int argc, char* argv[]) {
 
 
 		transform.setTranslationVector(vector3(0.0f, -1.0f, 5.0f));
-		/*plights[0].setPosition(vector3(3.0f, 0.0f, 8.0 * (float)(sin(unitest) + 1.0f / 2.0f) + 10.0f));
+		plights[0].setPosition(vector3(3.0f, 0.0f, 8.0 * (float)(sin(unitest) + 1.0f / 2.0f) + 10.0f));
 		plights[1].setPosition(vector3(7.0f, 0.0f, 8.0 * (float)(cos(unitest) + 1.0f / 2.0f) + 10.0f));
 		slights[0].setPosition(thecamera.getCameraposition());
-		slights[0].setDirection(thecamera.forwardvector);*/
+		slights[0].setDirection(thecamera.forwardvector);
 		transform.setPerspectiveProjectionSettings(thecamera.fov, window.getWindowWidth(), window.getWindowHeight(), thecamera.minviewdistance, thecamera.maxviewdistance);  //integer -> float
 		/*transform.setScalingVector(vector3(.75 * sin(unitest), .75 * sin(unitest), .75 * sin(unitest)));	
 		shaderit.setUniform("transform", transform.newTransformationMatrix());*/
@@ -153,13 +156,11 @@ int main(int argc, char* argv[]) {
 		shaderit.useShader();
 		shaderit.updateUniforms(transform.newUnprojectedMatrix(), transform.newTransformationMatrix(), transform.position, material);
 		meshme.drawMesh();
+		Renderer.renderScene(sceneone);
 
 
 
 
-
-
-		Renderer.renderScene(currentscene);
 		
 
 
