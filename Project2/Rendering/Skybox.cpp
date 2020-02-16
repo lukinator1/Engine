@@ -1,94 +1,13 @@
 #include "Skybox.h"
+Skybox::Skybox() : skyboxshader("Skybox") {
+
+}
 Skybox::Skybox(std::string right, std::string left, std::string top, std::string bottom, std::string front, std::string back) : skyboxshader("Skybox")
 {
-	/*Vertex skyboxvertices[] = {       
-		Vertex(vector3(-1.0f,  1.0f, -1.0f)),
-		Vertex(vector3(-1.0f, -1.0f, -1.0f)),
-		Vertex(vector3(1.0f, -1.0f, -1.0f)),
-		Vertex(vector3(1.0f, -1.0f, -1.0f)),
-		Vertex(vector3(1.0f,  1.0f, -1.0f)),
-		Vertex(vector3(-1.0f,  1.0f, -1.0f)),
-
-		Vertex(vector3(-1.0f, -1.0f,  1.0f)),
-		Vertex(vector3(-1.0f, -1.0f, -1.0f)),
-		Vertex(vector3(-1.0f,  1.0f, -1.0f)),
-		Vertex(vector3(-1.0f,  1.0f, -1.0f)),
-		Vertex(vector3(-1.0f,  1.0f,  1.0f)),
-		Vertex(vector3(-1.0f, -1.0f,  1.0f)),
-
-		Vertex(vector3(1.0f, -1.0f, -1.0f)),
-		Vertex(vector3(1.0f, -1.0f,  1.0f)),
-		Vertex(vector3(1.0f,  1.0f,  1.0f)),
-		Vertex(vector3(1.0f,  1.0f,  1.0f)),
-		Vertex(vector3(1.0f,  1.0f, -1.0f)),
-		Vertex(vector3(1.0f, -1.0f, -1.0f)),
-
-		Vertex(vector3(-1.0f, -1.0f,  1.0f)),
-		Vertex(vector3(-1.0f,  1.0f,  1.0f)),
-		Vertex(vector3(1.0f,  1.0f,  1.0f)),
-		Vertex(vector3(1.0f,  1.0f,  1.0f)),
-		Vertex(vector3(1.0f, -1.0f,  1.0f)),
-		Vertex(vector3(-1.0f, -1.0f,  1.0f)),
-
-		Vertex(vector3(-1.0f,  1.0f, -1.0f)),
-		Vertex(vector3(1.0f,  1.0f, -1.0f)),
-		Vertex(vector3(1.0f,  1.0f,  1.0f)),
-		Vertex(vector3(1.0f,  1.0f,  1.0f)),
-		Vertex(vector3(-1.0f,  1.0f,  1.0f)),
-		Vertex(vector3(-1.0f,  1.0f, -1.0f)),
-
-		Vertex(vector3(-1.0f, -1.0f, -1.0f)),
-		Vertex(vector3(-1.0f, -1.0f,  1.0f)),
-		Vertex(vector3(1.0f, -1.0f, -1.0f)),
-		Vertex(vector3(1.0f, -1.0f, -1.0f)),
-		Vertex(vector3(-1.0f, -1.0f,  1.0f)),
-		Vertex(vector3(1.0f, -1.0f,  1.0f))
-	};*/
-	/*float skyboxvertices[] = {
-		// positions          
-		-1.0f * size,  1.0f * size, -1.0f * size,
-		-1.0f * size, -1.0f * size, -1.0f * size,
-		 1.0f * size, -1.0f * size, -1.0f * size,
-		 1.0f * size, -1.0f * size, -1.0f * size,
-		 1.0f * size,  1.0f * size, -1.0f * size,
-		-1.0f * size,  1.0f * size, -1.0f * size,
-
-		-1.0f * size, -1.0f * size,  1.0f * size,
-		-1.0f * size, -1.0f * size, -1.0f * size,
-		-1.0f * size,  1.0f * size, -1.0f * size,
-		-1.0f * size,  1.0f * size, -1.0f * size,
-		-1.0f * size,  1.0f * size,  1.0f * size,
-		-1.0f * size, -1.0f * size,  1.0f * size,
-
-		 1.0f * size, -1.0f * size -1.0f * size,
-		 1.0f * size, -1.0f * size,  1.0f * size,
-		 1.0f * size,  1.0f * size,  1.0f * size,
-		 1.0f * size,  1.0f * size,  1.0f * size,
-		 1.0f * size,  1.0f * size, -1.0f * size,
-		 1.0f * size, -1.0f * size, -1.0f * size,
-
-		-1.0f * size, -1.0f * size,  1.0f * size,
-		-1.0f * size,  1.0f * size,  1.0f * size,
-		 1.0f * size,  1.0f * size,  1.0f * size,
-		 1.0f * size,  1.0f * size,  1.0f * size,
-		 1.0f * size, -1.0f * size,  1.0f * size,
-		-1.0f * size, -1.0f * size,  1.0f * size,
-
-		-1.0f * size,  1.0f * size, -1.0f * size,
-		 1.0f * size,  1.0f * size, -1.0f * size,
-		 1.0f * size,  1.0f * size,  1.0f * size,
-		 1.0f * size,  1.0f * size,  1.0f * size,
-		-1.0f * size,  1.0f * size,  1.0f * size,
-		-1.0f * size,  1.0f * size, -1.0f * size,
-
-		-1.0f * size, -1.0f * size, -1.0f * size,
-		-1.0f * size, -1.0f * size,  1.0f * size,
-		 1.0f * size, -1.0f * size, -1.0f * size,
-		 1.0f * size, -1.0f * size, -1.0f * size,
-		-1.0f * size, -1.0f * size,  1.0f * size,
-		 1.0f * size, -1.0f * size,  1.0f * size
-	};*/
-	float skyboxvertices[] = {         
+	setSkybox(right, left, top, bottom, front, back);
+}
+void Skybox::setSkybox(std::string right, std::string left, std::string top, std::string bottom, std::string front, std::string back){
+	float skyboxvertices[] = {
 		-1.0f,  1.0f, -1.0f,
 		-1.0f, -1.0f, -1.0f,
 		 1.0f, -1.0f, -1.0f,
@@ -131,9 +50,6 @@ Skybox::Skybox(std::string right, std::string left, std::string top, std::string
 		-1.0f, -1.0f,  1.0f,
 		 1.0f, -1.0f,  1.0f
 	};
-	/*for (int i = 0; i < 108; i++) {
-		skyboxvertices[i] *= size;
-	}*/
 	skyboxbox.makeSkyboxMesh(skyboxvertices, 36);
 	skyboxtexture.loadCubeMap(right, left, top, bottom, front, back);
 }

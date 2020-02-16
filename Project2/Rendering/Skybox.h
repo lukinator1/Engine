@@ -16,7 +16,9 @@ public:
 	Mesh skyboxbox;
 	Transforming t;
 	void useSkybox();
+	Skybox();
 	Skybox(std::string right, std::string left, std::string top, std::string bottom, std::string front, std::string back);
+	void setSkybox(std::string right, std::string left, std::string top, std::string bottom, std::string front, std::string back);
 	~Skybox();
 };
 

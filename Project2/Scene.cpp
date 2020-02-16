@@ -1,8 +1,10 @@
 #include "Scene.h"
-Scene::Scene()
+Scene::Scene() 
 {
 }
-
+void Scene::setSkybox(std::string right, std::string left, std::string top, std::string bottom, std::string front, std::string back) {
+	skybox.setSkybox(right, left, top, bottom, front, back);
+}
 void Scene::saveScene()
 {
 }

@@ -22,7 +22,6 @@ int main(int argc, char* argv[]) {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	Messagesystem Messages;
 	Messages.messageSystemStartup();
-	Scene currentscene;
 	Window window(800, 600, "hello");
 	Rendering Renderer;
 	Renderer.renderingStartup();
@@ -32,11 +31,12 @@ int main(int argc, char* argv[]) {
 	Input Inputs;
 	Inputs.inputStartup();
 	glEnable(GL_TEXTURE_2D);
-
-	Skybox skybox("right.jpg", "left.jpg", "top.jpg", "bottom.jpg", "front.jpg", "back.jpg");
 	Camera thecamera;
 	Transforming transform;
 	Materials material("test.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f);		// from basicshader change to render manager startup?
+
+	Scene currentscene;
+	currentscene.setSkybox("right", "left", "top", "bottom", "front", "back");
 	Entity root;
 	Mesh quote;
 	quote.loadMeshObj("quote.obj");
@@ -57,7 +57,6 @@ int main(int argc, char* argv[]) {
 	Spotlight flashlight(vector3(0.0f, 1.0f, 1.0f), vector3(0.0f, 0.0f, 0.0f), vector3(0.0f, 0.0f, 0.0f), 30.0f, 0.7f, 0.8f, 0.0f, 0.1f);
 
 	Shader shaderit;
-
 	shaderit.setAmbientLight(vector3(0.1f, 0.1f, 0.1f));
 	shaderit.directionallight = Directionallight(vector3(1.0f, 1.0f, 1.0f), vector3(1.0f, 1.0f, 1.0f), 0.1f);
 	Pointlight *plights = new Pointlight[6];
@@ -142,18 +141,26 @@ int main(int argc, char* argv[]) {
 
 
 		transform.setTranslationVector(vector3(0.0f, -1.0f, 5.0f));
-		plights[0].setPosition(vector3(3.0f, 0.0f, 8.0 * (float)(sin(unitest) + 1.0f / 2.0f) + 10.0f));
+		/*plights[0].setPosition(vector3(3.0f, 0.0f, 8.0 * (float)(sin(unitest) + 1.0f / 2.0f) + 10.0f));
 		plights[1].setPosition(vector3(7.0f, 0.0f, 8.0 * (float)(cos(unitest) + 1.0f / 2.0f) + 10.0f));
 		slights[0].setPosition(thecamera.getCameraposition());
-		slights[0].setDirection(thecamera.forwardvector);
+		slights[0].setDirection(thecamera.forwardvector);*/
 		transform.setPerspectiveProjectionSettings(thecamera.fov, window.getWindowWidth(), window.getWindowHeight(), thecamera.minviewdistance, thecamera.maxviewdistance);  //integer -> float
 		/*transform.setScalingVector(vector3(.75 * sin(unitest), .75 * sin(unitest), .75 * sin(unitest)));	
 		shaderit.setUniform("transform", transform.newTransformationMatrix());*/
+
+
 		shaderit.useShader();
 		shaderit.updateUniforms(transform.newUnprojectedMatrix(), transform.newTransformationMatrix(), transform.position, material);
 		meshme.drawMesh();
-		Renderer.renderEntity(currentscene.root);
-		skybox.useSkybox();
+
+
+
+
+
+
+		Renderer.renderScene(currentscene);
+		
 
 
 

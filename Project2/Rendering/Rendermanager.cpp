@@ -56,6 +56,7 @@ void Rendering::renderEntity(Entity &gameobject) {
 void Rendering::renderScene(Scene &currentscene)
 {
 	currentscene.root.renderEntity(shade);
+	currentscene.skybox.useSkybox();
 }
 Rendering::~Rendering()
 {
