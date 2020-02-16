@@ -32,6 +32,8 @@ int main(int argc, char* argv[]) {
 	Input Inputs;
 	Inputs.inputStartup();
 	glEnable(GL_TEXTURE_2D);
+
+	Skybox skybox("right.jpg", "left.jpg", "top.jpg", "bottom.jpg", "front.jpg", "back.jpg");
 	Camera thecamera;
 	Transforming transform;
 	Materials material("test.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f);		// from basicshader change to render manager startup?
@@ -55,20 +57,7 @@ int main(int argc, char* argv[]) {
 	Spotlight flashlight(vector3(0.0f, 1.0f, 1.0f), vector3(0.0f, 0.0f, 0.0f), vector3(0.0f, 0.0f, 0.0f), 30.0f, 0.7f, 0.8f, 0.0f, 0.1f);
 
 	Shader shaderit;
-	/*shaderit.addVertexShader(shaderit.loadShader("Shaders/Phongvertexshader.vs"));
-	shaderit.addFragmentShader(shaderit.loadShader("Shaders/Phongfragmentshader.fs"));
-	shaderit.compileShader();
-	shaderit.addUniform("cameraposition");
-	shaderit.addUniform("color");
-	shaderit.addUniform("transform");
-	shaderit.addUniform("projectedtransform");
-	shaderit.addUniform("uniformFloat");
-	shaderit.addUniform("ambientlight");
-	shaderit.addUniform("specularintensity");
-	shaderit.addUniform("specularexponent");
-	shaderit.addUniform("directionallight");
-	shaderit.addUniform("pointlights");
-	shaderit.addUniform("spotlights");*/
+
 	shaderit.setAmbientLight(vector3(0.1f, 0.1f, 0.1f));
 	shaderit.directionallight = Directionallight(vector3(1.0f, 1.0f, 1.0f), vector3(1.0f, 1.0f, 1.0f), 0.1f);
 	Pointlight *plights = new Pointlight[6];
@@ -94,6 +83,10 @@ int main(int argc, char* argv[]) {
 	bool flashlighton = false;
 	bool lastpressed = false;
 	bool pressed = false;
+
+
+
+
 	while (true) {
 		starttime = std::chrono::high_resolution_clock::now();
 		memorymanager.memorymanagerUpdate();
@@ -140,7 +133,6 @@ int main(int argc, char* argv[]) {
 		else {
 			lastpressed = false;
 		}
-
 		if (Inputs.getScrolldistance().y != 0) {
 			thecamera.Zoom(Inputs.getScrolldistance().y);
 		}
@@ -155,16 +147,19 @@ int main(int argc, char* argv[]) {
 		slights[0].setPosition(thecamera.getCameraposition());
 		slights[0].setDirection(thecamera.forwardvector);
 		transform.setPerspectiveProjectionSettings(thecamera.fov, window.getWindowWidth(), window.getWindowHeight(), thecamera.minviewdistance, thecamera.maxviewdistance);  //integer -> float
-		/*transform.setScalingVector(vector3(.75 * sin(unitest), .75 * sin(unitest), .75 * sin(unitest)));*/	
-		/*shaderit.setUniform("transform", transform.newTransformationMatrix());
-		shaderit.setUniform("color", vector3(0.0f, 1.0f, 1.0f));
-		text.bindTexture();*/
+		/*transform.setScalingVector(vector3(.75 * sin(unitest), .75 * sin(unitest), .75 * sin(unitest)));	
+		shaderit.setUniform("transform", transform.newTransformationMatrix());*/
 		shaderit.useShader();
 		shaderit.updateUniforms(transform.newUnprojectedMatrix(), transform.newTransformationMatrix(), transform.position, material);
 		meshme.drawMesh();
 		Renderer.renderEntity(currentscene.root);
-		/*root.transform.setTranslationVector(vector3(10.0f, 17.5f, 12.0f));
-		root.renderEntity(shaderit);*/
+		skybox.useSkybox();
+
+
+
+
+
+
 
 
 		unitest += deltatime;

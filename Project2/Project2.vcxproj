@@ -153,6 +153,7 @@
     <ClInclude Include="Rendering\Lighting\Spotlight.h" />
     <ClInclude Include="Rendering\stb_image.h" />
     <ClInclude Include="Rendering\Texture.h" />
+    <ClInclude Include="Rendering\Skybox.h" />
     <ClInclude Include="Thegame.h" />
     <ClInclude Include="Mathlibrary\vector2.h" />
     <ClInclude Include="Mathlibrary\matrix4f.h" />
@@ -184,6 +185,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Rendering\Lighting\Spotlight.cpp" />
     <ClCompile Include="Rendering\Texture.cpp" />
+    <ClCompile Include="Rendering\Skybox.cpp" />
     <ClCompile Include="Thegame.cpp" />
     <ClCompile Include="Mathlibrary\vector2.cpp" />
     <ClCompile Include="Mathlibrary\matrix4f.cpp" />

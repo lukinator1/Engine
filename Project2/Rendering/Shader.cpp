@@ -13,7 +13,6 @@ Shader::Shader() : directionallight(vector3(0.0f, 0.0f, 0.0f), vector3(0.0f, 0.0
 	addUniform("color");
 	addUniform("transform");
 	addUniform("projectedtransform");
-	addUniform("uniformFloat");
 	addUniform("ambientlight");
 	addUniform("specularintensity");
 	addUniform("specularexponent");
@@ -36,6 +35,36 @@ Shader::Shader() : directionallight(vector3(0.0f, 0.0f, 0.0f), vector3(0.0f, 0.0
 		engineLog(__FILE__, __LINE__, "Warning: Shader creation unsuccessful.", 1, 2, true);
 		return;
 	}*/
+}
+Shader::Shader(std::string shadertype) : directionallight(vector3(0.0f, 0.0f, 0.0f), vector3(0.0f, 0.0f, 0.0f))
+{
+	if (shadertype == "Skybox" || shadertype == "skybox") {
+	ambientlight = vector3(1.0f, 1.0f, 1.0f);
+	program = glCreateProgram();
+	if (program == 0) {
+		engineLog(__FILE__, __LINE__, "Warning: Shader program failed to create.", 1, 2, true);
+	}
+		addVertexShader(loadShader("Skyboxvertexshader.vs"));
+		addFragmentShader(loadShader("Skyboxfragmentshader.fs"));
+		compileShader();
+		addUniform("skyboxmatrix");
+		/*addUniform("view");
+		addUniform("projection");
+		addUniform("projectedtransform");
+		addUniform("cameraposition");
+		addUniform("color");
+		addUniform("transform");
+		addUniform("uniformFloat");
+		addUniform("ambientlight");
+		addUniform("specularintensity");
+		addUniform("specularexponent");
+		addUniform("directionallight");
+		addUniform("pointlights");
+		addUniform("spotlights");*/
+	}
+	else {
+		engineLog(__FILE__, __LINE__, "Warning: Shader failed to create, a valid filename wasn't passed in.", 1, 2, true);
+	}
 }
 Shader::~Shader()
 {

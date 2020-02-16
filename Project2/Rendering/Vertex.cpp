@@ -2,6 +2,8 @@
 Vertex::Vertex()
 {
 	texture = vector2(0.0f, 0.0f);
+	position = vector3(0.0f, 0.0f, 0.0f);
+	normal = vector3(0.0f, 0.0f, 0.0f);
 }
 Vertex::Vertex(vector3 newposition, vector2 newtexture, vector3 newnormal)
 {

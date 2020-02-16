@@ -8,6 +8,7 @@
 #include "Vertex.h"
 #include "../Scene.h"
 #include "../Entity.h"
+#include "Skybox.h"
 #include <GL/glew.h>
 #include <SDL2/SDL.h>
 #include <vector>

@@ -12,8 +12,6 @@ class Shader : public Logger
 private:
 	unsigned int program;
 	std::map<std::string, int> uniforms;
-	enum shadertype {
-	};
 public:
 	vector3 ambientlight;
 	Directionallight directionallight;
@@ -44,6 +42,7 @@ public:
 	void setAmbientLight(vector3 newambientlight);
 
 	Shader();
+	Shader(std::string filename);
 	~Shader();
 };
 

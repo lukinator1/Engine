@@ -2,7 +2,7 @@
 #include "Rendering/Transforming.h"
 #include "Rendering/Shader.h"
 class Component{
-public:
+public:  //deltas passed in here
 	void updateComponent(Transforming t) {
 
 	}

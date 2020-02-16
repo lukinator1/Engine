@@ -8,6 +8,7 @@ class Texture : public Logger
 public:
 	GLuint textureid;
 	void loadTexture(std::string filename);
+	void loadCubeMap(std::string right, std::string left, std::string top, std::string bottom, std::string front, std::string back);
 	void bindTexture();
 	Texture();
 	Texture(std::string filename);

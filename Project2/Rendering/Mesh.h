@@ -15,8 +15,9 @@ public:
 	Mesh();
 	~Mesh();
 	void makeMesh(Vertex* vertices, unsigned int *indices, unsigned int numvertices, unsigned int numindices);
+	void makeSkyboxMesh(float* vertices, unsigned int numvertices);
 	void drawMesh();
-	void addVertices(Vertex* vertices, int numvertices);
+	void drawNoIndicesMesh();
 	void loadMeshObj(std::string file);
 	void makeErrorMesh();
 	void normalizeNormalVertices(Vertex * vertices, int numvertices);
