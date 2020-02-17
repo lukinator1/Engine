@@ -154,7 +154,7 @@ int main(int argc, char* argv[]) {
 		meshme.drawMesh();
 		Renderer.renderScene(sceneone);
 		Renderer.Textrenderer.renderText("texter", 510.0f,  300.0f, vector3(1.0f, 1.0f, 1.0f), .4f);
-
+		Renderer.Textrenderer.renderText("The quick brown fox jumped over the lazy dog. 1234567890", 0.0f, 300.0f, vector3(0.4, 0.3, 0.8), .7f);
 
 
 		

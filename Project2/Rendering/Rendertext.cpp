@@ -74,7 +74,7 @@ void Rendertext::loadText() {
 	glBindVertexArray(0);*/
 
 	FT_Face face;
-	if (FT_New_Face(ft, "C:/Users/lukinator1/Desktop/engine/The Super Suspension System/Project2/Project2/Rendering/Textfonts/arial.ttf", 0, &face)) {
+	if (FT_New_Face(ft, "Rendering/Textfonts/arial.ttf", 0, &face)) {
 		engineLog(__FILE__, __LINE__, "Text font failed to load.", 2, 2, false);
 		return;
 	}
@@ -152,7 +152,8 @@ void Rendertext::renderText(std::string text, float _x, float _y, vector3 color,
 	}
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);*/
-
+	/*glCullFace(GL_BACK);*/ 
+	glFrontFace(GL_CCW);
 	textshader.useShader();
 	textshader.setUniform("textcolor", color);
 	glActiveTexture(GL_TEXTURE0);
@@ -161,19 +162,18 @@ void Rendertext::renderText(std::string text, float _x, float _y, vector3 color,
 	for (i = text.begin(); i != text.end(); i++) {
 		Character currentchar = characters[*i];
 		GLfloat xpos = _x + currentchar.bearing.x * scale;
-		GLfloat ypos = _y + (currentchar.size.y - currentchar.bearing.y) * scale;
+		GLfloat ypos = _y - (currentchar.size.y - currentchar.bearing.y) * scale;
 
 		GLfloat w = currentchar.size.x * scale;
 		GLfloat h = currentchar.size.y * scale;
 
 		GLfloat vertices[6][4] = {
-			{ xpos,     ypos - h, 0.0, 0.0 },
+			{ xpos,     ypos + h, 0.0, 0.0 },
 			{ xpos,     ypos,     0.0, 1.0 },
 			{ xpos + w, ypos,     1.0, 1.0 },
-
-			{ xpos,     ypos - h,  0.0, 0.0 },
+			{ xpos,     ypos + h,  0.0, 0.0 },
 			{ xpos + w, ypos,      1.0, 1.0 },
-			{ xpos + w, ypos - h,  1.0, 0.0 }
+			{ xpos + w, ypos + h,  1.0, 0.0 }
 		};
 		/*GLfloat xpos = _x + currentchar.bearing.x * scale;
 		GLfloat ypos = _y - (currentchar.size.y - currentchar.bearing.y) * scale;
@@ -196,6 +196,7 @@ void Rendertext::renderText(std::string text, float _x, float _y, vector3 color,
 	}
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
+	glFrontFace(GL_CW);
 }
 Rendertext::~Rendertext()
 {

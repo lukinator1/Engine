@@ -68,7 +68,7 @@ public:
 		m[2][0] = 0;									m[2][1] = 0;					m[2][2] = (-znear - zfar)/viewrange;		m[2][3] = (2.0f * zfar * znear) / viewrange;
 		m[3][0] = 0;									m[3][1] = 0;					m[3][2] = 1;								m[3][3] = 0;
 }
-	void makeOrthographic(float left, float right, float top, float bottom, float far, float near) {
+	void makeOrthographic(float left, float right, float bottom, float top, float near, float far) {
 		float width = right - left;
 		float height = top - bottom;
 		float depth = far - near;
