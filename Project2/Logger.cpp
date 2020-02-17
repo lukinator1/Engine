@@ -10,7 +10,7 @@ void Logger::startUp()
 	engineverbosity = 3;
 	enginechannel = 0;
 	showwarnings = true;
-	EngineLogFile.open("EngineLog.txt", std::ofstream::out | std::ofstream::trunc);
+	EngineLogFile.open("Enginelogs/EngineLog.txt", std::ofstream::out | std::ofstream::trunc);
 	setEngineLoggerSettings(0, 3, true);
 }
 void Logger::shutDown()
@@ -35,7 +35,7 @@ void Logger::engineLog(std::string file, unsigned int line, std::string errormes
 		}
 	}
 }
-std::ofstream Logger::EngineLogFile("EngineLog.txt", std::ofstream::out | std::ofstream::trunc);
+std::ofstream Logger::EngineLogFile("Enginelogs/EngineLog.txt", std::ofstream::out | std::ofstream::trunc);
 int Logger::engineverbosity = 3;
 int Logger::enginechannel = 0;  //0 = all, 1 = memorymanager
 bool Logger::showwarnings = true;

@@ -13,7 +13,8 @@ Window::Window(int width , int height, std::string title)
 
 	window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 	glContext = SDL_GL_CreateContext(window);
-
+	
+	glewExperimental = GL_TRUE;
 	GLenum res = glewInit();
 	if (res != GLEW_OK) {
 		/*std::cerr << "Glew failed to initialize!" << std::endl;*/ //enginelog
@@ -22,10 +23,13 @@ Window::Window(int width , int height, std::string title)
 	SDL_GL_SetSwapInterval(1);
 	glFrontFace(GL_CW);
 	glCullFace(GL_BACK);
+	glViewport(0, 0, windowwidth, windowheight);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 	/*glEnable(GL_FRAMEBUFFER_SRGB);*/
 	glEnable(GL_DEPTH_CLAMP);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

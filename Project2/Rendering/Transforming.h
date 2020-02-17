@@ -82,6 +82,11 @@ public:
 
 		return projectionmatrix * (camerarotation * (rotationmatrix * scalematrix));
 	}
+	matrix4f newTextMatrix() {
+		matrix4f textmatrix;
+		textmatrix.makeOrthographic(0.0f, 800.0f, 600.0f, 0.0f, 1.0f, -1.0); //needs to be changed to window width
+		return textmatrix;
+	}
 
 	void setPerspectiveProjectionSettings(float newfov, float newwidth, float newheight, float newminviewdistance, float newmaxviewdistance) {
 		fov = newfov;

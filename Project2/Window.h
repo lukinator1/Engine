@@ -13,9 +13,9 @@ class Window
 private:
 	int windowwidth;
 	int windowheight;
-	SDL_Window* window;
 	SDL_GLContext glContext;
 public:
+	SDL_Window* window;
 	void handleMessage(Message &message);
 	void swapWindow();
 	Window(int width, int height, std::string title);

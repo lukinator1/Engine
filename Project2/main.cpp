@@ -1,7 +1,6 @@
 #include <fstream>
 #include "Engine.h"
 #include "Window.h"
-#include "Engine.h"
 #include "Input.h"
 #include "Rendering/Rendering.h"
 #include "Mathlibrary/Mathlibrary.h"
@@ -24,7 +23,7 @@ int main(int argc, char* argv[]) {
 	Messages.messageSystemStartup();
 	Window window(800, 600, "hello");
 	Rendering Renderer;
-	Renderer.renderingStartup();
+	Renderer.renderingStartup(window);
 	Memorymanager memorymanager;
 	memorymanager.memoryManagerstartup();
 	Memorymanager::StackAllocator* stackallocator = memorymanager.newAllocator(1000, alignof(int));
@@ -34,7 +33,6 @@ int main(int argc, char* argv[]) {
 	Camera thecamera;
 	Transforming transform;
 	Materials material("test.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f);		// from basicshader change to render manager startup?
-
 	Scene sceneone;
 	sceneone.setSkybox("right.jpg", "left.jpg", "top.jpg", "bottom.jpg", "front.jpg", "back.jpg");
 
@@ -60,7 +58,7 @@ int main(int argc, char* argv[]) {
 	Spotlight flashlight(vector3(0.0f, 1.0f, 1.0f), vector3(0.0f, 0.0f, 0.0f), vector3(0.0f, 0.0f, 0.0f), 30.0f, 0.7f, 0.8f, 0.0f, 0.1f);
 
 	Shader shaderit;
-	shaderit.setAmbientLight(vector3(0.1f, 0.1f, 0.1f));
+	shaderit.setAmbientLight(vector3(0.5f, 0.5f, 0.5f));
 	shaderit.directionallight = Directionallight(vector3(1.0f, 1.0f, 1.0f), vector3(1.0f, 1.0f, 1.0f), 0.1f);
 	Pointlight *plights = new Pointlight[6];
 	plights[0] = Pointlight(vector3(1.0f, 0.5f, 0.0f), vector3(-2.0f, 0.0f, 5.0f), 4.0f, 0.8f, 0.0f, 1.0f);
@@ -85,8 +83,6 @@ int main(int argc, char* argv[]) {
 	bool flashlighton = false;
 	bool lastpressed = false;
 	bool pressed = false;
-
-
 
 	Scene currentscene;
 	while (true) {
@@ -157,7 +153,7 @@ int main(int argc, char* argv[]) {
 		shaderit.updateUniforms(transform.newUnprojectedMatrix(), transform.newTransformationMatrix(), transform.position, material);
 		meshme.drawMesh();
 		Renderer.renderScene(sceneone);
-
+		Renderer.Textrenderer.renderText("texter", 510.0f,  300.0f, vector3(1.0f, 1.0f, 1.0f), .4f);
 
 
 

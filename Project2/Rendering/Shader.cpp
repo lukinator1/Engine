@@ -62,6 +62,18 @@ Shader::Shader(std::string shadertype) : directionallight(vector3(0.0f, 0.0f, 0.
 		addUniform("pointlights");
 		addUniform("spotlights");*/
 	}
+	else if (shadertype == "Textshader" || shadertype == "textshader"){
+		ambientlight = vector3(1.0f, 1.0f, 1.0f);
+		program = glCreateProgram();
+		if (program == 0) {
+			engineLog(__FILE__, __LINE__, "Warning: Shader program failed to create.", 1, 2, true);
+		}
+		addVertexShader(loadShader("Textvertexshader.vs"));
+		addFragmentShader(loadShader("Textfragmentshader.fs"));
+		compileShader();
+		addUniform("textmatrix");
+		addUniform("textcolor");
+	}
 	else {
 		engineLog(__FILE__, __LINE__, "Warning: Shader failed to create, a valid filename wasn't passed in.", 1, 2, true);
 	}
