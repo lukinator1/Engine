@@ -7,6 +7,7 @@
 #include "Global.h"
 #include "Logger.h"
 #include "Messaging/Message.h"
+#include "Rendering/Texture.h"
 //to do: window icon + resolution
 //momerykl monkeyr
 class Window : public Logger
@@ -20,7 +21,7 @@ private:
 	void clearWindow(float r, float g, float b, float a);
 public:
 	Window(int width, int height);
-	Window(int width, int height, std::string title, bool fullscreen, bool desktopfullscreen, bool borderless, bool vsync);
+	Window(int width, int height, std::string title, std::string icon, bool fullscreen, bool desktopfullscreen, bool borderless, bool vsync);
 	int getWindowWidth();
 	int getWindowHeight();
 	void updateWindow();
@@ -29,7 +30,7 @@ public:
 	void setFullscreen(bool fullscreen);
 	void setFullscreen(bool fullscreen, bool desktop);
 	void setWindowBordered(bool isbordered);
-	void setWindowIcon();
+	void setWindowIcon(std::string filename);
 	void closeWindow();
 	void postMessage(Message message);
 	/*void postMessage(Message::Messagetypes messagetype, int dataone, int datatwo);*/

@@ -29,6 +29,8 @@ int main(int argc, char* argv[]) {
 	int dbalignment = 8;
 	bool framelock = false; 
 	bool vsync = false;
+	std::string title = "Untitled";
+	std::string icon = "Defaulticon.png";
 	bool fullscreen = false;
 	bool desktopfullscreen = false;
 	bool borderless = false;
@@ -47,6 +49,16 @@ int main(int argc, char* argv[]) {
 			}
 		}
 		if (settings == "Window:") {
+			getline(configuration, settings, '=');
+			getline(configuration, settings, ' ');
+			getline(configuration, settings);
+			title = settings;
+
+			getline(configuration, settings, '=');
+			getline(configuration, settings, ' ');
+			getline(configuration, settings);
+			icon = settings;
+
 			getline(configuration, settings, '=');
 			getline(configuration, settings);
 			if (settings.find("On") != std::string::npos || settings.find("on") != std::string::npos) {
@@ -118,7 +130,7 @@ int main(int argc, char* argv[]) {
 
 	Messagesystem Messages;
 	Memorymanager memorymanager(sfsize, sfalignment, dbsize, dbalignment);
-	Window window(windowwidth, windowheight, "hello", fullscreen, desktopfullscreen, borderless, vsync);
+	Window window(windowwidth, windowheight, title, icon, fullscreen, desktopfullscreen, borderless, vsync);
 	Rendering Renderer;
 	Renderer.renderingStartup(window);
 	/*Memorymanager::StackAllocator* stackallocator = memorymanager.newAllocator(1000, alignof(int));*/

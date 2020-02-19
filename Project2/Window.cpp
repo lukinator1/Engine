@@ -1,5 +1,5 @@
 #include "Window.h"
-Window::Window(int width = 800, int height = 600, std::string title = "Untitled", bool fullscreen = false, bool desktopfullscreen = true, bool borderless = false, bool vsync = false)
+Window::Window(int width = 800, int height = 600, std::string title = "Untitled", std::string icon = "Defaulticon.png", bool fullscreen = false, bool desktopfullscreen = true, bool borderless = false, bool vsync = false)
 {
 	SDL_Init(SDL_INIT_VIDEO);
 	SDL_Init(SDL_INIT_EVENTS);
@@ -39,6 +39,7 @@ Window::Window(int width = 800, int height = 600, std::string title = "Untitled"
 			window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 		}
 	}
+	setWindowIcon(icon);
 	glContext = SDL_GL_CreateContext(window);
 	glewExperimental = GL_TRUE;
 	GLenum res = glewInit();
@@ -107,29 +108,6 @@ int Window::getWindowWidth() {
 int Window::getWindowHeight() {
 	return windowheight;
 }
-void Window::swapWindow() {
-	SDL_GL_SwapWindow(window);
-}
-void Window::updateWindow()//monitor refresh rate
-{
-	SDL_GL_SwapWindow(window);
-	/*SDL_Event sdlevent;
-	while (SDL_PollEvent(&sdlevent)) {
-		if (sdlevent.type == SDL_QUIT) {
-			Message message(Message::Messagetypes::Windowclose);
-			postMessage(message);
-			/*Message message(Windowclose);
-			postMessage(Windowclose);
-			std::cout << "messagequeue size: " << messagequeue.size() << std::endl;
-		}
-	}*/
-	/*glClearColor(0.0, 0.0, 0.0, 0.0);*/
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
-void Window::clearWindow(float r, float g, float b, float a) {
-	glClearColor(r, g, b, a);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
 void Window::setWindow(int newwidth, int newheight) {
 	windowheight = newheight;
 	windowwidth = newwidth;
@@ -141,9 +119,23 @@ void Window::setWindow(int newwidth, int newheight, const char* newtitle) {
 	SDL_SetWindowSize(this->window, newwidth, newheight);
 	SDL_SetWindowTitle(this->window, newtitle);
 }
-void Window::setWindowIcon() {
-
-} //to do
+void Window::setWindowIcon(std::string filename) {
+	Texture icon;
+	int width, height, components;
+	unsigned char * pixels;
+	icon.loadIconPixels(filename, pixels, width, height, components);
+	
+	if (SDL_BYTEORDER == SDL_BIG_ENDIAN) {
+		SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(pixels, width, height, 32, 4 * width, 0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
+		SDL_SetWindowIcon(window, surface);
+		SDL_FreeSurface(surface);
+	}
+	else {
+		SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(pixels, width, height, 32, 4 * width, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
+		SDL_SetWindowIcon(window, surface);
+		SDL_FreeSurface(surface);
+	}
+} 
 void Window::setWindowBordered(bool isbordered) {
 	if (isbordered == true) {
 		SDL_SetWindowBordered(this->window, SDL_TRUE);
@@ -170,6 +162,30 @@ void Window::setFullscreen(bool fullscreen, bool desktop) {		//error codes?
 	else if (fullscreen = false) {
 		SDL_SetWindowFullscreen(window, 0);
 	}
+}
+void Window::swapWindow() {
+	SDL_GL_SwapWindow(window);
+}
+void Window::updateWindow()//monitor refresh rate
+{
+	SDL_GL_SwapWindow(window);
+	/*SDL_Event sdlevent;
+	while (SDL_PollEvent(&sdlevent)) {
+		if (sdlevent.type == SDL_QUIT) {
+			Message message(Message::Messagetypes::Windowclose);
+			postMessage(message);
+			/*Message message(Windowclose);
+			postMessage(Windowclose);
+			std::cout << "messagequeue size: " << messagequeue.size() << std::endl;
+		}
+	}*/
+	/*glClearColor(0.0, 0.0, 0.0, 0.0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);*/
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+void Window::clearWindow(float r, float g, float b, float a) {
+	glClearColor(r, g, b, a);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 void Window::closeWindow() {
 	SDL_GL_DeleteContext(glContext);
@@ -203,5 +219,3 @@ Window::~Window()
 		messagequeue.push(newmessage);
 	}
 }*/
-/*int Window::windowwidth = 800;
-int Window::windowheight = 600;*/

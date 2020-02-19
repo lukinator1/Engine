@@ -5,13 +5,15 @@ CONFIGURATION FILES
 General:
 deltatime = Unlocked
 
-(max value 16, 384x16, 384 for height/width, desktopfullscreen on will simply set the display size to the desktop size with when fullscreen is on, when it is off it will fully change the videomode)
+(max value 16, 384x16, 384 for height/width, desktopfullscreen on will simply set the display size to the desktop size with when fullscreen is on, when it is off it will fully change the videomode, please put icon image in the root directory)
 Window:
-fullscreen = on
+title = MONKEEEEEEEEEEEEEEEEEEEYYYYYYY
+icon = juice.png
+fullscreen = off
 desktopfullscreen = off
-windowwidth = 800
-windowheight = 600
-borderless = on
+width = 800
+height = 600
+borderless = off
 vsync = off
 
 Memory:

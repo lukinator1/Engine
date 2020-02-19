@@ -105,6 +105,17 @@ void Texture::loadCubeMap(std::string right, std::string left, std::string top, 
 
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 }
+void Texture::loadIconPixels(std::string filename, unsigned char * &data, int & width, int & height, int & components) {
+	data = stbi_load((filename).c_str(), &width, &height, &components, STBI_rgb_alpha);
+
+	if (data == NULL) {
+		engineLog(__FILE__, __LINE__, "Warning: Icon failed to load. Returned an error icon instead.", 1, 2, true); //todo
+		return;
+	}
+	else {
+		return;
+	}
+}
 void Texture::bindTexture()
 {
 	glBindTexture(GL_TEXTURE_2D, textureid);
