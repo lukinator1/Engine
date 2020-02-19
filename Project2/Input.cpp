@@ -221,14 +221,14 @@ void Input::handleMessage(Message &message)
 void Input::postMessage(Message::Messagetypes messagetype)
 {
 
-	if (messagequeue.size() < 32) {
+	if (messagequeue.size() < messagequeuecapacity) {
 		Message newmessage(messagetype, Message::Category::Input);
 		messagequeue.push(newmessage);
 	}
 }
 void Input::postMessage(Message::Messagetypes messagetype, int dataone, int datatwo)
 {
-	if (messagequeue.size() < 32) {
+	if (messagequeue.size() < messagequeuecapacity) {
 		Message newmessage(messagetype, Message::Category::Input);
 		newmessage.messagedataone = dataone;
 		newmessage.messagedatatwo = datatwo;
@@ -237,7 +237,7 @@ void Input::postMessage(Message::Messagetypes messagetype, int dataone, int data
 }
 void Input::postMessage(Message::Messagetypes messagetype, int dataone, int datatwo, int datathreex, int datathreey)
 {
-	if (messagequeue.size() < 32) {
+	if (messagequeue.size() < messagequeuecapacity) {
 		Message newmessage(messagetype, Message::Category::Input);
 		newmessage.messagedataone = dataone;
 		newmessage.messagedatatwo = datatwo;

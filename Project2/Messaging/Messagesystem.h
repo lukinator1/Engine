@@ -8,7 +8,6 @@
 #include "../Camera.h"
 #include "../Global.h"
 //the user should define the logic of this class
-//take off +100
 class Messagesystem
 {
 private:

@@ -1,0 +1,24 @@
+CONFIGURATION FILES 
+(please change nothing in this file but the values after the equal sign, including any whitespaces)
+
+(passing in a value will lock deltatime to that value, usually if you want a to try to lock to a framerate)
+General:
+deltatime = Unlocked
+
+(max value 16, 384x16, 384 for height/width, desktopfullscreen on will simply set the display size to the desktop size with when fullscreen is on, when it is off it will fully change the videomode)
+Window:
+fullscreen = on
+desktopfullscreen = off
+windowwidth = 800
+windowheight = 600
+borderless = on
+vsync = off
+
+Memory:
+singleframeallocatorsize = 400
+singleframeallocatoralignment = 8
+doublebufferallocatorsize = 800
+doublebufferallocatoralignment = 8
+
+Messaging System:
+messagequeuecapacity = 50

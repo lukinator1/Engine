@@ -1,5 +1,73 @@
 #include "Window.h"
-Window::Window(int width , int height, std::string title)
+Window::Window(int width = 800, int height = 600, std::string title = "Untitled", bool fullscreen = false, bool desktopfullscreen = true, bool borderless = false, bool vsync = false)
+{
+	SDL_Init(SDL_INIT_VIDEO);
+	SDL_Init(SDL_INIT_EVENTS);
+	windowwidth = width;
+	windowheight = height;
+	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE, 32); //bit data for 1 pixel
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+	
+	if (fullscreen == true) {
+		if (borderless == false) {
+			if (desktopfullscreen == true) {
+				window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_RESIZABLE);
+				}
+			else {
+				window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN | SDL_WINDOW_RESIZABLE);
+			}
+		}
+		else if (borderless == true) {
+			if (desktopfullscreen == true) {
+				window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_BORDERLESS | SDL_WINDOW_RESIZABLE);
+			}
+			else {
+				window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN | SDL_WINDOW_BORDERLESS | SDL_WINDOW_RESIZABLE);
+			}
+		}
+	}
+	else if (fullscreen == false) {
+		if (borderless == true) {
+			window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_BORDERLESS | SDL_WINDOW_RESIZABLE);
+		}
+		else {
+			window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+		}
+	}
+	glContext = SDL_GL_CreateContext(window);
+	glewExperimental = GL_TRUE;
+	GLenum res = glewInit();
+	if (res != GLEW_OK) {
+		engineLog(__FILE__, __LINE__, "Glew failed to initialize. Rendering mechanics won't work.", 3, 2, false);
+	}
+
+	if (vsync == false) {
+		SDL_GL_SetSwapInterval(0);
+	}
+	else if (vsync == true) {
+		SDL_GL_SetSwapInterval(1);
+	}
+	glFrontFace(GL_CW);
+	glCullFace(GL_BACK);
+	glViewport(0, 0, windowwidth, windowheight);
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_TEXTURE_2D);
+	/*glEnable(GL_FRAMEBUFFER_SRGB);*/
+	glEnable(GL_DEPTH_CLAMP);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glClearColor(0.0, 0.0, 0.0, 0.0);
+	/*glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);*/
+
+}
+Window::Window(int width, int height)
 {
 	windowwidth = width;
 	windowheight = height;
@@ -10,78 +78,34 @@ Window::Window(int width , int height, std::string title)
 	SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE, 32); //bit data for 1 pixel
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-
-	window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
-	glContext = SDL_GL_CreateContext(window);
-	
-	glewExperimental = GL_TRUE;
-	GLenum res = glewInit();
-	if (res != GLEW_OK) {
-		/*std::cerr << "Glew failed to initialize!" << std::endl;*/ //enginelog
-	}
-
-	SDL_GL_SetSwapInterval(1);
-	glFrontFace(GL_CW);
-	glCullFace(GL_BACK);
-	glViewport(0, 0, windowwidth, windowheight);
-	glEnable(GL_CULL_FACE);
-	glEnable(GL_DEPTH_TEST);
-	/*glEnable(GL_FRAMEBUFFER_SRGB);*/
-	glEnable(GL_DEPTH_CLAMP);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	glClearColor(0.0, 0.0, 0.0, 0.0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-}
-Window::Window()
-{
-	windowwidth = 800;
-	windowheight = 600;
-/*	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
-	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
-	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
-	SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
-	SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE, 32); //bit data for 1 pixel
-	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);*/
 	
 	window = SDL_CreateWindow("Untitled", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, windowwidth, windowheight, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 	glContext = SDL_GL_CreateContext(window);
 
 	GLenum res = glewInit();
 	if (res != GLEW_OK) {
-		/*std::cerr << "Glew failed to initialize!" << std::endl;*/ //enginelog
+		engineLog(__FILE__, __LINE__, "Glew failed to initialize. Rendering mechanics won't work.", 3, 2, false);
 	}
 
-	SDL_GL_SetSwapInterval(1);
-	/*glFrontFace(GL_CW);
+	SDL_GL_SetSwapInterval(0);
+	glFrontFace(GL_CW);
 	glCullFace(GL_BACK);
+	glViewport(0, 0, windowwidth, windowheight);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_FRAMEBUFFER_SRGB);
+	glEnable(GL_TEXTURE_2D);
+	/*glEnable(GL_FRAMEBUFFER_SRGB);*/
 	glEnable(GL_DEPTH_CLAMP);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glClearColor(0.0, 0.0, 0.0, 0.0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);*/
-
 }
-Window::~Window()
-{
-	SDL_GL_DeleteContext(glContext);
-	SDL_DestroyWindow(window);
+int Window::getWindowWidth() {
+	return windowwidth;
 }
-void Window::handleMessage(Message &message)
-{
-	if (!messagequeue.empty()) {
-		switch (message.messagetype) { //other window functions
-		case Message::Messagetypes::Closebuttonpressed:
-			std::cout << "Message: windowclose called." << std::endl;
-			std::cout << "messagequeue size: " << messagequeue.size() << std::endl;
-			break;
-		}
-	}
+int Window::getWindowHeight() {
+	return windowheight;
 }
 void Window::swapWindow() {
 	SDL_GL_SwapWindow(window);
@@ -99,7 +123,7 @@ void Window::updateWindow()//monitor refresh rate
 			std::cout << "messagequeue size: " << messagequeue.size() << std::endl;
 		}
 	}*/
-	glClearColor(0.0, 0.0, 0.0, 0.0);
+	/*glClearColor(0.0, 0.0, 0.0, 0.0);*/
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 void Window::clearWindow(float r, float g, float b, float a) {
@@ -147,17 +171,28 @@ void Window::setFullscreen(bool fullscreen, bool desktop) {		//error codes?
 		SDL_SetWindowFullscreen(window, 0);
 	}
 }
-int Window::getWindowWidth() {
-	return windowwidth;
+void Window::closeWindow() {
+	SDL_GL_DeleteContext(glContext);
+	SDL_DestroyWindow(window);
 }
-int Window::getWindowHeight() {
-	return windowheight;
+void Window::handleMessage(Message &message)
+{
+	if (!messagequeue.empty()) {
+		switch (message.messagetype) { //other window functions
+		case Message::Messagetypes::Closebuttonpressed:
+			std::cout << "Message: windowclose called." << std::endl;
+			std::cout << "messagequeue size: " << messagequeue.size() << std::endl;
+			break;
+		}
+	}
 }
-void Window::postMessage(Message message) {
-	
-	if (messagequeue.size() <= 32) {
+void Window::postMessage(Message message) {	
+	if (messagequeue.size() < messagequeuecapacity) {
 		messagequeue.push(message);
 	}
+}
+Window::~Window()
+{
 }
 /*void Window::postMessage(Message::Messagetypes messagetype, int dataone, int datatwo)
 {

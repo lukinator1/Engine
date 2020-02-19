@@ -1,3 +1,2 @@
-﻿  Rendertext.cpp
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\rendering\rendertext.cpp(99): warning C4838: conversion from 'FT_Pos' to 'GLuint' requires a narrowing conversion
+﻿  Window.cpp
   Project2.vcxproj -> C:\Users\lukinator1\Desktop\engine\The Super Suspension System\Project2\x64\Debug\Project2.exe

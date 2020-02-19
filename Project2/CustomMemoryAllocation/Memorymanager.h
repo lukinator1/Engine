@@ -1,6 +1,6 @@
 #pragma once
 #include <cstdlib>
-#include "Engine.h"
+#include "../Engine.h"
 #include <vector>
 #include <map>
 #include <iterator>
@@ -48,7 +48,7 @@ public:
 		~DBAllocator();
 	};
 
-	Memorymanager();
+	Memorymanager(int sfsize, int sfalignment, int dbsize, int dbalignment);
 	~Memorymanager();
 
 	StackAllocator sfAllocator;

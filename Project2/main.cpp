@@ -1,10 +1,13 @@
 #include <fstream>
+#include <sstream>
 #include "Engine.h"
+#include "Thegame.h"
 #include "Window.h"
 #include "Input.h"
 #include "Rendering/Rendering.h"
 #include "Mathlibrary/Mathlibrary.h"
 #include "CustomMemoryAllocation/Memorymanager.h"
+#include "Messaging/Messagesystem.h"
 #include "Messaging/Messaging.h"
 #include "Meshrenderer.h"
 #include "Scene.h"
@@ -13,28 +16,123 @@
 #undef main
 #include <iostream>
 std::queue <Message> messagequeue;
+int messagequeuecapacity = 32;
 float deltatime = 1.0f / 60.0f;
 float gametime = 0.0f;
+
 float fieldDepth = 10.0f;
 float fieldWidth = 10.0f;
 int main(int argc, char* argv[]) {
-	SDL_Init(SDL_INIT_EVERYTHING);
+	int sfsize = 500;  //settting configurations
+	int sfalignment = 8;
+	int dbsize = 500;
+	int dbalignment = 8;
+	bool framelock = false; 
+	bool vsync = false;
+	bool fullscreen = false;
+	bool desktopfullscreen = false;
+	bool borderless = false;
+	std::ifstream configuration("Engineconfiguration.txt");
+	std::string settings;
+	while (getline(configuration, settings)) {
+		if (settings.find("General:") != std::string::npos) {
+			getline(configuration, settings, '=');
+			getline(configuration, settings);
+			if (settings.find("Unlocked") != std::string::npos || settings.find("unlocked") != std::string::npos) {
+				framelock = false;
+			}
+			else {
+				framelock = true;
+				deltatime = 1.0f / stoi(settings);
+			}
+		}
+		if (settings == "Window:") {
+			getline(configuration, settings, '=');
+			getline(configuration, settings);
+			if (settings.find("On") != std::string::npos || settings.find("on") != std::string::npos) {
+				fullscreen = true;
+			}
+			else {
+				fullscreen = false;
+			}
+
+			getline(configuration, settings, '=');
+			getline(configuration, settings);
+			if (settings.find("On") != std::string::npos || settings.find("on") != std::string::npos) {
+				desktopfullscreen = true;
+			}
+			else {
+				desktopfullscreen = false;
+			}
+
+			getline(configuration, settings, '=');
+			getline(configuration, settings);
+			windowwidth = stoi(settings);
+			
+			getline(configuration, settings, '=');
+			getline(configuration, settings);
+			windowheight = stoi(settings);
+
+			getline(configuration, settings, '=');
+			getline(configuration, settings);
+			if (settings.find("On") != std::string::npos || settings.find("on") != std::string::npos) {
+				borderless = true;
+			}
+			else {
+				borderless = false;
+			}
+
+			getline(configuration, settings, '=');
+			getline(configuration, settings);
+			if (settings.find("On") != std::string::npos || settings.find("on") != std::string::npos) {
+				vsync = true;
+			}
+			else {
+				vsync = false;
+			}
+
+		}
+		else if (settings.find("Memory:") != std::string::npos) {
+				getline(configuration, settings, '=');
+				getline(configuration, settings);
+				sfsize = stoi(settings);
+
+				getline(configuration, settings, '=');
+				getline(configuration, settings);
+				sfalignment = stoi(settings);
+
+				getline(configuration, settings, '=');
+				getline(configuration, settings);
+				dbsize = stoi(settings);
+
+				getline(configuration, settings, '=');
+				getline(configuration, settings);
+				dbalignment = stoi(settings);
+			}
+		else if (settings.find("Messaging System:") != std::string::npos) {
+			getline(configuration, settings, '=');
+			getline(configuration, settings);
+			messagequeuecapacity = stoi(settings);
+		}
+	}
+
 	Messagesystem Messages;
-	Messages.messageSystemStartup();
-	Window window(800, 600, "hello");
+	Memorymanager memorymanager(sfsize, sfalignment, dbsize, dbalignment);
+	Window window(windowwidth, windowheight, "hello", fullscreen, desktopfullscreen, borderless, vsync);
 	Rendering Renderer;
 	Renderer.renderingStartup(window);
-	Memorymanager memorymanager;
-	memorymanager.memoryManagerstartup();
-	Memorymanager::StackAllocator* stackallocator = memorymanager.newAllocator(1000, alignof(int));
+	/*Memorymanager::StackAllocator* stackallocator = memorymanager.newAllocator(1000, alignof(int));*/
 	Input Inputs;
 	Inputs.inputStartup();
-	glEnable(GL_TEXTURE_2D);
 	Camera thecamera;
 	Transforming transform;
 	Materials material("test.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f);		// from basicshader change to render manager startup?
 	Scene sceneone;
 	sceneone.setSkybox("right.jpg", "left.jpg", "top.jpg", "bottom.jpg", "front.jpg", "back.jpg");
+
+
+
+	/*Memorymanager::StackAllocator* stackallocator = memorymanager.newAllocator(1000, alignof(int));*/
 
 
 	Entity Quote;
@@ -72,12 +170,17 @@ int main(int argc, char* argv[]) {
 
 	float previousscrolldistance;
 	float unitest = 0.0f;
-	int framerate = 0;
+	int frames = 0;
 	double framecounter = 0;
+	int fps = -1;
+
+	int prevtimecounter = 0;
+	float prevdeltatimes[5] = { 1.0f / 60.0f,  1.0f / 60.0f, 1.0f / 60.0f, 1.0f / 60.0f, 1.0f / 60.0f };
 	std::chrono::high_resolution_clock::time_point starttime;
 	std::chrono::high_resolution_clock::time_point endtime;
-	std::chrono::duration<double> timeduration;
-	std::chrono::duration<double> chronodelta = std::chrono::duration<double>(deltatime);
+	std::chrono::duration<float> timeduration;
+
+	std::chrono::duration<float> chronodelta = std::chrono::duration<float>(deltatime);
 	thecamera.setMouseLook(true);
 	int counter = 0;
 	bool flashlighton = false;
@@ -85,23 +188,27 @@ int main(int argc, char* argv[]) {
 	bool pressed = false;
 
 	Scene currentscene;
+
+
 	while (true) {
 		starttime = std::chrono::high_resolution_clock::now();
+
+
 		memorymanager.memorymanagerUpdate();
 		Messages.messageSystemUpdate(Inputs, window, thecamera);
 		Inputs.getInputs();
 		window.updateWindow();
 		if (Inputs.keyboardstate[Input::W] == 1) {
-			thecamera.moveCamera(thecamera.getForwardvector(), .3f);
+			thecamera.moveCamera(thecamera.getForwardvector(), deltatime * 20);
 		}
 		if (Inputs.keyboardstate[Input::A] == 1) {
-			thecamera.moveCamera(thecamera.getLeftVector(), .3f);
+			thecamera.moveCamera(thecamera.getLeftVector(), deltatime * 20);
 		}
 		if (Inputs.keyboardstate[Input::S] == 1) {
-			thecamera.moveCamera(thecamera.getForwardvector(), -.3f);
+			thecamera.moveCamera(thecamera.getForwardvector(), -(deltatime * 20));
 		}
 		if (Inputs.keyboardstate[Input::D] == 1) {
-			thecamera.moveCamera(thecamera.getLeftVector(), -.3f);
+			thecamera.moveCamera(thecamera.getLeftVector(), -(deltatime * 20));
 		}
 		if (Inputs.keyboardstate[Input::keyup] == 1) {
 			thecamera.rotateCamera(0.0f, 2.0f);
@@ -142,6 +249,7 @@ int main(int argc, char* argv[]) {
 		transform.setTranslationVector(vector3(0.0f, -1.0f, 5.0f));
 		plights[0].setPosition(vector3(3.0f, 0.0f, 8.0 * (float)(sin(unitest) + 1.0f / 2.0f) + 10.0f));
 		plights[1].setPosition(vector3(7.0f, 0.0f, 8.0 * (float)(cos(unitest) + 1.0f / 2.0f) + 10.0f));
+		unitest += deltatime;
 		slights[0].setPosition(thecamera.getCameraposition());
 		slights[0].setDirection(thecamera.forwardvector);
 		transform.setPerspectiveProjectionSettings(thecamera.fov, window.getWindowWidth(), window.getWindowHeight(), thecamera.minviewdistance, thecamera.maxviewdistance);  //integer -> float
@@ -166,28 +274,37 @@ int main(int argc, char* argv[]) {
 
 
 
-		unitest += deltatime;
-		framerate++;
-		/*gametime += chronodelta.count();*/
+		frames++;
 		endtime = std::chrono::high_resolution_clock::now();
-		timeduration = std::chrono::duration_cast<std::chrono::duration<double>> (endtime - starttime);
-		/*
-			if (timeduration < chronodelta) //framerate lock function
-			{
-				std::this_thread::sleep_for(chronodelta - timeduration);
-				framecounter += chronodelta.count();
+		timeduration = (endtime - starttime);
+		if (framelock == false) {
+			prevdeltatimes[prevtimecounter] = timeduration.count();
+			prevtimecounter++;
+			if (prevtimecounter == 5) {
+				prevtimecounter = 0;
 			}
-			else if (timeduration > chronodelta) {
-				std::this_thread::sleep_for(chronodelta - (timeduration - chronodelta)); //todo: change to division
-				framecounter += chronodelta.count() + chronodelta.count();
-				std::cout << "slow" << std::endl;
-			}
-			*/
-		if (framecounter >= 1.0) {
-			std::cout << framerate << " FPS" << std::endl;
-			framecounter = 0;
-			framerate = 0;
+			deltatime = (prevdeltatimes[0] + prevdeltatimes[1] + prevdeltatimes[2] + prevdeltatimes[3] + prevdeltatimes[4]) / 5.0f;
+			framecounter += deltatime;
 		}
+		else if (framelock == true) {
+			if (timeduration < chronodelta) //framerate lock function
+				{
+					std::this_thread::sleep_for(chronodelta - timeduration);
+					framecounter += chronodelta.count();
+				}
+			else if (timeduration > chronodelta) {
+					std::this_thread::sleep_for(chronodelta - (timeduration - chronodelta)); //todo: change to division
+					framecounter += chronodelta.count() + chronodelta.count();
+					std::cout << "slow" << std::endl;
+				}
+			}
+		if (framecounter >= 1.0) {
+			fps = frames;
+			framecounter = 0;
+			frames = 0;
+		}
+		Renderer.Textrenderer.renderText(std::to_string(deltatime), 0, 200, vector3(1.0, 1.0, 1.0), 1.0);
+		Renderer.Textrenderer.renderText("FPS: " + std::to_string(fps), 0, 500, vector3(1.0, 1.0, 1.0), 1.0);
 	}
 	Renderer.renderingShutdown();
 	SDL_Quit();

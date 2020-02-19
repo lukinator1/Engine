@@ -1,13 +1,7 @@
 #include "Messaging.h"
-Messagesystem::Messagesystem()
-{
-}
-Messagesystem::~Messagesystem()
-{
-}
-void Messagesystem::messageSystemStartup() {
+/*void Messagesystem::messageSystemStartup() {
 
-}
+}*/
 void Messagesystem::messageSystemUpdate(Input &Inputs, Window &window, Camera &camera)  //messages serviced here
 {
 	if (messagequeue.empty() == false) {
@@ -24,14 +18,6 @@ void Messagesystem::messageDispatch(Message &message, Input &Inputs, Window &Win
 		messagequeue.pop();
 		std::cout << "event: " << static_cast<std::underlying_type<Message::Messagetypes>::type>(message.messagetype) << "handeled" << std::endl;
 }
-
-
-
-
-void Messagesystem::messageSystemShutdown()
-{
-
-}
 void Messagesystem::clearMessageQueue() {
 	for (int i = 0; i < messagequeue.size(); i++) {
 		messagequeue.pop();
@@ -43,4 +29,15 @@ void printMessageQueue() {
 		std::cout << "Current message queue: " << std::endl; 
 		std::cout << i << ": " << static_cast<std::underlying_type<Message::Messagetypes>::type>(tempqueue.front().messagetype) << std::endl;
 	}
+}
+void Messagesystem::messageSystemShutdown()
+{
+	clearMessageQueue();
+}
+
+Messagesystem::Messagesystem()
+{
+}
+Messagesystem::~Messagesystem()
+{
 }

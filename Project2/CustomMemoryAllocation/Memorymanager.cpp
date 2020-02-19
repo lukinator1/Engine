@@ -1,8 +1,5 @@
 #include "Memorymanager.h"
-Memorymanager::Memorymanager() : sfAllocator(500, 8), dbAllocator(500, 8)
-{
-}
-Memorymanager::~Memorymanager()
+Memorymanager::Memorymanager(int sfsize = 500, int sfalignment = 8, int dbsize = 500, int dbalignment = 8) : sfAllocator(sfsize, sfalignment), dbAllocator(dbsize, dbalignment)
 {
 }
 Memorymanager::StackAllocator::StackAllocator(int blocksize = 600, size_t alignment = 8) {
@@ -134,7 +131,6 @@ void * Memorymanager::DBAllocator::engineAllocate(unsigned int numberofbytes, si
 		return secondstackallocator.engineAllocate(numberofbytes, alignment, setmarker);
 	}
 }
-
 Memorymanager::DBAllocator::DBAllocator(int blocksize, size_t alignment) : firststackallocator(blocksize, alignment), secondstackallocator(blocksize, alignment)
 {
 }
@@ -214,6 +210,10 @@ void Memorymanager::memoryManagershutdown()
 	sfAllocator.deleteStack();
 	dbAllocator.firststackallocator.deleteStack();
 	dbAllocator.secondstackallocator.deleteStack();
+}
+
+Memorymanager::~Memorymanager()
+{
 }
 
 
