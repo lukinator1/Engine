@@ -1,5 +1,9 @@
 #pragma once
-	class vector2 {
+#include <math.h>
+#include "../Logger.h"
+#include "Quaternion.h"
+	class vector2 : public Logger
+	{
 	public:
 		vector2() {
 
@@ -14,6 +18,38 @@
 		void setVector(float x, float y){
 			this->x = x;
 			this->y = y;
+		}
+		vector2 Normalize() {
+			float length = sqrt((x * x) + (y * y));
+			/*x = x / length;
+			y = y / length;
+			z = z / length;
+			return *this;*/
+			if (length == 0) {
+				engineLog(__FILE__, __LINE__, "A vector2 of length 0 was attempted to be normalized. This is an invalid operation and did not go through. ", 3, 3, true);
+				return *this;
+			}
+			else return vector2(x / length, y / length);
+		}
+		vector2 Rotate(float angle, vector2 axis){
+			float sinhalfangle = sinf((angle / 2.0f) * (3.14159265358979323f / 180.0f));
+			float coshalfangle = cosf((angle / 2.0f) * (3.14159265358979323f / 180.0f));
+
+			float qx = axis.x * sinhalfangle;		//convert matrix -> quaternion
+			float qy = axis.y * sinhalfangle;
+			float qw = coshalfangle;
+
+			Quaternion rotation(qx, qy, 0, qw);
+			Quaternion rotationconjugate = rotation.Conjugate();
+
+			Quaternion newquat = (rotation.Multiply(x, y, 0)).Multiply(rotationconjugate);
+			vector2 newvector(newquat.x, newquat.y);
+
+			/*x = newquat.x;
+			y = newquat.y;
+			z = newquat.z;*/
+
+			return newvector;
 		}
 		float crossProduct(vector2 other) {
 			return (x * other.y) - (y * other.x);

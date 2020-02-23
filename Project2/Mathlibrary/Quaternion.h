@@ -1,8 +1,9 @@
 #pragma once
 #include <math.h>
+#include "../Logger.h"
 class vector3;
 class Quaternion;
-class Quaternion
+class Quaternion : public Logger
 {
 public:
 	float x;

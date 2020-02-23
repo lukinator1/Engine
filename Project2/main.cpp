@@ -23,88 +23,88 @@ float gametime = 0.0f;
 float fieldDepth = 10.0f;
 float fieldWidth = 10.0f;
 int main(int argc, char* argv[]) {
-	int sfsize = 500;  //settting configurations
-	int sfalignment = 8;
-	int dbsize = 500;
-	int dbalignment = 8;
-	bool framelock = false; 
-	bool vsync = false;
-	std::string title = "Untitled";
-	std::string icon = "Defaulticon.png";
-	bool fullscreen = false;
-	bool desktopfullscreen = false;
-	bool borderless = false;
-	std::ifstream configuration("Engineconfiguration.txt");
-	std::string settings;
-	while (getline(configuration, settings)) {
-		if (settings.find("General:") != std::string::npos) {
-			getline(configuration, settings, '=');
-			getline(configuration, settings);
-			if (settings.find("Unlocked") != std::string::npos || settings.find("unlocked") != std::string::npos) {
-				framelock = false;
+		int sfsize = 500;  //settting configurations
+		int sfalignment = 8;
+		int dbsize = 500;
+		int dbalignment = 8;
+		bool framelock = false;
+		bool vsync = false;
+		std::string title = "Untitled";
+		std::string icon = "Defaulticon.png";
+		bool fullscreen = false;
+		bool desktopfullscreen = false;
+		bool borderless = false;
+		std::ifstream configuration("Engineconfiguration.txt");
+		std::string settings;
+		while (getline(configuration, settings)) {
+			if (settings.find("General:") != std::string::npos) {
+				getline(configuration, settings, '=');
+				getline(configuration, settings);
+				if (settings.find("Unlocked") != std::string::npos || settings.find("unlocked") != std::string::npos) {
+					framelock = false;
+				}
+				else {
+					framelock = true;
+					deltatime = 1.0f / stoi(settings);
+				}
 			}
-			else {
-				framelock = true;
-				deltatime = 1.0f / stoi(settings);
-			}
-		}
-		if (settings == "Window:") {
-			getline(configuration, settings, '=');
-			getline(configuration, settings, ' ');
-			getline(configuration, settings);
-			title = settings;
+			if (settings == "Window:") {
+				getline(configuration, settings, '=');
+				getline(configuration, settings, ' ');
+				getline(configuration, settings);
+				title = settings;
 
-			getline(configuration, settings, '=');
-			getline(configuration, settings, ' ');
-			getline(configuration, settings);
-			icon = settings;
+				getline(configuration, settings, '=');
+				getline(configuration, settings, ' ');
+				getline(configuration, settings);
+				icon = settings;
 
-			getline(configuration, settings, '=');
-			getline(configuration, settings);
-			if (settings.find("On") != std::string::npos || settings.find("on") != std::string::npos) {
-				fullscreen = true;
-			}
-			else {
-				fullscreen = false;
-			}
+				getline(configuration, settings, '=');
+				getline(configuration, settings);
+				if (settings.find("On") != std::string::npos || settings.find("on") != std::string::npos) {
+					fullscreen = true;
+				}
+				else {
+					fullscreen = false;
+				}
 
-			getline(configuration, settings, '=');
-			getline(configuration, settings);
-			if (settings.find("On") != std::string::npos || settings.find("on") != std::string::npos) {
-				desktopfullscreen = true;
-			}
-			else {
-				desktopfullscreen = false;
-			}
+				getline(configuration, settings, '=');
+				getline(configuration, settings);
+				if (settings.find("On") != std::string::npos || settings.find("on") != std::string::npos) {
+					desktopfullscreen = true;
+				}
+				else {
+					desktopfullscreen = false;
+				}
 
-			getline(configuration, settings, '=');
-			getline(configuration, settings);
-			windowwidth = stoi(settings);
-			
-			getline(configuration, settings, '=');
-			getline(configuration, settings);
-			windowheight = stoi(settings);
+				getline(configuration, settings, '=');
+				getline(configuration, settings);
+				windowwidth = stoi(settings);
 
-			getline(configuration, settings, '=');
-			getline(configuration, settings);
-			if (settings.find("On") != std::string::npos || settings.find("on") != std::string::npos) {
-				borderless = true;
-			}
-			else {
-				borderless = false;
-			}
+				getline(configuration, settings, '=');
+				getline(configuration, settings);
+				windowheight = stoi(settings);
 
-			getline(configuration, settings, '=');
-			getline(configuration, settings);
-			if (settings.find("On") != std::string::npos || settings.find("on") != std::string::npos) {
-				vsync = true;
-			}
-			else {
-				vsync = false;
-			}
+				getline(configuration, settings, '=');
+				getline(configuration, settings);
+				if (settings.find("On") != std::string::npos || settings.find("on") != std::string::npos) {
+					borderless = true;
+				}
+				else {
+					borderless = false;
+				}
 
-		}
-		else if (settings.find("Memory:") != std::string::npos) {
+				getline(configuration, settings, '=');
+				getline(configuration, settings);
+				if (settings.find("On") != std::string::npos || settings.find("on") != std::string::npos) {
+					vsync = true;
+				}
+				else {
+					vsync = false;
+				}
+
+			}
+			else if (settings.find("Memory:") != std::string::npos) {
 				getline(configuration, settings, '=');
 				getline(configuration, settings);
 				sfsize = stoi(settings);
@@ -121,12 +121,12 @@ int main(int argc, char* argv[]) {
 				getline(configuration, settings);
 				dbalignment = stoi(settings);
 			}
-		else if (settings.find("Messaging System:") != std::string::npos) {
-			getline(configuration, settings, '=');
-			getline(configuration, settings);
-			messagequeuecapacity = stoi(settings);
+			else if (settings.find("Messaging System:") != std::string::npos) {
+				getline(configuration, settings, '=');
+				getline(configuration, settings);
+				messagequeuecapacity = stoi(settings);
+			}
 		}
-	}
 
 	Messagesystem Messages;
 	Memorymanager memorymanager(sfsize, sfalignment, dbsize, dbalignment);
@@ -138,16 +138,15 @@ int main(int argc, char* argv[]) {
 	Inputs.inputStartup();
 	Camera thecamera;
 	Transforming transform;
-	Materials material("test.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f);		// from basicshader change to render manager startup?
 	Scene sceneone;
 	sceneone.setSkybox("right.jpg", "left.jpg", "top.jpg", "bottom.jpg", "front.jpg", "back.jpg");
-
 
 
 	/*Memorymanager::StackAllocator* stackallocator = memorymanager.newAllocator(1000, alignof(int));*/
 
 
 	Entity Quote;
+	Materials material("test.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f);		// from basicshader change to render manager startup?
 	Quote.transform.setTranslationVector(vector3(10.0f, 17.5f, 12.0f));
 	Mesh quotemodel;
 	quotemodel.loadMeshObj("quote.obj");
@@ -177,8 +176,8 @@ int main(int argc, char* argv[]) {
 	shaderit.getPointLights()[1] = &plights[1];
 	Spotlight *slights = new Spotlight[1];
 
-	slights[0] = Spotlight(vector3(0.0f, 1.0f, 1.0f), vector3(-2.0f, 0.0f, 5.0f), vector3(1.0f, 1.0f, 1.0f), 30.0f, 0.7f, 0.8f, 0.0f, 0.1f);
-	shaderit.getSpotLights()[0] = &slights[0];
+	slights[0] = Spotlight(vector3(0.6f, 0.0f, 0.0f), vector3(-2.0f, 0.0f, 5.0f), vector3(1.0f, 1.0f, 1.0f), 30.0f, 0.7f, 0.8f, 0.0f, 0.1f);
+	shaderit.getSpotLights()[0] = &flashlight;
 
 	float previousscrolldistance;
 	float unitest = 0.0f;
@@ -195,7 +194,7 @@ int main(int argc, char* argv[]) {
 	std::chrono::duration<float> chronodelta = std::chrono::duration<float>(deltatime);
 	thecamera.setMouseLook(true);
 	int counter = 0;
-	bool flashlighton = false;
+	bool flashlighton = true;
 	bool lastpressed = false;
 	bool pressed = false;
 
@@ -210,32 +209,33 @@ int main(int argc, char* argv[]) {
 		Messages.messageSystemUpdate(Inputs, window, thecamera);
 		Inputs.getInputs();
 		window.updateWindow();
-		if (Inputs.keyboardstate[Input::W] == 1) {
+		if (Inputs.keyboardstate[Input::W].first == 1) {
 			thecamera.moveCamera(thecamera.getForwardvector(), deltatime * 20);
 		}
-		if (Inputs.keyboardstate[Input::A] == 1) {
+		if (Inputs.keyboardstate[Input::A].first == 1) {
 			thecamera.moveCamera(thecamera.getLeftVector(), deltatime * 20);
 		}
-		if (Inputs.keyboardstate[Input::S] == 1) {
+		if (Inputs.keyboardstate[Input::S].first == 1) {
 			thecamera.moveCamera(thecamera.getForwardvector(), -(deltatime * 20));
 		}
-		if (Inputs.keyboardstate[Input::D] == 1) {
+		if (Inputs.keyboardstate[Input::D].first == 1) {
 			thecamera.moveCamera(thecamera.getLeftVector(), -(deltatime * 20));
 		}
-		if (Inputs.keyboardstate[Input::keyup] == 1) {
+		if (Inputs.keyboardstate[Input::Keyup].first == 1) {
 			thecamera.rotateCamera(0.0f, 2.0f);
 		}
-		if (Inputs.keyboardstate[Input::keyleft] == 1) {
+		if (Inputs.keyboardstate[Input::Keyleft].first == 1) {
 			thecamera.rotateCamera(-2.0f, 0.0f);
 		}
-		if (Inputs.keyboardstate[Input::keydown] == 1) {
+		if (Inputs.keyboardstate[Input::Keydown].first == 1) {
 			thecamera.rotateCamera(0.0f, -2.0f);
 		}
-		if (Inputs.keyboardstate[Input::keyright] == 1) {
+		if (Inputs.keyboardstate[Input::Keyright].first == 1) {
 			thecamera.rotateCamera(2.0f, 0.0f);
 		}
-		if (Inputs.keyboardstate[Input::L] == 1) {  //flashlight 
-			if (lastpressed == false) {
+		if (Inputs.keyboardstate[Input::L].first == 1 && Inputs.keyboardstate[Input::L].second == 0) {  //flashlight 
+		/*if (Inputs.leftmouse.first == true && Inputs.leftmouse.second == false){*/
+			/*if (lastpressed == false) {*/
 				if (flashlighton == true) {
 					flashlight.setIntensity(0.0f);
 					flashlighton = false;
@@ -244,11 +244,8 @@ int main(int argc, char* argv[]) {
 					flashlight.setIntensity(3.0f);
 					flashlighton = true;
 				}
-				lastpressed = true;
-			}
-		}
-		else {
-			lastpressed = false;
+		/*	lastpressed = true;
+			}*/
 		}
 		if (Inputs.getScrolldistance().y != 0) {
 			thecamera.Zoom(Inputs.getScrolldistance().y);
@@ -262,8 +259,8 @@ int main(int argc, char* argv[]) {
 		plights[0].setPosition(vector3(3.0f, 0.0f, 8.0 * (float)(sin(unitest) + 1.0f / 2.0f) + 10.0f));
 		plights[1].setPosition(vector3(7.0f, 0.0f, 8.0 * (float)(cos(unitest) + 1.0f / 2.0f) + 10.0f));
 		unitest += deltatime;
-		slights[0].setPosition(thecamera.getCameraposition());
-		slights[0].setDirection(thecamera.forwardvector);
+		flashlight.setPosition(thecamera.getCameraposition());
+		flashlight.setDirection(thecamera.forwardvector);
 		transform.setPerspectiveProjectionSettings(thecamera.fov, window.getWindowWidth(), window.getWindowHeight(), thecamera.minviewdistance, thecamera.maxviewdistance);  //integer -> float
 		/*transform.setScalingVector(vector3(.75 * sin(unitest), .75 * sin(unitest), .75 * sin(unitest)));	
 		shaderit.setUniform("transform", transform.newTransformationMatrix());*/
@@ -319,17 +316,11 @@ int main(int argc, char* argv[]) {
 		Renderer.Textrenderer.renderText("FPS: " + std::to_string(fps), 0, 500, vector3(1.0, 1.0, 1.0), 1.0);
 	}
 	Renderer.renderingShutdown();
-	SDL_Quit();
 }
 
 
 
-
-
-
-
-
-	/*Vertex vertices[] = half pyramid
+/*Vertex vertices[] = half pyramid
 	{					//position, texture
 		Vertex(vector3(-1.0f, -1.0f, 0.0f), vector2(0.0f,0.0f)),
 		Vertex(vector3(0.0f, 1.0, 0.0f), vector2(0.5f , 0.0f)),
@@ -342,7 +333,7 @@ int main(int argc, char* argv[]) {
 		0, 1, 2,
 		0, 2, 3
 	};*/
-	/*Vertex vertices[] =
+/*Vertex vertices[] =
 	{Vertex(vector3(-1.0f, -1.0f, 0.5773f), vector2(0.0f, 0.0f)),
 	Vertex(vector3(0.0f, -1.0f, -1.15475f), vector2(0.5f, 0.0f)),
 	Vertex(vector3(1.0f, -1.0f, 0.5773f), vector2(1.0f, 0.0f)),
@@ -392,7 +383,7 @@ else {
 	}
 		std::cout << testme[7] << std::endl;
 		counter++;*/
-		/*if ((gametime > 59 && gametime < 61) || (gametime > 119 && gametime < 121) || (gametime > 179 && gametime < 181) || (gametime > 239 && gametime < 241) || (gametime < 299 && gametime > 301)) {
+/*if ((gametime > 59 && gametime < 61) || (gametime > 119 && gametime < 121) || (gametime > 179 && gametime < 181) || (gametime > 239 && gametime < 241) || (gametime < 299 && gametime > 301)) {
 			std::cout << "current game time: " << gametime << std::endl;
 		}*/
 /*

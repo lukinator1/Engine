@@ -22,6 +22,26 @@ public:
 		linearterm = newlinearterm;
 		quadraticterm = newquadraticterm;
 	}
+	Pointlight(vector3 newcolor, vector3 newposition, float newrange, float newintensity) : Light(newcolor, newintensity) {
+		position = newposition;
+		range = newrange;
+		if (range <= 50) {
+			linearterm = .14;
+			quadraticterm = .07;
+		}
+		else if (range <= 120) {
+			linearterm = .045;
+			quadraticterm = .0075;
+		}
+		else if (range <= 250) {
+			linearterm = 0.022;
+			quadraticterm = 0.0019;
+		}
+		else {
+			linearterm = .007;
+			quadraticterm = .0002;
+		}
+	}
 	virtual void setLight(vector3 newcolor, vector3 newposition, float newrange, float newintensity, float newlinearterm, float newquadraticterm) {
 		color = newcolor;
 		range = newrange;

@@ -1,5 +1,4 @@
 #pragma once
-#include <string>
 #include "../MathLibrary/vector2.h"
 class Message {
 public:

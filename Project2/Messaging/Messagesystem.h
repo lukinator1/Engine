@@ -1,6 +1,5 @@
 #pragma once
 #include <queue>
-#include <string>
 #include <iostream>
 #include "Message.h"
 #include "../Input.h"
@@ -17,6 +16,9 @@ public:
 	void messageSystemShutdown();
 	void messageDispatch(Message &message, Input &Inputs, Window &Window, Camera &Camera);
 	void clearMessageQueue();
+	void printMessageQueue();
+	std::queue<Message> getMessageQueue();
+	void popMessageQueue();
 	Messagesystem();
 	~Messagesystem();
 };

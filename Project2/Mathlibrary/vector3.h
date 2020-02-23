@@ -11,7 +11,7 @@ public:
 	/*float getX();
 	float getY();
 	float getZ();*/
-	void setVectorThree(float newx, float newy, float newz);
+	void setVector(float newx, float newy, float newz);
 	vector3 Rotate(float angle, vector3 axis);
 	vector3 crossProduct(vector3 newv);
 	vector3 Normalize();

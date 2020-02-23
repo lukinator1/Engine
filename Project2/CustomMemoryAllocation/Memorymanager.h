@@ -1,22 +1,20 @@
 #pragma once
 #include <cstdlib>
 #include "../Engine.h"
-#include <vector>
-#include <map>
-#include <iterator>
-//maybe change the swapbuffers() function to use an array since it might increase performance
+//maybe change the swapbuffers() function to use an array since it might increase performance (prbably won't matter)
 //improve syntax on engineallocate, take in template + no. elements instead? (sizeof(t) * elements)
 class Memorymanager : public Logger
 {
 public:
 	class StackAllocator {
 	private:
-	public:
-		int allocatorcapacity;
-		int currentallocatorsize = 0;
 		uint8_t* stackTop;
 		uint8_t* bottomAddress;
+		uint8_t* realBottomAddress;
 		uint8_t* marker;
+		int allocatorcapacity;
+		int currentallocatorsize = 0;
+	public:
 		void* engineAllocate(unsigned int numberofbytes, size_t alignment, bool setmarker);
 		template <typename T>
 		T* allignPointer(T* ptr, size_t align) {
@@ -26,6 +24,12 @@ public:
 		};
 		uintptr_t allignBlock(uintptr_t address, size_t align);
 		uint8_t* getMarker();
+		int getAllocatorCapacity() {
+			return allocatorcapacity;
+		}
+		int getCurrentAllocatorSize() {
+			return currentallocatorsize;
+		}
 
 		StackAllocator(int blocksize, size_t alignment);
 		~StackAllocator();
@@ -48,11 +52,11 @@ public:
 		~DBAllocator();
 	};
 
+	StackAllocator sfAllocator;
+	DBAllocator dbAllocator;
 	Memorymanager(int sfsize, int sfalignment, int dbsize, int dbalignment);
 	~Memorymanager();
 
-	StackAllocator sfAllocator;
-	DBAllocator dbAllocator;
 	StackAllocator* newAllocator(int stacksize, size_t alignment);
 	void deleteAllocator(StackAllocator* &userpointer);
 

@@ -10,7 +10,7 @@ Quaternion Quaternion::Normalize()
 {
 	float length = sqrt((x * x) + (y * y) + (z * z) + (w * w));
 	if (length == 0) {
-		/*engineLog(__FILE__, __LINE__, "The stack allocator wassn't created, the alignment must be a power of 2, => 2 and <= 256. A nullptr was returned instead.", 3, 1, false);*/
+		engineLog(__FILE__, __LINE__, "A quaternion of length 0 was attempted to be normalized. This is an invalid operation and did not go through.", 3, 3, false);
 		return *this;
 	}
 	else {

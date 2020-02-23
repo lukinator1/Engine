@@ -12,7 +12,7 @@ void Messagesystem::messageSystemUpdate(Input &Inputs, Window &window, Camera &c
 	}
 }
 void Messagesystem::messageDispatch(Message &message, Input &Inputs, Window &Window, Camera &Camera) {	//messages ordered here, extern
-		Inputs.handleMessage(message);
+		/*nputs.handleMessage(message);*/
 		Window.handleMessage(message);
 		/*Camera.handleMessage(message);*/
 		messagequeue.pop();
@@ -23,12 +23,19 @@ void Messagesystem::clearMessageQueue() {
 		messagequeue.pop();
 	}
 }
-void printMessageQueue() {
+void Messagesystem::printMessageQueue() {
 	std::queue <Message> tempqueue = messagequeue;
-	for (int i = 0; i < messagequeue.size(); i++) {
+	for (int i = 0; i < tempqueue.size(); i++) {
 		std::cout << "Current message queue: " << std::endl; 
 		std::cout << i << ": " << static_cast<std::underlying_type<Message::Messagetypes>::type>(tempqueue.front().messagetype) << std::endl;
+		tempqueue.pop();
 	}
+}
+std::queue<Message> Messagesystem::getMessageQueue() {
+	return messagequeue;
+}
+void Messagesystem::popMessageQueue() {
+	messagequeue.pop();
 }
 void Messagesystem::messageSystemShutdown()
 {

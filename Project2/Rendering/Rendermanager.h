@@ -11,12 +11,14 @@
 #include "../Entity.h"
 #include "Skybox.h"
 #include "../Window.h"
+#include "../Logger.h"
 #include <GL/glew.h>
 #include <SDL2/SDL.h>
 #include <vector>
 //This is the main component for rendering, with meshes, materials, shaders, lighting and more. 
-class Rendering
+class Rendering : public Logger
 {
+	Window* windowptr;
 public:
 	void renderingStartup(Window &window);
 	void renderingShutdown();

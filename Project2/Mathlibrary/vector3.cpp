@@ -23,7 +23,7 @@ float vector3::getZ()
 {
 	return z;
 }*/
-void vector3::setVectorThree(float newx, float newy, float newz) {
+void vector3::setVector(float newx, float newy, float newz) {
 	x = newx;
 	y = newy;
 	z = newz;
@@ -63,7 +63,7 @@ vector3 vector3::Normalize() {
 	z = z / length;
 	return *this;*/
 	if (length == 0) {
-		/*engineLog(__FILE__, __LINE__, "A direction vector of 0, 0, 0 was passed in. This is undefined behavior and may break related code as 0, 0, 0 doesn't have a direction. ", 3, 3, true);*/
+		engineLog(__FILE__, __LINE__, "A vector3 of length 0 was attempted to be normalized. This is an invalid operation and did not go through. ", 3, 3, true);
 		return *this;
 	}
 	else return vector3(x / length, y / length, z / length);

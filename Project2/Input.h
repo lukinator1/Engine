@@ -2,6 +2,7 @@
 #include <SDL2/SDL.h>
 #include <string>
 #include <iostream>
+#include <unordered_map>
 #include "Messaging/Message.h"
 #include "Mathlibrary/vector2.h"
 #include "Global.h"
@@ -10,16 +11,14 @@ class Input
 {
 private:
 	SDL_Event sdlevent;
-	bool leftmousepressed;
+	/*bool leftmousepressed;
 	bool rightmousepressed;
 	bool middlemousepressed;
 	bool doubleclicked;
 	vector2 previousmouseposition;
 	vector2 mouseposition;
 	vector2 mousemovementdistance;
-	vector2 scrolldistance;
-	bool moved;
-	bool scrolled;
+	vector2 scrolldistance;*/
 
 public:
 	enum Keys {
@@ -62,9 +61,9 @@ public:
 		I = 12,
 		O = 18,
 		P = 19,
-		leftbracket = 47,
-		rightbracket = 48,
-		backslash = 49,
+		Leftbracket = 47,
+		Rightbracket = 48,
+		Backslash = 49,
 		Capslock = 57,
 		A = 4,
 		S = 22,
@@ -75,10 +74,10 @@ public:
 		J = 13,
 		K = 14,
 		L = 15,
-		semicolon = 51,
-		apostrophe = 52,
-		enter = 40,
-		leftshift = 225,
+		Semicolon = 51,
+		Apostrophe = 52,
+		Enter = 40,
+		Leftshift = 225,
 		Z = 29,
 		X = 27,
 		C = 6,
@@ -86,24 +85,36 @@ public:
 		B = 5,
 		N = 17,
 		M = 16,
-		comma = 54,
-		period = 55,
-		forwardslash = 56,
-		rightshift = 229,
-		control = 224,
-		windows = 227,
-		leftalt = 226,
-		space = 44,
-		rightalt = 230,
-		keyleft = 80,
-		keyup = 82,
-		keydown = 81,
-		keyright = 79
+		Comma = 54,
+		Period = 55,
+		Forwardslash = 56,
+		Rightshift = 229,
+		Control = 224,
+		Windows = 227,
+		Leftalt = 226,
+		Space = 44,
+		Rightalt = 230,
+		Keyleft = 80,
+		Keyup = 82,
+		Keydown = 81,
+		Keyright = 79
+
 	};
 	Input();
 	~Input();
-	Uint8 keyboardstate[230] = { 0 };
-	bool repeatstate[230] = { false };
+	std::pair<bool, bool> keyboardstate[230] = {  };
+	std::pair<bool, bool> leftmouse;
+	std::pair<bool, bool> rightmouse;
+	std::pair<bool, bool> middlemouse;
+	bool doubleclicked;
+	/*Mouse Mouse;*/
+	vector2 previousmouseposition;
+	vector2 mouseposition;
+	vector2 mousemovementdistance;
+	vector2 scrolldistance;
+	bool moved;
+	bool scrolled;
+
 	const Uint8 *sdlkeyboard = SDL_GetKeyboardState(NULL);
 
 	void inputStartup();
@@ -131,10 +142,13 @@ public:
 	vector2 getMouseMovementDistance();
 	float getXMouseMovementDistance();
 	float getYMouseMovementDistance();
-	bool leftMousePressed();
+	/*bool leftMousePressed();
 	bool rightMousePressed();
-	bool middleMousePressed();
-	const Uint8* getKeysPressed();
+	bool middleMousePressed();*/
+	std::pair<bool, bool>* getKeysPressed();
+	std::pair<bool, bool> getLeftMouse();
+	std::pair<bool, bool> getRightMouse();
+	std::pair<bool, bool> getMiddleMouse();
 	void update();
-	bool isKeyPressed(Keys key);
+	/*bool isKeyPressed(Keys key);*/
 };

@@ -9,9 +9,9 @@ public:
 	vector3 rotation;
 	vector3 scaling;
 	Transforming() {
-		translation.setVectorThree(0.0f, 0.0f, 0.0f);
-		rotation.setVectorThree(0.0f, 0.0f, 0.0f);
-		scaling.setVectorThree(1.0f, 1.0f, 1.0f);
+		translation.setVector(0.0f, 0.0f, 0.0f);
+		rotation.setVector(0.0f, 0.0f, 0.0f);
+		scaling.setVector(1.0f, 1.0f, 1.0f);
 	};
 	~Transforming();
 	matrix4f newTransformationMatrix() {

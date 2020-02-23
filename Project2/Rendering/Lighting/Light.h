@@ -13,10 +13,6 @@ public:
 		color = newlightcolor;
 		intensity = newintensity;
 	}
-	Light(vector3 newlightcolor) {
-		color = newlightcolor;
-		intensity = 0.0f;
-	}
 	void setLight(vector3 newcolor, float newintensity) {
 		color = newcolor;
 		intensity = newintensity;
@@ -35,9 +31,6 @@ public:
 	}
 	float getIntensity() {
 		return intensity;
-	}
-	void deleteLight() {
-
 	}
 	~Light();
 };

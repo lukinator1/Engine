@@ -1,9 +1,9 @@
 CONFIGURATION FILES 
 (please change nothing in this file but the values after the equal sign, including any whitespaces)
 
-(passing in a value will lock deltatime to that value, usually if you want a to try to lock to a framerate)
+(passing in a value will lock deltatime to that value, usually if you want to try to lock to a framerate)
 General:
-deltatime = Unlocked
+framerate = Unlocked
 
 (max value 16, 384x16, 384 for height/width, desktopfullscreen on will simply set the display size to the desktop size with when fullscreen is on, when it is off it will fully change the videomode, please put icon image in the root directory)
 Window:

@@ -31,6 +31,10 @@ Memorymanager::StackAllocator::StackAllocator(int blocksize = 600, size_t alignm
 }
 Memorymanager::StackAllocator::~StackAllocator()
 {
+	if (bottomAddress != nullptr) {
+		this->clearAllocator();
+		delete[] bottomAddress;
+	}
 }
 
 void* Memorymanager::StackAllocator::engineAllocate(unsigned int blocksize, size_t alignment, bool setmarker = false)	//allignment must be power of two 
@@ -106,6 +110,7 @@ void Memorymanager::StackAllocator::deleteStack() //remove void pointer?
 	}
 	this->clearAllocator();
 	delete[] bottomAddress;
+	bottomAddress = nullptr;
 }
 
 

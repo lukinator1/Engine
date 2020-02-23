@@ -11,30 +11,77 @@ void Input::inputStartup()
 	mouseposition.setVector(0.0f, 0.0f);
 	mousemovementdistance.setVector(0.0f, 0.0f);
 }
-void Input::getInputs() {
+void Input::getInputs() {  
 	scrolled = false;
 	moved = false;
+	for (int i = 0; i < 230; i++) { //these 2 loops can be manually entered to increase performance (slightly)
+		if (keyboardstate[i].first == true) {
+			keyboardstate[i].second = true;
+		}
+	}
+	for (int i = 0; i < 230; i++) { 
+		keyboardstate[i].first = sdlkeyboard[i];
+		if (keyboardstate[i].first == true && keyboardstate[i].second == false) {
+			std::cout << "Key: " << i << " pressed" << std::endl;
+		}
+	}
+	if (leftmouse.first == true) {
+		leftmouse.second = true;
+	}
+	leftmouse.first = false;
+	if (rightmouse.first == true) {
+		rightmouse.second = true;
+	}
+	rightmouse.first = false;
+	if (middlemouse.first == true) {
+		middlemouse.second = true;
+	}
+	middlemouse.first = false;
+	doubleclicked = false;
 	while (SDL_PollEvent(&sdlevent)) {
+		/*if (sdlevent.type == SDL_JOYBUTTONDOWN) {
+
+		}*/
+		
+
 		if (sdlevent.type == SDL_MOUSEBUTTONDOWN) { //mouse buttons down
 			if (sdlevent.button.button == SDL_BUTTON_LEFT) {
+				leftmouse.first = true;
+				std::cout << "LM clcicked" << std::endl;
 				if (sdlevent.button.clicks == 2) {
-					postMessage(Message::Messagetypes::Doubleclick);
+					/*postMessage(Message::Messagetypes::Doubleclick);*/
+					doubleclicked = true;
+					std::cout << "Doubleclicked" << std::endl;
 				}
-				else {
+				/*else {
 					postMessage(Message::Messagetypes::Leftmousepressed);
-				}
+					
+				}*/
 			}
 			if (sdlevent.button.button == SDL_BUTTON_RIGHT) {
-				postMessage(Message::Messagetypes::Rightmousepressed);
+				/*postMessage(Message::Messagetypes::Rightmousepressed);*/
+				std::cout << "RM clicked" << std::endl;
+				rightmouse.first = true;
 			}
 			if (sdlevent.button.button == SDL_BUTTON_MIDDLE) {
-				postMessage(Message::Messagetypes::M3pressed);
+				std::cout << "M3 clicked" << std::endl;
+				middlemouse.first = true;
+				/*postMessage(Message::Messagetypes::M3pressed);*/
 			}
 		}
 
-		if (sdlevent.type == SDL_KEYDOWN && sdlevent.key.repeat == 0) {
-			postMessage(Message::Messagetypes::Keydown, SDL_GetScancodeFromKey(sdlevent.key.keysym.sym), 0);
-		}
+		/*if (sdlevent.type == SDL_KEYDOWN) {
+			/*postMessage(Message::Messagetypes::Keydown, SDL_GetScancodeFromKey(sdlevent.key.keysym.sym), 0);
+			keyboardstate[SDL_GetScancodeFromKey(sdlevent.key.keysym.sym)].first = true;
+			/*if (sdlevent.key.repeat == 1) {
+				keyboardstate[SDL_GetScancodeFromKey(sdlevent.key.keysym.sym)].second = true;
+				std::cout << "Key: " << SDL_GetScancodeFromKey(sdlevent.key.keysym.sym) << " being held" << std::endl;
+			}
+			else {*/
+				/*keyboardstate[SDL_GetScancodeFromKey(sdlevent.key.keysym.sym)].second = false;
+			}
+			std::cout << "Key: " << SDL_GetScancodeFromKey(sdlevent.key.keysym.sym) << "pressed" << std::endl;
+		}*/
 
 		if (sdlevent.type == SDL_MOUSEMOTION) { //mouse buttons down;
 			/*postMessage(Message::Messagetypes::Mousemoved, sdlevent.motion.x, sdlevent.motion.y, sdlevent.motion.xrel, -sdlevent.motion.yrel);*/
@@ -45,22 +92,33 @@ void Input::getInputs() {
 
 		if (sdlevent.type == SDL_MOUSEBUTTONUP) { //mouse buttons up
 			if (sdlevent.button.button == SDL_BUTTON_LEFT) {
-				postMessage(Message::Messagetypes::Leftmouseunpressed);
+				/*postMessage(Message::Messagetypes::Leftmouseunpressed);*/
+				leftmouse.first = false;
+				leftmouse.second = false;
 			}
-			if (sdlevent.button.button == SDL_BUTTON_RIGHT) {
-				postMessage(Message::Messagetypes::Rightmouseunpressed);
+			else if (sdlevent.button.button == SDL_BUTTON_RIGHT) {
+				/*postMessage(Message::Messagetypes::Rightmouseunpressed);*/
+				rightmouse.first = false;
+				rightmouse.second = false;
 			}
-			if (sdlevent.button.button == SDL_BUTTON_MIDDLE) {
-				postMessage(Message::Messagetypes::M3unpressed);
+			else if (sdlevent.button.button == SDL_BUTTON_MIDDLE) {
+				/*postMessage(Message::Messagetypes::M3unpressed);*/
+				middlemouse.first = false;
+				middlemouse.second = false;
 			}
 		}
 
 		if (sdlevent.type == SDL_KEYUP) {
-			postMessage(Message::Messagetypes::Keyup, SDL_GetScancodeFromKey(sdlevent.key.keysym.sym), 0);
+			/*postMessage(Message::Messagetypes::Keyup, SDL_GetScancodeFromKey(sdlevent.key.keysym.sym), 0);*/
+			keyboardstate[SDL_GetScancodeFromKey(sdlevent.key.keysym.sym)].first = false;
+			keyboardstate[SDL_GetScancodeFromKey(sdlevent.key.keysym.sym)].second = false;
 		}
 
 		if (sdlevent.type == SDL_MOUSEWHEEL) {
-			postMessage(Message::Messagetypes::Mousescrolled, sdlevent.wheel.x, sdlevent.wheel.y);
+			/*postMessage(Message::Messagetypes::Mousescrolled, sdlevent.wheel.x, sdlevent.wheel.y);
+			scrolled = true;*/
+			setScrolldistance(sdlevent.wheel.x, sdlevent.wheel.y);
+			std::cout << "x scroll distance: " << scrolldistance.x << ", y scroll distance: " << scrolldistance.y << std::endl;
 			scrolled = true;
 		}
 
@@ -137,7 +195,7 @@ float Input::getXMouseMovementDistance() {
 float Input::getYMouseMovementDistance() {
 	return mousemovementdistance.y;
 }
-bool Input::leftMousePressed()
+/*bool Input::leftMousePressed()
 {
 	return leftmousepressed;
 }
@@ -147,17 +205,26 @@ bool Input::rightMousePressed()
 }
 bool Input::middleMousePressed() {
 	return middlemousepressed;
-}
-const Uint8* Input::getKeysPressed()
+}*/
+std::pair<bool, bool>* Input::getKeysPressed()
 {
 	return keyboardstate;
 }
-bool Input::isKeyPressed(Keys key)
+std::pair<bool, bool> Input::getLeftMouse() {
+	return leftmouse;
+}
+std::pair<bool, bool> Input::getRightMouse() {
+	return rightmouse;
+}
+std::pair<bool, bool> Input::getMiddleMouse() {
+	return middlemouse;
+}
+/*bool Input::isKeyPressed(Keys key)
 {
-	if (keyboardstate[key]) {
+	if (keyboardstate[key].first) {
 		return true;
 	}
-}
+}*/
 void Input::update()
 {
 }
@@ -166,57 +233,59 @@ void Input::inputShutdown()
 }
 void Input::handleMessage(Message &message)
 {
-	scrolled = false;
-	moved = false;
+	/*Mouse.scrolled = false;
+	Mouse.moved = false;*/
 	if (!messagequeue.empty()) { //handle inputs from event system
 		switch (message.messagetype) { //other window functions
 		case Message::Messagetypes::Mousemoved:
 			/*setMouseMovementDistance(message.messagedatathree);*/
-			updateMousePosition(message.messagedataone, message.messagedatatwo);
+			/*updateMousePosition(message.messagedataone, message.messagedatatwo);
 			std::cout << "x mouse position/distance : " << mouseposition.x << ", " << getXMouseMovementDistance() << " , y mouse position/distance: " << mouseposition.y << ", " << getYMouseMovementDistance() << std::endl;
-			moved = true;
+			moved = true;*/
 			break;
 		case Message::Messagetypes::Leftmousepressed:
-			leftmousepressed = true;
+			/*Mouse.leftmousepressed = true;*/
 			break;
 		case Message::Messagetypes::Rightmousepressed:
-			rightmousepressed = true;
+			/*Mouse.rightmousepressed = true;*/
 			break;
 		case Message::Messagetypes::Doubleclick:
-			doubleclicked = true;
+			/*doubleclicked = true;*/
 			break;
 		case Message::Messagetypes::M3pressed:
-			middlemousepressed = true;
+			/*Mouse.middlemousepressed = true;*/
 			break;
 		case Message::Messagetypes::Leftmouseunpressed:
-			leftmousepressed = false;
-			break;
+			/*leftmousepressed = false;
+			break;*/
 		case Message::Messagetypes::Rightmouseunpressed:
-			rightmousepressed = false;
-			break;
+			/*rightmousepressed = false;
+			break;*/
 		case Message::Messagetypes::M3unpressed:
-			leftmousepressed = false;
-			break;
+			/*leftmousepressed = false;
+			break;*/
 		case Message::Messagetypes::Keydown:
-			keyboardstate[message.messagedataone] = 1;
-			std::cout << "Key: " << message.messagedataone << std::endl;
+			/*keyboardstate[message.messagedataone].first = true; 
+			keyboardstate[message.messagedataone].second = message.messagedatatwo;
+			std::cout << "Key: " << message.messagedataone << std::endl;*/
 			break;
 		case Message::Messagetypes::Keyup:
-			keyboardstate[message.messagedataone] = 0;
+			/*keyboardstate[message.messagedataone].first = true;
+			keyboardstate[message.messagedataone].second = message.messagedatatwo;*/
 			break;
 		case Message::Messagetypes::Mousescrolled:
-			setScrolldistance(message.messagedataone, message.messagedatatwo);
+			/*setScrolldistance(message.messagedataone, message.messagedatatwo);
 			std::cout << "x scroll distance: " << scrolldistance.x << ", y scroll distance: " << scrolldistance.y << std::endl;
-			scrolled = true;
+			scrolled = true;*/
 			break;
 		}
 	}
-	if (scrolled == false) {
+	/*if (scrolled == false) {
 		setScrolldistance(0.0f, 0.0f);
 	}
 	if (moved == false) {
 		setMouseMovementDistance(0.0f, 0.0f);
-	}
+	}*/
 }
 void Input::postMessage(Message::Messagetypes messagetype)
 {

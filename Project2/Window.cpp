@@ -5,13 +5,6 @@ Window::Window(int width = 800, int height = 600, std::string title = "Untitled"
 	SDL_Init(SDL_INIT_EVENTS);
 	windowwidth = width;
 	windowheight = height;
-	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
-	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
-	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
-	SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
-	SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE, 32); //bit data for 1 pixel
-	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	
 	if (fullscreen == true) {
 		if (borderless == false) {
@@ -65,8 +58,6 @@ Window::Window(int width = 800, int height = 600, std::string title = "Untitled"
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glClearColor(0.0, 0.0, 0.0, 0.0);
-	/*glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);*/
-
 }
 Window::Window(int width, int height)
 {
@@ -190,6 +181,7 @@ void Window::clearWindow(float r, float g, float b, float a) {
 void Window::closeWindow() {
 	SDL_GL_DeleteContext(glContext);
 	SDL_DestroyWindow(window);
+	SDL_Quit();
 }
 void Window::handleMessage(Message &message)
 {

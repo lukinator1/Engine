@@ -12,7 +12,7 @@ public:
 	float specularexponent;
 	Materials() {
 		/*texture = texture.errortexture */
-		color.setVectorThree(0.0f, 0.0f, 0.0f);
+		color.setVector(0.0f, 0.0f, 0.0f);
 		specularintensity = 2.0f;
 		specularexponent = 32.0f;
 		alpha = 0.5f;
