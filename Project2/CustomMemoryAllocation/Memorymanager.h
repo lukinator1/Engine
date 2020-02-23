@@ -1,7 +1,6 @@
 #pragma once
 #include <cstdlib>
-#include "../Engine.h"
-//maybe change the swapbuffers() function to use an array since it might increase performance (prbably won't matter)
+#include "../Logger.h"
 //improve syntax on engineallocate, take in template + no. elements instead? (sizeof(t) * elements)
 class Memorymanager : public Logger
 {

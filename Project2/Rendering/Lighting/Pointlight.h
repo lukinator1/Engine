@@ -1,20 +1,21 @@
 #pragma once
 #include "Light.h"
 class Pointlight : public Light
-{  //todo: find a good default attenuation value, enginelog that vector isn't -1 < 0 < 1?
-public:
+{ 
+private:
 	vector3 position;
 	float linearterm;
 	float quadraticterm;
 	float range;
+public:
 	Pointlight(){
-		color = vector3(0.0f, 0.0f, 0.0f);
+		color = vector3(1.0f, 1.0f, 1.0f);
 		position = vector3(0.0f, 0.0f, 0.0f);
-		range = 12.0f;
-		intensity = 0.0f;
+		range = 26.0f;
+		intensity = 0.75f;
 		
-		linearterm = .22f;
-		quadraticterm = .20f;
+		linearterm = .19f;
+		quadraticterm = .16f;
 	}
 	Pointlight(vector3 newcolor, vector3 newposition, float newrange, float newintensity, float newlinearterm, float newquadraticterm) : Light(newcolor, newintensity){
 		position = newposition;
@@ -25,21 +26,21 @@ public:
 	Pointlight(vector3 newcolor, vector3 newposition, float newrange, float newintensity) : Light(newcolor, newintensity) {
 		position = newposition;
 		range = newrange;
-		if (range <= 50) {
-			linearterm = .14;
-			quadraticterm = .07;
+		if (range <= 50.0f) {
+			linearterm = .12f;
+			quadraticterm = .05f;
 		}
-		else if (range <= 120) {
-			linearterm = .045;
-			quadraticterm = .0075;
+		else if (range <= 120.0f) {
+			linearterm = .040f;
+			quadraticterm = .007f;
 		}
-		else if (range <= 250) {
-			linearterm = 0.022;
-			quadraticterm = 0.0019;
+		else if (range <= 250.0f) {
+			linearterm = 0.020f;
+			quadraticterm = 0.0017f;
 		}
 		else {
-			linearterm = .007;
-			quadraticterm = .0002;
+			linearterm = .006f;
+			quadraticterm = .0001f;
 		}
 	}
 	virtual void setLight(vector3 newcolor, vector3 newposition, float newrange, float newintensity, float newlinearterm, float newquadraticterm) {

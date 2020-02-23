@@ -8,13 +8,25 @@ framerate = Unlocked
 (max value 16, 384x16, 384 for height/width, desktopfullscreen on will simply set the display size to the desktop size with when fullscreen is on, when it is off it will fully change the videomode, please put icon image in the root directory)
 Window:
 title = MONKEEEEEEEEEEEEEEEEEEEYYYYYYY
-icon = juice.png
+icon = GameWindowIcon.png
 fullscreen = off
 desktopfullscreen = off
 width = 800
 height = 600
 borderless = off
 vsync = off
+
+Camera:
+fov = 70
+maxviewdistance = 1000
+minviewdistance = 0.1
+
+Logger:
+channels = 1, 0, 1 
+verbosity = 3
+showwarnings = yes
+clearlogeverysession = true
+
 
 Memory:
 singleframeallocatorsize = 400

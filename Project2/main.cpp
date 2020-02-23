@@ -23,6 +23,7 @@ float gametime = 0.0f;
 float fieldDepth = 10.0f;
 float fieldWidth = 10.0f;
 int main(int argc, char* argv[]) {
+	std::fstream ico("test.ico");
 		int sfsize = 500;  //settting configurations
 		int sfalignment = 8;
 		int dbsize = 500;
@@ -30,10 +31,21 @@ int main(int argc, char* argv[]) {
 		bool framelock = false;
 		bool vsync = false;
 		std::string title = "Untitled";
-		std::string icon = "Defaulticon.png";
+		std::string windowicon = "GameWindowIcon.png";
 		bool fullscreen = false;
+		int windowwidth = 800;
+		int windowheight = 600;
 		bool desktopfullscreen = false;
+		float arwidth = 800.0f;
+		float arheight = 600.0f;
 		bool borderless = false;
+		float fov = 70.0f;
+		float maxviewdistance = 1000.0f;
+		float minviewdistance = 0.1f;
+		int loggerchannels[4];
+		int loggerverbosity = 3;
+		bool loggerwarn = true;
+		bool logclear = false;
 		std::ifstream configuration("Engineconfiguration.txt");
 		std::string settings;
 		while (getline(configuration, settings)) {
@@ -48,7 +60,7 @@ int main(int argc, char* argv[]) {
 					deltatime = 1.0f / stoi(settings);
 				}
 			}
-			if (settings == "Window:") {
+			else if (settings == "Window:") {
 				getline(configuration, settings, '=');
 				getline(configuration, settings, ' ');
 				getline(configuration, settings);
@@ -57,7 +69,8 @@ int main(int argc, char* argv[]) {
 				getline(configuration, settings, '=');
 				getline(configuration, settings, ' ');
 				getline(configuration, settings);
-				icon = settings;
+				windowicon = settings;
+				/*desktopicon = icon;*/
 
 				getline(configuration, settings, '=');
 				getline(configuration, settings);
@@ -85,6 +98,14 @@ int main(int argc, char* argv[]) {
 				getline(configuration, settings);
 				windowheight = stoi(settings);
 
+				/*getline(configuration, settings, '=');
+				getline(configuration, settings);
+				arwidth = stof(settings);
+
+				getline(configuration, settings, '=');
+				getline(configuration, settings);
+				arheight = stof(settings);*/
+
 				getline(configuration, settings, '=');
 				getline(configuration, settings);
 				if (settings.find("On") != std::string::npos || settings.find("on") != std::string::npos) {
@@ -103,6 +124,52 @@ int main(int argc, char* argv[]) {
 					vsync = false;
 				}
 
+			}
+			else if (settings == "Camera:") {
+				getline(configuration, settings, '=');
+				getline(configuration, settings);
+				fov = stof(settings);
+
+				getline(configuration, settings, '=');
+				getline(configuration, settings);
+				maxviewdistance = stof(settings);
+
+				getline(configuration, settings, '=');
+				getline(configuration, settings);
+				minviewdistance = stof(settings);
+			}
+			else if (settings == "Logger:") {
+				getline(configuration, settings, '=');
+				getline(configuration, settings);
+				std::stringstream channels(settings);
+				getline(channels, settings, ',');
+				loggerchannels[0] = stoi(settings);
+				getline(channels, settings, ',');
+				loggerchannels[1] = stoi(settings);
+				getline(channels, settings, ',');
+				loggerchannels[2] = stoi(settings);
+
+				getline(configuration, settings, '=');
+				getline(configuration, settings);
+				loggerverbosity = stof(settings);
+
+				getline(configuration, settings, '=');
+				getline(configuration, settings);
+				if (settings.find("On") != std::string::npos || settings.find("on") != std::string::npos || settings.find("Yes") != std::string::npos || settings.find("yes") != std::string::npos || settings.find("True") != std::string::npos || settings.find("true") != std::string::npos) {
+					loggerwarn = true;
+				}
+				else {
+					loggerwarn = false;
+				}
+
+				getline(configuration, settings, '=');
+				getline(configuration, settings);
+				if (settings.find("On") != std::string::npos || settings.find("on") != std::string::npos || settings.find("Yes") != std::string::npos || settings.find("yes") != std::string::npos || settings.find("True") != std::string::npos || settings.find("true") != std::string::npos) {
+					logclear = true;
+				}
+				else {
+					logclear = false;
+				}
 			}
 			else if (settings.find("Memory:") != std::string::npos) {
 				getline(configuration, settings, '=');
@@ -130,13 +197,14 @@ int main(int argc, char* argv[]) {
 
 	Messagesystem Messages;
 	Memorymanager memorymanager(sfsize, sfalignment, dbsize, dbalignment);
-	Window window(windowwidth, windowheight, title, icon, fullscreen, desktopfullscreen, borderless, vsync);
+	Window window(windowwidth, windowheight, title, windowicon, fullscreen, desktopfullscreen, borderless, vsync);
 	Rendering Renderer;
 	Renderer.renderingStartup(window);
 	/*Memorymanager::StackAllocator* stackallocator = memorymanager.newAllocator(1000, alignof(int));*/
 	Input Inputs;
 	Inputs.inputStartup();
 	Camera thecamera;
+	thecamera.cameraStartup(fov, maxviewdistance , minviewdistance, arwidth, arheight);
 	Transforming transform;
 	Scene sceneone;
 	sceneone.setSkybox("right.jpg", "left.jpg", "top.jpg", "bottom.jpg", "front.jpg", "back.jpg");
@@ -149,11 +217,11 @@ int main(int argc, char* argv[]) {
 	Materials material("test.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f);		// from basicshader change to render manager startup?
 	Quote.transform.setTranslationVector(vector3(10.0f, 17.5f, 12.0f));
 	Mesh quotemodel;
-	quotemodel.loadMeshObj("quote.obj");
+	quotemodel.loadMeshObj("quote.obj");;
 	Meshrenderer component(quotemodel, material);
 	Meshrenderer* componentobject = &component;
 	Quote.addComponent(componentobject);
-	sceneone.root = Quote;
+	/*sceneone.root = Quote;*/
 
 	Vertex vertices[] = { Vertex(vector3(-fieldWidth, 0.0f, -fieldDepth), vector2(0.0f, 0.0f)),
 						Vertex(vector3(-fieldWidth, 0.0f, fieldDepth * 3), vector2(0.0f, 1.0f)),

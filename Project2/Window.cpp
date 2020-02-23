@@ -110,7 +110,7 @@ void Window::setWindow(int newwidth, int newheight, const char* newtitle) {
 	SDL_SetWindowSize(this->window, newwidth, newheight);
 	SDL_SetWindowTitle(this->window, newtitle);
 }
-void Window::setWindowIcon(std::string filename) {
+void Window::setWindowIcon(std::string filename) { 
 	Texture icon;
 	int width, height, components;
 	unsigned char * pixels;
@@ -119,7 +119,6 @@ void Window::setWindowIcon(std::string filename) {
 	if (SDL_BYTEORDER == SDL_BIG_ENDIAN) {
 		SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(pixels, width, height, 32, 4 * width, 0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
 		SDL_SetWindowIcon(window, surface);
-		SDL_FreeSurface(surface);
 	}
 	else {
 		SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(pixels, width, height, 32, 4 * width, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);

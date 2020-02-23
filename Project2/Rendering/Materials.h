@@ -6,10 +6,12 @@ class Materials : public Texture //todo: alphas
 {
 public:
 	Texture texture;
+private:
 	vector3 color;
 	float alpha;
 	float specularintensity;
 	float specularexponent;
+public:
 	Materials() {
 		/*texture = texture.errortexture */
 		color.setVector(0.0f, 0.0f, 0.0f);
@@ -56,8 +58,11 @@ public:
 	void setAlpha(float newalpha) {
 		alpha = newalpha;
 	}
-	Texture getTexture() {
-		return texture;
+	void seSpecularIntensity(float newspecintensity) {
+		specularintensity = newspecintensity;
+	}
+	void setSpecularExponent(float newspecexponent){
+		specularexponent = newspecexponent;
 	}
 	vector3 getColor(){
 		return color;
@@ -65,6 +70,13 @@ public:
 	float getAlpha() {
 		return alpha;
 	}
+	float getSpecularIntensity() {
+		return specularintensity;
+	}
+	float getSpecularExponent() {
+		return specularexponent;
+	}
+
 	~Materials();
 };
 

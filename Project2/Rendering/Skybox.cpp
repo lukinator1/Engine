@@ -111,7 +111,7 @@ void Skybox::useSkybox()
 	/*skyboxshader.setUniform("projectedtransform", t.newTransformationMatrix());
 	skyboxshader.setUniform("view", t.newViewMatrix());
 	skyboxshader.setUniform("projection", t.newProjectionMatrix());*/
-	glBindTexture(GL_TEXTURE_CUBE_MAP, skyboxtexture.textureid);
+	skyboxtexture.useCubeMapTexture();
 	skyboxbox.drawNoIndicesMesh();
 	glDepthFunc(GL_LESS);
 }

@@ -5,12 +5,17 @@
 #include <vector>
 #include <sstream>
 #include <GL/glew.h>
-class Mesh : public Logger  //add name to to the constructors
+class Mesh : public Logger 
 {
-	unsigned int size; 
 	unsigned int indexbufferobject;
+	GLuint vbo;
+	GLuint tbo;
+	GLuint ibo;
+	GLuint vao;
+	void normalizeNormalVertices(Vertex * vertices, int numvertices);
+	void calculateNormals(Vertex* vertices, unsigned int* indices, unsigned int numvertices, unsigned int numindices);
 public:
-	std::string name;
+	unsigned int size;
 	Mesh(Vertex* vertices, unsigned int * indices, unsigned int numvertices, unsigned int numindices);
 	Mesh();
 	~Mesh();
@@ -20,12 +25,6 @@ public:
 	void drawNoIndicesMesh();
 	void loadMeshObj(std::string file);
 	void makeErrorMesh();
-	void normalizeNormalVertices(Vertex * vertices, int numvertices);
-	void calculateNormals(Vertex* vertices, unsigned int* indices, unsigned int numvertices, unsigned int numindices);
-	GLuint vbo;
-	GLuint tbo;
-	GLuint ibo;
-	GLuint vao;
 };
 //glBindBuffer(GL_ARRAY_BUFFER, vbo)
 //glBufferData(GL_ARRAY_BUFFER, size, data, usage)

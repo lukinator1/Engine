@@ -1,17 +1,33 @@
 #pragma once
 #include "Light.h"
 class Directionallight : public Light
-{	public:
+{
+private:
 	vector3 direction;
-	Directionallight(vector3 newlightcolor, vector3 newdirection, float newintensity) : Light(newlightcolor, newintensity){
+public:
+	Directionallight() {
+		direction = vector3(1.0f, 1.0f, 1.0f);
+	}
+	Directionallight(vector3 newdirection) {
+		if (newdirection != vector3(0.0f, 0.0f, 0.0f)) {
 			direction = newdirection.Normalize();
+		}
+	}
+	Directionallight(vector3 newlightcolor, vector3 newdirection, float newintensity) : Light(newlightcolor, newintensity){
+		if (newdirection != vector3(0.0f, 0.0f, 0.0f)) {
+			direction = newdirection.Normalize();
+		}
 	}
 	Directionallight(vector3 newlightcolor, vector3 newdirection) : Light(newlightcolor) {
+		if (newdirection != vector3(0.0f, 0.0f, 0.0f)) {
 			direction = newdirection.Normalize();
+		}
 	}
 	virtual void setLight(vector3 newcolor, vector3 newdirection, float newintensity) {
 		color = newcolor;
-		direction = newdirection.Normalize();
+		if (newdirection != vector3(0.0f, 0.0f, 0.0f)) {
+			direction = newdirection.Normalize();
+		}
 		intensity = newintensity;
 	}
 	virtual void setLight(Directionallight newlight) {

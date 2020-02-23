@@ -4,11 +4,12 @@
 #include <string>
 #include <algorithm>
 #include <iostream>
+#include <fstream>
 #include "Global.h"
 #include "Logger.h"
 #include "Messaging/Message.h"
 #include "Rendering/Texture.h"
-//to do: window icon + resolution
+//to do: desktop icon + resolution
 //momerykl monkeyr
 class Window : public Logger
 {

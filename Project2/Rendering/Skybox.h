@@ -6,7 +6,7 @@
 #include "Materials.h"
 #include <string>
 #include <fstream>
-//todo: infintely scaling, sizing
+//todo: infintely scaling, sizing, sphere
 class Skybox : public Logger
 {
 public:

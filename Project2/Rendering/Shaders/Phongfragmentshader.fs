@@ -39,15 +39,15 @@ uniform Spotlight spotlights[5];
 
 
 float calculateAttenuation(Pointlight plight, float distance){	//change 0.0 to 1.0
-	return 1.0/(0.0 + 
+	return 1.0/(0.001 + 
 	plight.attenuation.linearterm * distance + 
-	plight.attenuation.quadraticterm * distance * distance + .0001);
+	plight.attenuation.quadraticterm * distance * distance);
 }
 
 float calculateAttenuation(Spotlight slight, float distance){	//change 0.0 to 1.0
-	return 1.0/(0.0 + 
+	return 1.0/(0.001 + 
 	slight.attenuation.linearterm * distance + 
-	slight.attenuation.quadraticterm * distance * distance + .0001);
+	slight.attenuation.quadraticterm * distance * distance);
 }
 
 

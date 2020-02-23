@@ -1,10 +1,11 @@
 #pragma once
 #include "../../Mathlibrary/vector3.h"
-class Light //default constructors?
+class Light 
 {
-public:
+protected:
 	vector3 color;
 	float intensity;
+public:
 	Light() {
 		color = vector3(1.0f, 1.0f, 1.0f);
 		intensity = .75f;
@@ -12,6 +13,10 @@ public:
 	Light(vector3 newlightcolor, float newintensity) {
 		color = newlightcolor;
 		intensity = newintensity;
+	}
+	Light(vector3 newlightcolor) {
+		color = newlightcolor;
+		intensity = 0.75;
 	}
 	void setLight(vector3 newcolor, float newintensity) {
 		color = newcolor;
