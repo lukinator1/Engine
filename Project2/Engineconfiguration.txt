@@ -18,6 +18,17 @@ aheight = 600
 borderless = off
 vsync = off
 
+Camera:
+fov = 70
+maxviewdistance = 1000
+minviewdistance = 0.1
+
+Logger:
+channels = 1, 0, 1
+verbosity = 3
+showwarnings = yes
+clearlogeverysession = true
+
 Memory:
 singleframeallocatorsize = 400
 singleframeallocatoralignment = 8

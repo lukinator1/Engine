@@ -124,7 +124,7 @@ int main(int argc, char* argv[]) {
 				}
 
 			}
-		/*	else if (settings == "Camera:") {
+			else if (settings == "Camera:") {
 				getline(configuration, settings, '=');
 				getline(configuration, settings);
 				fov = stof(settings);
@@ -137,7 +137,7 @@ int main(int argc, char* argv[]) {
 				getline(configuration, settings);
 				minviewdistance = stof(settings);
 			}
-			else if (settings == "Logger:") {
+			/*else if (settings == "Logger:") {
 				getline(configuration, settings, '=');
 				getline(configuration, settings);
 				std::stringstream channels(settings);
