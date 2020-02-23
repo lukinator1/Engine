@@ -224,27 +224,27 @@ void Shader::setUniform(std::string newuniform, matrix4f newmatrixvalue) {
 	setUniform(newuniform + ".direction", alight.direction);
 } directional*/
 void Shader::setUniform(std::string newuniform, Directionallight alight) { //directionallight
-	setUniform(newuniform + ".color", alight.getColor());
-	setUniform(newuniform + ".direction", alight.getDirection());
-	setUniform(newuniform + ".intensity", alight.getIntensity());
+	setUniform(newuniform + ".color", alight.color);
+	setUniform(newuniform + ".direction", alight.direction);
+	setUniform(newuniform + ".intensity", alight.intensity);
 }
 void Shader::setUniform(std::string newuniform, Pointlight alight) {  //pointlight
-	setUniform(newuniform + ".color", alight.getColor());
-	setUniform(newuniform + ".intensity", alight.getIntensity());
-	setUniform(newuniform + ".attenuation.linearterm", alight.getLinearTerm());
-	setUniform(newuniform + ".attenuation.quadraticterm", alight.getQuadraticTerm());
-	setUniform(newuniform + ".position", alight.getPosition());
-	setUniform(newuniform + ".range", alight.getRange());
+	setUniform(newuniform + ".color", alight.color);
+	setUniform(newuniform + ".intensity", alight.intensity);
+	setUniform(newuniform + ".attenuation.linearterm", alight.linearterm);
+	setUniform(newuniform + ".attenuation.quadraticterm", alight.quadraticterm);
+	setUniform(newuniform + ".position", alight.position);
+	setUniform(newuniform + ".range", alight.range);
 }
 void Shader::setUniform(std::string newuniform, Spotlight alight) {  //spotlight
-	setUniform(newuniform + ".color", alight.getColor());
-	setUniform(newuniform + ".intensity", alight.getIntensity());
-	setUniform(newuniform + ".attenuation.linearterm", alight.getLinearTerm());
-	setUniform(newuniform + ".attenuation.quadraticterm", alight.getQuadraticTerm());
-	setUniform(newuniform + ".position", alight.getPosition());
-	setUniform(newuniform + ".range", alight.getRange());
-	setUniform(newuniform + ".direction", alight.getDirection());
-	setUniform(newuniform + ".cutoff", alight.getCutoff());
+	setUniform(newuniform + ".color", alight.color);
+	setUniform(newuniform + ".intensity", alight.intensity);
+	setUniform(newuniform + ".attenuation.linearterm", alight.linearterm);
+	setUniform(newuniform + ".attenuation.quadraticterm", alight.quadraticterm);
+	setUniform(newuniform + ".position", alight.position);
+	setUniform(newuniform + ".range", alight.range);
+	setUniform(newuniform + ".direction", alight.direction);
+	setUniform(newuniform + ".cutoff", alight.cutoff);
 }
 void Shader::updateUniforms(matrix4f worldmatrix, matrix4f projectedmatrix, vector3 position, Materials &material) { 
 	setUniform("transform", worldmatrix);
@@ -260,8 +260,8 @@ void Shader::updateUniforms(matrix4f worldmatrix, matrix4f projectedmatrix, vect
 			setUniform("spotlights[" + std::to_string(i) + ']', *spotlights[i]);
 		}
 	}
-	setUniform("specularintensity", material.getSpecularIntensity());
-	setUniform("specularexponent", material.getSpecularExponent());
+	setUniform("specularintensity", material.specularintensity);
+	setUniform("specularexponent", material.specularexponent);
 	setUniform("cameraposition", position);
 	material.texture.useTexture();
 }

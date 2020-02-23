@@ -2,7 +2,7 @@
 #include "../../Mathlibrary/vector3.h"
 class Light 
 {
-protected:
+	public:
 	vector3 color;
 	float intensity;
 public:

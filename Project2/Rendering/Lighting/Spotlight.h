@@ -2,7 +2,7 @@
 #include "Light.h"
 class Spotlight : public Light
 {
-private: 
+public: 
 	vector3 position;
 	vector3 direction;
 	float range;

@@ -123,13 +123,13 @@ public:
 	void setMouseLook(bool look) {
 		SDL_SetRelativeMouseMode(SDL_TRUE);
 	}
-	void cameraStartup(float _fov, float _maxviewdistance, float _minviewdistance, float arwidth, float arheight) {
+	/*void cameraStartup(float _fov, float _maxviewdistance, float _minviewdistance, float arwidth, float arheight) {
 		fov = _fov;
 		maxviewdistance = _maxviewdistance;
 		minviewdistance = _minviewdistance;
 		aspectratiowidth = arwidth;
 		aspectratioheight = arheight;
-	}
+	}*/
 	/*void handleMessage(Message &message){
 		if (!messagequeue.empty()) {
 			switch (message.messagetype) {

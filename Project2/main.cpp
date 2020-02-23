@@ -23,7 +23,6 @@ float gametime = 0.0f;
 float fieldDepth = 10.0f;
 float fieldWidth = 10.0f;
 int main(int argc, char* argv[]) {
-	std::fstream ico("test.ico");
 		int sfsize = 500;  //settting configurations
 		int sfalignment = 8;
 		int dbsize = 500;
@@ -42,7 +41,7 @@ int main(int argc, char* argv[]) {
 		float fov = 70.0f;
 		float maxviewdistance = 1000.0f;
 		float minviewdistance = 0.1f;
-		int loggerchannels[4];
+		/*int loggerchannels[4];*/
 		int loggerverbosity = 3;
 		bool loggerwarn = true;
 		bool logclear = false;
@@ -98,13 +97,13 @@ int main(int argc, char* argv[]) {
 				getline(configuration, settings);
 				windowheight = stoi(settings);
 
-				/*getline(configuration, settings, '=');
+				getline(configuration, settings, '=');
 				getline(configuration, settings);
 				arwidth = stof(settings);
 
 				getline(configuration, settings, '=');
 				getline(configuration, settings);
-				arheight = stof(settings);*/
+				arheight = stof(settings);
 
 				getline(configuration, settings, '=');
 				getline(configuration, settings);
@@ -125,7 +124,7 @@ int main(int argc, char* argv[]) {
 				}
 
 			}
-			else if (settings == "Camera:") {
+		/*	else if (settings == "Camera:") {
 				getline(configuration, settings, '=');
 				getline(configuration, settings);
 				fov = stof(settings);
@@ -170,7 +169,7 @@ int main(int argc, char* argv[]) {
 				else {
 					logclear = false;
 				}
-			}
+			}*/
 			else if (settings.find("Memory:") != std::string::npos) {
 				getline(configuration, settings, '=');
 				getline(configuration, settings);
@@ -204,7 +203,7 @@ int main(int argc, char* argv[]) {
 	Input Inputs;
 	Inputs.inputStartup();
 	Camera thecamera;
-	thecamera.cameraStartup(fov, maxviewdistance , minviewdistance, arwidth, arheight);
+	/*thecamera.cameraStartup(fov, maxviewdistance , minviewdistance, arwidth, arheight);*/
 	Transforming transform;
 	Scene sceneone;
 	sceneone.setSkybox("right.jpg", "left.jpg", "top.jpg", "bottom.jpg", "front.jpg", "back.jpg");
@@ -221,7 +220,7 @@ int main(int argc, char* argv[]) {
 	Meshrenderer component(quotemodel, material);
 	Meshrenderer* componentobject = &component;
 	Quote.addComponent(componentobject);
-	/*sceneone.root = Quote;*/
+	sceneone.root = Quote;
 
 	Vertex vertices[] = { Vertex(vector3(-fieldWidth, 0.0f, -fieldDepth), vector2(0.0f, 0.0f)),
 						Vertex(vector3(-fieldWidth, 0.0f, fieldDepth * 3), vector2(0.0f, 1.0f)),

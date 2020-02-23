@@ -6,7 +6,7 @@ class Materials : public Texture //todo: alphas
 {
 public:
 	Texture texture;
-private:
+public:
 	vector3 color;
 	float alpha;
 	float specularintensity;

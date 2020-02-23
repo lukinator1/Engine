@@ -2,7 +2,7 @@
 #include "Light.h"
 class Pointlight : public Light
 { 
-private:
+public:
 	vector3 position;
 	float linearterm;
 	float quadraticterm;

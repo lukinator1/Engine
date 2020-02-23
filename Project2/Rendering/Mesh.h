@@ -8,14 +8,15 @@
 class Mesh : public Logger 
 {
 	unsigned int indexbufferobject;
+	unsigned int size;
+public:
+	std::string name;
 	GLuint vbo;
 	GLuint tbo;
 	GLuint ibo;
 	GLuint vao;
 	void normalizeNormalVertices(Vertex * vertices, int numvertices);
 	void calculateNormals(Vertex* vertices, unsigned int* indices, unsigned int numvertices, unsigned int numindices);
-public:
-	unsigned int size;
 	Mesh(Vertex* vertices, unsigned int * indices, unsigned int numvertices, unsigned int numindices);
 	Mesh();
 	~Mesh();

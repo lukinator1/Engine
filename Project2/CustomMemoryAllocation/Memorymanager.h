@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdlib>
+#include "../Engine.h"
 #include "../Logger.h"
 //improve syntax on engineallocate, take in template + no. elements instead? (sizeof(t) * elements)
 class Memorymanager : public Logger

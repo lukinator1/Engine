@@ -2,7 +2,7 @@
 #include "Light.h"
 class Directionallight : public Light
 {
-private:
+public:
 	vector3 direction;
 public:
 	Directionallight() {
