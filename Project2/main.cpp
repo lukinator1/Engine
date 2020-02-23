@@ -41,7 +41,7 @@ int main(int argc, char* argv[]) {
 		float fov = 70.0f;
 		float maxviewdistance = 1000.0f;
 		float minviewdistance = 0.1f;
-		/*int loggerchannels[4];*/
+		int loggerchannels[4];
 		int loggerverbosity = 3;
 		bool loggerwarn = true;
 		bool logclear = false;
@@ -124,7 +124,7 @@ int main(int argc, char* argv[]) {
 				}
 
 			}
-			else if (settings == "Camera:") {
+			/*else if (settings == "Camera:") {
 				getline(configuration, settings, '=');
 				getline(configuration, settings);
 				fov = stof(settings);
@@ -137,7 +137,7 @@ int main(int argc, char* argv[]) {
 				getline(configuration, settings);
 				minviewdistance = stof(settings);
 			}
-			/*else if (settings == "Logger:") {
+			else if (settings == "Logger:") {
 				getline(configuration, settings, '=');
 				getline(configuration, settings);
 				std::stringstream channels(settings);
