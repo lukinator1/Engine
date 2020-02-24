@@ -24,9 +24,9 @@ maxviewdistance = 1000
 minviewdistance = 0.1
 
 Logger:
-channels = 1, 0, 1
-verbosity = 3
-showwarnings = yes
+channels = 0, 1, 1
+verbosity = 1
+showwarnings = false
 clearlogeverysession = true
 
 Memory:

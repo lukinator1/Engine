@@ -1,53 +1,11 @@
 ﻿  Camera.cpp
-  Component.cpp
-  Memorymanager.cpp
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\custommemoryallocation\memorymanager.cpp(57): warning C4267: '+=': conversion from 'size_t' to 'int', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\custommemoryallocation\memorymanager.cpp(91): warning C4244: '=': conversion from '__int64' to 'int', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\custommemoryallocation\memorymanager.cpp(97): warning C4244: '=': conversion from '__int64' to 'int', possible loss of data
-  Entity.cpp
-  Input.cpp
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\input.cpp(88): warning C4244: '=': conversion from 'Sint32' to 'float', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\input.cpp(89): warning C4244: '=': conversion from 'Sint32' to 'float', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\input.cpp(120): warning C4244: 'argument': conversion from 'Sint32' to 'float', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\input.cpp(160): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\input.cpp(161): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\input.cpp(313): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\input.cpp(314): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-  Logger.cpp
-  Quaternion.cpp
-  matrix4f.cpp
-  vector2.cpp
-  vector3.cpp
-  Meshrenderer.cpp
-  Message.cpp
-  Messagesystem.cpp
-  Directionallight.cpp
-  Light.cpp
-  Pointlight.cpp
-  Spotlight.cpp
-  Materials.cpp
-  Mesh.cpp
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\rendering\mesh.cpp(161): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-  Rendermanager.cpp
-  Generating Code...
-  Compiling...
-  Rendertext.cpp
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\rendering\rendertext.cpp(99): warning C4838: conversion from 'FT_Pos' to 'GLuint' requires a narrowing conversion
-  Shader.cpp
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\rendering\shader.cpp(136): warning C4267: '=': conversion from 'size_t' to 'GLint', possible loss of data
-  Skybox.cpp
-  Texture.cpp
-  Transforming.cpp
-  Vertex.cpp
-  Scene.cpp
-  Window.cpp
   main.cpp
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(318): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(326): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(327): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(331): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(341): warning C4305: 'argument': truncation from 'double' to 'float'
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(249): warning C4101: 'previousscrolldistance': unreferenced local variable
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(324): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(332): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(333): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(337): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(347): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(255): warning C4101: 'previousscrolldistance': unreferenced local variable
 c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(44): warning C4101: 'loggerchannels': unreferenced local variable
   Generating Code...
   Project2.vcxproj -> C:\Users\lukinator1\Desktop\engine\The Super Suspension System\Project2\x64\Debug\Project2.exe

@@ -59,7 +59,7 @@ int main(int argc, char* argv[]) {
 					deltatime = 1.0f / stoi(settings);
 				}
 			}
-			else if (settings == "Window:") {
+			else if (settings.find("Window:") != std::string::npos) {
 				getline(configuration, settings, '=');
 				getline(configuration, settings, ' ');
 				getline(configuration, settings);
@@ -124,7 +124,7 @@ int main(int argc, char* argv[]) {
 				}
 
 			}
-			/*else if (settings == "Camera:") {
+			else if (settings.find("Camera:") != std::string::npos) {
 				getline(configuration, settings, '=');
 				getline(configuration, settings);
 				fov = stof(settings);
@@ -137,39 +137,39 @@ int main(int argc, char* argv[]) {
 				getline(configuration, settings);
 				minviewdistance = stof(settings);
 			}
-			else if (settings == "Logger:") {
+			else if (settings.find("Logger") != std::string::npos) {
 				getline(configuration, settings, '=');
 				getline(configuration, settings);
 				std::stringstream channels(settings);
 				getline(channels, settings, ',');
-				loggerchannels[0] = stoi(settings);
+				Logger::enginechannels[0] = stoi(settings);
 				getline(channels, settings, ',');
-				loggerchannels[1] = stoi(settings);
+				Logger::enginechannels[1] = stoi(settings);
 				getline(channels, settings, ',');
-				loggerchannels[2] = stoi(settings);
+				Logger::enginechannels[2] = stoi(settings);
 
 				getline(configuration, settings, '=');
 				getline(configuration, settings);
-				loggerverbosity = stof(settings);
+				Logger::engineverbosity = stoi(settings);
 
 				getline(configuration, settings, '=');
 				getline(configuration, settings);
 				if (settings.find("On") != std::string::npos || settings.find("on") != std::string::npos || settings.find("Yes") != std::string::npos || settings.find("yes") != std::string::npos || settings.find("True") != std::string::npos || settings.find("true") != std::string::npos) {
-					loggerwarn = true;
+					Logger::showwarnings = true;
 				}
 				else {
-					loggerwarn = false;
+					Logger::showwarnings = false;
 				}
 
 				getline(configuration, settings, '=');
 				getline(configuration, settings);
 				if (settings.find("On") != std::string::npos || settings.find("on") != std::string::npos || settings.find("Yes") != std::string::npos || settings.find("yes") != std::string::npos || settings.find("True") != std::string::npos || settings.find("true") != std::string::npos) {
-					logclear = true;
+					Logger::clear = true;
 				}
 				else {
-					logclear = false;
+					Logger::clear = false;
 				}
-			}*/
+			}
 			else if (settings.find("Memory:") != std::string::npos) {
 				getline(configuration, settings, '=');
 				getline(configuration, settings);
@@ -193,6 +193,8 @@ int main(int argc, char* argv[]) {
 				messagequeuecapacity = stoi(settings);
 			}
 		}
+	Logger log;
+	log.startUp();
 
 	Messagesystem Messages;
 	Memorymanager memorymanager(sfsize, sfalignment, dbsize, dbalignment);
@@ -203,6 +205,7 @@ int main(int argc, char* argv[]) {
 	Input Inputs;
 	Inputs.inputStartup();
 	Camera thecamera;
+	thecamera.cameraStartup(fov, maxviewdistance, minviewdistance, arwidth, arheight);
 	/*thecamera.cameraStartup(fov, maxviewdistance , minviewdistance, arwidth, arheight);*/
 	Transforming transform;
 	Scene sceneone;
@@ -213,7 +216,10 @@ int main(int argc, char* argv[]) {
 
 
 	Entity Quote;
-	Materials material("test.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f);		// from basicshader change to render manager startup?
+	Materials material("tesat.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f);		// from basicshader change to render manager startup?
+	Logger::engineLog(__FILE__, __LINE__, "test1", 1, 1, false);
+	Logger::engineLog(__FILE__, __LINE__, "test", 3, 3, false);
+	Logger::engineLog(__FILE__, __LINE__, "test", 0, 0, false);
 	Quote.transform.setTranslationVector(vector3(10.0f, 17.5f, 12.0f));
 	Mesh quotemodel;
 	quotemodel.loadMeshObj("quote.obj");;
