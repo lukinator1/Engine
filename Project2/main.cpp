@@ -41,11 +41,11 @@ int main(int argc, char* argv[]) {
 		float fov = 70.0f;
 		float maxviewdistance = 1000.0f;
 		float minviewdistance = 0.1f;
-		int loggerchannels[4];
-		int loggerverbosity = 3;
+		unsigned int loggerchannels[4];
+		unsigned int loggerverbosity = 3;
 		bool loggerwarn = true;
 		bool logclear = false;
-		std::ifstream configuration("Engineconfiguration.txt");
+		std::fstream configuration("Engineconfiguration.txt");
 		std::string settings;
 		while (getline(configuration, settings)) {
 			if (settings.find("General:") != std::string::npos) {
@@ -193,8 +193,35 @@ int main(int argc, char* argv[]) {
 				messagequeuecapacity = stoi(settings);
 			}
 		}
+	configuration.close();
+	/*std::ofstream start;
+		if (Logger::clear) {
+			start.open("Enginelogs/EngineLog.txt", std::ofstream::out);
+		}
+		else 
+		{
+			start.open("Enginelogs/EngineLog.txt", std::ofstream::out || std::ofstream::app);
+		}
+		if (start.is_open()) {
+			start << "Current date + time: " << __TIMESTAMP__ << std::endl;
+		}
+		start.close();*/
 	Logger log;
 	log.startUp();
+
+		/*configuration.open("Enginelogs/EngineLog.txt", std::ofstream::out | std::ofstream::trunc);
+		if (logclear) {
+			configuration.open("Enginelogs/EngineLog.txt", std::ofstream::out | std::ofstream::trunc);
+		}
+		else {
+			configuration.open("Enginelogs/EngineLog.txt", std::ofstream::out);
+		}
+		configuration << "Current date + time: " << __TIMESTAMP__ << std::endl;
+		configuration.close();
+		std::ofstream start("Enginelogs/EngineLog.txt", std::ofstream::out);
+		start << "Current date + time: " << __TIMESTAMP__ << std::endl;
+		start.close();
+		*/
 
 	Messagesystem Messages;
 	Memorymanager memorymanager(sfsize, sfalignment, dbsize, dbalignment);
@@ -217,9 +244,9 @@ int main(int argc, char* argv[]) {
 
 	Entity Quote;
 	Materials material("tesat.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f);		// from basicshader change to render manager startup?
-	Logger::engineLog(__FILE__, __LINE__, "test1", 1, 1, false);
-	Logger::engineLog(__FILE__, __LINE__, "test", 3, 3, false);
-	Logger::engineLog(__FILE__, __LINE__, "test", 0, 0, false);
+	Logger::engineLog(__FILE__, __LINE__, "memory", 1, 1, false);
+	Logger::engineLog(__FILE__, __LINE__, "misc", 3, 3, false);
+	Logger::engineLog(__FILE__, __LINE__, "all", 0, 0, false);
 	Quote.transform.setTranslationVector(vector3(10.0f, 17.5f, 12.0f));
 	Mesh quotemodel;
 	quotemodel.loadMeshObj("quote.obj");;
@@ -334,7 +361,6 @@ int main(int argc, char* argv[]) {
 		unitest += deltatime;
 		flashlight.setPosition(thecamera.getCameraposition());
 		flashlight.setDirection(thecamera.forwardvector);
-		transform.setPerspectiveProjectionSettings(thecamera.fov, window.getWindowWidth(), window.getWindowHeight(), thecamera.minviewdistance, thecamera.maxviewdistance);  //integer -> float
 		/*transform.setScalingVector(vector3(.75 * sin(unitest), .75 * sin(unitest), .75 * sin(unitest)));	
 		shaderit.setUniform("transform", transform.newTransformationMatrix());*/
 

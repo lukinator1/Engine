@@ -10,30 +10,30 @@ Window:
 title = MONKEEEEEEEEEEEEEEEEEEEYYYYYYY
 icon = juice.png
 fullscreen = off
-desktopfullscreen = off
+desktop fullscreen = off
 width = 800
 height = 600
-awidth = 800
-aheight = 600
+aspect ratio width = 800
+aspect ratio height = 600
 borderless = off
 vsync = off
 
 Camera:
 fov = 70
-maxviewdistance = 1000
-minviewdistance = 0.1
+max viewdistance = 1000
+min viewdistance = 0.1
 
 Logger:
 channels = 0, 1, 1
-verbosity = 1
-showwarnings = false
-clearlogeverysession = true
+verbosity = 2
+show warnings = yes
+clear log every session = yes
 
 Memory:
-singleframeallocatorsize = 400
-singleframeallocatoralignment = 8
-doublebufferallocatorsize = 800
-doublebufferallocatoralignment = 8
+singleframe allocator size = 400
+singleframe allocator alignment = 8
+doublebuffer allocator size = 800
+doublebuffer allocator alignment = 8
 
 Messaging System:
-messagequeuecapacity = 50
+messagequeue capacity = 50

@@ -2,9 +2,10 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <time.h>
 class Logger
 {
-public:
+public: //todo: truncate filename, put function name in log, logging colors
 	/*enum Channels {
 		Memorymanager,
 		Rendering,
@@ -12,18 +13,21 @@ public:
 	};*/
 	static std::ofstream EngineLogFile; //configuration file?
 	static unsigned int engineverbosity;
-	static unsigned int enginechannels[3];  //0 = all, 1 = memorymanager, // 2 = rendering, 3 = other/miscellaneous 
+	/*static unsigned int enginechannel;*/
+	static unsigned int enginechannels[3];  //0 = all, 1 = memorymanager, // 2 = rendering, 3 = other/miscellaneous */
 	static bool showwarnings;
 	static bool clear;
 	static bool haltlogs;
+
 	Logger();
 	~Logger();
-	static void startUp();
-	static void clearLogs();
+	void startUp();
 	void shutDown();
 
+	void clearLogs();
+
 	//void setVerbosity(int &newverbosity);
-	static void setEngineLoggerSettings(unsigned int mem, unsigned int render, unsigned int misc, unsigned int newverbosity, bool newshowwarnings);
-	static void engineLog(std::string file, unsigned int line, std::string errormessage, unsigned int verbosity, unsigned int channel, bool iswarning); //timestamp
+	void setEngineLoggerSettings(int mem, int render, int misc, int newverbosity, bool newshowwarnings);
+	static void engineLog(std::string file, unsigned int line, std::string errormessage, int verbosity, int channel, bool iswarning); //timestamp
 	//void EngineLog(const char* format, ...);
 };

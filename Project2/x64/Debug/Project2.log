@@ -1,11 +1,8 @@
-﻿  Camera.cpp
-  main.cpp
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(324): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(332): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(333): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(337): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(347): warning C4305: 'argument': truncation from 'double' to 'float'
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(255): warning C4101: 'previousscrolldistance': unreferenced local variable
+﻿  main.cpp
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(351): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(359): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(360): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(373): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(282): warning C4101: 'previousscrolldistance': unreferenced local variable
 c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(44): warning C4101: 'loggerchannels': unreferenced local variable
-  Generating Code...
   Project2.vcxproj -> C:\Users\lukinator1\Desktop\engine\The Super Suspension System\Project2\x64\Debug\Project2.exe
