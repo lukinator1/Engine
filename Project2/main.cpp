@@ -243,10 +243,7 @@ int main(int argc, char* argv[]) {
 
 
 	Entity Quote;
-	Materials material("tesat.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f);		// from basicshader change to render manager startup?
-	Logger::engineLog(__FILE__, __LINE__, "memory", 1, 1, false);
-	Logger::engineLog(__FILE__, __LINE__, "misc", 3, 3, false);
-	Logger::engineLog(__FILE__, __LINE__, "all", 0, 0, false);
+	Materials material("test.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f);		// from basicshader change to render manager startup?
 	Quote.transform.setTranslationVector(vector3(10.0f, 17.5f, 12.0f));
 	Mesh quotemodel;
 	quotemodel.loadMeshObj("quote.obj");;

@@ -1,8 +1,8 @@
 ﻿  main.cpp
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(351): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(359): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(360): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(373): warning C4305: 'argument': truncation from 'double' to 'float'
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(282): warning C4101: 'previousscrolldistance': unreferenced local variable
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(348): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(356): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(357): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(370): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(279): warning C4101: 'previousscrolldistance': unreferenced local variable
 c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(44): warning C4101: 'loggerchannels': unreferenced local variable
   Project2.vcxproj -> C:\Users\lukinator1\Desktop\engine\The Super Suspension System\Project2\x64\Debug\Project2.exe
