@@ -19,6 +19,9 @@ private:
 	SDL_GLContext glContext;
 	SDL_Window* window;
 	void swapWindow();
+	bool closerequested = false;
+	bool maximized = false;
+	/*bool minimized = false;*/
 	void clearWindow(float r, float g, float b, float a);
 public:
 	Window(int width, int height);
@@ -32,6 +35,9 @@ public:
 	void setFullscreen(bool fullscreen, bool desktop);
 	void setWindowBordered(bool isbordered);
 	void setWindowIcon(std::string filename);
+	bool closeRequested();
+	bool Maximized();
+	/*bool Minimized();*/
 	void closeWindow();
 	void postMessage(Message message);
 	/*void postMessage(Message::Messagetypes messagetype, int dataone, int datatwo);*/

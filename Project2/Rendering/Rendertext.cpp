@@ -158,6 +158,147 @@ void Rendertext::renderText(std::string text, float _x, float _y, vector3 color,
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glFrontFace(GL_CW);
 }
+void Rendertext::renderText(std::string text, vector2 position, vector3 color, float scale) {
+	/*glCullFace(GL_BACK);*/
+	glFrontFace(GL_CCW);
+	textshader.useShader();
+	textshader.setUniform("textcolor", color);
+	glActiveTexture(GL_TEXTURE0);
+	glBindVertexArray(vao);
+	std::string::const_iterator i;
+	for (i = text.begin(); i != text.end(); i++) {
+		Character currentchar = characters[*i];
+		GLfloat xpos = position.x + currentchar.bearing.x * scale;
+		GLfloat ypos = position.y - (currentchar.size.y - currentchar.bearing.y) * scale;
+
+		GLfloat w = currentchar.size.x * scale;
+		GLfloat h = currentchar.size.y * scale;
+
+		GLfloat vertices[6][4] = {
+			{ xpos,     ypos + h, 0.0, 0.0 },
+			{ xpos,     ypos,     0.0, 1.0 },
+			{ xpos + w, ypos,     1.0, 1.0 },
+			{ xpos,     ypos + h,  0.0, 0.0 },
+			{ xpos + w, ypos,      1.0, 1.0 },
+			{ xpos + w, ypos + h,  1.0, 0.0 }
+		};
+		/*GLfloat xpos = _x + currentchar.bearing.x * scale;
+		GLfloat ypos = _y - (currentchar.size.y - currentchar.bearing.y) * scale;
+		GLfloat w = currentchar.size.x * scale;
+		GLfloat h = currentchar.size.y * scale;
+		GLfloat vertices[6][4] = {
+		{ xpos, ypos + h, 0.0,  0.0},
+		{ xpos, ypos,     0.0,  1.0},
+		{ xpos + w,   ypos,   1.0, 1.0},
+		{ xpos,   ypos + h,  0.0, 0.0},
+		{ xpos + w, ypos,  1.0, 1.0},
+		{ xpos + w, ypos + h, 1.0, 0.0}
+		};*/
+		glBindTexture(GL_TEXTURE_2D, currentchar.textureID);
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+		position.x += (currentchar.stride >> 6) * scale;
+	}
+	glBindVertexArray(0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glFrontFace(GL_CW);
+}
+void Rendertext::renderText(std::string text, float _x, float _y) {
+	/*glCullFace(GL_BACK);*/
+	glFrontFace(GL_CCW);
+	textshader.useShader();
+	textshader.setUniform("textcolor", vector3(1.0f, 1.0f, 1.0f));
+	glActiveTexture(GL_TEXTURE0);
+	glBindVertexArray(vao);
+	std::string::const_iterator i;
+	for (i = text.begin(); i != text.end(); i++) {
+		Character currentchar = characters[*i];
+		GLfloat xpos = _x + currentchar.bearing.x;
+		GLfloat ypos = _y - (currentchar.size.y - currentchar.bearing.y);
+
+		GLfloat w = currentchar.size.x;
+		GLfloat h = currentchar.size.y;
+
+		GLfloat vertices[6][4] = {
+			{ xpos,     ypos + h, 0.0, 0.0 },
+			{ xpos,     ypos,     0.0, 1.0 },
+			{ xpos + w, ypos,     1.0, 1.0 },
+			{ xpos,     ypos + h,  0.0, 0.0 },
+			{ xpos + w, ypos,      1.0, 1.0 },
+			{ xpos + w, ypos + h,  1.0, 0.0 }
+		};
+		/*GLfloat xpos = _x + currentchar.bearing.x * scale;
+		GLfloat ypos = _y - (currentchar.size.y - currentchar.bearing.y) * scale;
+		GLfloat w = currentchar.size.x * scale;
+		GLfloat h = currentchar.size.y * scale;
+		GLfloat vertices[6][4] = {
+		{ xpos, ypos + h, 0.0,  0.0},
+		{ xpos, ypos,     0.0,  1.0},
+		{ xpos + w,   ypos,   1.0, 1.0},
+		{ xpos,   ypos + h,  0.0, 0.0},
+		{ xpos + w, ypos,  1.0, 1.0},
+		{ xpos + w, ypos + h, 1.0, 0.0}
+		};*/
+		glBindTexture(GL_TEXTURE_2D, currentchar.textureID);
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+		_x += (currentchar.stride >> 6);
+	}
+	glBindVertexArray(0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glFrontFace(GL_CW);
+}
+void Rendertext::renderText(std::string text, vector2 position) {
+	/*glCullFace(GL_BACK);*/
+	glFrontFace(GL_CCW);
+	textshader.useShader();
+	textshader.setUniform("textcolor", vector3(1.0f, 1.0f, 1.0f));
+	glActiveTexture(GL_TEXTURE0);
+	glBindVertexArray(vao);
+	std::string::const_iterator i;
+	for (i = text.begin(); i != text.end(); i++) {
+		Character currentchar = characters[*i];
+		GLfloat xpos = position.x + currentchar.bearing.x;
+		GLfloat ypos = position.y - (currentchar.size.y - currentchar.bearing.y);
+
+		GLfloat w = currentchar.size.x;
+		GLfloat h = currentchar.size.y;
+
+		GLfloat vertices[6][4] = {
+			{ xpos,     ypos + h, 0.0, 0.0 },
+			{ xpos,     ypos,     0.0, 1.0 },
+			{ xpos + w, ypos,     1.0, 1.0 },
+			{ xpos,     ypos + h,  0.0, 0.0 },
+			{ xpos + w, ypos,      1.0, 1.0 },
+			{ xpos + w, ypos + h,  1.0, 0.0 }
+		};
+		/*GLfloat xpos = _x + currentchar.bearing.x * scale;
+		GLfloat ypos = _y - (currentchar.size.y - currentchar.bearing.y) * scale;
+		GLfloat w = currentchar.size.x * scale;
+		GLfloat h = currentchar.size.y * scale;
+		GLfloat vertices[6][4] = {
+		{ xpos, ypos + h, 0.0,  0.0},
+		{ xpos, ypos,     0.0,  1.0},
+		{ xpos + w,   ypos,   1.0, 1.0},
+		{ xpos,   ypos + h,  0.0, 0.0},
+		{ xpos + w, ypos,  1.0, 1.0},
+		{ xpos + w, ypos + h, 1.0, 0.0}
+		};*/
+		glBindTexture(GL_TEXTURE_2D, currentchar.textureID);
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+		position.x += (currentchar.stride >> 6);
+	}
+	glBindVertexArray(0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glFrontFace(GL_CW);
+}
 Rendertext::~Rendertext()
 {
 	FT_Done_FreeType(ft);

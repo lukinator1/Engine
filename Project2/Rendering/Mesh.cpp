@@ -6,6 +6,13 @@ Mesh::Mesh() {
 	glGenBuffers(1, &ibo);
 	//default/error mesh
 }
+Mesh::Mesh(std::string file) { //
+	glGenVertexArrays(1, &vao);
+	glGenBuffers(1, &vbo);
+	glGenBuffers(1, &tbo);
+	glGenBuffers(1, &ibo);
+	loadMeshObj(file);
+}
 Mesh::Mesh(Vertex* vertices, unsigned int *indices, unsigned int numvertices, unsigned int numindices)
 {
 	makeMesh(vertices, indices, numvertices, numindices);

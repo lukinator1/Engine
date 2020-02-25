@@ -19,6 +19,7 @@ public:
 	void printMessageQueue();
 	std::queue<Message> getMessageQueue();
 	void popMessageQueue();
+	bool popMessages(Message *& message);
 	Messagesystem();
 	~Messagesystem();
 };

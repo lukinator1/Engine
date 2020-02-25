@@ -122,6 +122,25 @@ void Input::getInputs() {
 			scrolled = true;
 		}
 
+		if (sdlevent.type == SDL_TEXTINPUT) {
+			if (sdlevent.type == SDL_TEXTINPUT) {
+				std::cout << "text input event" << std::endl;
+			}
+			if (sdlevent.type == SDL_TEXTEDITING) {
+
+			}
+
+		}
+	
+		if (sdlevent.type == SDL_WINDOWEVENT) {
+			if (sdlevent.window.event == SDL_WINDOWEVENT_MAXIMIZED) {
+				postMessage(Message::Messagetypes::Maximized);
+			}
+			else if (sdlevent.window.event == SDL_WINDOWEVENT_MINIMIZED) {
+				postMessage(Message::Messagetypes::Minimized);
+			}
+		}
+
 		if (sdlevent.type == SDL_QUIT) {
 			postMessage(Message::Messagetypes::Closebuttonpressed);
 			/*Message message(Windowclose);
@@ -304,14 +323,14 @@ void Input::postMessage(Message::Messagetypes messagetype, int dataone, int data
 		messagequeue.push(newmessage);
 	}
 }
-void Input::postMessage(Message::Messagetypes messagetype, int dataone, int datatwo, int datathreex, int datathreey)
+void Input::postMessage(Message::Messagetypes messagetype, int dataone, int datatwo, std::string datathree)
 {
 	if (messagequeue.size() < messagequeuecapacity) {
 		Message newmessage(messagetype, Message::Category::Input);
 		newmessage.messagedataone = dataone;
 		newmessage.messagedatatwo = datatwo;
-		newmessage.messagedatathree.x = datathreex;
-		newmessage.messagedatathree.y = datathreey;
+		newmessage.messagedatathree = datathree;
+		/*newmessage.messagedatathree.y = datathreey;*/
 		messagequeue.push(newmessage);
 	}
 }

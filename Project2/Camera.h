@@ -100,8 +100,17 @@ public:
 	void setFov(float newfov) {
 		fov = newfov;
 	}
-	void Zoom(int offset) {
-		if (fov >= minviewdistance && fov <= maxviewdistance) {
+	void Zoom(float offset) {
+		if (fov - offset < minviewdistance) {
+			fov = minviewdistance;
+		}
+		else if (fov - offset > maxviewdistance) {
+			fov = maxviewdistance;
+		}
+		else {
+			fov -= offset;
+		}
+		/*if (fov >= minviewdistance && fov <= maxviewdistance) {
 			fov -= offset;
 		}
 		else if (fov < minviewdistance) {
@@ -115,13 +124,18 @@ public:
 		}
 		else if (fov == maxviewdistance && offset >= 0) {
 			fov -= offset;
-		}
+		}*/
 	}
 	void orthographicProjection(bool project) { //this (probably) won't work as is, need to multiply camera matrix to what's there
 		orthographicprojection = project;
 	}
 	void setMouseLook(bool look) {
-		SDL_SetRelativeMouseMode(SDL_TRUE);
+		if (look == true) {
+			SDL_SetRelativeMouseMode(SDL_TRUE);
+		}
+		else if (look == false) {
+			SDL_SetRelativeMouseMode(SDL_FALSE);
+		}
 	}
 	void cameraStartup(float _fov, float _maxviewdistance, float _minviewdistance, float arwidth, float arheight) {
 		fov = _fov;

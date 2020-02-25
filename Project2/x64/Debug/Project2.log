@@ -1,8 +1,24 @@
-﻿  main.cpp
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(348): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(356): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(357): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(370): warning C4305: 'argument': truncation from 'double' to 'float'
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(279): warning C4101: 'previousscrolldistance': unreferenced local variable
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(44): warning C4101: 'loggerchannels': unreferenced local variable
-  Project2.vcxproj -> C:\Users\lukinator1\Desktop\engine\The Super Suspension System\Project2\x64\Debug\Project2.exe
+﻿  Console.cpp
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\console.cpp(4): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  Input.cpp
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\input.cpp(88): warning C4244: '=': conversion from 'Sint32' to 'float', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\input.cpp(89): warning C4244: '=': conversion from 'Sint32' to 'float', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\input.cpp(120): warning C4244: 'argument': conversion from 'Sint32' to 'float', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\input.cpp(127): error C2143: syntax error: missing ';' before 'string'
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\input.cpp(127): error C2563: mismatch in formal parameter list
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\input.cpp(127): error C2568: '<<': unable to resolve function overload
+  c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\input.cpp(127): note: could be 'std::basic_ostream<_Elem,_Traits> &std::endl(std::basic_ostream<_Elem,_Traits> &)'
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\input.cpp(179): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\input.cpp(180): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  Message.cpp
+  Messagesystem.cpp
+  Rendermanager.cpp
+  Rendertext.cpp
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\rendering\rendertext.cpp(99): warning C4838: conversion from 'FT_Pos' to 'GLuint' requires a narrowing conversion
+  Window.cpp
+  main.cpp
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(350): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(351): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(360): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(51): warning C4101: 'loggerchannels': unreferenced local variable
+  Generating Code...

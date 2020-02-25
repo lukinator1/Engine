@@ -4,7 +4,7 @@
 }*/
 void Messagesystem::messageSystemUpdate(Input &Inputs, Window &window, Camera &camera)  //messages serviced here
 {
-	if (messagequeue.empty() == false) {
+	while (messagequeue.empty() == false) {
 		Message messageoutput = messagequeue.front();
 		messageoutput.messagedataone = messageoutput.messagedataone;
 		messageoutput.messagedatatwo = messageoutput.messagedatatwo;
@@ -36,6 +36,15 @@ std::queue<Message> Messagesystem::getMessageQueue() {
 }
 void Messagesystem::popMessageQueue() {
 	messagequeue.pop();
+}
+bool Messagesystem::popMessages(Message * &message){
+	if (messagequeue.empty() == false) {
+		*message = messagequeue.front();
+		return true;
+	}
+	else {
+		return false;
+	}
 }
 void Messagesystem::messageSystemShutdown()
 {

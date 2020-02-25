@@ -15,6 +15,10 @@ public:
 		Doubleclick,
 		Mousescrolled,
 		Closebuttonpressed, 
+		Maximized,
+		Minimized,
+		Textinput,
+		Textcommit,
 		User
 	};
 
@@ -29,7 +33,7 @@ public:
 	Category messagecategory;
 	int messagedataone;
 	int messagedatatwo;
-	vector2 messagedatathree;
+	std::string messagedatathree;
 	Message(Messagetypes incomingmessagetype, Category incomingmessagecategory);
 	~Message();
 };

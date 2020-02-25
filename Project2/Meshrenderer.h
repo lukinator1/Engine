@@ -16,6 +16,7 @@ public:
 	}
 	~Meshrenderer();
 	void renderComponent(Transforming transform, Shader shader) {
+		transform.setTranslationVector(vector3(10.0f, 17.5f, 12.0f));
 		shader.useShader();
 		shader.updateUniforms(transform.newUnprojectedMatrix(), transform.newTransformationMatrix(), transform.position, materials);
 		mesh.drawMesh();

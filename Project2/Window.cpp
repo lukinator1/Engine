@@ -125,7 +125,18 @@ void Window::setWindowIcon(std::string filename) {
 		SDL_SetWindowIcon(window, surface);
 		SDL_FreeSurface(surface);
 	}
-} 
+}
+bool Window::closeRequested()
+{
+	return closerequested;
+}
+bool Window::Maximized() {
+	return maximized;
+}
+/*bool Window::Minimized()
+{
+	return minimized;
+}*/
 void Window::setWindowBordered(bool isbordered) {
 	if (isbordered == true) {
 		SDL_SetWindowBordered(this->window, SDL_TRUE);
@@ -158,6 +169,9 @@ void Window::swapWindow() {
 }
 void Window::updateWindow()//monitor refresh rate
 {
+	closerequested = false;
+	maximized = false;
+	/*minimized = true;*/
 	SDL_GL_SwapWindow(window);
 	/*SDL_Event sdlevent;
 	while (SDL_PollEvent(&sdlevent)) {
@@ -189,10 +203,19 @@ void Window::handleMessage(Message &message)
 		case Message::Messagetypes::Closebuttonpressed:
 			std::cout << "Message: windowclose called." << std::endl;
 			std::cout << "messagequeue size: " << messagequeue.size() << std::endl;
+			closerequested = true;
 			break;
+		case Message::Messagetypes::Maximized:
+			std::cout << "Message: window maximized." << std::endl;
+			maximized = true;
+			break;
+		/*case Message::Messagetypes::Minimized:
+			std::cout << "Message: window minimized." << std::endl;
+			minimized = true;
+			break;*/
+		}
 		}
 	}
-}
 void Window::postMessage(Message message) {	
 	if (messagequeue.size() < messagequeuecapacity) {
 		messagequeue.push(message);

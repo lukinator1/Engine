@@ -18,8 +18,8 @@
 //This is the main component for rendering, with meshes, materials, shaders, lighting and more. 
 class Rendering : public Logger
 {
-	Window* windowptr;
 public:
+	Window* windowptr;
 	void renderingStartup(Window &window);
 	void renderingShutdown();
 	void update(Scene &currentscene);

@@ -19,6 +19,7 @@ public:
 	void calculateNormals(Vertex* vertices, unsigned int* indices, unsigned int numvertices, unsigned int numindices);
 	Mesh(Vertex* vertices, unsigned int * indices, unsigned int numvertices, unsigned int numindices);
 	Mesh();
+	Mesh(std::string file);
 	~Mesh();
 	void makeMesh(Vertex* vertices, unsigned int *indices, unsigned int numvertices, unsigned int numindices);
 	void makeSkyboxMesh(float* vertices, unsigned int numvertices);

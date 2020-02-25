@@ -124,7 +124,7 @@ public:
 	void postMessage(Message::Messagetypes messagetype);
 	void postMessage(Message::Messagetypes message, int dataone, int data);
 
-	void postMessage(Message::Messagetypes messagetype, int dataone, int datatwo, int datathreex, int datathreey);
+	void postMessage(Message::Messagetypes messagetype, int dataone, int datatwo, std::string datathree);
 
 	void getInputs();
 	void hideCursor(bool curse);
