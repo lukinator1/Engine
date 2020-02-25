@@ -2,18 +2,19 @@
 /*void Messagesystem::messageSystemStartup() {
 
 }*/
-void Messagesystem::messageSystemUpdate(Input &Inputs, Window &window, Camera &camera)  //messages serviced here
+void Messagesystem::messageSystemUpdate(Input &Inputs, Window &window, Camera &camera, Console &Console)  //messages serviced here
 {
 	while (messagequeue.empty() == false) {
 		Message messageoutput = messagequeue.front();
 		messageoutput.messagedataone = messageoutput.messagedataone;
 		messageoutput.messagedatatwo = messageoutput.messagedatatwo;
-		messageDispatch(messageoutput, Inputs, window, camera);
+		messageDispatch(messageoutput, Inputs, window, camera, Console);
 	}
 }
-void Messagesystem::messageDispatch(Message &message, Input &Inputs, Window &Window, Camera &Camera) {	//messages ordered here, extern
+void Messagesystem::messageDispatch(Message &message, Input &Inputs, Window &Window, Camera &Camera, Console &Console) {	//messages ordered here, extern
 		/*nputs.handleMessage(message);*/
 		Window.handleMessage(message);
+		Console.handleMessage(message);
 		/*Camera.handleMessage(message);*/
 		messagequeue.pop();
 		std::cout << "event: " << static_cast<std::underlying_type<Message::Messagetypes>::type>(message.messagetype) << "handeled" << std::endl;

@@ -6,15 +6,16 @@
 #include "../Window.h"
 #include "../Camera.h"
 #include "../Global.h"
+#include "../Console.h"
 //the user should define the logic of this class
 class Messagesystem
 {
 private:
 public:
 	void messageSystemStartup();
-	void messageSystemUpdate(Input &Inputs, Window &Window, Camera &camera);
+	void messageSystemUpdate(Input &Inputs, Window &Window, Camera &camera, Console &Console);
 	void messageSystemShutdown();
-	void messageDispatch(Message &message, Input &Inputs, Window &Window, Camera &Camera);
+	void messageDispatch(Message &message, Input &Inputs, Window &Window, Camera &Camera, Console &Console);
 	void clearMessageQueue();
 	void printMessageQueue();
 	std::queue<Message> getMessageQueue();

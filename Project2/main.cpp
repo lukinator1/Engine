@@ -222,7 +222,7 @@ int main(int argc, char* argv[]) {
 	Rendering Renderer;
 	Renderer.renderingStartup(Window);
 	Console Console;
-	Console.consoleStartup(&Renderer);
+	Console.consoleStartup(Renderer);
 	Camera Camera;
 	Camera.cameraStartup(fov, maxviewdistance, minviewdistance, arwidth, arheight);
 	Transforming transform;
@@ -297,7 +297,7 @@ int main(int argc, char* argv[]) {
 		MemoryManager.memorymanagerUpdate();
 		Inputs.getInputs();
 		Window.updateWindow();
-		Messages.messageSystemUpdate(Inputs, Window, Camera);
+		Messages.messageSystemUpdate(Inputs, Window, Camera, Console);
 
 
 		//game
@@ -357,12 +357,9 @@ int main(int argc, char* argv[]) {
 		meshme.drawMesh();
 		Renderer.renderScene(sceneone);
 		Renderer.Textrenderer.renderText("texter", 510.0f,  300.0f, vector3(1.0f, 1.0f, 1.0f), .4f);
-		Renderer.Textrenderer.renderText("The quick brown fox jumped over the lazy dog. 1234567890", 0.0f, 300.0f, vector3(0.4, 0.3, 0.8), .7f);
+		Renderer.Textrenderer.renderText("> The quick brown fox jumped over the lazy dog. 1234567890", 0.0f, 300.0f, vector3(0.4, 0.3, 0.8), .7f);
 
-
-		
-
-
+		Console.consoleUpdate();
 
 
 

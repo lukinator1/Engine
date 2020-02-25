@@ -122,14 +122,13 @@ void Input::getInputs() {
 			scrolled = true;
 		}
 
+		if (sdlevent.type == SDL_TEXTEDITING) {
+			postMessage(Message::Messagetypes::Textinput, 0, 0, sdlevent.edit.text);
+			std::cout << "text input event" << std::endl;
+		}
 		if (sdlevent.type == SDL_TEXTINPUT) {
-			if (sdlevent.type == SDL_TEXTINPUT) {
-				std::cout << "text input event" << std::endl;
-			}
-			if (sdlevent.type == SDL_TEXTEDITING) {
-
-			}
-
+			postMessage(Message::Messagetypes::Textcommit, 0, 0, sdlevent.text.text);
+			std::cout << "text commit event" << std::endl;
 		}
 	
 		if (sdlevent.type == SDL_WINDOWEVENT) {
