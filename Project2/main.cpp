@@ -221,13 +221,13 @@ int main(int argc, char* argv[]) {
 	Window Window(windowwidth, windowheight, title, windowicon, fullscreen, desktopfullscreen, borderless, vsync);
 	Rendering Renderer;
 	Renderer.renderingStartup(Window);
-	Console Console;
-	Console.consoleStartup(Renderer);
 	Camera Camera;
 	Camera.cameraStartup(fov, maxviewdistance, minviewdistance, arwidth, arheight);
 	Transforming transform;
 	Input Inputs;
 	Inputs.inputStartup();
+	Console Console;
+	Console.consoleStartup(Inputs, Renderer);
 
 
 
@@ -297,7 +297,6 @@ int main(int argc, char* argv[]) {
 		MemoryManager.memorymanagerUpdate();
 		Inputs.getInputs();
 		Window.updateWindow();
-		Messages.messageSystemUpdate(Inputs, Window, Camera, Console);
 
 
 		//game
@@ -341,6 +340,15 @@ int main(int argc, char* argv[]) {
 		if (Inputs.getMouseMovementDistance().x != 0 || Inputs.getMouseMovementDistance().y != 0) {
 			Camera.rotateCamera(Inputs.getXMouseMovementDistance(), Inputs.getYMouseMovementDistance());
 		}
+		if (Inputs.keyboardstate[Input::Grave].first == 1 && Inputs.keyboardstate[Input::Grave].second == 0) {
+			if (!Console.consoleOn()) {
+				Console.useConsole();
+			}
+			else if (Console.consoleOn())
+			{
+				Console.leaveConsole();
+			}
+		}
 		if (Window.closeRequested() == true) {
 			endGame();
 		}
@@ -356,11 +364,10 @@ int main(int argc, char* argv[]) {
 		shaderit.updateUniforms(transform.newUnprojectedMatrix(), transform.newTransformationMatrix(), transform.position, material);
 		meshme.drawMesh();
 		Renderer.renderScene(sceneone);
-		Renderer.Textrenderer.renderText("texter", 510.0f,  300.0f, vector3(1.0f, 1.0f, 1.0f), .4f);
-		Renderer.Textrenderer.renderText("> The quick brown fox jumped over the lazy dog. 1234567890", 0.0f, 300.0f, vector3(0.4, 0.3, 0.8), .7f);
-
 		Console.consoleUpdate();
-
+		/*Renderer.Textrenderer.renderText("texter", 510.0f,  300.0f, vector3(1.0f, 1.0f, 1.0f), .4f);
+		Renderer.Textrenderer.renderText("> The quick brown fox jumped over the lazy dog. 1234567890", 0.0f, 300.0f, vector3(0.4, 0.3, 0.8), .7f);*/
+		Messages.messageSystemUpdate(Inputs, Window, Camera, Console);
 
 
 

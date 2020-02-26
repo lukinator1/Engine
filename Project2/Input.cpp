@@ -10,6 +10,7 @@ void Input::inputStartup()
 	scrolldistance.setVector(0.0f, 0.0f); //maybe make this current position?
 	mouseposition.setVector(0.0f, 0.0f);
 	mousemovementdistance.setVector(0.0f, 0.0f);
+	/*consoleon = false;*/
 }
 void Input::getInputs() {  
 	scrolled = false;
@@ -122,13 +123,29 @@ void Input::getInputs() {
 			scrolled = true;
 		}
 
+		/*if (SDL_IsTextInputActive()) {
+			std::cout << "text input is active" << std::endl;
+		}*/
+		/*
 		if (sdlevent.type == SDL_TEXTEDITING) {
+
 			postMessage(Message::Messagetypes::Textinput, 0, 0, sdlevent.edit.text);
 			std::cout << "text input event" << std::endl;
-		}
+		}*/
 		if (sdlevent.type == SDL_TEXTINPUT) {
-			postMessage(Message::Messagetypes::Textcommit, 0, 0, sdlevent.text.text);
-			std::cout << "text commit event" << std::endl;
+			for (int i = 0; i < 230; i++) {
+				if (keyboardstate[i].first == true) {
+					keyboardstate[i].second = true;
+				}
+			}
+			for (int i = 0; i < 230; i++) {
+				keyboardstate[i].first = sdlkeyboard[i];
+				if (keyboardstate[i].first == true && keyboardstate[i].second == false) {
+					std::cout << "Key: " << i << " pressed" << std::endl;
+				}
+			}
+				postMessage(Message::Messagetypes::Textcommit, 0, 0, sdlevent.text.text);
+				std::cout << "text commit event: " << sdlevent.text.text << std::endl;
 		}
 	
 		if (sdlevent.type == SDL_WINDOWEVENT) {
@@ -307,7 +324,6 @@ void Input::handleMessage(Message &message)
 }
 void Input::postMessage(Message::Messagetypes messagetype)
 {
-
 	if (messagequeue.size() < messagequeuecapacity) {
 		Message newmessage(messagetype, Message::Category::Input);
 		messagequeue.push(newmessage);

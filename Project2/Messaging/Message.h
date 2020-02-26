@@ -19,6 +19,7 @@ public:
 		Minimized,
 		Textinput,
 		Textcommit,
+		Consoleoff,
 		User
 	};
 
@@ -26,6 +27,7 @@ public:
 		All, 
 		Input,
 		Window,
+		Console,
 		User
 	};
 

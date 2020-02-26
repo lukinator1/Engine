@@ -1,38 +1,54 @@
 #include "Console.h"
-void Console::consoleStartup(Rendering &_rendermanager) {
+void Console::consoleStartup(Input &_Inputs, Rendering &_rendermanager) {
 	rendermanager = &_rendermanager;
-	consoleposition = vector2(rendermanager->windowptr->getWindowWidth() * .8f, rendermanager->windowptr->getWindowHeight() * .8f);
+	inputs = &_Inputs;
+	consoleposition = vector2(rendermanager->windowptr->getWindowWidth() * .55f, rendermanager->windowptr->getWindowHeight() * .55f);
 	consoletextcolor = vector3(1.0f, 1.0f, 1.0f);
-	consoletextsize = 1.0f;
-	composition = ">";
+	consoletextsize = 0.7f;
+	composition = "> ";
 	consoleinput = "";
+	SDL_StopTextInput();
 }
 void Console::consoleUpdate()
 {
-	if (displayconsole) {
-			rendermanager->Textrenderer.renderText("> ", consoleposition.x , consoleposition.y, consoletextcolor, consoletextsize);
-			textrenderer.renderText(">", 30.0f, 100.0f, vector3(1.0f, 1.0f, 1.0f), .4f);
+	if (consoleon) {
+			rendermanager->Textrenderer.renderText(composition, consoleposition.x , consoleposition.y, consoletextcolor, consoletextsize);
+			if (consoleon && sdlkeyboard[40]) {
+				interpretInput();
+			} 
+			/*textrenderer.renderText(">", 30.0f, 100.0f, vector3(1.0f, 1.0f, 1.0f), .4f);*/
 	}
 }
 void Console::interpretInput() {
-	if (consolefocused) {
-		if (consoleinput == "test") {
+		if (composition == "> test") {
 			std::cout << "Console input detected" << std::endl;
 		}
-	}
-	composition = "> ";
+		if (composition == "> tester") {
+			rendermanager->Textrenderer.renderText("testing", 10, 20);
+		}
+		composition = "> ";
 }
 void Console::useConsole() {
 	SDL_StartTextInput();
+	/*inputs->consoleon = true;*/
+	consoleon = true;
+	displayconsole = true;
 	consolefocused = true;
 }
 void Console::leaveConsole() {
 	SDL_StopTextInput();
+	/*inputs->consoleon = false;*/
+	/*postMessage(Message::Messagetypes::Consoleoff, 1);*/
+	consoleon = false;
+	displayconsole = false;
 	consolefocused = false;
 }
-void Console::consoleOn(bool on)
+bool Console::consoleOn() {
+	return consoleon;
+}
+bool Console::consoleFocused()
 {
-	consolefocused = on;
+	return consolefocused;
 }
 void Console::echoConsole(bool echo)
 {
@@ -78,13 +94,22 @@ vector2 Console::getConsolePosition() {
 void Console::handleMessage(Message &message) {
 	switch (message.messagetype)
 	{
-	case Message::Messagetypes::Textinput:
-		composition.append(message.messagedatathree);
-		break;
+		/*case Message::Messagetypes::Textinput:
+			composition.append(message.messagedatathree);
+			break;*/
 	case Message::Messagetypes::Textcommit:
-		consoleinput = message.messagedatathree;
-		interpretInput();
+		if (consoleon == true) {
+			composition.append(message.messagedatathree);
+		}
+		/*interpretInput();*/
 		break;
+		}
+}
+void Console::postMessage(Message::Messagetypes message, int on) {
+	if (messagequeue.size() < messagequeuecapacity) {
+		Message newmessage(message, Message::Category::Console);
+		newmessage.messagedataone = on;
+		messagequeue.push(newmessage);
 	}
 }
 Console::Console()

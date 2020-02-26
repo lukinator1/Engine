@@ -98,16 +98,11 @@ change absolute path in include directories property page
 
 todo:
 time
-make things pass by reference
-error model/texture
+error model
 full/better obj loader
 model viewer
 destructors
 error messages
-skybox
-unlock the fps (keep framerate lock)
-fps counter
-improve error logger
 resizing/moving window
 
 #in vec4 color;

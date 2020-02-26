@@ -70,7 +70,7 @@ public:
 		D = 7,
 		F = 9,
 		G = 10,
-		H = 11,
+		H = 11, 
 		J = 13,
 		K = 14,
 		L = 15,
@@ -114,6 +114,7 @@ public:
 	vector2 scrolldistance;
 	bool moved;
 	bool scrolled;
+	/*bool consoleon;*/
 
 	const Uint8 *sdlkeyboard = SDL_GetKeyboardState(NULL);
 
