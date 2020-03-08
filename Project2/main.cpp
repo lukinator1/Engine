@@ -24,7 +24,8 @@ float gametime = 0.0f;
 bool gameisrunning = true;
 bool framebyframe = false;
 bool stepframe = false;
-int stepframekey = 44;
+bool framekeyheld = false;
+int stepframekey = 225;
 int exitframekey = 41;
 
 float fieldDepth = 10.0f;
@@ -36,12 +37,16 @@ void endGame() {
 void frameByFrame(int stepkey, int exitkey) {
 	if (framebyframe) {
 		framebyframe = false;
+		stepframekey = 225;
+		exitframekey = 41;
 	}
 	else {
 		framebyframe = true; 
+		stepframekey = stepkey;
+		exitframekey = exitkey;
 	}
-	stepframekey = stepkey;
-	exitframekey = exitkey;
+	stepframe = false;
+	framekeyheld = false;
 }
 void frameByFrame() {
 	if (framebyframe) {
@@ -50,11 +55,10 @@ void frameByFrame() {
 	else {
 		framebyframe = true;
 	}
-	stepframekey = 44;
+	stepframekey = 225;
 	exitframekey = 41;
-}
-void stepFrame() {
-	stepframe = true;
+	stepframe = false;
+	framekeyheld = false;
 }
 int main(int argc, char* argv[]) {
 	int count = 0;
@@ -318,9 +322,7 @@ int main(int argc, char* argv[]) {
 	int frames = 0;
 	double framecounter = 0;
 	int fps = -1;
-	bool framebyframe = false;
 	bool fpscounter = true;
-	bool framekeyheld = false;;
 
 	//game variable tests
 	Camera.setMouseLook(false);
@@ -341,7 +343,7 @@ int main(int argc, char* argv[]) {
 						break;
 					}
 					else if (SDL_GetScancodeFromKey(event.key.keysym.sym) == exitframekey) {
-							framebyframe = false;
+							frameByFrame();
 							break;
 						}
 				}
@@ -363,7 +365,6 @@ int main(int argc, char* argv[]) {
 		starttime = std::chrono::high_resolution_clock::now();     //updates
 		MemoryManager.memorymanagerUpdate();
 		Inputs.getInputs();
-		Window.updateWindow();
 
 
 		//game
@@ -433,10 +434,33 @@ int main(int argc, char* argv[]) {
 		Renderer.renderScene(sceneone);
 		/*text.renderComponent(transform, shaderit);*/     //interesting effect
 		Console.consoleUpdate(currentscene, gameisrunning, framebyframe, stepframekey, exitframekey, framelock, fpscounter);
+		if (framecounter >= 1.0f) {
+			fps = frames;
+			framecounter = 0;
+			frames = 0;
+		}
+		if (fpscounter == true) {
+			Renderer.Textrenderer.renderText(std::to_string(deltatime), 0, Window.getWindowHeight() * .5f, vector3(1.0, 1.0, 1.0), 1.0);
+			if (fps < 30) {
+				Renderer.Textrenderer.renderText("FPS: " + std::to_string(fps), 0, Window.getWindowHeight() * (3.0f / 4.0f), vector3(1.0f, 0, 0), 1.0);
+			}
+			else if (fps < 50) {
+				Renderer.Textrenderer.renderText("FPS: " + std::to_string(fps), 0, Window.getWindowHeight() * (3.0f / 4.0f), vector3(0.7f, 0.1f, 0.4f), 1.0);
+			}
+			else if (fps < 90) {
+				Renderer.Textrenderer.renderText("FPS: " + std::to_string(fps), 0, Window.getWindowHeight() * (3.0f / 4.0f), vector3(1.0f, 1.0f, 1.0f), 1.0);
+			}
+			else if (fps < 120) {
+				Renderer.Textrenderer.renderText("FPS: " + std::to_string(fps), 0, Window.getWindowHeight() * (3.0f / 4.0f), vector3(0.0, 0.5f, 0.0), 1.0);
+			}
+			else {
+				Renderer.Textrenderer.renderText("FPS: " + std::to_string(fps), 0, Window.getWindowHeight() * (3.0f / 4.0f), vector3(0.0, 1.0f, 0.0), 1.0);
+			}
+		}
 		/*Renderer.Textrenderer.renderText("texter", 510.0f,  300.0f, vector3(1.0f, 1.0f, 1.0f), .4f);
 		Renderer.Textrenderer.renderText("> The quick brown fox jumped over the lazy dog. 1234567890", 0.0f, 300.0f, vector3(0.4, 0.3, 0.8), .7f);*/
+		Window.updateWindow();
 		Messages.messageSystemUpdate(Inputs, Window, Camera, Console);
-
 
 
 
@@ -465,29 +489,6 @@ int main(int argc, char* argv[]) {
 					std::cout << "slow" << std::endl;
 				}
 			}
-			if (framecounter >= 1.0f) {
-				fps = frames;
-				framecounter = 0;
-				frames = 0;
-			}
-			if (fpscounter == true){
-			Renderer.Textrenderer.renderText(std::to_string(deltatime), 0, Window.getWindowHeight() * .5f, vector3(1.0, 1.0, 1.0), 1.0);
-			if (fps < 30) {
-				Renderer.Textrenderer.renderText("FPS: " + std::to_string(fps), 0, Window.getWindowHeight() * (3.0f/4.0f), vector3(1.0f, 0, 0), 1.0);
-			}
-			else if (fps < 50) {
-				Renderer.Textrenderer.renderText("FPS: " + std::to_string(fps), 0, Window.getWindowHeight() * (3.0f / 4.0f), vector3(0.7f, 0.1f, 0.4f), 1.0);
-			}
-			else if (fps < 90) {
-				Renderer.Textrenderer.renderText("FPS: " + std::to_string(fps), 0, Window.getWindowHeight() * (3.0f / 4.0f), vector3(1.0f, 1.0f, 1.0f), 1.0);
-			}
-			else if (fps < 120) {
-				Renderer.Textrenderer.renderText("FPS: " + std::to_string(fps), 0, Window.getWindowHeight() * (3.0f / 4.0f), vector3(0.0, 0.5f, 0.0), 1.0);
-			}
-			else {
-				Renderer.Textrenderer.renderText("FPS: " + std::to_string(fps), 0, Window.getWindowHeight() * (3.0f / 4.0f), vector3(0.0, 1.0f, 0.0), 1.0);
-			}
-		}
 	}
 
 	//Shutdown

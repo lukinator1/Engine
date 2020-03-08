@@ -21,7 +21,7 @@ private:
 	void swapWindow();
 	bool closerequested = false;
 	bool maximized = false;
-	/*bool minimized = false;*/
+	bool minimized = false;
 	void clearWindow(float r, float g, float b, float a);
 public:
 	Window(int width, int height);

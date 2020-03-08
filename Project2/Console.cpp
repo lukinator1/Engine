@@ -43,7 +43,7 @@ void Console::interpretInput(Scene &_currentscene, bool &gameisrunning, bool &fr
 		std::cout << consoleinput << std::endl;
 	}
 	//logger
-	else if (consoleinput.substr(0, 19) == "set logger channels") {
+	if (consoleinput.substr(0, 19) == "set logger channels") {
 		std::vector<int> channels;
 		if (consoleinput.length() >= 20) {
 			for (int i = 19; i < consoleinput.length(); i++) {
@@ -191,7 +191,7 @@ void Console::interpretInput(Scene &_currentscene, bool &gameisrunning, bool &fr
 	//misc.
 	else if (consoleinput == "framebyframe") { //todo
 	framebyframe = true;
-	response = "Framebyframe mode is on. The framestep key is " + std::to_string(stepframekey) + ", exit is " + std::to_string(exitframekey) + ".";
+	response = "Framebyframe mode is on. Press leftshift to framestep, esc to exit.";
 	}
 	else if (consoleinput == "show fps counter") {
 	fpscounter = true;
