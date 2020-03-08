@@ -1,5 +1,6 @@
 #include "Mesh.h"
 Mesh::Mesh() {
+	size = 0;
 	glGenVertexArrays(1, &vao);
 	glGenBuffers(1, &vbo);
 	glGenBuffers(1, &tbo);

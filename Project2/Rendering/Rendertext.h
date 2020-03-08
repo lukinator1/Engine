@@ -36,7 +36,7 @@ public:
 	Texture texttexture*/
 	void setSDLRendererToWindow(Window &window);
 	void loadText();
-	void renderText(std::string text, float x, float y, vector3 color, float scale);
+	float renderText(std::string text, float x, float y, vector3 color, float scale);
 	void renderText(std::string text, vector2 xy, vector3 color, float scale);
 	void renderText(std::string text, float x, float y);
 	void renderText(std::string text, vector2 xy);

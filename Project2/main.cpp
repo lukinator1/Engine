@@ -10,6 +10,7 @@
 #include "Messaging/Messagesystem.h"
 #include "Messaging/Messaging.h"
 #include "Meshrenderer.h"
+#include "Textrenderer.h"
 #include "Scene.h"
 #include "Logger.h"
 #include "Global.h"
@@ -21,12 +22,39 @@ int messagequeuecapacity = 32;
 float deltatime = 1.0f / 60.0f;
 float gametime = 0.0f;
 bool gameisrunning = true;
+bool framebyframe = false;
+bool stepframe = false;
+int stepframekey = 44;
+int exitframekey = 41;
 
 float fieldDepth = 10.0f;
 float fieldWidth = 10.0f;
 
 void endGame() {
 	gameisrunning = false;
+}
+void frameByFrame(int stepkey, int exitkey) {
+	if (framebyframe) {
+		framebyframe = false;
+	}
+	else {
+		framebyframe = true; 
+	}
+	stepframekey = stepkey;
+	exitframekey = exitkey;
+}
+void frameByFrame() {
+	if (framebyframe) {
+		framebyframe = false;
+	}
+	else {
+		framebyframe = true;
+	}
+	stepframekey = 44;
+	exitframekey = 41;
+}
+void stepFrame() {
+	stepframe = true;
 }
 int main(int argc, char* argv[]) {
 	int count = 0;
@@ -227,24 +255,29 @@ int main(int argc, char* argv[]) {
 	Input Inputs;
 	Inputs.inputStartup();
 	Console Console;
-	Console.consoleStartup(Inputs, Renderer);
+	Console.consoleStartup(log, MemoryManager, Window, Inputs, Renderer, Camera);
 
 
-
+	Materials material("test.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f);		// from basicshader change to render manager startup?
+	Mesh quotemodel("quote.obj");
+	quotemodel.loadMeshObj("quote.obj");
 
 
 
 	Scene sceneone;			//test scenes
 	sceneone.setSkybox("right.jpg", "left.jpg", "top.jpg", "bottom.jpg", "front.jpg", "back.jpg");
-
+	Scene scenetwo;
 
 	Entity Quote;   //quote
-	Materials material("test.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f);		// from basicshader change to render manager startup?
-	Mesh quotemodel("quote.obj");
-	quotemodel.loadMeshObj("quote.obj");
 	Meshrenderer component(quotemodel, material);
 	Meshrenderer* componentobject = &component;
-	Quote.addComponent(componentobject);
+	Quote.addComponent(&component);
+	/*Quote.addSubEntity(&texttest);*/
+
+	/*Entity textentity;
+	Textrenderer text("Hello", vector2(200.0f, 300.0f), vector3(1.0f, 1.0f, 1.0f), 1.0f);
+	Textrenderer* textobject = &text;
+	textentity.addComponent(textobject);*/
 	sceneone.root = Quote;
 
 	//field
@@ -281,10 +314,13 @@ int main(int argc, char* argv[]) {
 	std::chrono::duration<float> chronodelta = std::chrono::duration<float>(deltatime);
 	
 	//engine tools
-	Scene currentscene;
+	Scene currentscene; 
 	int frames = 0;
 	double framecounter = 0;
 	int fps = -1;
+	bool framebyframe = false;
+	bool fpscounter = true;
+	bool framekeyheld = false;;
 
 	//game variable tests
 	Camera.setMouseLook(false);
@@ -293,6 +329,37 @@ int main(int argc, char* argv[]) {
 
 	//loop
 	while (gameisrunning) {
+		while (framebyframe) {
+			SDL_Event event;
+			while (SDL_PollEvent(&event)) {
+				if (event.type == SDL_KEYDOWN) {
+					if (SDL_GetScancodeFromKey(event.key.keysym.sym) == stepframekey) {
+						stepframe = true;
+						if (event.key.repeat == 1) {
+							framekeyheld = true;
+						}
+						break;
+					}
+					else if (SDL_GetScancodeFromKey(event.key.keysym.sym) == exitframekey) {
+							framebyframe = false;
+							break;
+						}
+				}
+				else if (event.type == SDL_KEYUP) {
+					if (SDL_GetScancodeFromKey(event.key.keysym.sym) == stepframekey) {
+						framekeyheld = false;
+						break;
+					}
+				}
+			}
+			if (framekeyheld == true) {
+				break;
+			}
+			if (stepframe == true) {
+				stepframe = false;
+				break;
+			}
+		}
 		starttime = std::chrono::high_resolution_clock::now();     //updates
 		MemoryManager.memorymanagerUpdate();
 		Inputs.getInputs();
@@ -364,7 +431,8 @@ int main(int argc, char* argv[]) {
 		shaderit.updateUniforms(transform.newUnprojectedMatrix(), transform.newTransformationMatrix(), transform.position, material);
 		meshme.drawMesh();
 		Renderer.renderScene(sceneone);
-		Console.consoleUpdate();
+		/*text.renderComponent(transform, shaderit);*/     //interesting effect
+		Console.consoleUpdate(currentscene, gameisrunning, framebyframe, stepframekey, exitframekey, framelock, fpscounter);
 		/*Renderer.Textrenderer.renderText("texter", 510.0f,  300.0f, vector3(1.0f, 1.0f, 1.0f), .4f);
 		Renderer.Textrenderer.renderText("> The quick brown fox jumped over the lazy dog. 1234567890", 0.0f, 300.0f, vector3(0.4, 0.3, 0.8), .7f);*/
 		Messages.messageSystemUpdate(Inputs, Window, Camera, Console);
@@ -397,13 +465,29 @@ int main(int argc, char* argv[]) {
 					std::cout << "slow" << std::endl;
 				}
 			}
-		if (framecounter >= 1.0) {
-			fps = frames;
-			framecounter = 0;
-			frames = 0;
+			if (framecounter >= 1.0f) {
+				fps = frames;
+				framecounter = 0;
+				frames = 0;
+			}
+			if (fpscounter == true){
+			Renderer.Textrenderer.renderText(std::to_string(deltatime), 0, Window.getWindowHeight() * .5f, vector3(1.0, 1.0, 1.0), 1.0);
+			if (fps < 30) {
+				Renderer.Textrenderer.renderText("FPS: " + std::to_string(fps), 0, Window.getWindowHeight() * (3.0f/4.0f), vector3(1.0f, 0, 0), 1.0);
+			}
+			else if (fps < 50) {
+				Renderer.Textrenderer.renderText("FPS: " + std::to_string(fps), 0, Window.getWindowHeight() * (3.0f / 4.0f), vector3(0.7f, 0.1f, 0.4f), 1.0);
+			}
+			else if (fps < 90) {
+				Renderer.Textrenderer.renderText("FPS: " + std::to_string(fps), 0, Window.getWindowHeight() * (3.0f / 4.0f), vector3(1.0f, 1.0f, 1.0f), 1.0);
+			}
+			else if (fps < 120) {
+				Renderer.Textrenderer.renderText("FPS: " + std::to_string(fps), 0, Window.getWindowHeight() * (3.0f / 4.0f), vector3(0.0, 0.5f, 0.0), 1.0);
+			}
+			else {
+				Renderer.Textrenderer.renderText("FPS: " + std::to_string(fps), 0, Window.getWindowHeight() * (3.0f / 4.0f), vector3(0.0, 1.0f, 0.0), 1.0);
+			}
 		}
-		Renderer.Textrenderer.renderText(std::to_string(deltatime), 0, 200, vector3(1.0, 1.0, 1.0), 1.0);
-		Renderer.Textrenderer.renderText("FPS: " + std::to_string(fps), 0, 500, vector3(1.0, 1.0, 1.0), 1.0);
 	}
 
 	//Shutdown

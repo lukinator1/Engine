@@ -10,7 +10,6 @@
 class Skybox : public Logger
 {
 public:
-	unsigned int program;
 	Texture skyboxtexture;
 	Shader skyboxshader;
 	Mesh skyboxbox;

@@ -3,7 +3,9 @@
 #include "SDL2/SDL.h"
 #include "Messaging/Message.h"
 #include "Rendering/Rendermanager.h"
+#include "CustomMemoryAllocation/Memorymanager.h"
 #include "Input.h"
+#include <vector>
 #include <string>
 class Console
 {
@@ -11,23 +13,30 @@ private:
 	vector2 consoleposition;
 	vector3 consoletextcolor = vector3(1.0f, 1.0f, 1.0f);
 	float consoletextsize = 1.0f;
+	float consolewidth = 0;
 	Rendering* rendermanager;
+	Logger* logger;
+	Memorymanager* memorymanager;
+	Window* window;
 	Input* inputs;
-	Rendertext textrenderer;
+	Camera* thecamera;
+	Scene* currentscene;
 	bool displayconsole = true;
 	bool consolefocused = false;
-	bool consoleon = true;
+	bool consoleon = false;
 	bool consoleecho = true;
 	const Uint8 *sdlkeyboard = SDL_GetKeyboardState(NULL);
 public:
-	void consoleUpdate();
-	void interpretInput();
+	void consoleUpdate(Scene &currentscene, bool &gameisrunning, bool &framebyframe, int &stepframekey, int &exitframekey, bool &fpscounter, bool &framelock);
+	void interpretInput(Scene &_currentscene, bool &gameisrunning, bool &framebyframe, int &stepframekey, int &exitframekey, bool &fpscounter, bool &framelock);
 	void useConsole();
 	void leaveConsole();
 	bool consoleOn();
-	void consoleStartup(Input &Inputs, Rendering &rendermanager);
+	void consoleStartup(Logger &log, Memorymanager &memorymanager, Window &window, Input &Inputs, Rendering &rendermanager, Camera &camera);
 	std::string consoleinput = "";
+	std::string response = "";
 	std::string composition = "> ";
+	std::vector<std::string> oldcomposition;
 	bool consoleFocused();
 	void echoConsole(bool echo);
 	void displayConsole(bool display);

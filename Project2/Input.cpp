@@ -23,7 +23,7 @@ void Input::getInputs() {
 	for (int i = 0; i < 230; i++) { 
 		keyboardstate[i].first = sdlkeyboard[i];
 		if (keyboardstate[i].first == true && keyboardstate[i].second == false) {
-			std::cout << "Key: " << i << " pressed" << std::endl;
+			/*std::cout << "Key: " << i << " pressed" << std::endl;*/
 		}
 	}
 	if (leftmouse.first == true) {
@@ -71,18 +71,19 @@ void Input::getInputs() {
 			}
 		}
 
-		/*if (sdlevent.type == SDL_KEYDOWN) {
-			/*postMessage(Message::Messagetypes::Keydown, SDL_GetScancodeFromKey(sdlevent.key.keysym.sym), 0);
-			keyboardstate[SDL_GetScancodeFromKey(sdlevent.key.keysym.sym)].first = true;
-			/*if (sdlevent.key.repeat == 1) {
-				keyboardstate[SDL_GetScancodeFromKey(sdlevent.key.keysym.sym)].second = true;
-				std::cout << "Key: " << SDL_GetScancodeFromKey(sdlevent.key.keysym.sym) << " being held" << std::endl;
+		if (sdlevent.type == SDL_KEYDOWN) {
+			/*keyboardstate[SDL_GetScancodeFromKey(sdlevent.key.keysym.sym)].first = true;*/
+			if (sdlevent.key.repeat == 1) {
+				postMessage(Message::Messagetypes::Keydown, SDL_GetScancodeFromKey(sdlevent.key.keysym.sym), 1);
+				/*keyboardstate[SDL_GetScancodeFromKey(sdlevent.key.keysym.sym)].second = true;
+				std::cout << "Key: " << SDL_GetScancodeFromKey(sdlevent.key.keysym.sym) << " being held" << std::endl;*/
 			}
-			else {*/
-				/*keyboardstate[SDL_GetScancodeFromKey(sdlevent.key.keysym.sym)].second = false;
+			else {
+				postMessage(Message::Messagetypes::Keydown, SDL_GetScancodeFromKey(sdlevent.key.keysym.sym), 0);
+				/*keyboardstate[SDL_GetScancodeFromKey(sdlevent.key.keysym.sym)].second = false;*/
 			}
-			std::cout << "Key: " << SDL_GetScancodeFromKey(sdlevent.key.keysym.sym) << "pressed" << std::endl;
-		}*/
+			/*std::cout << "Key: " << SDL_GetScancodeFromKey(sdlevent.key.keysym.sym) << "pressed" << std::endl;*/
+		}
 
 		if (sdlevent.type == SDL_MOUSEMOTION) { //mouse buttons down;
 			/*postMessage(Message::Messagetypes::Mousemoved, sdlevent.motion.x, sdlevent.motion.y, sdlevent.motion.xrel, -sdlevent.motion.yrel);*/
@@ -141,11 +142,11 @@ void Input::getInputs() {
 			for (int i = 0; i < 230; i++) {
 				keyboardstate[i].first = sdlkeyboard[i];
 				if (keyboardstate[i].first == true && keyboardstate[i].second == false) {
-					std::cout << "Key: " << i << " pressed" << std::endl;
+					/*std::cout << "Key: " << i << " pressed" << std::endl;*/
 				}
 			}
 				postMessage(Message::Messagetypes::Textcommit, 0, 0, sdlevent.text.text);
-				std::cout << "text commit event: " << sdlevent.text.text << std::endl;
+				/*std::cout << "text commit event: " << sdlevent.text.text << std::endl;*/
 		}
 	
 		if (sdlevent.type == SDL_WINDOWEVENT) {

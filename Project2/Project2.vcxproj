@@ -157,6 +157,7 @@
     <ClInclude Include="Rendering\stb_image.h" />
     <ClInclude Include="Rendering\Texture.h" />
     <ClInclude Include="Rendering\Skybox.h" />
+    <ClInclude Include="Textrenderer.h" />
     <ClInclude Include="Thegame.h" />
     <ClInclude Include="Mathlibrary\vector2.h" />
     <ClInclude Include="Mathlibrary\matrix4f.h" />
@@ -176,8 +177,8 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Console.cpp" />
-    <ClCompile Include="Rendering\Lighting\Directionallight.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Rendering\Lighting\Directionallight.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Rendering\Lighting\Light.cpp" />
     <ClCompile Include="Logger.cpp" />
@@ -191,6 +192,7 @@
     <ClCompile Include="Rendering\Lighting\Spotlight.cpp" />
     <ClCompile Include="Rendering\Texture.cpp" />
     <ClCompile Include="Rendering\Skybox.cpp" />
+    <ClCompile Include="Textrenderer.cpp" />
     <ClCompile Include="Thegame.cpp" />
     <ClCompile Include="Mathlibrary\vector2.cpp" />
     <ClCompile Include="Mathlibrary\matrix4f.cpp" />

@@ -28,6 +28,7 @@ public: //todo: truncate filename, put function name in log, logging colors
 
 	//void setVerbosity(int &newverbosity);
 	void setEngineLoggerSettings(int mem, int render, int misc, int newverbosity, bool newshowwarnings);
+	void setLoggerVerbosity(int newverbosity);
 	static void engineLog(std::string file, unsigned int line, std::string errormessage, int verbosity, int channel, bool iswarning); //timestamp
 	//void EngineLog(const char* format, ...);
 };

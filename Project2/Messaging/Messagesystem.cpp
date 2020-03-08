@@ -17,7 +17,7 @@ void Messagesystem::messageDispatch(Message &message, Input &Inputs, Window &Win
 		Console.handleMessage(message);
 		/*Camera.handleMessage(message);*/
 		messagequeue.pop();
-		std::cout << "event: " << static_cast<std::underlying_type<Message::Messagetypes>::type>(message.messagetype) << "handeled" << std::endl;
+		/*std::cout << "event: " << static_cast<std::underlying_type<Message::Messagetypes>::type>(message.messagetype) << "handeled" << std::endl;*/
 }
 void Messagesystem::clearMessageQueue() {
 	for (int i = 0; i < messagequeue.size(); i++) {

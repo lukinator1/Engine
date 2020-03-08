@@ -111,8 +111,9 @@ void Rendertext::loadText() {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 }
-void Rendertext::renderText(std::string text, float _x, float _y, vector3 color, float scale) {
+float Rendertext::renderText(std::string text, float _x, float _y, vector3 color, float scale) {
 	/*glCullFace(GL_BACK);*/ 
+	float distance = 0;
 	glFrontFace(GL_CCW);
 	textshader.useShader();
 	textshader.setUniform("textcolor", color);
@@ -153,10 +154,12 @@ void Rendertext::renderText(std::string text, float _x, float _y, vector3 color,
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 		_x += (currentchar.stride >> 6) * scale;
+		distance += (currentchar.stride >> 6) * scale;
 	}
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glFrontFace(GL_CW);
+	return distance;
 }
 void Rendertext::renderText(std::string text, vector2 position, vector3 color, float scale) {
 	/*glCullFace(GL_BACK);*/

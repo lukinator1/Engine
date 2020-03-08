@@ -46,6 +46,22 @@ void Logger::setEngineLoggerSettings(int mem, int render, int misc, int newverbo
 	enginechannels[2] = misc;
 	showwarnings = newshowwarnings;
 }
+/*void Logger::setLoggerVerbosity(int newverbosity) {
+	/*void Logger::setEngineLoggerSettings(int newchannel, int newverbosity, bool newshowwarnings) { 
+	if (newverbosity < 1 || newverbosity > 3) {
+		std::cout << "Error, verbosity must be between 1 and 3 inclusive." << std::endl;
+		return;
+	}
+	engineverbosity = newverbosity;
+	/*enginechannel = newchannel;
+}
+void Logger::setActiveChannels(int mem, int render, int misc) {
+	/*void Logger::setEngineLoggerSettings(int newchannel, int newverbosity, bool newshowwarnings) { 
+	/*enginechannel = newchannel;
+	enginechannels[0] = mem;
+	enginechannels[1] = render;
+	enginechannels[2] = misc;
+}*/
 void Logger::engineLog(std::string file, unsigned int line, std::string errormessage, int verbosity, int channel, bool iswarning)
 {
 	EngineLogFile.open("Enginelogs/EngineLog.txt", std::ofstream::out | std::ofstream::app);

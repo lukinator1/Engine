@@ -7,9 +7,8 @@
 #include <GL/glew.h>
 class Mesh : public Logger 
 {
-	unsigned int indexbufferobject;
-	unsigned int size;
 public:
+	unsigned int size;
 	std::string name;
 	GLuint vbo;
 	GLuint tbo;

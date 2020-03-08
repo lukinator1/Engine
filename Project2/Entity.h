@@ -8,7 +8,7 @@ class Entity
 private:
 public:
 	Transforming transform;
-	std::vector <Entity> children;
+	std::vector <Entity *> children;
 	std::vector <Component *> components; //maybe make a map?
 	Entity();
 	~Entity();
@@ -17,7 +17,7 @@ public:
 			components[i]->updateComponent(transform);
 		}
 		for (int i = 0; i < children.size(); i++) {
-			children[i].updateEntity();
+			children[i]->updateEntity();
 		}
 	}
 	void entityInput() {
@@ -25,7 +25,7 @@ public:
 			components[i]->componentInput(transform);
 		}
 		for (int i = 0; i < children.size(); i++) {
-			children[i].entityInput();
+			children[i]->entityInput();
 		}
 	}
 	void renderEntity(Shader s) {
@@ -33,10 +33,10 @@ public:
 			components[i]->renderComponent(transform, s);
 		}
 		for (int i = 0; i < children.size(); i++) {
-			children[i].renderEntity(s);
+			children[i]->renderEntity(s);
 		}
 	}
-	void addSubEntity(Entity &subentity) {
+	void addSubEntity(Entity * subentity) {
 		children.push_back(subentity);
 	}
 	void addComponent(Component* component) {
