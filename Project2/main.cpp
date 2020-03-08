@@ -20,6 +20,7 @@
 std::queue <Message> messagequeue;
 int messagequeuecapacity = 32;
 float deltatime = 1.0f / 60.0f;
+float deltatimeweight = 1.0f;
 float gametime = 0.0f;
 bool gameisrunning = true;
 bool framebyframe = false;
@@ -67,6 +68,7 @@ int main(int argc, char* argv[]) {
 		int dbsize = 500;
 		int dbalignment = 8;
 		bool framelock = false;
+		float dtime = 1.0 / 60.0f;
 		bool vsync = false;
 		std::string title = "Untitled";
 		std::string windowicon = "GameWindowIcon.png";
@@ -96,6 +98,7 @@ int main(int argc, char* argv[]) {
 				else {
 					framelock = true;
 					deltatime = 1.0f / stoi(settings);
+					dtime = deltatime;
 				}
 			}
 			else if (settings.find("Window:") != std::string::npos) {
@@ -433,14 +436,17 @@ int main(int argc, char* argv[]) {
 		meshme.drawMesh();
 		Renderer.renderScene(sceneone);
 		/*text.renderComponent(transform, shaderit);*/     //interesting effect
-		Console.consoleUpdate(currentscene, gameisrunning, framebyframe, stepframekey, exitframekey, framelock, fpscounter);
+		Console.consoleUpdate(currentscene, gameisrunning, framebyframe, stepframekey, exitframekey, framelock, fpscounter, deltatime, dtime, deltatimeweight);
 		if (framecounter >= 1.0f) {
 			fps = frames;
 			framecounter = 0;
 			frames = 0;
 		}
 		if (fpscounter == true) {
-			Renderer.Textrenderer.renderText(std::to_string(deltatime), 0, Window.getWindowHeight() * .5f, vector3(1.0, 1.0, 1.0), 1.0);
+			Renderer.Textrenderer.renderText("Delta time: " + std::to_string(deltatime), 0, Window.getWindowHeight() * .5f, vector3(1.0, 1.0, 1.0), 0.7);
+			if (fps == -1) {
+				Renderer.Textrenderer.renderText("FPS: " + std::to_string(fps), 0, Window.getWindowHeight() * (3.0f / 4.0f), vector3(0.0, 0.0f, 0.0), 1.0);
+			}
 			if (fps < 30) {
 				Renderer.Textrenderer.renderText("FPS: " + std::to_string(fps), 0, Window.getWindowHeight() * (3.0f / 4.0f), vector3(1.0f, 0, 0), 1.0);
 			}
@@ -476,6 +482,7 @@ int main(int argc, char* argv[]) {
 			}
 			deltatime = (prevdeltatimes[0] + prevdeltatimes[1] + prevdeltatimes[2] + prevdeltatimes[3] + prevdeltatimes[4]) / 5.0f;
 			framecounter += deltatime;
+			deltatime *= deltatimeweight;
 		}
 		else if (framelock == true) {
 			if (timeduration < chronodelta) //framerate lock function
@@ -486,7 +493,6 @@ int main(int argc, char* argv[]) {
 			else if (timeduration > chronodelta) {
 					std::this_thread::sleep_for(chronodelta - (timeduration - chronodelta)); //todo: change to division
 					framecounter += chronodelta.count() + chronodelta.count();
-					std::cout << "slow" << std::endl;
 				}
 			}
 	}

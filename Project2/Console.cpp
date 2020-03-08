@@ -14,7 +14,7 @@ void Console::consoleStartup(Logger &_log, Memorymanager &_memorymanager, Window
 	consoleinput = "";
 	SDL_StopTextInput();
 }
-void Console::consoleUpdate(Scene & _currentscene, bool &gameisrunning, bool &framebyframe, int &stepframekey, int &exitframekey, bool &framelock, bool &fpscounter)
+void Console::consoleUpdate(Scene & _currentscene, bool &gameisrunning, bool &framebyframe, int &stepframekey, int &exitframekey, bool &framelock, bool &fpscounter, float &deltatime, float &dtime, float &deltatimeweight)
 {
 	if (consoleon) {
 			/*if (sdlkeyboard[42]) {
@@ -31,12 +31,12 @@ void Console::consoleUpdate(Scene & _currentscene, bool &gameisrunning, bool &fr
 		}
 		rendermanager->Textrenderer.renderText("_", consolewidth, consoleposition.y - 2.5f, consoletextcolor, consoletextsize);
 			if (sdlkeyboard[40] && composition != "> ") {
-				interpretInput(_currentscene, gameisrunning, framebyframe, stepframekey, exitframekey, framelock, fpscounter);
+				interpretInput(_currentscene, gameisrunning, framebyframe, stepframekey, exitframekey, framelock, fpscounter, deltatime, dtime, deltatimeweight);
 			}
 		rendermanager->Textrenderer.renderText(response, consoleposition.x, consoleposition.y + 20.0f, consoletextcolor, consoletextsize);
 	}
 }
-void Console::interpretInput(Scene &_currentscene, bool &gameisrunning, bool &framebyframe, int &stepframekey, int &exitframekey, bool &framelock, bool &fpscounter) {
+void Console::interpretInput(Scene &_currentscene, bool &gameisrunning, bool &framebyframe, int &stepframekey, int &exitframekey, bool &framelock, bool &fpscounter, float &deltatime, float& dtime, float &deltatimeweight) {
 	response = "";
 	consoleinput = composition.substr(2, composition.length());
 	if (consoleecho) {
@@ -189,7 +189,7 @@ void Console::interpretInput(Scene &_currentscene, bool &gameisrunning, bool &fr
 	
 
 	//misc.
-	else if (consoleinput == "framebyframe") { //todo
+	else if (consoleinput == "framebyframe") { 
 	framebyframe = true;
 	response = "Framebyframe mode is on. Press leftshift to framestep, esc to exit.";
 	}
@@ -201,13 +201,253 @@ void Console::interpretInput(Scene &_currentscene, bool &gameisrunning, bool &fr
 	fpscounter = false;
 	response = "Fps counter hidden.";
 	}
-	else if (consoleinput.substr(0, 14) == "lock framerate") {
-	framelock = true;
-	response = "Framerate locked to ";
+	else if (consoleinput.substr(0, 14) == "lock framerate") { //todo: adding choice of framerate
+		framelock = true;
+		deltatime = dtime; 
+		response = "Framerate locked.";
+		/*std::string input = "";
+		if (consoleinput.length() >= 16) {
+			if (consoleinput.substr(15, consoleinput.size())  )
+				
+			
+			for (int i = 0; i < consoleinput.length(); i++) {
+				if (consoleinput[i] >= 48 && consoleinput[i] <= 57) {		//found input
+						if (consoleinput[i] < 48 || consoleinput[i] > 57) {
+							input = "";
+					}
+				}
+				else if (consoleinput[i] == ' ') {		//skip whitespace
+					continue;
+				}
+				else {				//cancel if character invalid
+					input = "";
+					break;
+				}
+			}
+		}*/
+	
 	}
 	else if (consoleinput == "unlock framerate") {
 	framelock = false;
 	response = "Framerate unlocked.";
+	}
+	else if (consoleinput.substr(0, 19) == "multiply delta time" || consoleinput.substr(0,19) == "multiply game speed") {
+	std::vector<int> delta;
+	if (consoleinput.length() >= 21) {
+		for (int i = 20; i < consoleinput.length(); i++) {
+			if (consoleinput[i] >= '0' || consoleinput[i] <= '9' || consoleinput[i] == ' ') {
+				if (consoleinput[i] == ' ') {
+					continue;
+				}
+				else if (consoleinput[i - 1] != ' ') {
+					delta.clear();
+					break;
+				}
+				else if (i == consoleinput.length() - 1) {
+					delta.push_back(consoleinput[i] - '0');
+				}
+				else if (consoleinput[i + 1] != ' ') {
+					delta.clear();
+					break;
+				}
+				else {
+					delta.push_back(consoleinput[i] - '0');
+				}
+			}
+			else {
+				delta.clear();
+				break;
+			}
+		}
+		if (delta.size() == 1) {
+			if (framelock == true) {
+				deltatimeweight *= (float)delta[0];
+				deltatime *= (float)delta[0];
+			}
+			if (framelock == false) {
+				deltatimeweight *= (float)delta[0];
+			}
+			response = "Delta multiplied by " + std::to_string(delta[0]) + ".";
+		}
+		else {
+			response = "Error, please enter a number between 0 and 9.";
+		}
+	}
+	else {
+		response = "Error, please enter a nunmber between 0 and 9.";
+	}
+	/*if (consoleinput.length() > 15) {
+		for (int i = 15; i < consoleinput.length(); i++) {  //look for decimal
+			if (consoleinput[i] == '.') {  //found a decimal
+				for (int u = i - 1; u > 14; u--) {  //check left
+
+					if (consoleinput[u] < '0' || consoleinput[u] > '9') {
+						if (consoleinput[u] == ' ') {  //skip if valid whitespace
+							if (consoleinput[u - 1] != ' ' || consoleinput[u + 1] != ' ' && u != i - 1) {
+								response = "Error, please enter a valid number.";
+							}
+						}
+						else {
+							response = "Error, please enter a valid number.";
+						}
+					}
+				}
+
+				for (int w = i; w < consoleinput.length(); w++) {  //check right
+					if (consoleinput[w] < '0' || consoleinput[w] > '9' && w != i) {
+						if (consoleinput[w] == ' ') {	//check whitespace
+							if (consoleinput[w - 1] != ' ' && w != i + 1) {
+								response = "Error, please enter a valid number.";
+							}
+							}
+
+							if (w != consoleinput.length() - 1) {
+								if consoleinput[w + 1] !=
+							}
+
+						}
+
+						else {
+							response = "Error, please enter a valid number.";
+						}
+					}
+				}
+				if (response != "Error, please enter a valid number.") {  //it's ok
+					response = "Delta time has been set to ";
+				}
+			}
+		}
+		
+		if (response != "Delta time has been set to "){		//look for integer
+			for (int i = 15; i < consoleinput.length(); i++) {
+				if (consoleinput[i] >= '0' && consoleinput[i] <= '9') {  //found a decimal
+					for (int u = i - 1; u > 15; u--) {  //check left
+						if (consoleinput[u] < '0' || consoleinput[u] > '9') {
+							response = "Error, please enter a valid number.";
+						}
+					}
+					for (int w = i; w < consoleinput.length(); w++) {  //check right
+						if (consoleinput[w] < '0' || consoleinput[w] > '9' && consoleinput[w] != ' ' && w != i) {
+							response = "Error, please enter a valid number.";
+						}
+					}
+					if (response != "Error, please enter a valid number.") {  //it's ok
+						response = "Delta time has been set to ";
+					}
+				}
+		}
+		else {
+			response = "Error pleaese enter a valid number.";
+		}*/
+	}
+	else if (consoleinput.substr(0, 17) == "divide delta time" || consoleinput.substr(0, 17) == "divide game speed") {
+	std:: vector<int> delta;
+	if (consoleinput.length() >= 19) {
+	for (int i = 18; i < consoleinput.length(); i++) {
+		if (consoleinput[i] >= '1' || consoleinput[i] <= '9' || consoleinput[i] == ' ') {
+			if (consoleinput[i] == ' ') {
+				continue;
+			}
+			else if (consoleinput[i - 1] != ' ') {
+				delta.clear();
+				break;
+			}
+			else if (i == consoleinput.length() - 1) {
+				delta.push_back(consoleinput[i] - '0');
+			}
+			else if (consoleinput[i + 1] != ' ') {
+				delta.clear();
+				break;
+			}
+			else {
+				delta.push_back(consoleinput[i] - '0');
+			}
+		}
+		else {
+			delta.clear();
+			break;
+		}
+	}
+	if (delta.size() == 1) {
+		if (framelock == true) {
+			deltatimeweight /= (float)delta[0];
+			deltatime /= (float)delta[0];
+		}
+		else if (framelock == false) {
+			deltatimeweight /= (float)delta[0];
+		}
+		response = "Delta divided by " + std::to_string(delta[0]) + ".";
+	}
+	else {
+		response = "Error, please enter a number between 1 and 9.";
+	}
+}
+else {
+	response = "Error, please enter a number between 1 and 9.";
+}
+/*if (consoleinput.length() > 15) {
+	for (int i = 15; i < consoleinput.length(); i++) {  //look for decimal
+		if (consoleinput[i] == '.') {  //found a decimal
+			for (int u = i - 1; u > 14; u--) {  //check left
+
+				if (consoleinput[u] < '0' || consoleinput[u] > '9') {
+					if (consoleinput[u] == ' ') {  //skip if valid whitespace
+						if (consoleinput[u - 1] != ' ' || consoleinput[u + 1] != ' ' && u != i - 1) {
+							response = "Error, please enter a valid number.";
+						}
+					}
+					else {
+						response = "Error, please enter a valid number.";
+					}
+				}
+			}
+
+			for (int w = i; w < consoleinput.length(); w++) {  //check right
+				if (consoleinput[w] < '0' || consoleinput[w] > '9' && w != i) {
+					if (consoleinput[w] == ' ') {	//check whitespace
+						if (consoleinput[w - 1] != ' ' && w != i + 1) {
+							response = "Error, please enter a valid number.";
+						}
+						}
+
+						if (w != consoleinput.length() - 1) {
+							if consoleinput[w + 1] !=
+						}
+
+					}
+
+					else {
+						response = "Error, please enter a valid number.";
+					}
+				}
+			}
+			if (response != "Error, please enter a valid number.") {  //it's ok
+				response = "Delta time has been set to ";
+			}
+		}
+	}
+
+	if (response != "Delta time has been set to "){		//look for integer
+		for (int i = 15; i < consoleinput.length(); i++) {
+			if (consoleinput[i] >= '0' && consoleinput[i] <= '9') {  //found a decimal
+				for (int u = i - 1; u > 15; u--) {  //check left
+					if (consoleinput[u] < '0' || consoleinput[u] > '9') {
+						response = "Error, please enter a valid number.";
+					}
+				}
+				for (int w = i; w < consoleinput.length(); w++) {  //check right
+					if (consoleinput[w] < '0' || consoleinput[w] > '9' && consoleinput[w] != ' ' && w != i) {
+						response = "Error, please enter a valid number.";
+					}
+				}
+				if (response != "Error, please enter a valid number.") {  //it's ok
+					response = "Delta time has been set to ";
+				}
+			}
+	}
+	else {
+		response = "Error pleaese enter a valid number.";
+	}*/
 	}
 	else if (consoleinput == "echo console") {
 		if (consoleecho == true) {

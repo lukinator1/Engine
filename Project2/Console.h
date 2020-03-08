@@ -7,7 +7,7 @@
 #include "Input.h"
 #include <vector>
 #include <string>
-class Console
+class Console //todo: permissions
 {
 private:
 	vector2 consoleposition;
@@ -27,8 +27,8 @@ private:
 	bool consoleecho = true;
 	const Uint8 *sdlkeyboard = SDL_GetKeyboardState(NULL);
 public:
-	void consoleUpdate(Scene &currentscene, bool &gameisrunning, bool &framebyframe, int &stepframekey, int &exitframekey, bool &fpscounter, bool &framelock);
-	void interpretInput(Scene &_currentscene, bool &gameisrunning, bool &framebyframe, int &stepframekey, int &exitframekey, bool &fpscounter, bool &framelock);
+	void consoleUpdate(Scene &currentscene, bool &gameisrunning, bool &framebyframe, int &stepframekey, int &exitframekey, bool &fpscounter, bool &framelock, float &deltatime, float &dtime, float &deltatimeweight);
+	void interpretInput(Scene &_currentscene, bool &gameisrunning, bool &framebyframe, int &stepframekey, int &exitframekey, bool &fpscounter, bool &framelock, float &deltatime, float &dtime, float &deltatimeweight);
 	void useConsole();
 	void leaveConsole();
 	bool consoleOn();

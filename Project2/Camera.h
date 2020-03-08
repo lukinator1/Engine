@@ -2,7 +2,6 @@
 #include "Mathlibrary/Mathlibrary.h"
 #include "SDL2/SDL.h"
 class Camera	//maybe make this inheret from window?	
-				//todo: inverted controls
 {
 private: 
 public:
