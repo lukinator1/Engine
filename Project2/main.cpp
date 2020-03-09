@@ -272,7 +272,7 @@ int main(int argc, char* argv[]) {
 
 
 	Scene sceneone;			//test scenes
-	sceneone.setSkybox("right.jpg", "left.jpg", "top.jpg", "bottom.jpg", "front.jpg", "back.jpg");
+	sceneone.setSkybox("righw.jpg", "left.jpg", "top.jpg", "bottom.jpg", "front.jpg", "back.jpg");
 	Scene scenetwo;
 
 	Entity Quote;   //quote

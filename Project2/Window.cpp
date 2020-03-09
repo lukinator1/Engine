@@ -133,10 +133,10 @@ bool Window::closeRequested()
 bool Window::Maximized() {
 	return maximized;
 }
-/*bool Window::Minimized()
+bool Window::Minimized()
 {
 	return minimized;
-}*/
+}
 void Window::setWindowBordered(bool isbordered) {
 	if (isbordered == true) {
 		SDL_SetWindowBordered(this->window, SDL_TRUE);

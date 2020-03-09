@@ -186,7 +186,220 @@ void Console::interpretInput(Scene &_currentscene, bool &gameisrunning, bool &fr
 	response = "Logger warnings are off";
 	}
 
-	
+	//window
+	else if (consoleinput == "minimize") {
+	response = "Window minimized.";
+	SDL_MinimizeWindow(window->window);
+	window->minimized = true;
+	}
+	else if (consoleinput == "maximize") {
+	response = "Window maximized.";
+	SDL_MaximizeWindow(window->window);
+	window->maximized = true;
+	}
+	else if (consoleinput == "border window") {
+	response = "Window borderered.";
+	window->setWindowBordered(true);
+	}
+	else if (consoleinput == "unborder window") {
+	response = "Windowed unbordered.";
+	window->setWindowBordered(false);
+	}
+	else if (consoleinput == "fullscreen") {
+	response = "Set to fulscreen mode.";
+	window->setFullscreen(true);
+	}
+	else if (consoleinput == "fullscreen desktop") {
+	response = "Set to fullscreen desktop mode.";
+	window->setFullscreen(true, true);
+	}
+	else if (consoleinput == "windowed mode") {
+	response = "Set to windowed mode.";
+	window->setFullscreen(false);
+	}
+
+
+	//camera
+	else if (consoleinput.substr(0, 7) == "set fov") {
+		if (consoleinput.size() >= 9) {
+			std::string fov = consoleinput.substr(8, consoleinput.size());
+			for (int i = 0; i < fov.size(); i++) {
+				if ((fov[i] < '0' || fov[i] > '9') && (fov[i] != ' ' && fov[i] != '.')) {
+					response = "Please enter a valid fov.";
+					break;
+				}
+			}
+			if (response != "Please enter a valid fov.") {
+				float newfov = std::stod(consoleinput.substr(8, consoleinput.size()));
+				if (newfov > thecamera->minviewdistance &&  newfov < thecamera->maxviewdistance) {
+					thecamera->setFov(std::stod(consoleinput.substr(7, consoleinput.size())));
+					response = "New fov is set to " + std::to_string(newfov) + ".";
+				}
+				else {
+					response = "Fov not set since it it exceeds max/min viewdistance.";
+				}
+			}
+		}
+		else {
+			response = "Please enter a valid fov.";
+		}
+	}
+	else if (consoleinput.substr(0, 19) == "set camera position") {
+	if (consoleinput.size() >= 26) {
+		for (int i = 19; i < consoleinput.size(); i++) {
+			if ((consoleinput[i] < '0' || consoleinput[i] > '9') && (consoleinput[i] != ' ' && consoleinput[i] != '.' && consoleinput[i] != ',' && consoleinput[i] != '-')) {
+				response = "Please enter a valid vector3 camera position.";
+				break;
+			}
+		}
+		/*if (consoleinput[19] != ' ') {
+			"Please enter a valid vector3 camera position.";
+		}*/
+		std::stringstream newinput(consoleinput.substr(20, consoleinput.length()));
+		std::string buffer = "";
+		std::string newpos = "";
+		int count = 0;
+		float pos = 0;
+		if (response != "Please enter a valid vector3 camera position.") {
+			response = "Camera position set to ";
+			while (getline(newinput, buffer, ',') && count != 3) {
+				pos = std::stod(buffer);
+				switch (count) {
+				case 0:
+					thecamera->position.x = pos;
+					response += std::to_string(pos);
+					break;
+				case 1:
+					thecamera->position.y = pos;
+					response += ", " + std::to_string(pos);
+					break;
+				case 2:
+					thecamera->position.z = pos;
+					response += ", " + std::to_string(pos);
+					break;
+				}
+				count++;
+			}
+			response += ".";
+		}
+	}
+	else {
+		response = "Please enter a valid vector3 camera position.";
+	}
+
+	}
+	else if (consoleinput.substr(0, 11) == "move camera") {
+	if (consoleinput.size() >= 13) {
+		for (int i = 11; i < consoleinput.size(); i++) {
+			if ((consoleinput[i] < '0' || consoleinput[i] > '9') && (consoleinput[i] != ' ' && consoleinput[i] != '.' && consoleinput[i] != ',' && consoleinput[i] != '-')) {
+				response = "Please enter a valid vector3 camera distance.";
+				break;
+			}
+		}
+		/*if (consoleinput[11] != ' ') {
+			"Please enter a valid vector3 camera distance.";
+		}*/
+		std::stringstream newinput(consoleinput.substr(12, consoleinput.length()));
+		std::string buffer = "";
+		std::string newpos = "";
+		int count = 0;
+		float pos = 0;
+		if (response != "Please enter a valid vector3 camera distance.") {
+			response = "Camera moved up by ";
+			while (getline(newinput, buffer, ',') && count != 3) {
+				pos = std::stod(buffer);
+				switch (count) {
+				case 0:
+					thecamera->position.x += pos;
+					response += std::to_string(pos);
+					break;
+				case 1:
+					thecamera->position.y += pos;
+					response += ", " + std::to_string(pos);
+					break;
+				case 2:
+					thecamera->position.z += pos;
+					response += ", " + std::to_string(pos);
+					break;
+				}
+				count++;
+			}
+			response += ".";
+		}
+	}
+	else {
+		response = "Please enter a valid vector3 camera distance.";
+	}
+
+	}
+	else if (consoleinput.substr(0, 16) == "set aspect ratio") {
+	if (consoleinput.size() >= 18) {
+		for (int i = 16; i < consoleinput.size(); i++) {
+			if ((consoleinput[i] < '0' || consoleinput[i] > '9') && (consoleinput[i] != ' ' && consoleinput[i] != '.' && consoleinput[i] != ':')) {
+				response = "Please enter a valid aspect ratio.";
+				break;
+			}
+		}
+		std::stringstream newinput(consoleinput.substr(17, consoleinput.length()));
+		std::string buffer = "";
+		std::string newpos = "";
+		int count = 0;
+		float pos = 0;
+		if (response != "Please enter a valid aspect ratio.") {
+			response = "Aspect ratio set to ";
+			while (getline(newinput, buffer, ':') && count != 2) {
+				pos = std::stod(buffer);
+				switch (count) {
+				case 0:
+					thecamera->aspectratioheight = pos;
+					response += std::to_string(pos);
+					break;
+				case 1:
+					thecamera->aspectratiowidth = pos;
+					response += ": " + std::to_string(pos);
+					break;
+				}
+				count++;
+			}
+			response += ".";
+		}
+	}
+	else {
+		response = "Please enter a valid aspect ratio.";
+	}
+	}
+	/*else if (consoleinput.substr(0, 20) == "set min viewdistance") {
+	if (consoleinput.size() >= 22) {
+		std::string maxviewdistance = consoleinput.substr(21, consoleinput.size());
+		for (int i = 0; i < fov.size(); i++) {
+			if ((fov[i] < '0' || fov[i] > '9') && (fov[i] != ' ' && fov[i] != '.')) {
+				response = "Please enter a valid fov.";
+				break;
+			}
+		}
+		if (response != "Please enter a valid fov.") {
+			float newfov = std::stod(consoleinput.substr(8, consoleinput.size()));
+			if (newfov > thecamera->minviewdistance &&  newfov < thecamera->maxviewdistance) {
+				thecamera->setFov(std::stod(consoleinput.substr(7, consoleinput.size())));
+				response = "New fov is set to " + std::to_string(newfov) + ".";
+			}
+			else {
+				response = "Fov not set since it it exceeds max/min viewdistance.";
+			}
+		}
+	}
+	else {
+		response = "Please enter a valid fov.";
+	}
+}*/
+
+	//rendering
+	else if (consoleinput.substr(0, 10) == "set skybox") {
+		_currentscene.setSkybox("right.jpg", "left.jpg", "top.jpg", "bottom.jpg", "front.jpg", "back.jpg");
+	}
+
+
+
 
 	//misc.
 	else if (consoleinput == "framebyframe") { 

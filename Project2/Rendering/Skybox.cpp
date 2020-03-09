@@ -1,6 +1,49 @@
 #include "Skybox.h"
 Skybox::Skybox() : skyboxshader("Skybox") {
+	float skyboxvertices[] = {
+	-1.0f,  1.0f, -1.0f,
+	-1.0f, -1.0f, -1.0f,
+	 1.0f, -1.0f, -1.0f,
+	 1.0f, -1.0f, -1.0f,
+	 1.0f,  1.0f, -1.0f,
+	-1.0f,  1.0f, -1.0f,
 
+	-1.0f, -1.0f,  1.0f,
+	-1.0f, -1.0f, -1.0f,
+	-1.0f,  1.0f, -1.0f,
+	-1.0f,  1.0f, -1.0f,
+	-1.0f,  1.0f,  1.0f,
+	-1.0f, -1.0f,  1.0f,
+
+	 1.0f, -1.0f, -1.0f,
+	 1.0f, -1.0f,  1.0f,
+	 1.0f,  1.0f,  1.0f,
+	 1.0f,  1.0f,  1.0f,
+	 1.0f,  1.0f, -1.0f,
+	 1.0f, -1.0f, -1.0f,
+
+	-1.0f, -1.0f,  1.0f,
+	-1.0f,  1.0f,  1.0f,
+	 1.0f,  1.0f,  1.0f,
+	 1.0f,  1.0f,  1.0f,
+	 1.0f, -1.0f,  1.0f,
+	-1.0f, -1.0f,  1.0f,
+
+	-1.0f,  1.0f, -1.0f,
+	 1.0f,  1.0f, -1.0f,
+	 1.0f,  1.0f,  1.0f,
+	 1.0f,  1.0f,  1.0f,
+	-1.0f,  1.0f,  1.0f,
+	-1.0f,  1.0f, -1.0f,
+
+	-1.0f, -1.0f, -1.0f,
+	-1.0f, -1.0f,  1.0f,
+	 1.0f, -1.0f, -1.0f,
+	 1.0f, -1.0f, -1.0f,
+	-1.0f, -1.0f,  1.0f,
+	 1.0f, -1.0f,  1.0f
+	};
+	skyboxbox.makeSkyboxMesh(skyboxvertices, 36);
 }
 Skybox::Skybox(std::string right, std::string left, std::string top, std::string bottom, std::string front, std::string back) : skyboxshader("Skybox")
 {
@@ -52,7 +95,7 @@ Skybox::Skybox(std::string right, std::string left, std::string top, std::string
 	/*setSkybox(right, left, top, bottom, front, back);*/
 }
 void Skybox::setSkybox(std::string right, std::string left, std::string top, std::string bottom, std::string front, std::string back){
-	float skyboxvertices[] = {
+	/*float skyboxvertices[] = {
 		-1.0f,  1.0f, -1.0f,
 		-1.0f, -1.0f, -1.0f,
 		 1.0f, -1.0f, -1.0f,
@@ -95,7 +138,7 @@ void Skybox::setSkybox(std::string right, std::string left, std::string top, std
 		-1.0f, -1.0f,  1.0f,
 		 1.0f, -1.0f,  1.0f
 	};
-	skyboxbox.makeSkyboxMesh(skyboxvertices, 36);
+	skyboxbox.makeSkyboxMesh(skyboxvertices, 36);*/
 	skyboxtexture.loadCubeMap(right, left, top, bottom, front, back);
 }
 void Skybox::setSkybox(Skybox &_skybox) { //this won't work right now

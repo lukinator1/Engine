@@ -1,2 +1,7 @@
 ﻿  Console.cpp
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\console.cpp(233): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\console.cpp(235): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\console.cpp(266): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\console.cpp(310): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\console.cpp(351): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   Project2.vcxproj -> C:\Users\lukinator1\Desktop\engine\The Super Suspension System\Project2\x64\Debug\Project2.exe
