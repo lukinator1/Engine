@@ -9,7 +9,7 @@ public:  //deltas passed in here
 	void componentInput(Transforming t) {
 
 	}
-	virtual void renderComponent(Transforming t, Shader s) {
+	virtual void renderComponent(Transforming &t, Shader *s) {
 
 	}
 	virtual void renderComponent() {

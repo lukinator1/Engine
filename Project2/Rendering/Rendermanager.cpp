@@ -1,5 +1,5 @@
 #include "Rendermanager.h"
-Rendering::Rendering()
+Rendering::Rendering() : forwardambientshader("Forwardrenderingambient")
 {
 }
 void Rendering::renderingStartup(Window &window)
@@ -18,15 +18,25 @@ void Rendering::update(Scene &currentscene)
 {
 	currentscene.renderScene();
 }
-void Rendering::renderEntity(Entity &gameobject) {
+void Rendering::renderEntity(Entity &gameobject, Shader *shade) {
 	gameobject.renderEntity(shade);
 }
 void Rendering::renderScene(Scene &currentscene)
 {
-	currentscene.root.renderEntity(shade);
+	currentscene.root.renderEntity(&forwardambientshader);
 	if (currentscene.skybox.skyboxbox.size != 0) {
 	currentscene.skybox.useSkybox();
 }
+}
+void Rendering::setAmbientLight(vector3 _ambientlight)
+{
+	forwardambientshader.ambientlight = _ambientlight;
+}
+void Rendering::setAmbientLight(float x, float y, float z)
+{
+	forwardambientshader.ambientlight.x = x;
+	forwardambientshader.ambientlight.y = y;
+	forwardambientshader.ambientlight.z = z;
 }
 void Rendering::renderingShutdown()
 {

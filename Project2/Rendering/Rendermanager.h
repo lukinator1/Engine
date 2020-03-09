@@ -23,10 +23,13 @@ public:
 	void renderingStartup(Window &window);
 	void renderingShutdown();
 	void update(Scene &currentscene);
-	void renderEntity(Entity &gameobject);
+	void renderEntity(Entity &gameobject, Shader *shade);
 	void renderScene(Scene & currentscene);
+	void setAmbientLight(vector3 _ambientlight);
+	void setAmbientLight(float x, float y, float z);
 	vector3 ambientlight;
-	Shader shade;
+	Shader phongshader;
+	Shader forwardambientshader;
 	Rendertext Textrenderer;
 	Rendering();
 	~Rendering();

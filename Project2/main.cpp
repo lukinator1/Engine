@@ -302,10 +302,7 @@ int main(int argc, char* argv[]) {
 	Scout.addComponent(&scoutcomponent);
 	Snake.addSubEntity(&Scout);
 	
-	
-	sceneone.root = Quote;
-
-	//field
+	Entity field;
 	Vertex vertices[] = { Vertex(vector3(-fieldWidth, 0.0f, -fieldDepth), vector2(0.0f, 0.0f)),
 						Vertex(vector3(-fieldWidth, 0.0f, fieldDepth * 3), vector2(0.0f, 1.0f)),
 						Vertex(vector3(fieldWidth * 3, 0.0f, -fieldDepth), vector2(1.0f, 0.0f)),
@@ -313,6 +310,12 @@ int main(int argc, char* argv[]) {
 	unsigned int indices[] = { 0, 1, 2,
 					  2, 1, 3 };
 	Mesh meshme(vertices, indices, sizeof(vertices) / sizeof(vertices[0]), sizeof(indices) / sizeof(indices[0]));
+	Meshrenderer fieldcomponent(meshme, material);
+	field.transform.setTranslationVector(vector3(0.0f, -1.0f, 5.0f));
+	field.addComponent(&fieldcomponent);
+	Scout.addSubEntity(&field);
+
+	sceneone.root = Quote;
 	
 	//shaders
 	Shader shaderit;
@@ -387,7 +390,6 @@ int main(int argc, char* argv[]) {
 		MemoryManager.memorymanagerUpdate();
 		Inputs.getInputs();
 
-
 		//game
 		if (Inputs.keyboardstate[Input::W].first == 1) {
 			Camera.moveCamera(Camera.getForwardvector(), deltatime * 20);
@@ -443,15 +445,14 @@ int main(int argc, char* argv[]) {
 		}
 
 		//enginetests
-		transform.setTranslationVector(vector3(0.0f, -1.0f, 5.0f));
 		plights[0].setPosition(vector3(3.0f, 0.0f, 8.0 * (float)(sin(unitest) + 1.0f / 2.0f) + 10.0f));
 		plights[1].setPosition(vector3(7.0f, 0.0f, 8.0 * (float)(cos(unitest) + 1.0f / 2.0f) + 10.0f));
 		unitest += deltatime;
 		flashlight.setPosition(Camera.getCameraposition());
 		flashlight.setDirection(Camera.forwardvector);
-		shaderit.useShader();
+		/*shaderit.useShader();
 		shaderit.updateUniforms(transform.newUnprojectedMatrix(), transform.newTransformationMatrix(), transform.position, material);
-		meshme.drawMesh();
+		meshme.drawMesh();*/
 		Renderer.renderScene(sceneone);
 		/*text.renderComponent(transform, shaderit);*/     //interesting effect
 		Console.consoleUpdate(currentscene, gameisrunning, framebyframe, stepframekey, exitframekey, framelock, fpscounter, deltatime, dtime, deltatimeweight);

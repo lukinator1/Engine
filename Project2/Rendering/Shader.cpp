@@ -66,7 +66,7 @@ Shader::Shader(std::string shadertype) : directionallight(vector3(0.0f, 0.0f, 0.
 	}
 	else if (shadertype == "Forwardrenderingambient" || shadertype == "Forwardrenderingambient") {
 		type = "forwardambient";
-		ambientlight = vector3(1.0f, 1.0f, 1.0f);
+		ambientlight = vector3(0.2f, 0.2f, 0.2f);
 		program = glCreateProgram();
 		if (program == 0) {
 			engineLog(__FILE__, __LINE__, "Warning: Shader program failed to create.", 1, 2, true);
@@ -269,9 +269,9 @@ void Shader::updateUniforms(matrix4f worldmatrix, matrix4f projectedmatrix, vect
 		setUniform("cameraposition", position);
 		material.texture.useTexture();
 	}
-	else if (type == "forward") {
+	else if (type == "forwardambient") {
 		setUniform("transform", projectedmatrix);
-		setUniform("ambientintensity", material.getColor());
+		setUniform("ambientintensity", ambientlight);
 		material.texture.useTexture();
 	}
 }
