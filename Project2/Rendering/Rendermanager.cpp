@@ -19,7 +19,6 @@ void Rendering::update(Scene &currentscene)
 	currentscene.renderScene();
 }
 void Rendering::renderEntity(Entity &gameobject) {
-	gameobject.transform.setTranslationVector(vector3(10.0f, 17.5f, 12.0f));
 	gameobject.renderEntity(shade);
 }
 void Rendering::renderScene(Scene &currentscene)

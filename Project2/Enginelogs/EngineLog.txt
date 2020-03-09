@@ -1,8 +1,2 @@
-Current date + time: Mon Mar  9 03:13:54 2020
+Current date + time: Mon Mar  9 15:10:13 2020
 
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\rendering\texture.cpp
- Line: 62
-Engine warning!: Warning: Cube map didn't load. Returned an error texture instead.
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\rendering\texture.cpp
- Line: 62
-Engine warning!: Warning: Cube map didn't load. Returned an error texture instead.

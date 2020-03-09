@@ -455,6 +455,7 @@ int main(int argc, char* argv[]) {
 		Renderer.renderScene(sceneone);
 		/*text.renderComponent(transform, shaderit);*/     //interesting effect
 		Console.consoleUpdate(currentscene, gameisrunning, framebyframe, stepframekey, exitframekey, framelock, fpscounter, deltatime, dtime, deltatimeweight);
+		frames++;
 		if (framecounter >= 1.0f) {
 			fps = frames;
 			framecounter = 0;
@@ -489,7 +490,6 @@ int main(int argc, char* argv[]) {
 
 
 		//time calculations
-		frames++;
 		endtime = std::chrono::high_resolution_clock::now();
 		timeduration = (endtime - starttime);
 		if (framelock == false) {
@@ -503,14 +503,19 @@ int main(int argc, char* argv[]) {
 			deltatime *= deltatimeweight;
 		}
 		else if (framelock == true) {
-			if (timeduration < chronodelta) //framerate lock function
+			chronodelta = std::chrono::duration<float>(deltatime);
+			if (timeduration.count() < chronodelta.count()) //framerate lock function
 				{
 					std::this_thread::sleep_for(chronodelta - timeduration);
-					framecounter += chronodelta.count();
+					framecounter += deltatime;
 				}
-			else if (timeduration > chronodelta) {
-					std::this_thread::sleep_for(chronodelta - (timeduration - chronodelta)); //todo: change to division
-					framecounter += chronodelta.count() + chronodelta.count();
+			else if (timeduration.count() > chronodelta.count()) {
+				float totaldeltas = ((timeduration.count() / chronodelta.count()));
+					float remain = remainder(timeduration.count(), chronodelta.count());
+					totaldeltas -= remain;
+				    std::this_thread::sleep_for(std::chrono::duration<float>( ((totaldeltas * chronodelta.count()) + chronodelta.count()) - timeduration.count() ));
+					//std::this_thread::sleep_for(chronodelta - (timeduration - chronodelta)); //todo: change to division
+					framecounter += ((totaldeltas + 1.0f) * chronodelta.count());
 				}
 			}
 	}

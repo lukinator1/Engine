@@ -11,6 +11,7 @@ class Shader : public Logger
 {
 private:
 	unsigned int program;
+	std::string type; 
 	std::map<std::string, int> uniforms;
 public:
 	vector3 ambientlight;

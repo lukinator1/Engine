@@ -25,6 +25,7 @@ public:
 	void update(Scene &currentscene);
 	void renderEntity(Entity &gameobject);
 	void renderScene(Scene & currentscene);
+	vector3 ambientlight;
 	Shader shade;
 	Rendertext Textrenderer;
 	Rendering();

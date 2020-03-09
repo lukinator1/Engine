@@ -494,7 +494,7 @@ void Console::interpretInput(Scene &_currentscene, bool &gameisrunning, bool &fr
 	else if (consoleinput.substr(0, 14) == "lock framerate") { //todo: adding choice of framerate
 		framelock = true;
 		deltatime = dtime; 
-		response = "Framerate locked.";
+		response = "Framerate attempted to be locked.";
 		/*std::string input = "";
 		if (consoleinput.length() >= 16) {
 			if (consoleinput.substr(15, consoleinput.size())  )
@@ -525,7 +525,7 @@ void Console::interpretInput(Scene &_currentscene, bool &gameisrunning, bool &fr
 	std::vector<int> delta;
 	if (consoleinput.length() >= 21) {
 		for (int i = 20; i < consoleinput.length(); i++) {
-			if (consoleinput[i] >= '0' || consoleinput[i] <= '9' || consoleinput[i] == ' ') {
+			if (consoleinput[i] >= '0' && consoleinput[i] <= '9' || consoleinput[i] == ' ') {
 				if (consoleinput[i] == ' ') {
 					continue;
 				}
@@ -634,7 +634,7 @@ void Console::interpretInput(Scene &_currentscene, bool &gameisrunning, bool &fr
 	std:: vector<int> delta;
 	if (consoleinput.length() >= 19) {
 	for (int i = 18; i < consoleinput.length(); i++) {
-		if (consoleinput[i] >= '1' || consoleinput[i] <= '9' || consoleinput[i] == ' ') {
+		if (consoleinput[i] >= '1' && consoleinput[i] <= '9' || consoleinput[i] == ' ') {
 			if (consoleinput[i] == ' ') {
 				continue;
 			}

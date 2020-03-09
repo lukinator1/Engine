@@ -1,6 +1,7 @@
 #include "Shader.h"
 Shader::Shader() : directionallight(vector3(0.0f, 0.0f, 0.0f), vector3(0.0f, 0.0f, 0.0f))
 {
+	type = "phong";
 	ambientlight = vector3(1.0f, 1.0f, 1.0f);
 	program = glCreateProgram();
 	if (program == 0) {
@@ -39,6 +40,7 @@ Shader::Shader() : directionallight(vector3(0.0f, 0.0f, 0.0f), vector3(0.0f, 0.0
 Shader::Shader(std::string shadertype) : directionallight(vector3(0.0f, 0.0f, 0.0f), vector3(0.0f, 0.0f, 0.0f))
 {
 	if (shadertype == "Skybox" || shadertype == "skybox") {
+	type = "skybox";
 	ambientlight = vector3(1.0f, 1.0f, 1.0f);
 	program = glCreateProgram();
 	if (program == 0) {
@@ -48,21 +50,9 @@ Shader::Shader(std::string shadertype) : directionallight(vector3(0.0f, 0.0f, 0.
 		addFragmentShader(loadShader("Skyboxfragmentshader.fs"));
 		compileShader();
 		addUniform("skyboxmatrix");
-		/*addUniform("view");
-		addUniform("projection");
-		addUniform("projectedtransform");
-		addUniform("cameraposition");
-		addUniform("color");
-		addUniform("transform");
-		addUniform("uniformFloat");
-		addUniform("ambientlight");
-		addUniform("specularintensity");
-		addUniform("specularexponent");
-		addUniform("directionallight");
-		addUniform("pointlights");
-		addUniform("spotlights");*/
 	}
 	else if (shadertype == "Textshader" || shadertype == "textshader"){
+		type = "text";
 		ambientlight = vector3(1.0f, 1.0f, 1.0f);
 		program = glCreateProgram();
 		if (program == 0) {
@@ -73,6 +63,19 @@ Shader::Shader(std::string shadertype) : directionallight(vector3(0.0f, 0.0f, 0.
 		compileShader();
 		addUniform("textmatrix");
 		addUniform("textcolor");
+	}
+	else if (shadertype == "Forwardrenderingambient" || shadertype == "Forwardrenderingambient") {
+		type = "forwardambient";
+		ambientlight = vector3(1.0f, 1.0f, 1.0f);
+		program = glCreateProgram();
+		if (program == 0) {
+			engineLog(__FILE__, __LINE__, "Warning: Shader program failed to create.", 1, 2, true);
+		}
+		addVertexShader(loadShader("Ambientforwardvertexshader.vs"));
+		addFragmentShader(loadShader("Ambientforwardfragmentshader.fs"));
+		compileShader();
+		addUniform("transform");
+		addUniform("ambientintensity");
 	}
 	else {
 		engineLog(__FILE__, __LINE__, "Warning: Shader failed to create, a valid filename wasn't passed in.", 1, 2, true);
@@ -247,23 +250,30 @@ void Shader::setUniform(std::string newuniform, Spotlight alight) {  //spotlight
 	setUniform(newuniform + ".cutoff", alight.cutoff);
 }
 void Shader::updateUniforms(matrix4f worldmatrix, matrix4f projectedmatrix, vector3 position, Materials &material) { 
-	setUniform("transform", worldmatrix);
-	setUniform("projectedtransform", projectedmatrix);
-	setUniform("color", material.getColor());
-	setUniform("ambientlight", ambientlight);
-	setUniform("directionallight", directionallight);
-	for (int i = 0; i < 5; i++) {
-		if (pointlights[i] != nullptr) {
-			setUniform("pointlights[" + std::to_string(i) + ']', *pointlights[i]);
+	if (type == "phong") {
+		setUniform("transform", worldmatrix);
+		setUniform("projectedtransform", projectedmatrix);
+		setUniform("color", material.getColor());
+		setUniform("ambientlight", ambientlight);
+		setUniform("directionallight", directionallight);
+		for (int i = 0; i < 5; i++) {
+			if (pointlights[i] != nullptr) {
+				setUniform("pointlights[" + std::to_string(i) + ']', *pointlights[i]);
+			}
+			if (spotlights[i] != nullptr) {
+				setUniform("spotlights[" + std::to_string(i) + ']', *spotlights[i]);
+			}
 		}
-		if (spotlights[i] != nullptr) {
-			setUniform("spotlights[" + std::to_string(i) + ']', *spotlights[i]);
-		}
+		setUniform("specularintensity", material.specularintensity);
+		setUniform("specularexponent", material.specularexponent);
+		setUniform("cameraposition", position);
+		material.texture.useTexture();
 	}
-	setUniform("specularintensity", material.specularintensity);
-	setUniform("specularexponent", material.specularexponent);
-	setUniform("cameraposition", position);
-	material.texture.useTexture();
+	else if (type == "forward") {
+		setUniform("transform", projectedmatrix);
+		setUniform("ambientintensity", material.getColor());
+		material.texture.useTexture();
+	}
 }
 void Shader::setAmbientLight(vector3 newambientlight) {
 	ambientlight = newambientlight;
