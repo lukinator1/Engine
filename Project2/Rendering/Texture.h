@@ -6,11 +6,11 @@
 class Texture : public Logger
 {
 private:
-	GLuint textureid;
 public:
+	GLuint textureid;
 	void loadTexture(std::string filename);
 	void loadErrorCubeMap();
-	void loadCubeMap(std::string right, std::string left, std::string top, std::string bottom, std::string front, std::string back);
+	int loadCubeMap(std::string right, std::string left, std::string top, std::string bottom, std::string front, std::string back);
 	void loadIconPixels(std::string filename, unsigned char * &data, int & width, int & height, int & components);
 	void useTexture();
 	void useCubeMapTexture();

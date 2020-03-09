@@ -60,27 +60,12 @@ void Mesh::makeSkyboxMesh(float* vertices, unsigned int numvertices) //error mes
 	glEnableVertexAttribArray(0);
 
 	glBindVertexArray(0);
+	/*glBindBuffer(GL_ARRAY_BUFFER, 0);*/
 }
 void Mesh::drawMesh()
 {
 	glBindVertexArray(vao);
 	glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_INT, (void*)0);
-	/*glDrawArrays(GL_TRIANGLES, 0, 3);*/
-	/*glBindVertexArray(0);*/
-
-	/*glEnableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *) 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexbufferobject);
-	glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_INT, 0);
-	glDisableVertexAttribArray(0);*./
-	/*glBindVertexArray(vertexArrayObject);
-	glDrawArrays(GL_TRIANGLES, 0, indices);
-	glBindVertexArray(0);*/
-	/*glEnableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0); //skid set to default
-	glDrawArrays(GL_TRIANGLES, 0, indices);*/
 }
 void Mesh::drawNoIndicesMesh() {
 	glBindVertexArray(vao);
@@ -116,13 +101,23 @@ void Mesh::loadMeshObj(std::string file) //max size of vector?
 					}*/
 					else if (buffer[0] == 'v' && buffer.size() == 1) {   //vertices
 						getline(streamer, buffer, ' ');			//x
-						importedvertices.push_back(Vertex(std::stof(buffer), 0.0f, 0.0f));
+						while (buffer == "") {				//eliminate whitespaces
+							getline(streamer, buffer, ' ');
+						}
+						importedvertices.push_back(Vertex(stof(buffer), 0.0f, 0.0f));
 
 						getline(streamer, buffer, ' ');			//y
+						while (buffer == "") {				
+							getline(streamer, buffer, ' ');
+						}
 						importedvertices.back().position.y = stof(buffer);
-
+						
+					
 						getline(streamer, buffer, ' ');			//z
-						importedvertices.back().position.z = stof(buffer);
+						while (buffer == "") {
+							getline(streamer, buffer, ' ');
+						}
+							importedvertices.back().position.z = stof(buffer);
 					}
 
 					else if (buffer[0] == 'f' && buffer.size() == 1) {   //indices
@@ -134,7 +129,9 @@ void Mesh::loadMeshObj(std::string file) //max size of vector?
 						/*importedindices.push_back(stoi(buffer) - 1);*/
 
 						getline(streamer, buffer, '/');			//x2
-						importedindices.push_back(stoi(buffer) - 1);
+						if (buffer != "") {
+							importedindices.push_back(stoi(buffer) - 1);
+						}
 						getline(streamer, buffer, '/');
 						/*importedindices.push_back(stoi(buffer) - 1);*/
 						getline(streamer, buffer, ' ');
@@ -142,7 +139,9 @@ void Mesh::loadMeshObj(std::string file) //max size of vector?
 
 
 						getline(streamer, buffer, '/');			//x3
-						importedindices.push_back(stoi(buffer) - 1);
+						if (buffer != "") {
+							importedindices.push_back(stoi(buffer) - 1);
+						}
 						getline(streamer, buffer, '/');
 						/*importedindices.push_back(stoi(buffer) - 1);*/
 						getline(streamer, buffer, ' ');

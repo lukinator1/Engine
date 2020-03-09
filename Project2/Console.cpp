@@ -6,9 +6,9 @@ void Console::consoleStartup(Logger &_log, Memorymanager &_memorymanager, Window
 	rendermanager = &_rendermanager;
 	inputs = &_Inputs;
 	thecamera = &_thecamera;
-	consoleposition = vector2(rendermanager->windowptr->getWindowWidth() * .55f, rendermanager->windowptr->getWindowHeight() * .55f);
+	consoleposition = vector2(rendermanager->windowptr->getWindowWidth() * .40f, rendermanager->windowptr->getWindowHeight() * .55f);
 	consoletextcolor = vector3(1.0f, 1.0f, 1.0f);
-	consoletextsize = 0.3f;
+	consoletextsize = 0.25f;
 	response = "";
 	composition = "> ";
 	consoleinput = "";
@@ -224,10 +224,13 @@ void Console::interpretInput(Scene &_currentscene, bool &gameisrunning, bool &fr
 		if (consoleinput.size() >= 9) {
 			std::string fov = consoleinput.substr(8, consoleinput.size());
 			for (int i = 0; i < fov.size(); i++) {
-				if ((fov[i] < '0' || fov[i] > '9') && (fov[i] != ' ' && fov[i] != '.')) {
+				if ((fov[i] < '0' || fov[i] > '9') && (fov[i] != ' ' && fov[i] != '.' /*&& fov [i] != ';'*/)) {
 					response = "Please enter a valid fov.";
 					break;
 				}
+			}
+			if (consoleinput[7] != ' '/* && consoleinput.find(';') == std::string::npos*/) {
+				response = "Please enter a valid fov.";
 			}
 			if (response != "Please enter a valid fov.") {
 				float newfov = std::stod(consoleinput.substr(8, consoleinput.size()));
@@ -246,15 +249,15 @@ void Console::interpretInput(Scene &_currentscene, bool &gameisrunning, bool &fr
 	}
 	else if (consoleinput.substr(0, 19) == "set camera position") {
 	if (consoleinput.size() >= 26) {
-		for (int i = 19; i < consoleinput.size(); i++) {
-			if ((consoleinput[i] < '0' || consoleinput[i] > '9') && (consoleinput[i] != ' ' && consoleinput[i] != '.' && consoleinput[i] != ',' && consoleinput[i] != '-')) {
+		for (int i = 20; i < consoleinput.size(); i++) {
+			if ((consoleinput[i] < '0' || consoleinput[i] > '9') && (consoleinput[i] != ' ' && consoleinput[i] != '.' && consoleinput[i] != ',' && consoleinput[i] != '-'/* && consoleinput[i] != ';'*/)) {
 				response = "Please enter a valid vector3 camera position.";
 				break;
 			}
 		}
-		/*if (consoleinput[19] != ' ') {
-			"Please enter a valid vector3 camera position.";
-		}*/
+		if (consoleinput[19] != ' '/* || consoleinput.find(';') == std::string::npos*/) {
+			response = "Please enter a valid vector3 camera position.";
+		}
 		std::stringstream newinput(consoleinput.substr(20, consoleinput.length()));
 		std::string buffer = "";
 		std::string newpos = "";
@@ -289,16 +292,16 @@ void Console::interpretInput(Scene &_currentscene, bool &gameisrunning, bool &fr
 
 	}
 	else if (consoleinput.substr(0, 11) == "move camera") {
-	if (consoleinput.size() >= 13) {
+	if (consoleinput.size() >= 18) {
 		for (int i = 11; i < consoleinput.size(); i++) {
-			if ((consoleinput[i] < '0' || consoleinput[i] > '9') && (consoleinput[i] != ' ' && consoleinput[i] != '.' && consoleinput[i] != ',' && consoleinput[i] != '-')) {
+			if ((consoleinput[i] < '0' || consoleinput[i] > '9') && (consoleinput[i] != ' ' && consoleinput[i] != '.' && consoleinput[i] != ',' && consoleinput[i] != '-'/* && consoleinput[i] != ';'*/)) {
 				response = "Please enter a valid vector3 camera distance.";
 				break;
 			}
 		}
-		/*if (consoleinput[11] != ' ') {
-			"Please enter a valid vector3 camera distance.";
-		}*/
+		if (consoleinput[11] != ' ' /*&& consoleinput.find(';') == std::string::npos*/) {
+			response = "Please enter a valid vector3 camera distance.";
+		}
 		std::stringstream newinput(consoleinput.substr(12, consoleinput.length()));
 		std::string buffer = "";
 		std::string newpos = "";
@@ -339,6 +342,9 @@ void Console::interpretInput(Scene &_currentscene, bool &gameisrunning, bool &fr
 				response = "Please enter a valid aspect ratio.";
 				break;
 			}
+		}
+		if (consoleinput[16] != ' ') {
+			response = "Please enter a valid aspect ratio.";
 		}
 		std::stringstream newinput(consoleinput.substr(17, consoleinput.length()));
 		std::string buffer = "";
@@ -391,11 +397,82 @@ void Console::interpretInput(Scene &_currentscene, bool &gameisrunning, bool &fr
 	else {
 		response = "Please enter a valid fov.";
 	}
-}*/
+	}*/
 
 	//rendering
 	else if (consoleinput.substr(0, 10) == "set skybox") {
-		_currentscene.setSkybox("right.jpg", "left.jpg", "top.jpg", "bottom.jpg", "front.jpg", "back.jpg");
+	/*for (int i = 16; i < consoleinput.size(); i++) {
+		if ((consoleinput[i] < '0' || consoleinput[i] > '9') && (consoleinput[i] != ' ' && consoleinput[i] != '.' && consoleinput[i] != ':')) {
+			response = "Please enter a valid aspect ratio.";
+			break;
+		}
+	}*/
+		if (consoleinput.size() > 10) {
+			if (consoleinput[10] != ' ') {
+				response = "Skybox entered is not valid.";
+			}
+		}
+		else {
+			response = "Skybox entered is not valid.";
+		}
+	std::stringstream newinput(consoleinput.substr(11, consoleinput.length()));
+	std::string buffer = "";
+	std::string right = "";
+	std::string left = "";
+	std::string top = "";
+	std::string bottom = "";
+	std::string front = "";
+	std::string back = "";
+	int count = 0;
+	if (response != "Skybox entered is not valid.") {
+		while (getline(newinput, buffer, ',') && count != 6) {
+			switch (count) {
+			case 0:
+				if (buffer != "") {
+					right = buffer;
+				}
+				break;
+			case 1:
+				if (buffer != "") {
+					buffer.erase(0, 1);
+					left = buffer;
+					break;
+				}
+			case 2:
+				if (buffer != "") {
+					buffer.erase(0, 1);
+					top = buffer;
+					break;
+				}
+			case 3:
+				if (buffer != "") {
+					buffer.erase(0, 1);
+					bottom = buffer;
+					break;
+				}
+			case 4:
+				if (buffer != "") {
+					buffer.erase(0, 1);
+					front = buffer;
+					break;
+				}
+			case 5:
+				if (buffer != "") {
+					buffer.erase(0, 1);
+					back = buffer;
+					break;
+				}
+			}
+			count++;
+		}
+		std::cout << "Skybox is loading, give it a minute. " << std::endl;
+		if (_currentscene.setSkybox(right, left, top, bottom, front, back) == -1) {
+			response = "Skybox failed to load, returned an error skybox instead.";
+		}
+		else {
+			response = "Skybox loaded.";
+		}
+	}
 	}
 
 

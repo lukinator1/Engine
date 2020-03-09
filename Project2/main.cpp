@@ -267,24 +267,42 @@ int main(int argc, char* argv[]) {
 
 	Materials material("test.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f);		// from basicshader change to render manager startup?
 	Mesh quotemodel("quote.obj");
-	quotemodel.loadMeshObj("quote.obj");
+	Mesh cloudmodel("Cloud.obj");
+	Mesh snakemodel("snake.obj");
+	Mesh scoutmodel("scout.obj");
 
-
-
-	Scene sceneone;			//test scenes
-	sceneone.setSkybox("righw.jpg", "left.jpg", "top.jpg", "bottom.jpg", "front.jpg", "back.jpg");
+	//test scene
+	Scene sceneone;		
+	sceneone.setSkybox("right.jpg", "left.jpg", "top.jpg", "bottom.jpg", "front.jpg", "back.jpg");
 	Scene scenetwo;
 
-	Entity Quote;   //quote
+	Entity Quote; 
+	Quote.transform.setTranslationVector(vector3(10.0f, 17.5f, 12.0f));
 	Meshrenderer component(quotemodel, material);
-	Meshrenderer* componentobject = &component;
 	Quote.addComponent(&component);
-	/*Quote.addSubEntity(&texttest);*/
 
-	/*Entity textentity;
-	Textrenderer text("Hello", vector2(200.0f, 300.0f), vector3(1.0f, 1.0f, 1.0f), 1.0f);
-	Textrenderer* textobject = &text;
-	textentity.addComponent(textobject);*/
+	Entity Cloud;
+	Cloud.transform.setTranslationVector(vector3(5.0f, 0.0f, 10.0f));
+	Cloud.transform.setScalingVector(vector3(0.05f, 0.05f, 0.05f));
+	Meshrenderer cloudcomponent(cloudmodel, material);
+	Cloud.addComponent(&cloudcomponent);
+	Quote.addSubEntity(&Cloud);
+
+	Entity Snake;
+	Snake.transform.setTranslationVector(vector3(10.0f, -3.0f, 20.0f));
+	Snake.transform.setScalingVector(vector3(0.08f, 0.08f, 0.08f));
+	Meshrenderer snakecomponent(snakemodel, material);
+	Snake.addComponent(&snakecomponent);
+	Cloud.addSubEntity(&Snake);
+
+	Entity Scout;
+	Scout.transform.setTranslationVector(vector3(30.0f, 0.0f, 15.0f));
+	Scout.transform.setScalingVector(vector3(0.07f, 0.07f, 0.07f));
+	Meshrenderer scoutcomponent(scoutmodel, material);
+	Scout.addComponent(&scoutcomponent);
+	Snake.addSubEntity(&Scout);
+	
+	
 	sceneone.root = Quote;
 
 	//field
@@ -443,7 +461,7 @@ int main(int argc, char* argv[]) {
 			frames = 0;
 		}
 		if (fpscounter == true) {
-			Renderer.Textrenderer.renderText("Delta time: " + std::to_string(deltatime), 0, Window.getWindowHeight() * .5f, vector3(1.0, 1.0, 1.0), 0.7);
+			Renderer.Textrenderer.renderText("Delta time: " + std::to_string(deltatime), 0, Window.getWindowHeight() * .5f, vector3(1.0f, 1.0f, 1.0f), 0.7);
 			if (fps == -1) {
 				Renderer.Textrenderer.renderText("FPS: " + std::to_string(fps), 0, Window.getWindowHeight() * (3.0f / 4.0f), vector3(0.0, 0.0f, 0.0), 1.0);
 			}
