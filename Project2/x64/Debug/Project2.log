@@ -1,2 +1,7 @@
-﻿  Rendermanager.cpp
+﻿  main.cpp
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(71): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(448): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(449): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(466): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(85): warning C4101: 'loggerchannels': unreferenced local variable
   Project2.vcxproj -> C:\Users\lukinator1\Desktop\engine\The Super Suspension System\Project2\x64\Debug\Project2.exe

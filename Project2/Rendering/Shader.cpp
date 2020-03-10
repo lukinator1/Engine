@@ -84,7 +84,6 @@ Shader::Shader(std::string shadertype) : directionallight(vector3(1.0f, 1.0f, 1.
 	}
 	else if (shadertype == "Forwarddirectional" || shadertype == "forwarddirectional") {
 		type = "forwarddirectional";
-		ambientlight = vector3(1.0f, 1.0f, 1.0f);
 		directionallight.setIntensity(0.1f);
 		program = glCreateProgram();
 		if (program == 0) {
@@ -100,6 +99,23 @@ Shader::Shader(std::string shadertype) : directionallight(vector3(1.0f, 1.0f, 1.
 		addUniform("specularintensity");
 		addUniform("specularexponent");
 		addUniform("directionallight");
+	}
+	else if (shadertype == "Forwardpoint" || shadertype == "forwardpoint") {
+		type = "forwardpoint";
+		program = glCreateProgram();
+		if (program == 0) {
+			engineLog(__FILE__, __LINE__, "Warning: Shader program failed to create.", 1, 2, true);
+		}
+		addVertexShader(loadShader("Pointforwardvertexshader.vs"));
+		addFragmentShader(loadShader("Pointforwardfragmentshader.fs"));
+		compileShader();
+		addUniform("cameraposition");
+		addUniform("color");
+		addUniform("transform");
+		addUniform("projectedtransform");
+		addUniform("specularintensity");
+		addUniform("pointlights");
+		addUniform("specularexponent");
 	}
 	else {
 		engineLog(__FILE__, __LINE__, "Warning: Shader failed to create, a valid filename wasn't passed in.", 1, 2, true);
@@ -303,6 +319,20 @@ void Shader::updateUniforms(matrix4f worldmatrix, matrix4f projectedmatrix, vect
 		setUniform("projectedtransform", projectedmatrix);
 		setUniform("color", material.getColor());
 		setUniform("directionallight", directionallight);
+		setUniform("specularintensity", material.specularintensity);
+		setUniform("specularexponent", material.specularexponent);
+		setUniform("cameraposition", position);
+		material.texture.useTexture();
+	}
+	else if (type == "forwardpoint") {
+		setUniform("transform", worldmatrix);
+		setUniform("projectedtransform", projectedmatrix);
+		setUniform("color", material.getColor());
+		for (int i = 0; i < 5; i++) {
+			if (pointlights[i] != nullptr) {
+				setUniform("pointlights[" + std::to_string(i) + ']', *pointlights[i]);
+			}
+		}
 		setUniform("specularintensity", material.specularintensity);
 		setUniform("specularexponent", material.specularexponent);
 		setUniform("cameraposition", position);

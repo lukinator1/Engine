@@ -1,5 +1,5 @@
 #include "Rendermanager.h"
-Rendering::Rendering() : forwardambientshader("Forwardambient"), forwarddirectionalshader("Forwarddirectional"), otherdirectional("Forwarddirectional")
+Rendering::Rendering() : forwardambientshader("Forwardambient"), forwarddirectionalshader("Forwarddirectional"), forwardpointshader("Forwardpoint")
 {
 }
 void Rendering::renderingStartup(Window &window)
@@ -15,8 +15,8 @@ void Rendering::renderingStartup(Window &window)
 	Textrenderer.loadText();
 	dlight.setLight(vector3(0, 0, 1.0f), vector3(1.0f, 1.0f, 1.0f), .4f);
 	dlighttwo.setLight(vector3(1.0f, 0, 0), vector3(-1.0f, 1.0f, -1.0f), .4f);
-	forwarddirectionalshader.getDirectionalLight() = dlight;
-
+	plight.setLight(vector3(0, 1.0f, 0), vector3(5.0f, 0, 5.0f), 300.0f, 0.8f);
+	forwardpointshader.pointlights[0] = &plight;
 }
 void Rendering::update(Scene &currentscene)
 {
@@ -33,31 +33,26 @@ void Rendering::renderScene(Scene &currentscene)
 	glBlendFunc(GL_ONE, GL_ONE);
 	glDepthMask(false);
 	glDepthFunc(GL_EQUAL);
-
 	forwarddirectionalshader.setDirectionalLight(dlight);
-
 	currentscene.root.renderEntity(&forwarddirectionalshader);
-
 	Directionallight temp = dlight;
 	dlight = dlighttwo;
 	dlighttwo = temp;
-
 	forwarddirectionalshader.setDirectionalLight(dlight);
-
 	currentscene.root.renderEntity(&forwarddirectionalshader);
-
 	glDepthFunc(GL_LESS);
 	glBlendFunc(GL_ONE, GL_ZERO);
 	glDepthMask(true);
 	glDisable(GL_BLEND);
-
 	temp = dlight;
 	dlight = dlighttwo;
 	dlighttwo = temp;
 
+	currentscene.root.renderEntity(&forwardpointshader);
+
 	if (currentscene.skybox.skyboxbox.size != 0) {
 	currentscene.skybox.useSkybox();
-}
+	}
 }
 void Rendering::setAmbientLight(vector3 _ambientlight)
 {

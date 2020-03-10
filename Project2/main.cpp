@@ -329,8 +329,6 @@ int main(int argc, char* argv[]) {
 	plights[1] = Pointlight(vector3(0.0f, 0.5f, 1.0f), vector3(2.0f, 0.0f, 7.0f), 4.0f, 0.8f, 0.0f, 1.0f);
 	shaderit.getPointLights()[0] = &plights[0];
 	shaderit.getPointLights()[1] = &plights[1];
-	Spotlight *slights = new Spotlight[1];
-	slights[0] = Spotlight(vector3(0.6f, 0.0f, 0.0f), vector3(-2.0f, 0.0f, 5.0f), vector3(1.0f, 1.0f, 1.0f), 30.0f, 0.7f, 0.8f, 0.0f, 0.1f);
 	shaderit.getSpotLights()[0] = &flashlight;
 
 	//time calculation
@@ -450,10 +448,10 @@ int main(int argc, char* argv[]) {
 		unitest += deltatime;
 		flashlight.setPosition(Camera.getCameraposition());
 		flashlight.setDirection(Camera.forwardvector);
-		/*shaderit.useShader();
+		shaderit.useShader();
 		shaderit.updateUniforms(transform.newUnprojectedMatrix(), transform.newTransformationMatrix(), transform.position, material);
-		meshme.drawMesh();*/
-		Renderer.renderScene(sceneone);
+		meshme.drawMesh();
+		/*Renderer.renderScene(sceneone);*/
 		/*text.renderComponent(transform, shaderit);*/     //interesting effect
 		Console.consoleUpdate(currentscene, gameisrunning, framebyframe, stepframekey, exitframekey, framelock, fpscounter, deltatime, dtime, deltatimeweight);
 		frames++;

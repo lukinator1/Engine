@@ -51,6 +51,16 @@ public:
 		linearterm = newlinearterm;
 		quadraticterm = newquadraticterm;
 	}
+	virtual void setLight(vector3 newcolor, vector3 newposition, float newrange, float newintensity) {
+		color = newcolor;
+		range = newrange;
+		intensity = newintensity;
+		position = newposition;
+	}
+	virtual void setLight(vector3 newcolor, vector3 newposition) {
+		color = newcolor;
+		position = newposition;
+	}
 	virtual void setLight(Pointlight plight) {
 		*this = plight;
 	}
