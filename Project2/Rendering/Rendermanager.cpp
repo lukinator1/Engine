@@ -1,5 +1,5 @@
 #include "Rendermanager.h"
-Rendering::Rendering() : forwardambientshader("Forwardrenderingambient")
+Rendering::Rendering() : forwardambientshader("Forwardambient"), forwarddirectionalshader("Forwarddirectional")
 {
 }
 void Rendering::renderingStartup(Window &window)
@@ -24,6 +24,19 @@ void Rendering::renderEntity(Entity &gameobject, Shader *shade) {
 void Rendering::renderScene(Scene &currentscene)
 {
 	currentscene.root.renderEntity(&forwardambientshader);
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_ONE, GL_ONE);
+	glDepthMask(false);
+	glDepthFunc(GL_EQUAL);
+
+	currentscene.root.renderEntity(&forwarddirectionalshader);
+
+	glDepthFunc(GL_LESS);
+	/*glBlendFunc(GL_ONE, GL_ZERO);*/
+	glDepthMask(true);
+	glDisable(GL_BLEND);
+
 	if (currentscene.skybox.skyboxbox.size != 0) {
 	currentscene.skybox.useSkybox();
 }

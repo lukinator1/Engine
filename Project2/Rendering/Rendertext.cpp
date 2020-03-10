@@ -113,6 +113,8 @@ void Rendertext::loadText() {
 }
 float Rendertext::renderText(std::string text, float _x, float _y, vector3 color, float scale) {
 	/*glCullFace(GL_BACK);*/ 
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	float distance = 0;
 	glFrontFace(GL_CCW);
 	textshader.useShader();
@@ -158,11 +160,15 @@ float Rendertext::renderText(std::string text, float _x, float _y, vector3 color
 	}
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
+	glBlendFunc(GL_ONE, GL_ZERO);
+	glDisable(GL_BLEND);
 	glFrontFace(GL_CW);
 	return distance;
 }
 void Rendertext::renderText(std::string text, vector2 position, vector3 color, float scale) {
 	/*glCullFace(GL_BACK);*/
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glFrontFace(GL_CCW);
 	textshader.useShader();
 	textshader.setUniform("textcolor", color);
@@ -206,10 +212,14 @@ void Rendertext::renderText(std::string text, vector2 position, vector3 color, f
 	}
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
+	glBlendFunc(GL_ONE, GL_ZERO);
+	glDisable(GL_BLEND);
 	glFrontFace(GL_CW);
 }
 void Rendertext::renderText(std::string text, float _x, float _y) {
 	/*glCullFace(GL_BACK);*/
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glFrontFace(GL_CCW);
 	textshader.useShader();
 	textshader.setUniform("textcolor", vector3(1.0f, 1.0f, 1.0f));
@@ -253,10 +263,14 @@ void Rendertext::renderText(std::string text, float _x, float _y) {
 	}
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
+	glBlendFunc(GL_ONE, GL_ZERO);
+	glDisable(GL_BLEND);
 	glFrontFace(GL_CW);
 }
 void Rendertext::renderText(std::string text, vector2 position) {
 	/*glCullFace(GL_BACK);*/
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glFrontFace(GL_CCW);
 	textshader.useShader();
 	textshader.setUniform("textcolor", vector3(1.0f, 1.0f, 1.0f));
@@ -300,6 +314,8 @@ void Rendertext::renderText(std::string text, vector2 position) {
 	}
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
+	glBlendFunc(GL_ONE, GL_ZERO);
+	glDisable(GL_BLEND);
 	glFrontFace(GL_CW);
 }
 Rendertext::~Rendertext()

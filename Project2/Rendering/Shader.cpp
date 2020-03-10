@@ -1,5 +1,5 @@
 #include "Shader.h"
-Shader::Shader() : directionallight(vector3(0.0f, 0.0f, 0.0f), vector3(0.0f, 0.0f, 0.0f))
+Shader::Shader() : directionallight(vector3(1.0f, 1.0f, 1.0f), vector3(1.0f, 1.0f, 1.0f))
 {
 	type = "phong";
 	ambientlight = vector3(1.0f, 1.0f, 1.0f);
@@ -20,26 +20,31 @@ Shader::Shader() : directionallight(vector3(0.0f, 0.0f, 0.0f), vector3(0.0f, 0.0
 	addUniform("directionallight");
 	addUniform("pointlights");
 	addUniform("spotlights");
-	/*for (int i = 0; i < 2; i++) {
-		glAttachShader(program, shaders[i]);
-	}
-	glLinkProgram(program);*/
-	/*glGetProgramiv(program, GL_LINK_STATUS, &checkerror);
-	/GLint checkerror = 0;
-	if (checkerror == GL_FALSE) {
-		engineLog(__FILE__, __LINE__, "Warning: Shader failed to link.", 1, 2, true);
-		return;
-	}*/
-	/*glValidateProgram(program);
-	glGetProgramiv(program, GL_VALIDATE_STATUS, &checkerror);
-	if (checkerror == GL_FALSE) {
-		engineLog(__FILE__, __LINE__, "Warning: Shader creation unsuccessful.", 1, 2, true);
-		return;
-	}*/
 }
-Shader::Shader(std::string shadertype) : directionallight(vector3(0.0f, 0.0f, 0.0f), vector3(0.0f, 0.0f, 0.0f))
+Shader::Shader(std::string shadertype) : directionallight(vector3(1.0f, 1.0f, 1.0f), vector3(1.0f, 1.0f, 1.0f))
 {
-	if (shadertype == "Skybox" || shadertype == "skybox") {
+	if (shadertype == "Phong" || shadertype == "phong") {
+		type = "phong";
+		ambientlight = vector3(1.0f, 1.0f, 1.0f);
+		program = glCreateProgram();
+		if (program == 0) {
+			engineLog(__FILE__, __LINE__, "Warning: Shader program failed to create.", 1, 2, true);
+		}
+		addVertexShader(loadShader("Phongvertexshader.vs"));
+		addFragmentShader(loadShader("Phongfragmentshader.fs"));
+		compileShader();
+		addUniform("cameraposition");
+		addUniform("color");
+		addUniform("transform");
+		addUniform("projectedtransform");
+		addUniform("ambientlight");
+		addUniform("specularintensity");
+		addUniform("specularexponent");
+		addUniform("directionallight");
+		addUniform("pointlights");
+		addUniform("spotlights");
+	}
+	else if (shadertype == "Skybox" || shadertype == "skybox") {
 	type = "skybox";
 	ambientlight = vector3(1.0f, 1.0f, 1.0f);
 	program = glCreateProgram();
@@ -64,7 +69,7 @@ Shader::Shader(std::string shadertype) : directionallight(vector3(0.0f, 0.0f, 0.
 		addUniform("textmatrix");
 		addUniform("textcolor");
 	}
-	else if (shadertype == "Forwardrenderingambient" || shadertype == "Forwardrenderingambient") {
+	else if (shadertype == "Forwardambient" || shadertype == "forwardambient") {
 		type = "forwardambient";
 		ambientlight = vector3(0.2f, 0.2f, 0.2f);
 		program = glCreateProgram();
@@ -76,6 +81,25 @@ Shader::Shader(std::string shadertype) : directionallight(vector3(0.0f, 0.0f, 0.
 		compileShader();
 		addUniform("transform");
 		addUniform("ambientintensity");
+	}
+	else if (shadertype == "Forwarddirectional" || shadertype == "forwarddirectional") {
+		type = "forwarddirectional";
+		ambientlight = vector3(1.0f, 1.0f, 1.0f);
+		directionallight.setIntensity(0.5f);
+		program = glCreateProgram();
+		if (program == 0) {
+			engineLog(__FILE__, __LINE__, "Warning: Shader program failed to create.", 1, 2, true);
+		}
+		addVertexShader(loadShader("Directionalforwardvertexshader.vs"));
+		addFragmentShader(loadShader("Directionalforwardfragmentshader.fs"));
+		compileShader();
+		addUniform("cameraposition");
+		addUniform("color");
+		addUniform("transform");
+		addUniform("projectedtransform");
+		addUniform("specularintensity");
+		addUniform("specularexponent");
+		addUniform("directionallight");
 	}
 	else {
 		engineLog(__FILE__, __LINE__, "Warning: Shader failed to create, a valid filename wasn't passed in.", 1, 2, true);
@@ -272,6 +296,16 @@ void Shader::updateUniforms(matrix4f worldmatrix, matrix4f projectedmatrix, vect
 	else if (type == "forwardambient") {
 		setUniform("transform", projectedmatrix);
 		setUniform("ambientintensity", ambientlight);
+		material.texture.useTexture();
+	}
+	else if (type == "forwarddirectional") {
+		setUniform("transform", worldmatrix);
+		setUniform("projectedtransform", projectedmatrix);
+		setUniform("color", material.getColor());
+		setUniform("directionallight", directionallight);
+		setUniform("specularintensity", material.specularintensity);
+		setUniform("specularexponent", material.specularexponent);
+		setUniform("cameraposition", position);
 		material.texture.useTexture();
 	}
 }

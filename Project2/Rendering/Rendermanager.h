@@ -27,9 +27,12 @@ public:
 	void renderScene(Scene & currentscene);
 	void setAmbientLight(vector3 _ambientlight);
 	void setAmbientLight(float x, float y, float z);
+	void setDirectionalLight(vector3 _ambientlight);
+	void setDirectionalLight(float x, float y, float z);
 	vector3 ambientlight;
 	Shader phongshader;
 	Shader forwardambientshader;
+	Shader forwarddirectionalshader;
 	Rendertext Textrenderer;
 	Rendering();
 	~Rendering();
