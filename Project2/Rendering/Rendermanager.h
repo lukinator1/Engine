@@ -30,9 +30,12 @@ public:
 	void setDirectionalLight(vector3 _ambientlight);
 	void setDirectionalLight(float x, float y, float z);
 	vector3 ambientlight;
+	Directionallight dlight;
+	Directionallight dlighttwo;
 	Shader phongshader;
 	Shader forwardambientshader;
 	Shader forwarddirectionalshader;
+	Shader otherdirectional;
 	Rendertext Textrenderer;
 	Rendering();
 	~Rendering();

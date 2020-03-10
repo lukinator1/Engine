@@ -85,7 +85,7 @@ Shader::Shader(std::string shadertype) : directionallight(vector3(1.0f, 1.0f, 1.
 	else if (shadertype == "Forwarddirectional" || shadertype == "forwarddirectional") {
 		type = "forwarddirectional";
 		ambientlight = vector3(1.0f, 1.0f, 1.0f);
-		directionallight.setIntensity(0.5f);
+		directionallight.setIntensity(0.1f);
 		program = glCreateProgram();
 		if (program == 0) {
 			engineLog(__FILE__, __LINE__, "Warning: Shader program failed to create.", 1, 2, true);
@@ -312,15 +312,15 @@ void Shader::updateUniforms(matrix4f worldmatrix, matrix4f projectedmatrix, vect
 void Shader::setAmbientLight(vector3 newambientlight) {
 	ambientlight = newambientlight;
 }
-/*void Shader::setDirectionalLight(Directionallight newdlight) {
+void Shader::setDirectionalLight(Directionallight newdlight) {
 	directionallight.setLight(newdlight);
 }
-void Shader::setPointLight(Pointlight* newplight) {
+/*void Shader::setPointLight(Pointlight* newplight) {
 	pointlights = newplight;
 }*/
-vector3 Shader::getAmbientLight() {
+/*vector3 Shader::getAmbientLight() {
 	return ambientlight;
-}
+}*/
 Directionallight Shader::getDirectionalLight() {
 	return directionallight;
 }
