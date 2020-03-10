@@ -3,7 +3,7 @@
 #include "vector2.h"
 #include "Quaternion.h"
 #include "../Logger.h"
-class vector3 : public Logger {
+class vector3 : public Logger { //todo: overloads
 public:
 	~vector3();
 	vector3();

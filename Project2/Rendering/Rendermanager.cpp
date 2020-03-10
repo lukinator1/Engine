@@ -1,5 +1,5 @@
 #include "Rendermanager.h"
-Rendering::Rendering() : forwardambientshader("Forwardambient"), forwarddirectionalshader("Forwarddirectional"){
+Rendering::Rendering() : forwardambientshader("Forwardambient"), forwarddirectionalshader("Forwarddirectional"), forwardpointshader("Forwardpoint"), forwardspotshader("Forwardspot") {
 
 }
 void Rendering::renderingStartup(Window &window)
@@ -13,11 +13,15 @@ void Rendering::renderingStartup(Window &window)
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);*/
 	windowptr = &window;
 	Textrenderer.loadText();
-	forwardpointshader.setShader("Forwardpoint");
-	dlight.setLight(vector3(0, 0, 1.0f), vector3(1.0f, 1.0f, 1.0f), .4f);
+	dlight.setLight(vector3(0, 0, 1.0f), vector3(1.0f, 1.0f, 1.0f), .4f); //make point to lights?
 	dlighttwo.setLight(vector3(1.0f, 0, 0), vector3(-1.0f, 1.0f, -1.0f), .4f);
 	plight.setLight(vector3(0.0f, 0.5f, 1.0f), vector3(2.0f, 0.0f, 7.0f), 4.0f, 2.0f, 0.0f, 1.0f);
-	forwardpointshader.pointlight = plight;
+	for (int i = 0; i < 10; i++) {
+		plight.position.x += 7.0f;
+		plight.position.z += 7.0f;
+		pointlights.push_back(plight);
+	}
+	slight.setLight(vector3(0.0f, 1.0f, 1.0f), vector3(5.0f, 0.0f, 5.0f), vector3(1.0f, -1.0f, 1.0f), 80.0f, 0.7f, 3.0f, 0.0f, 0.1f);
 }
 void Rendering::update(Scene &currentscene)
 {
@@ -45,7 +49,14 @@ void Rendering::renderScene(Scene &currentscene)
 	dlight = dlighttwo;
 	dlighttwo = temp;
 
-	currentscene.root.renderEntity(&forwardpointshader);
+	for (int i = 0; i < pointlights.size(); i++) {
+		forwardpointshader.pointlight = pointlights[i];
+		currentscene.root.renderEntity(&forwardpointshader);
+	}
+
+	forwardspotshader.spotlight = slight;
+	currentscene.root.renderEntity(&forwardspotshader);
+
 	glDepthFunc(GL_LESS);
 	glDepthMask(true);
 	glDisable(GL_BLEND);

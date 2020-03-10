@@ -117,6 +117,23 @@ Shader::Shader(std::string shadertype) : directionallight(vector3(1.0f, 1.0f, 1.
 		addUniform("pointlight");
 		addUniform("specularexponent");
 	}
+	else if (shadertype == "Forwardspot" || shadertype == "forwardspot") {
+		type = "forwardspot";
+		program = glCreateProgram();
+		if (program == 0) {
+			engineLog(__FILE__, __LINE__, "Warning: Shader program failed to create.", 1, 2, true);
+		}
+		addVertexShader(loadShader("Spotforwardvertexshader.vs"));
+		addFragmentShader(loadShader("Spotforwardfragmentshader.fs"));
+		compileShader();
+		addUniform("cameraposition");
+		addUniform("color");
+		addUniform("transform");
+		addUniform("projectedtransform");
+		addUniform("specularintensity");
+		addUniform("specularexponent");
+		addUniform("spotlight");
+	}
 	else {
 		engineLog(__FILE__, __LINE__, "Warning: Shader failed to create, a valid filename wasn't passed in.", 1, 2, true);
 	}
@@ -352,6 +369,19 @@ void Shader::addUniform(std::string newuniform) { //may need to cast this to str
 			}
 	return;
 	}
+	else if (newuniform == "spotlight") {
+		for (int i = 0; i < 5; i++) {
+			addUniform("spotlight.color");
+			addUniform("spotlight.intensity");
+			addUniform("spotlight.attenuation.linearterm");
+			addUniform("spotlight.attenuation.quadraticterm");
+			addUniform("spotlight.position");
+			addUniform("spotlight.range");
+			addUniform("spotlight.direction");
+			addUniform("spotlight.cutoff");
+		}
+		return;
+	}
 	int uniformlocation = glGetUniformLocation(program, newuniform.c_str());
 	if (uniformlocation == -1) {
 		engineLog(__FILE__, __LINE__, "Uniform: " + newuniform + " failed to add.", 1, 2, true);
@@ -442,8 +472,18 @@ void Shader::updateUniforms(matrix4f worldmatrix, matrix4f projectedmatrix, vect
 		setUniform("cameraposition", position);
 		material.texture.useTexture();
 	}
+	else if (type == "forwardspot") {
+		setUniform("transform", worldmatrix);
+		setUniform("projectedtransform", projectedmatrix);
+		setUniform("color", material.getColor());
+		setUniform("spotlight", spotlight);
+		setUniform("specularintensity", material.specularintensity);
+		setUniform("specularexponent", material.specularexponent);
+		setUniform("cameraposition", position);
+		material.texture.useTexture();
+	}
 }
-void Shader::setAmbientLight(vector3 newambientlight) {
+void Shader::setAmbientLight(vector3 newambientlight) { //todo
 	ambientlight = newambientlight;
 }
 void Shader::setDirectionalLight(Directionallight newdlight) {

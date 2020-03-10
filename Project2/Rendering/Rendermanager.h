@@ -32,11 +32,14 @@ public:
 	vector3 ambientlight;
 	Directionallight dlight;
 	Directionallight dlighttwo;
+	std::vector<Pointlight> pointlights;
 	Pointlight plight;
+	Spotlight slight;
 	Shader phongshader;
 	Shader forwardambientshader;
 	Shader forwarddirectionalshader;
 	Shader forwardpointshader;
+	Shader forwardspotshader;
 	Rendertext Textrenderer;
 	Rendering();
 	~Rendering();

@@ -18,6 +18,7 @@ public:
 	Directionallight directionallight;
 	Pointlight* pointlights[5];
 	Pointlight pointlight;
+	Spotlight spotlight;
 	Spotlight* spotlights[5];
 	std::string loadShader(std::string filename);
 	void setShader(std::string shadertype);
