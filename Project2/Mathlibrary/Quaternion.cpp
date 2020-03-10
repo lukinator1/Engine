@@ -1,10 +1,25 @@
 #include "Quaternion.h"
+#include "vector3.h"
+Quaternion::Quaternion()
+{
+	x = 0.0;
+	y = 0.0;
+	z = 0.0;
+	w = 1.0;
+}
 Quaternion::Quaternion(float newx, float newy, float newz, float neww)
 {
 	x = newx;
 	y = newy;
 	z = newz;
 	w = neww;
+}
+void Quaternion::setQuaternion(float _x, float _y, float _z, float _w)
+{
+	x = _x;
+	y = _y;
+	z = _z;
+	w = _w;
 }
 Quaternion Quaternion::Normalize()
 {
@@ -42,6 +57,24 @@ Quaternion Quaternion::Multiply(float incx, float incy, float incz)
 
 	Quaternion newquat(myx, myy, myz, myw);
 	return newquat;
+}
+vector3 Quaternion::getForward() {
+	return vector3 (2.0f * (x * z - w * y), 2.0f * (y * z + w * x), 1.0f - 2.0f * (x * x + y * y));
+}
+vector3 Quaternion::getBack() {
+	return vector3(-2.0f * (x * z - w * y), -2.0f * (y * z + w * x), -1.0f + 2.0f * (x * x + y * y));
+}
+vector3 Quaternion::getUp(){
+	return vector3(2.0f * (x * y + w * z), 1.0f - 2.0f * (x * x + z * z), 2.0f * (y * z - w * x));
+}
+vector3 Quaternion::getDown(){
+	return vector3(-2.0f * (x * y + w * z), -1.0f + 2.0f * (x * x + z * z), -2.0f * (y * z - w * x));
+}
+vector3 Quaternion::getRight() {
+	return vector3(1.0f - 2.0f * (y * y + z * z), 2.0f * (x * y - w * z), 2.0f * (x * z + w * y));
+}
+vector3 Quaternion::getLeft() {
+	return vector3(-1.0f + 2.0f * (y * y + z * z), -2.0f * (x * y - w * z), -2.0f * (x * z + w * y));
 }
 Quaternion::~Quaternion()
 {

@@ -57,6 +57,17 @@ public:
 
 		*this = (z * (y * x));
 	}
+	void makeQuatRotation(vector3 forward, vector3 up) {
+		vector3 f = forward.Normalize();
+		vector3 u = up.Normalize();
+		u = u.crossProduct(f);	//right vector
+		vector3 right = f.crossProduct(u);
+
+		m[0][0] = u.x;			m[0][1] = u.y;			m[0][2] = u.z;			m[0][3] = 0;
+		m[1][0] = right.x;		m[1][1] = right.y;		m[1][2] = right.z;		m[1][3] = 0;
+		m[2][0] = f.x;			m[2][1] = f.y;			m[2][2] = f.z;			m[2][3] = 0;
+		m[3][0] = 0;			m[3][1] = 0;			m[3][2] = 0;			m[3][3] = 1.0f;
+	}
 	void makeScaling(vector3 incvec) {
 		m[0][0] = incvec.x;	 m[0][1] = 0;	m[0][2] = 0;	m[0][3] = 0;
 		m[1][0] = 0;	 m[1][1] = incvec.y;	m[1][2] = 0;	m[1][3] = 0;

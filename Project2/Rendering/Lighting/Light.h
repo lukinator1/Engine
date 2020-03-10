@@ -31,6 +31,9 @@ public:
 	void setIntensity(float newintensity) {
 		intensity = newintensity;
 	}
+	/*void setShader(Shader &shade) {
+		lightshader = shade;
+	}*/
 	vector3 getColor() {
 		return color;
 	}

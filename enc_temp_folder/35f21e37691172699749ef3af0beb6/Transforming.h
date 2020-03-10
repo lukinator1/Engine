@@ -45,9 +45,13 @@ public:
 		matrix4f translationmatrix;
 		matrix4f rotationmatrix;
 		matrix4f scalematrix;
+		matrix4f camerarotation;
+		matrix4f cameratranslation;
 		translationmatrix.makeTranslation(translation);
 		rotationmatrix.makeRotation(rotation);
 		scalematrix.makeScaling(scaling);
+		camerarotation.makeCamera(forwardvector, upvector);
+		cameratranslation.makeTranslation(-(position.x), -(position.y), -(position.z));
 		return translationmatrix * (rotationmatrix * scalematrix);
 	}
 	matrix4f newViewMatrix() {
