@@ -18,7 +18,7 @@ uniform vec3 color;
 uniform sampler2D sampler;
 uniform float specularintensity;
 uniform float specularexponent;
-uniform Pointlight pointlights[5];	//may need to change depending on performance
+uniform Pointlight pointlight;	//may need to change depending on performance
 
 
 float calculateAttenuation(Pointlight plight, float distance){	//change 0.0 to 1.0
@@ -66,16 +66,11 @@ vec4 calculatePointLight (Pointlight point, vec3 normal){
 
 void main()
 {
-	vec4 totallight = vec4(0, 0, 0, 1.0);
+	vec4 totallight = vec4(0.0, 0.0, 0.0, 1.0);
 	vec4 basecolor = vec4(color, 1);
 	vec4 texture = texture2D(sampler, texcoordinates0.xy);
 	vec3 normal =  normalize(normal0);
+	//totallight += calculatePointLight(pointlight, normal);
 
-	for (int i = 0; i < 5; i++){
-	if (pointlights[i].intensity != 0.0){
-	totallight += calculatePointLight(pointlights[i], normal);
-		}
-	}
-
-	gl_FragColor = texture * basecolor * totallight;
+	gl_FragColor = texture * basecolor * calculatePointLight(pointlight, normal);
 }

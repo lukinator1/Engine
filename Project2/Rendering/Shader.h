@@ -17,8 +17,10 @@ public:
 	vector3 ambientlight;
 	Directionallight directionallight;
 	Pointlight* pointlights[5];
+	Pointlight pointlight;
 	Spotlight* spotlights[5];
 	std::string loadShader(std::string filename);
+	void setShader(std::string shadertype);
 	void useShader();
 	void addVertexShader(const std::string& program);
 	void addFragmentShader(const std::string& program);
@@ -39,7 +41,7 @@ public:
 	Pointlight** getPointLights();
 	Spotlight ** getSpotLights();
 	void setDirectionalLight(Directionallight newdlight);
-	void setPointLight(Pointlight* newplight);
+	/*void setPointLight(Pointlight* newplight);*/
 	void setAmbientLight(vector3 newambientlight);
 
 	Shader();

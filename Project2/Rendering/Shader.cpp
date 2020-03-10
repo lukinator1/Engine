@@ -1,7 +1,7 @@
 #include "Shader.h"
 Shader::Shader() : directionallight(vector3(1.0f, 1.0f, 1.0f), vector3(1.0f, 1.0f, 1.0f))
 {
-	type = "phong";
+	/*type = "phong";
 	ambientlight = vector3(1.0f, 1.0f, 1.0f);
 	program = glCreateProgram();
 	if (program == 0) {
@@ -19,7 +19,7 @@ Shader::Shader() : directionallight(vector3(1.0f, 1.0f, 1.0f), vector3(1.0f, 1.0
 	addUniform("specularexponent");
 	addUniform("directionallight");
 	addUniform("pointlights");
-	addUniform("spotlights");
+	addUniform("spotlights");*/
 }
 Shader::Shader(std::string shadertype) : directionallight(vector3(1.0f, 1.0f, 1.0f), vector3(1.0f, 1.0f, 1.0f))
 {
@@ -114,7 +114,7 @@ Shader::Shader(std::string shadertype) : directionallight(vector3(1.0f, 1.0f, 1.
 		addUniform("transform");
 		addUniform("projectedtransform");
 		addUniform("specularintensity");
-		addUniform("pointlights");
+		addUniform("pointlight");
 		addUniform("specularexponent");
 	}
 	else {
@@ -127,6 +127,105 @@ Shader::~Shader()
 	for (int i = 0; i < shaders.size(); i++) {
 		glDetachShader(program, shaders[i]);
 		glDeleteShader(shaders[i]);
+	}
+}
+void Shader::setShader(std::string shadertype) {
+if (shadertype == "Phong" || shadertype == "phong") {
+	type = "phong";
+	ambientlight = vector3(1.0f, 1.0f, 1.0f);
+	program = glCreateProgram();
+	if (program == 0) {
+		engineLog(__FILE__, __LINE__, "Warning: Shader program failed to create.", 1, 2, true);
+	}
+	addVertexShader(loadShader("Phongvertexshader.vs"));
+	addFragmentShader(loadShader("Phongfragmentshader.fs"));
+	compileShader();
+	addUniform("cameraposition");
+	addUniform("color");
+	addUniform("transform");
+	addUniform("projectedtransform");
+	addUniform("ambientlight");
+	addUniform("specularintensity");
+	addUniform("specularexponent");
+	addUniform("directionallight");
+	addUniform("pointlights");
+	addUniform("spotlights");
+}
+else if (shadertype == "Skybox" || shadertype == "skybox") {
+	type = "skybox";
+	ambientlight = vector3(1.0f, 1.0f, 1.0f);
+	program = glCreateProgram();
+	if (program == 0) {
+		engineLog(__FILE__, __LINE__, "Warning: Shader program failed to create.", 1, 2, true);
+	}
+	addVertexShader(loadShader("Skyboxvertexshader.vs"));
+	addFragmentShader(loadShader("Skyboxfragmentshader.fs"));
+	compileShader();
+	addUniform("skyboxmatrix");
+}
+else if (shadertype == "Textshader" || shadertype == "textshader") {
+	type = "text";
+	ambientlight = vector3(1.0f, 1.0f, 1.0f);
+	program = glCreateProgram();
+	if (program == 0) {
+		engineLog(__FILE__, __LINE__, "Warning: Shader program failed to create.", 1, 2, true);
+	}
+	addVertexShader(loadShader("Textvertexshader.vs"));
+	addFragmentShader(loadShader("Textfragmentshader.fs"));
+	compileShader();
+	addUniform("textmatrix");
+	addUniform("textcolor");
+}
+else if (shadertype == "Forwardambient" || shadertype == "forwardambient") {
+	type = "forwardambient";
+	ambientlight = vector3(0.2f, 0.2f, 0.2f);
+	program = glCreateProgram();
+	if (program == 0) {
+		engineLog(__FILE__, __LINE__, "Warning: Shader program failed to create.", 1, 2, true);
+	}
+	addVertexShader(loadShader("Ambientforwardvertexshader.vs"));
+	addFragmentShader(loadShader("Ambientforwardfragmentshader.fs"));
+	compileShader();
+	addUniform("transform");
+	addUniform("ambientintensity");
+}
+else if (shadertype == "Forwarddirectional" || shadertype == "forwarddirectional") {
+	type = "forwarddirectional";
+	directionallight.setIntensity(0.1f);
+	program = glCreateProgram();
+	if (program == 0) {
+		engineLog(__FILE__, __LINE__, "Warning: Shader program failed to create.", 1, 2, true);
+	}
+	addVertexShader(loadShader("Directionalforwardvertexshader.vs"));
+	addFragmentShader(loadShader("Directionalforwardfragmentshader.fs"));
+	compileShader();
+	addUniform("cameraposition");
+	addUniform("color");
+	addUniform("transform");
+	addUniform("projectedtransform");
+	addUniform("specularintensity");
+	addUniform("specularexponent");
+	addUniform("directionallight");
+}
+else if (shadertype == "Forwardpoint" || shadertype == "forwardpoint") {
+	type = "forwardpoint";
+	program = glCreateProgram();
+	if (program == 0) {
+		engineLog(__FILE__, __LINE__, "Warning: Shader program failed to create.", 1, 2, true);
+	}
+	addVertexShader(loadShader("Pointforwardvertexshader.vs"));
+	addFragmentShader(loadShader("Pointforwardfragmentshader.fs"));
+	compileShader();
+	addUniform("cameraposition");
+	addUniform("color");
+	addUniform("transform");
+	addUniform("projectedtransform");
+	addUniform("specularintensity");
+	addUniform("pointlight");
+	addUniform("specularexponent");
+}
+else {
+	engineLog(__FILE__, __LINE__, "Warning: Shader failed to create, a valid filename wasn't passed in.", 1, 2, true);
 	}
 }
 std::string Shader::loadShader(std::string filename)
@@ -231,6 +330,15 @@ void Shader::addUniform(std::string newuniform) { //may need to cast this to str
 		}
 	return;
 	}
+	else if (newuniform == "pointlight") {
+		addUniform("pointlight.color");
+		addUniform("pointlight.intensity");
+		addUniform("pointlight.attenuation.linearterm");
+		addUniform("pointlight.attenuation.quadraticterm");
+		addUniform("pointlight.position");
+		addUniform("pointlight.range");
+		return;
+	}
 	else if (newuniform == "spotlights") {
 		for (int i = 0; i < 5; i++) {
 			addUniform("spotlights[" + std::to_string(i) + "].color");
@@ -328,11 +436,7 @@ void Shader::updateUniforms(matrix4f worldmatrix, matrix4f projectedmatrix, vect
 		setUniform("transform", worldmatrix);
 		setUniform("projectedtransform", projectedmatrix);
 		setUniform("color", material.getColor());
-		for (int i = 0; i < 5; i++) {
-			if (pointlights[i] != nullptr) {
-				setUniform("pointlights[" + std::to_string(i) + ']', *pointlights[i]);
-			}
-		}
+		setUniform("pointlight", pointlight);
 		setUniform("specularintensity", material.specularintensity);
 		setUniform("specularexponent", material.specularexponent);
 		setUniform("cameraposition", position);
@@ -348,9 +452,9 @@ void Shader::setDirectionalLight(Directionallight newdlight) {
 /*void Shader::setPointLight(Pointlight* newplight) {
 	pointlights = newplight;
 }*/
-/*vector3 Shader::getAmbientLight() {
+vector3 Shader::getAmbientLight() {
 	return ambientlight;
-}*/
+}
 Directionallight Shader::getDirectionalLight() {
 	return directionallight;
 }

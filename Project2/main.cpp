@@ -318,7 +318,7 @@ int main(int argc, char* argv[]) {
 	sceneone.root = Quote;
 	
 	//shaders
-	Shader shaderit;
+	Shader shaderit("Forwardpoint");
 	shaderit.setAmbientLight(vector3(0.5f, 0.5f, 0.5f));
 	shaderit.directionallight = Directionallight(vector3(1.0f, 1.0f, 1.0f), vector3(1.0f, 1.0f, 1.0f), 0.1f);
 
@@ -326,9 +326,12 @@ int main(int argc, char* argv[]) {
 	Spotlight flashlight(vector3(0.0f, 1.0f, 1.0f), vector3(0.0f, 0.0f, 0.0f), vector3(0.0f, 0.0f, 0.0f), 30.0f, 0.7f, 0.8f, 0.0f, 0.1f);
 	Pointlight *plights = new Pointlight[6];
 	plights[0] = Pointlight(vector3(1.0f, 0.5f, 0.0f), vector3(-2.0f, 0.0f, 5.0f), 4.0f, 0.8f, 0.0f, 1.0f);
-	plights[1] = Pointlight(vector3(0.0f, 0.5f, 1.0f), vector3(2.0f, 0.0f, 7.0f), 4.0f, 0.8f, 0.0f, 1.0f);
-	shaderit.getPointLights()[0] = &plights[0];
-	shaderit.getPointLights()[1] = &plights[1];
+	plights[1] = Pointlight(vector3(0.0f, 0.5f, 1.0f), vector3(2.0f, 0.0f, 7.0f), 4.0f, 2.0f, 0.0f, 1.0f);
+	/*shaderit.getPointLights()[0] = &plights[0];
+	shaderit.getPointLights()[1] = &plights[1];*/
+	shaderit.pointlight = plights[1];
+	Spotlight *slights = new Spotlight[1];
+	slights[0] = Spotlight(vector3(0.6f, 0.0f, 0.0f), vector3(-2.0f, 0.0f, 5.0f), vector3(1.0f, 1.0f, 1.0f), 30.0f, 0.7f, 0.8f, 0.0f, 0.1f);
 	shaderit.getSpotLights()[0] = &flashlight;
 
 	//time calculation
@@ -443,15 +446,16 @@ int main(int argc, char* argv[]) {
 		}
 
 		//enginetests
+		transform.setTranslationVector(vector3(0.0f, -1.0f, 5.0f));
 		plights[0].setPosition(vector3(3.0f, 0.0f, 8.0 * (float)(sin(unitest) + 1.0f / 2.0f) + 10.0f));
 		plights[1].setPosition(vector3(7.0f, 0.0f, 8.0 * (float)(cos(unitest) + 1.0f / 2.0f) + 10.0f));
 		unitest += deltatime;
 		flashlight.setPosition(Camera.getCameraposition());
 		flashlight.setDirection(Camera.forwardvector);
-		shaderit.useShader();
+		/*shaderit.useShader();
 		shaderit.updateUniforms(transform.newUnprojectedMatrix(), transform.newTransformationMatrix(), transform.position, material);
-		meshme.drawMesh();
-		/*Renderer.renderScene(sceneone);*/
+		meshme.drawMesh();*/
+		Renderer.renderScene(sceneone);
 		/*text.renderComponent(transform, shaderit);*/     //interesting effect
 		Console.consoleUpdate(currentscene, gameisrunning, framebyframe, stepframekey, exitframekey, framelock, fpscounter, deltatime, dtime, deltatimeweight);
 		frames++;
