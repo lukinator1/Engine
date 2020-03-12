@@ -13,6 +13,7 @@ public:
 	float getZ();*/
 	void setVector(float newx, float newy, float newz);
 	vector3 Rotate(float angle, vector3 axis);
+	vector3 quatRotate(Quaternion quat);
 	vector3 crossProduct(vector3 newv);
 	vector3 Normalize();
 	float x;

@@ -11,3 +11,5 @@ bool Camera::orthographicprojection = false;
 vector3 Camera::position(0.0f, 0.0f, 0.0f);
 vector3 Camera::forwardvector(0.0f, 0.0f, 1.0f);
 vector3 Camera::upvector(0.0f, 1.0f, 0.0f);
+Quaternion Camera::cameraquatrotate(0.0f, 0.0f, 0.0f, 1.0f);
+bool Camera::mouselook = false;

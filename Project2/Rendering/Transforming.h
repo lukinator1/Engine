@@ -17,25 +17,27 @@ public:
 	};
 	~Transforming();
 	matrix4f newTransformationMatrix() {
-		matrix4f translationmatrix;
-		matrix4f rotationmatrix;
-		matrix4f quatrotationmatrix;
-		matrix4f scalematrix;
+		matrix4f projectionmatrix;
+		matrix4f unprojected;
 		matrix4f camerarotation;
 		matrix4f cameratranslation;
-		translationmatrix.makeTranslation(translation);
-		rotationmatrix.makeRotation(rotation);
-		quatrotationmatrix.makeQuatRotation(quatrotation.getForward(), quatrotation.getUp());
+		/*matrix4f translationmatrix;
+		matrix4f rotationmatrix;
+		matrix4f quatrotationmatrix;
+		matrix4f scalematrix;*/
+		/*translationmatrix.makeTranslation(translation);
+		/*rotationmatrix.makeRotation(rotation);
+		quatrotationmatrix.makeQuatRotation(quatrotation.getForward(), quatrotation.getUp(), quatrotation.getRight());
 		scalematrix.makeScaling(scaling);
-		camerarotation.makeCamera(forwardvector, upvector);
+		matrix4f transformationmatrix = translationmatrix * ( /*rotationamtrix quatrotationmatrix * scalematrix);*/
+		unprojected = newUnprojectedMatrix();
+		camerarotation.makeQuatRotation(cameraquatrotate);
 		cameratranslation.makeTranslation(-(position.x), -(position.y), -(position.z));
-		matrix4f transformationmatrix = translationmatrix * (rotationmatrix * scalematrix);
-
-		/*	if (orthographicprojection == false) {  //world view? */
-		matrix4f projectionmatrix;
 		projectionmatrix.makeProjection(fov, aspectratiowidth, aspectratioheight, minviewdistance, maxviewdistance);
+		/*	if (orthographicprojection == false) { */
 
-		return projectionmatrix * (quatrotationmatrix * (cameratranslation * transformationmatrix));
+		return projectionmatrix * (camerarotation * (cameratranslation * unprojected));
+
 		/*	}
 			else {
 				return camerarotation * (cameratranslation * transformationmatrix);
@@ -44,16 +46,18 @@ public:
 	matrix4f newUnprojectedMatrix() {
 		matrix4f translationmatrix;
 		matrix4f rotationmatrix;
+		matrix4f quatrotationmatrix;
 		matrix4f scalematrix;
 		translationmatrix.makeTranslation(translation);
 		rotationmatrix.makeRotation(rotation);
+		quatrotationmatrix.makeQuatRotation(quatrotation);
 		scalematrix.makeScaling(scaling);
-		return translationmatrix * (rotationmatrix * scalematrix);
+		return translationmatrix * (quatrotationmatrix * scalematrix);
 	}
 	matrix4f newViewMatrix() {
 		matrix4f camerarotation;
 		matrix4f cameratranslation;
-		camerarotation.makeCamera(forwardvector, upvector);
+		camerarotation.makeQuatRotation(cameraquatrotate);
 		cameratranslation.makeTranslation(-(position.x), -(position.y), -(position.z));
 		return camerarotation * (cameratranslation * newUnprojectedMatrix());
 	}
@@ -68,19 +72,19 @@ public:
 		matrix4f rotationmatrix;
 		matrix4f scalematrix;
 		matrix4f camerarotation;
+		matrix4f quatrotationmatrix;
 		matrix4f cameratranslation;
 		matrix4f projectionmatrix;
 
 		translationmatrix.makeTranslation(translation);
 		rotationmatrix.makeRotation(rotation);
+		quatrotationmatrix.makeQuatRotation(quatrotation);
 		scalematrix.makeScaling(scaling);
-
-		camerarotation.makeCamera(forwardvector, upvector);
+		camerarotation.makeQuatRotation(cameraquatrotate);
 		cameratranslation.makeTranslation(-(position.x), -(position.y), -(position.z));
-
 		projectionmatrix.makeProjection(fov, aspectratiowidth, aspectratioheight, minviewdistance, maxviewdistance);
 
-		return projectionmatrix * (camerarotation * (rotationmatrix * scalematrix));
+		return projectionmatrix * (camerarotation * (quatrotationmatrix * scalematrix));
 	}
 	matrix4f newTextMatrix() {
 		matrix4f textmatrix;
@@ -122,6 +126,15 @@ public:
 		rotation.x = x;
 		rotation.y = y;
 		rotation.z = z;
+	}
+	void setQuatRotation(Quaternion newquatrotation) {
+		quatrotation = newquatrotation;
+	}
+	void setQuatRotation(float _x, float _y, float _z, float _w) {
+		quatrotation.x = _x;
+		quatrotation.y = _y;
+		quatrotation.z = _z;
+		quatrotation.w = _w;
 	}
 	void setScalingVector(float x, float y, float z) {
 		scaling.x = x;

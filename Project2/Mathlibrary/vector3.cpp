@@ -50,6 +50,19 @@ vector3 vector3::Rotate(float angle, vector3 axis) {
 	return newvector;
 	/*return *this;*/
 }
+vector3 vector3::quatRotate(Quaternion rotation) {
+	Quaternion rotationconjugate = rotation.Conjugate();
+
+	Quaternion newquat = (rotation.Multiply(x, y, z)).Multiply(rotationconjugate);
+	vector3 newvector(newquat.x, newquat.y, newquat.z);
+
+	/*x = newquat.x;
+	y = newquat.y;
+	z = newquat.z;*/
+
+	return newvector;
+	/*return *this;*/
+}
 vector3 vector3::crossProduct(vector3 newv) {
 	float myx = (y * newv.z) - (z * newv.y);
 	float myy = (z * newv.x) - (x * newv.z);

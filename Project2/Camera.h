@@ -8,14 +8,11 @@ public:
 	static vector3 position;
 	static vector3 forwardvector;
 	static vector3 upvector;
-	bool firstperson = false;
-	bool mouselook = false;
-	bool freeformcamera = false;
+	static Quaternion cameraquatrotate;
+	static bool mouselook;
 	static float fov;
 	static float maxviewdistance;
 	static float minviewdistance;
-	float minzoom;
-	float maxzoom;
 	static float aspectratiowidth;
 	static float aspectratioheight;
 	static bool orthographicprojection;
@@ -45,7 +42,7 @@ public:
 		return leftvector;
 	}
 	void rotateCamera(vector2 rotation){
-		vector3 yaxis = vector3(0.0f, 1.0f, 0.0f);
+		/*vector3 yaxis = vector3(0.0f, 1.0f, 0.0f);
 		vector3 horizontalaxis;
 		if (rotation.x != 0.0f) {
 			rotation.x = -rotation.x;
@@ -58,10 +55,23 @@ public:
 			forwardvector.Rotate(rotation.y, yaxis).Normalize();
 		}
 
-		upvector = forwardvector.crossProduct(horizontalaxis).Normalize();
-	}
-	void rotateCamera(float y, float x) {
+		upvector = forwardvector.crossProduct(horizontalaxis).Normalize();*/
 		vector3 yaxis = vector3(0.0f, 1.0f, 0.0f);
+		vector3 horizontalaxis;
+		Quaternion quat;
+		if (rotation.y != 0.0f) {
+			rotation.y = -rotation.y;
+			horizontalaxis = yaxis.crossProduct(cameraquatrotate.getForward()).Normalize();
+			cameraquatrotate = cameraquatrotate.Multiply(quat.Rotate(rotation.y, horizontalaxis));
+		}
+
+		if (rotation.x != 0.0f) {
+			cameraquatrotate = cameraquatrotate.Multiply(quat.Rotate(rotation.x, yaxis));
+		}
+
+	}
+	void rotateCamera(float flippedy, float flippedx) {
+		/*vector3 yaxis = vector3(0.0f, 1.0f, 0.0f);
 		vector3 horizontalaxis;
 		if (x != 0.0f){
 			x = -x;
@@ -69,13 +79,24 @@ public:
 			forwardvector = forwardvector.Rotate(x, horizontalaxis).Normalize();
 		}
 		/*upvector = forwardvector.crossProduct(horizontalaxis);  //maybe can take this out
-		upvector.Normalize();*/
+		upvector.Normalize();
 		if (y != 0.0f) {
 			horizontalaxis = yaxis.crossProduct(forwardvector).Normalize();
 			forwardvector = forwardvector.Rotate(y, yaxis).Normalize();
 		}
 
-		upvector = forwardvector.crossProduct(horizontalaxis).Normalize();
+		upvector = forwardvector.crossProduct(horizontalaxis).Normalize();*/
+		vector3 yaxis = vector3(0.0f, 1.0f, 0.0f);
+		vector3 horizontalaxis;
+		Quaternion quat;
+		if (flippedx != 0.0f) {
+			cameraquatrotate = cameraquatrotate.Multiply(quat.Rotate(flippedx, cameraquatrotate.getRight()));
+		}
+
+		if (flippedy != 0.0f) {
+			flippedy = -flippedy;
+			cameraquatrotate = cameraquatrotate.Multiply(quat.Rotate(flippedy, yaxis));
+		}
 	}
 	static vector3 getCameraposition() {
 		return position;
@@ -180,16 +201,16 @@ public:
 }*/
 
 	Camera() {
-		firstperson = false;
 		upvector = upvector.Normalize();
 		forwardvector = forwardvector.Normalize();
+
 	}
 	Camera(vector3 newposition) { //check if falls within world space
 		position = newposition;
 		upvector = vector3(0.0f, 1.0f, 0.0f);
 		forwardvector = vector3(0.0f, 0.0f, 1.0f);
 	};
-	Camera(vector3 newposition, vector3 newupvector, vector3 newforwardvector) { //check if falls within world space
+	Camera(vector3 newposition, vector3 newupvector, vector3 newforwardvector) {
 		position = newposition;
 		upvector = newupvector;
 		forwardvector = newforwardvector;
@@ -197,7 +218,7 @@ public:
 		upvector = upvector.Normalize();
 		forwardvector = forwardvector.Normalize();
 	};
-	Camera(vector3 newposition, vector3 newupvector, vector3 newforwardvector, float newfov, float max, float min, float w, float h, bool o = false) { //check if falls within world space
+	Camera(vector3 newposition, vector3 newupvector, vector3 newforwardvector, float newfov, float max, float min, float w, float h, bool o = false) { 
 		position = newposition;
 		upvector = newupvector;
 		forwardvector = newforwardvector;

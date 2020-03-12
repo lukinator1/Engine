@@ -21,6 +21,23 @@ void Quaternion::setQuaternion(float _x, float _y, float _z, float _w)
 	z = _z;
 	w = _w;
 }
+void Quaternion::setQuaternion(Quaternion newquat)
+{
+	*this = newquat;
+}
+Quaternion Quaternion::Rotate(float angle, vector3 axis) {
+	float sinhalfangle = sinf((angle / 2.0f) * (3.14159265358979323f / 180.0f));
+	float coshalfangle = cosf((angle / 2.0f) * (3.14159265358979323f / 180.0f));
+
+	float qx = axis.x * sinhalfangle;		//convert matrix -> quaternion
+	float qy = axis.y * sinhalfangle;
+	float qz = axis.z * sinhalfangle;
+	float qw = coshalfangle;
+	
+	Quaternion newquat(qx, qy, qz, qw);
+
+	return newquat.Normalize();
+}
 Quaternion Quaternion::Normalize()
 {
 	float length = sqrt((x * x) + (y * y) + (z * z) + (w * w));
@@ -60,22 +77,52 @@ Quaternion Quaternion::Multiply(float incx, float incy, float incz)
 }
 vector3 Quaternion::getForward() {
 	return vector3 (2.0f * (x * z - w * y), 2.0f * (y * z + w * x), 1.0f - 2.0f * (x * x + y * y));
+	/*vector3 vec(0, 0, 1.0f);
+	return vec.quatRotate(*this);*/
 }
 vector3 Quaternion::getBack() {
 	return vector3(-2.0f * (x * z - w * y), -2.0f * (y * z + w * x), -1.0f + 2.0f * (x * x + y * y));
+	/*vector3 vec(0, 0, -1.0f);
+	return vec.quatRotate(*this);*/
 }
 vector3 Quaternion::getUp(){
 	return vector3(2.0f * (x * y + w * z), 1.0f - 2.0f * (x * x + z * z), 2.0f * (y * z - w * x));
+	/*vector3 vec(0, 1.0f, 0);
+	return vec.quatRotate(*this);*/
 }
 vector3 Quaternion::getDown(){
 	return vector3(-2.0f * (x * y + w * z), -1.0f + 2.0f * (x * x + z * z), -2.0f * (y * z - w * x));
+	/*vector3 vec(0, -1.0f, 0);
+	return vec.quatRotate(*this);*/
 }
 vector3 Quaternion::getRight() {
 	return vector3(1.0f - 2.0f * (y * y + z * z), 2.0f * (x * y - w * z), 2.0f * (x * z + w * y));
+	/*vector3 vec(1.0f, 0, 0.0);
+	return vec.quatRotate(*this);*/
 }
 vector3 Quaternion::getLeft() {
 	return vector3(-1.0f + 2.0f * (y * y + z * z), -2.0f * (x * y - w * z), -2.0f * (x * z + w * y));
+	/*vector3 vec(-1.0f, 0, 0.0);
+	return vec.quatRotate(*this);*/
 }
+/*Quaternion &Quaternion::operator*(const Quaternion &inc)
+{
+	float myx = x * inc.w + w * inc.x + y * inc.z - z * inc.y;
+	float myy = y * inc.w + w * inc.y + z * inc.x - x * inc.z;
+	float myz = z * inc.w + w * inc.z + x * inc.y - y * inc.x;
+	float myw = w * inc.w - x * inc.x - y * inc.y - z * inc.z;
+
+	Quaternion newquat(myx, myy, myz, myw);
+	return newquat;
+}
+Quaternion &Quaternion::operator=(const Quaternion &inc)
+{
+	x = inc.x;
+	y = inc.y;
+	z = inc.z;
+	w = inc.w;
+	return *this;
+}*/
 Quaternion::~Quaternion()
 {
 }

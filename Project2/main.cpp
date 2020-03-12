@@ -332,7 +332,7 @@ int main(int argc, char* argv[]) {
 	shaderit.pointlight = plights[1];
 	Spotlight *slights = new Spotlight[1];
 	slights[0] = Spotlight(vector3(0.6f, 0.0f, 0.0f), vector3(-2.0f, 0.0f, 5.0f), vector3(1.0f, 1.0f, 1.0f), 30.0f, 0.7f, 0.8f, 0.0f, 0.1f);
-	shaderit.getSpotLights()[0] = &flashlight;
+	/*shaderit.getSpotLights()[0] = &flashlight;*/
 
 	//time calculation
 	int prevtimecounter = 0;
@@ -350,7 +350,7 @@ int main(int argc, char* argv[]) {
 	bool fpscounter = true;
 
 	//game variable tests
-	Camera.setMouseLook(false);
+	Camera.setMouseLook(true);
 	bool flashlighton = true;
 	float unitest = 0.0f;
 
@@ -393,16 +393,16 @@ int main(int argc, char* argv[]) {
 
 		//game
 		if (Inputs.keyboardstate[Input::W].first == 1) {
-			Camera.moveCamera(Camera.getForwardvector(), deltatime * 20);
+			Camera.moveCamera(Camera.cameraquatrotate.getForward(), deltatime * 20);
 		}
 		if (Inputs.keyboardstate[Input::A].first == 1) {
-			Camera.moveCamera(Camera.getLeftVector(), deltatime * 20);
+			Camera.moveCamera(Camera.cameraquatrotate.getLeft(), deltatime * 20);
 		}
 		if (Inputs.keyboardstate[Input::S].first == 1) {
-			Camera.moveCamera(Camera.getForwardvector(), -(deltatime * 20));
+			Camera.moveCamera(Camera.cameraquatrotate.getBack(), (deltatime * 20));
 		}
 		if (Inputs.keyboardstate[Input::D].first == 1) {
-			Camera.moveCamera(Camera.getLeftVector(), -(deltatime * 20));
+			Camera.moveCamera(Camera.cameraquatrotate.getRight(), (deltatime * 20));
 		}
 		if (Inputs.keyboardstate[Input::Keyup].first == 1) {
 			Camera.rotateCamera(0.0f, 2.0f);

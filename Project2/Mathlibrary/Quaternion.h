@@ -19,9 +19,13 @@ public:
 	vector3 getDown();
 	vector3 getRight();
 	vector3 getLeft();
+	/*Quaternion & operator*(const Quaternion & inc);
+	Quaternion & operator=(const Quaternion &inc);*/
 	Quaternion();
 	Quaternion(float x, float y, float z, float w);
 	void setQuaternion(float _x, float _y, float _z, float _w);
+	void setQuaternion(Quaternion newquat);
+	Quaternion Rotate(float angle, vector3 axis);
 	~Quaternion();
 };
 
