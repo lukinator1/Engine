@@ -46,7 +46,6 @@ vector3 vector3::Rotate(float angle, vector3 axis) {
 	/*x = newquat.x;
 	y = newquat.y;
 	z = newquat.z;*/
-
 	return newvector;
 	/*return *this;*/
 }

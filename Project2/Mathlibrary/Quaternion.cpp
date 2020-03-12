@@ -26,8 +26,8 @@ void Quaternion::setQuaternion(Quaternion newquat)
 	*this = newquat;
 }
 Quaternion Quaternion::Rotate(float angle, vector3 axis) {
-	float sinhalfangle = sinf((angle / 2.0f) * (3.14159265358979323f / 180.0f));
-	float coshalfangle = cosf((angle / 2.0f) * (3.14159265358979323f / 180.0f));
+	float sinhalfangle = sinf((angle / 2.0f) * (3.1415926535897932384626433832795f / 180.0f));
+	float coshalfangle = cosf((angle / 2.0f) * (3.1415926535897932384626433832795f / 180.0f));
 
 	float qx = axis.x * sinhalfangle;		//convert matrix -> quaternion
 	float qy = axis.y * sinhalfangle;
@@ -36,7 +36,7 @@ Quaternion Quaternion::Rotate(float angle, vector3 axis) {
 	
 	Quaternion newquat(qx, qy, qz, qw);
 
-	return newquat.Normalize();
+	return newquat;
 }
 Quaternion Quaternion::Normalize()
 {
@@ -46,14 +46,16 @@ Quaternion Quaternion::Normalize()
 		return *this;
 	}
 	else {
-		return Quaternion(x / length, y / length, z / length, w / length);
+		Quaternion quat(x / length, y / length, z / length, w / length);
+		return quat;
 	}
 }
 Quaternion Quaternion::Conjugate() {
 	float newx = -x;
 	float newy = -y;
 	float newz = -z;
-	return Quaternion(newx, newy, newz, this->w);
+	Quaternion quat(newx, newy, newz, this->w);
+	return quat;
 }
 Quaternion Quaternion::Multiply(Quaternion inc)
 {
@@ -114,7 +116,7 @@ vector3 Quaternion::getLeft() {
 
 	Quaternion newquat(myx, myy, myz, myw);
 	return newquat;
-}
+}*/
 Quaternion &Quaternion::operator=(const Quaternion &inc)
 {
 	x = inc.x;
@@ -122,7 +124,7 @@ Quaternion &Quaternion::operator=(const Quaternion &inc)
 	z = inc.z;
 	w = inc.w;
 	return *this;
-}*/
+}
 Quaternion::~Quaternion()
 {
 }

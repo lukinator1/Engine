@@ -8,7 +8,7 @@ public:
 	static vector3 position;
 	static vector3 forwardvector;
 	static vector3 upvector;
-	static Quaternion cameraquatrotate;
+	static Quaternion camerarotation;
 	static bool mouselook;
 	static float fov;
 	static float maxviewdistance;
@@ -33,14 +33,14 @@ public:
 	void moveCamera(vector3 direction, float distance) {
 		position = position.add(direction.multiply(distance));
 	}
-	vector3 getRightVector(){
+	/*vector3 getRightVector(){
 		vector3 rightvector = upvector.crossProduct(forwardvector).Normalize();
 		return rightvector;
 	}
 	vector3 getLeftVector() {
 		vector3 leftvector = forwardvector.crossProduct(upvector).Normalize();
 		return leftvector;
-	}
+	}*/
 	void rotateCamera(vector2 rotation){
 		/*vector3 yaxis = vector3(0.0f, 1.0f, 0.0f);
 		vector3 horizontalaxis;
@@ -59,54 +59,85 @@ public:
 		vector3 yaxis = vector3(0.0f, 1.0f, 0.0f);
 		vector3 horizontalaxis;
 		Quaternion quat;
-		if (rotation.y != 0.0f) {
+	/*	if (rotation.y != 0.0f) {
 			rotation.y = -rotation.y;
-			horizontalaxis = yaxis.crossProduct(cameraquatrotate.getForward()).Normalize();
-			cameraquatrotate = cameraquatrotate.Multiply(quat.Rotate(rotation.y, horizontalaxis));
+			horizontalaxis = yaxis.crossProduct(camerarotation.getForward()).Normalize();
+			camerarotation = camerarotation.Multiply(quat.Rotate(rotation.y, horizontalaxis));
 		}
 
 		if (rotation.x != 0.0f) {
-			cameraquatrotate = cameraquatrotate.Multiply(quat.Rotate(rotation.x, yaxis));
-		}
+			camerarotation = camerarotation.Multiply(quat.Rotate(rotation.x, yaxis));
+		}*/
 
 	}
 	void rotateCamera(float flippedy, float flippedx) {
 		/*vector3 yaxis = vector3(0.0f, 1.0f, 0.0f);
 		vector3 horizontalaxis;
-		if (x != 0.0f){
-			x = -x;
+		Quaternion quat;
+		if (flippedx != 0.0f){
+			flippedx = -flippedx;
 			horizontalaxis = yaxis.crossProduct(forwardvector).Normalize();
-			forwardvector = forwardvector.Rotate(x, horizontalaxis).Normalize();
+
+			float sinhalfangle = sinf((flippedx / 2.0f) * (3.14159265358979323f / 180.0f));
+			float coshalfangle = cosf((flippedx / 2.0f) * (3.14159265358979323f / 180.0f));
+
+			float qx = horizontalaxis.x * sinhalfangle;		//convert matrix -> quaternion
+			float qy = horizontalaxis.y * sinhalfangle;
+			float qz = horizontalaxis.z * sinhalfangle;
+			float qw = coshalfangle;
+
+			Quaternion rotation(qx, qy, qz, qw);
+			Quaternion rotationconjugate = rotation.Conjugate();
+
+			Quaternion newquat = (rotation.Multiply(forwardvector.x, forwardvector.y, forwardvector.z)).Multiply(rotationconjugate);
+			camerarotation = newquat;
+			camerarotation = camerarotation.Normalize();
+			forwardvector.setVector(newquat.x, newquat.y, newquat.z);
+			forwardvector = forwardvector.Normalize();
+			/*forwardvector = forwardvector.Rotate(flippedx, horizontalaxis).Normalize();
 		}
-		/*upvector = forwardvector.crossProduct(horizontalaxis);  //maybe can take this out
-		upvector.Normalize();
-		if (y != 0.0f) {
+		Quaternion otherquat;
+		if (flippedy != 0.0f) {
 			horizontalaxis = yaxis.crossProduct(forwardvector).Normalize();
-			forwardvector = forwardvector.Rotate(y, yaxis).Normalize();
+
+			otherquat = otherquat.Rotate(-flippedy, yaxis);
+			camerarotation = otherquat.Multiply(camerarotation);
+			camerarotation = camerarotation.Normalize();
+		}*/
+	    /*	if (flippedy != 0.0f) {
+			horizontalaxis = yaxis.crossProduct(forwardvector).Normalize();
+			forwardvector = forwardvector.Rotate(flippedy, yaxis).Normalize();
 		}
 
 		upvector = forwardvector.crossProduct(horizontalaxis).Normalize();*/
+
 		vector3 yaxis = vector3(0.0f, 1.0f, 0.0f);
-		vector3 horizontalaxis;
+		vector3 horizontalaxis = camerarotation.getRight();
 		Quaternion quat;
+
 		if (flippedx != 0.0f) {
-			cameraquatrotate = cameraquatrotate.Multiply(quat.Rotate(flippedx, cameraquatrotate.getRight()));
+
+			quat = quat.Rotate(flippedx, horizontalaxis);
+			camerarotation = (camerarotation).Multiply(quat);
+			camerarotation = camerarotation.Normalize();
 		}
 
+		Quaternion otherquat;
 		if (flippedy != 0.0f) {
-			flippedy = -flippedy;
-			cameraquatrotate = cameraquatrotate.Multiply(quat.Rotate(flippedy, yaxis));
+			otherquat = otherquat.Rotate(-flippedy, yaxis);
+			camerarotation = camerarotation.Multiply(otherquat);
+			camerarotation = camerarotation.Normalize();
 		}
 	}
 	static vector3 getCameraposition() {
 		return position;
 	}
-	static vector3 getUpvector() {
+/*	static vector3 getUpvector() {
 		return upvector;
 	}
 	static vector3 getForwardvector() {
 		return forwardvector;
-	}
+	}*/
 	void setAspectRatio(float newheight, float newwidth) {
 		aspectratioheight = newheight;
 		aspectratiowidth = newwidth;
@@ -201,27 +232,28 @@ public:
 }*/
 
 	Camera() {
-		upvector = upvector.Normalize();
+		/*upvector = upvector.Normalize();
 		forwardvector = forwardvector.Normalize();
-
+		camerarotation.Normalize();*/
 	}
 	Camera(vector3 newposition) { //check if falls within world space
 		position = newposition;
-		upvector = vector3(0.0f, 1.0f, 0.0f);
-		forwardvector = vector3(0.0f, 0.0f, 1.0f);
+		camerarotation = Quaternion(0.0f, 0.0f, 0.0f, 1.0f);
+		/*upvector = vector3(0.0f, 1.0f, 0.0f);
+		forwardvector = vector3(0.0f, 0.0f, 1.0f);*/
 	};
 	Camera(vector3 newposition, vector3 newupvector, vector3 newforwardvector) {
 		position = newposition;
-		upvector = newupvector;
+		/*upvector = newupvector;
 		forwardvector = newforwardvector;
 
 		upvector = upvector.Normalize();
-		forwardvector = forwardvector.Normalize();
+		forwardvector = forwardvector.Normalize();*/
 	};
 	Camera(vector3 newposition, vector3 newupvector, vector3 newforwardvector, float newfov, float max, float min, float w, float h, bool o = false) { 
 		position = newposition;
-		upvector = newupvector;
-		forwardvector = newforwardvector;
+		/*upvector = newupvector;
+		forwardvector = newforwardvector;*/
 		fov = newfov;
 		maxviewdistance = max;
 		minviewdistance = min;
@@ -229,8 +261,8 @@ public:
 		aspectratioheight = h;
 		orthographicprojection = o;
 
-		upvector = upvector.Normalize();
-		forwardvector = forwardvector.Normalize();
+		/*upvector = upvector.Normalize();
+		forwardvector = forwardvector.Normalize();*/
 	};
 	~Camera();
 };

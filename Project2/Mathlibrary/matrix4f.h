@@ -59,9 +59,12 @@ public:
 	}
 	void makeQuatRotation(Quaternion q) {
 		/*(2.0f * (x * z - w * y), 2.0f * (y * z + w * x), 1.0f - 2.0f * (x * x + y * y));*/
-		vector3 f(2.0f * (q.x * q.z - q.w * q.y), 2.0f * (q.y * q.z + q.w * q.x), 1.0f - 2.0f * (q.x * q.x + q.y * q.y));
+		/*vector3 f(2.0f * (q.x * q.z - q.w * q.y), 2.0f * (q.y * q.z + q.w * q.x), 1.0f - 2.0f * (q.x * q.x + q.y * q.y));
 		vector3 u(2.0f * (q.x * q.y + q.w * q.z), 1.0f - 2.0f * (q.x * q.x + q.z * q.z), 2.0f * (q.y * q.z - q.w * q.x));
-		vector3 r(1.0f - 2.0f * (q.y * q.y + q.z * q.z), 2.0f * (q.x * q.y - q.w * q.z), 2.0f * (q.x * q.z + q.w * q.y));
+		vector3 r(1.0f - 2.0f * (q.y * q.y + q.z * q.z), 2.0f * (q.x * q.y - q.w * q.z), 2.0f * (q.x * q.z + q.w * q.y));*/
+		vector3 f = q.getForward();
+		vector3 u = q.getUp();
+		vector3 r = q.getRight();
 		f = f.Normalize();
 		u = u.Normalize();
 		r = r.Normalize();
@@ -97,24 +100,18 @@ public:
 		m[2][0] = 0;			 m[2][1] = 0;			m[2][2] = -2.0f/depth;	m[2][3] = -(far + near) / depth;
 		m[3][0] = 0;			 m[3][1] = 0;			m[3][2] = 0;			m[3][3] = 1;
 	}
-	/*void makeCamera(Quaternion q) { 
-		/*vector3 t = forward;	//normalize?
+	void makeCamera(vector3 forward, vector3 up) { 
+		vector3 f = forward;	//normalize?
 		vector3 u = up;
-		u = u.crossProduct(t);	//right vector
-		vector3 right = t.crossProduct(u);
-		Quaternion newquat(t, u, r, 0);
+		u = u.crossProduct(f);	//right vector
+		vector3 r = f.crossProduct(u);
 
-		makeQuatRotation()
-
-		vector3 f(2.0f * (q.x * q.z - q.w * q.y), 2.0f * (q.y * q.z + q.w * q.x), 1.0f - 2.0f * (q.x * q.x + q.y * q.y));
-		vector3 u(2.0f * (q.x * q.y + q.w * q.z), 1.0f - 2.0f * (q.x * q.x + q.z * q.z), 2.0f * (q.y * q.z - q.w * q.x));
-		vector3 r(1.0f - 2.0f * (q.y * q.y + q.z * q.z), 2.0f * (q.x * q.y - q.w * q.z), 2.0f * (q.x * q.z + q.w * q.y));
 		
 		m[0][0] = u.x;			m[0][1] = u.y;			m[0][2] = u.z;			m[0][3] = 0;
 		m[1][0] = r.x;			m[1][1] = r.y;			m[1][2] = r.z;			m[1][3] = 0;
 		m[2][0] = f.x;			m[2][1] = f.y;			m[2][2] = f.z;			m[2][3] = 0;
 		m[3][0] = 0;			m[3][1] = 0;			m[3][2] = 0;			m[3][3] = 1.0f;
-	}*/
+	}
 	matrix4f operator*(matrix4f rhs) {
 		matrix4f tempmatrix;
 		for (int i = 0; i < 4; i++) {

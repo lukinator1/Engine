@@ -368,9 +368,9 @@ int main(int argc, char* argv[]) {
 						break;
 					}
 					else if (SDL_GetScancodeFromKey(event.key.keysym.sym) == exitframekey) {
-							frameByFrame();
-							break;
-						}
+						frameByFrame();
+						break;
+					}
 				}
 				else if (event.type == SDL_KEYUP) {
 					if (SDL_GetScancodeFromKey(event.key.keysym.sym) == stepframekey) {
@@ -393,16 +393,16 @@ int main(int argc, char* argv[]) {
 
 		//game
 		if (Inputs.keyboardstate[Input::W].first == 1) {
-			Camera.moveCamera(Camera.cameraquatrotate.getForward(), deltatime * 20);
+			Camera.moveCamera(Camera.camerarotation.getForward(), deltatime * 20);
 		}
 		if (Inputs.keyboardstate[Input::A].first == 1) {
-			Camera.moveCamera(Camera.cameraquatrotate.getLeft(), deltatime * 20);
+			Camera.moveCamera(Camera.camerarotation.getLeft(), deltatime * 20);
 		}
 		if (Inputs.keyboardstate[Input::S].first == 1) {
-			Camera.moveCamera(Camera.cameraquatrotate.getBack(), (deltatime * 20));
+			Camera.moveCamera(Camera.camerarotation.getBack(), (deltatime * 20));
 		}
 		if (Inputs.keyboardstate[Input::D].first == 1) {
-			Camera.moveCamera(Camera.cameraquatrotate.getRight(), (deltatime * 20));
+			Camera.moveCamera(Camera.camerarotation.getRight(), (deltatime * 20));
 		}
 		if (Inputs.keyboardstate[Input::Keyup].first == 1) {
 			Camera.rotateCamera(0.0f, 2.0f);
@@ -451,7 +451,7 @@ int main(int argc, char* argv[]) {
 		plights[1].setPosition(vector3(7.0f, 0.0f, 8.0 * (float)(cos(unitest) + 1.0f / 2.0f) + 10.0f));
 		unitest += deltatime;
 		flashlight.setPosition(Camera.getCameraposition());
-		flashlight.setDirection(Camera.forwardvector);
+		flashlight.setDirection(Camera.camerarotation.getForward());
 		/*shaderit.useShader();
 		shaderit.updateUniforms(transform.newUnprojectedMatrix(), transform.newTransformationMatrix(), transform.position, material);
 		meshme.drawMesh();*/

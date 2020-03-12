@@ -19,7 +19,7 @@ public:
 	matrix4f newTransformationMatrix() {
 		matrix4f projectionmatrix;
 		matrix4f unprojected;
-		matrix4f camerarotation;
+		matrix4f camerarotationmatrix;
 		matrix4f cameratranslation;
 		/*matrix4f translationmatrix;
 		matrix4f rotationmatrix;
@@ -31,12 +31,12 @@ public:
 		scalematrix.makeScaling(scaling);
 		matrix4f transformationmatrix = translationmatrix * ( /*rotationamtrix quatrotationmatrix * scalematrix);*/
 		unprojected = newUnprojectedMatrix();
-		camerarotation.makeQuatRotation(cameraquatrotate);
+		camerarotationmatrix.makeQuatRotation(camerarotation);
 		cameratranslation.makeTranslation(-(position.x), -(position.y), -(position.z));
 		projectionmatrix.makeProjection(fov, aspectratiowidth, aspectratioheight, minviewdistance, maxviewdistance);
 		/*	if (orthographicprojection == false) { */
 
-		return projectionmatrix * (camerarotation * (cameratranslation * unprojected));
+		return projectionmatrix * (camerarotationmatrix * (cameratranslation * unprojected));
 
 		/*	}
 			else {
@@ -55,11 +55,11 @@ public:
 		return translationmatrix * (quatrotationmatrix * scalematrix);
 	}
 	matrix4f newViewMatrix() {
-		matrix4f camerarotation;
+		matrix4f camerarotationmatrix;
 		matrix4f cameratranslation;
-		camerarotation.makeQuatRotation(cameraquatrotate);
+		camerarotationmatrix.makeQuatRotation(camerarotation);
 		cameratranslation.makeTranslation(-(position.x), -(position.y), -(position.z));
-		return camerarotation * (cameratranslation * newUnprojectedMatrix());
+		return camerarotationmatrix * (cameratranslation * newUnprojectedMatrix());
 	}
 	matrix4f newProjectionMatrix()
 	{
@@ -71,7 +71,7 @@ public:
 		matrix4f translationmatrix;
 		matrix4f rotationmatrix;
 		matrix4f scalematrix;
-		matrix4f camerarotation;
+		matrix4f camerarotationmatrix;
 		matrix4f quatrotationmatrix;
 		matrix4f cameratranslation;
 		matrix4f projectionmatrix;
@@ -80,11 +80,11 @@ public:
 		rotationmatrix.makeRotation(rotation);
 		quatrotationmatrix.makeQuatRotation(quatrotation);
 		scalematrix.makeScaling(scaling);
-		camerarotation.makeQuatRotation(cameraquatrotate);
+		camerarotationmatrix.makeQuatRotation(camerarotation);
 		cameratranslation.makeTranslation(-(position.x), -(position.y), -(position.z));
 		projectionmatrix.makeProjection(fov, aspectratiowidth, aspectratioheight, minviewdistance, maxviewdistance);
 
-		return projectionmatrix * (camerarotation * (quatrotationmatrix * scalematrix));
+		return projectionmatrix * (camerarotationmatrix * (quatrotationmatrix * scalematrix));
 	}
 	matrix4f newTextMatrix() {
 		matrix4f textmatrix;
