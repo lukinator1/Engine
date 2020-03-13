@@ -2,7 +2,7 @@
 #include "Texture.h"
 #include "../Mathlibrary/vector3.h"
 #include <string>
-class Materials : public Texture //todo: alphas
+class Materials : public Texture //todo: alphas, change into map
 {
 public:
 	Texture texture;

@@ -374,6 +374,14 @@ void Console::interpretInput(Scene &_currentscene, bool &gameisrunning, bool &fr
 		response = "Please enter a valid aspect ratio.";
 	}
 	}
+	else if (consoleinput == "mouselook on") {
+		thecamera->setMouseLook(true);
+		response = "Mouselook has been set on.";
+	}
+	else if (consoleinput == "mouselook off") {
+		thecamera->setMouseLook(false);
+		response = "Mouselook has been set off.";
+	}
 	/*else if (consoleinput.substr(0, 20) == "set min viewdistance") {
 	if (consoleinput.size() >= 22) {
 		std::string maxviewdistance = consoleinput.substr(21, consoleinput.size());

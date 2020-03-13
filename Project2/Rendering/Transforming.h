@@ -1,19 +1,19 @@
 #pragma once
 #include "../Camera.h"
 #include "../Mathlibrary/Mathlibrary.h"
-class Transforming : public Camera
+class Transforming : public Camera //transform parent + matrix
 {
 private:
 public:
 	vector3 translation;
-	vector3 rotation;
+	/*vector3 rotation;*/
 	vector3 scaling;
-	Quaternion quatrotation;
+	Quaternion rotation;
 	Transforming() {
 		translation.setVector(0.0f, 0.0f, 0.0f);
-		rotation.setVector(0.0f, 0.0f, 0.0f);
+		/*rotation.setVector(0.0f, 0.0f, 0.0f);*/
 		scaling.setVector(1.0f, 1.0f, 1.0f);
-		quatrotation.setQuaternion(0.0, 0.0, 0.0, 1.0f);
+		rotation.setQuaternion(0.0, 0.0, 0.0, 1.0f);
 	};
 	~Transforming();
 	matrix4f newTransformationMatrix() {
@@ -49,8 +49,8 @@ public:
 		matrix4f quatrotationmatrix;
 		matrix4f scalematrix;
 		translationmatrix.makeTranslation(translation);
-		rotationmatrix.makeRotation(rotation);
-		quatrotationmatrix.makeQuatRotation(quatrotation);
+		/*rotationmatrix.makeRotation(rotation);*/
+		quatrotationmatrix.makeQuatRotation(rotation);
 		scalematrix.makeScaling(scaling);
 		return translationmatrix * (quatrotationmatrix * scalematrix);
 	}
@@ -77,8 +77,8 @@ public:
 		matrix4f projectionmatrix;
 
 		translationmatrix.makeTranslation(translation);
-		rotationmatrix.makeRotation(rotation);
-		quatrotationmatrix.makeQuatRotation(quatrotation);
+		/*rotationmatrix.makeRotation(rotation);*/
+		quatrotationmatrix.makeQuatRotation(rotation);
 		scalematrix.makeScaling(scaling);
 		camerarotationmatrix.makeQuatRotation(camerarotation);
 		cameratranslation.makeTranslation(-(position.x), -(position.y), -(position.z));
@@ -99,42 +99,82 @@ public:
 		minviewdistance = newminviewdistance;
 		maxviewdistance = newmaxviewdistance;
 	}
-	vector3 getTranslationVector() {
+	vector3 getPosition() {
 		return translation;
 	}
-	vector3 getRotationVector() {
+	Quaternion getRotation() {
 		return rotation;
 	}
-	vector3 getScalingVector() {
+	vector3 getScale() {
 		return scaling;
 	}
-	void setTranslationVector(vector3 newtranslationvector){
+	void setPosition(vector3 newtranslationvector){
 		translation = newtranslationvector;
 		}
-	void setRotationVector(vector3 newrotationvector) {
+	/*void setRotation(vector3 newrotationvector) {
 		rotation = newrotationvector;
-	}
-	void setScalingVector(vector3 newscalingvector) {
+	}*/
+	void setScale(vector3 newscalingvector) {
 		scaling = newscalingvector;
 	}
-	void setTranslationVector(float x, float y, float z) {
+	void setPosition(float x, float y, float z) {
 		translation.x = x;
 		translation.y = y;
 		translation.z = z;
 	}
-	void setRotationVector(float x, float y, float z) {
+	/*void setRotationVector(float x, float y, float z) {
 		rotation.x = x;
 		rotation.y = y;
 		rotation.z = z;
+	}*/
+	void setRotation(vector3 vectorrotation) {
+		Quaternion newquat;
+		if (vectorrotation.y != 0) {
+			newquat = newquat.Rotate(vectorrotation.y, vector3(1.0, 0.0f, 0.0f));
+			rotation = newquat.Multiply(rotation);
+			rotation = rotation.Normalize();
+		}
+		if (vectorrotation.x != 0){
+			newquat.setQuaternion(0, 0, 0, 1);
+			newquat = newquat.Rotate(vectorrotation.x, vector3(0.f, 1.0f, 0.0f));
+			rotation = newquat.Multiply(rotation);
+			rotation = rotation.Normalize();
+		}
+		if (vectorrotation.z != 0) {
+			newquat.setQuaternion(0, 0, 0, 1);
+			newquat = newquat.Rotate(vectorrotation.z, vector3(0.f, 0.0f, 1.0f));
+			rotation = newquat.Multiply(rotation);
+			rotation = rotation.Normalize();
+		}
+	}
+	void setRotation(float x, float y, float z) {
+		Quaternion newquat;
+		if (y != 0) {
+			newquat = newquat.Rotate(y, vector3(1.0, 0.0f, 0.0f));
+			rotation = newquat.Multiply(rotation);
+			rotation = rotation.Normalize();
+		}
+		if (x != 0) {
+			newquat.setQuaternion(0, 0, 0, 1);
+			newquat = newquat.Rotate(x, vector3(0.f, 1.0f, 0.0f));
+			rotation = newquat.Multiply(rotation);
+			rotation = rotation.Normalize();
+		}
+		if (z != 0) {
+			newquat.setQuaternion(0, 0, 0, 1);
+			newquat = newquat.Rotate(z, vector3(0.f, 0.0f, 1.0f));
+			rotation = newquat.Multiply(rotation);
+			rotation = rotation.Normalize();
+		}
 	}
 	void setQuatRotation(Quaternion newquatrotation) {
-		quatrotation = newquatrotation;
+		rotation = newquatrotation;
 	}
 	void setQuatRotation(float _x, float _y, float _z, float _w) {
-		quatrotation.x = _x;
-		quatrotation.y = _y;
-		quatrotation.z = _z;
-		quatrotation.w = _w;
+		rotation.x = _x;
+		rotation.y = _y;
+		rotation.z = _z;
+		rotation.w = _w;
 	}
 	void setScalingVector(float x, float y, float z) {
 		scaling.x = x;

@@ -3,7 +3,7 @@
 #include "Rendering/Transforming.h"
 #include "Rendering/Shader.h"
 #include "Component.h"
-class Entity
+class Entity //set parent to transform
 {
 private:
 public:

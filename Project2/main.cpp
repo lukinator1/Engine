@@ -62,6 +62,12 @@ void frameByFrame() {
 	framekeyheld = false;
 }
 int main(int argc, char* argv[]) {
+	float answer = 6.0f + 4.165f + (1024.0f / 1048576.0f) * (15, 000.0f * (1.0f / 60.0f) * (1.0f / 1000.0f));
+	std::cout << answer << std::endl;
+	answer = 6.0f + 4.165f + (2048.0f / 1048576.0f) * (15, 000.0f * (1.0f / 60.0f) * (1.0f / 1000.0f));
+	std::cout << answer << std::endl;
+	answer = 6.0f + 4.165f + (4096.0f / 1048576.0f) * (15, 000.0f * (1.0f / 60.0f) * (1.0f / 1000.0f));
+	std::cout << answer << std::endl;
 	int count = 0;
 		int sfsize = 500;  //settting configurations
 		int sfalignment = 8;
@@ -270,6 +276,7 @@ int main(int argc, char* argv[]) {
 	Mesh cloudmodel("Cloud.obj");
 	Mesh snakemodel("snake.obj");
 	Mesh scoutmodel("scout.obj");
+	Mesh rinmodel("rintezuka.obj");
 
 	//test scene
 	Scene sceneone;		
@@ -277,31 +284,38 @@ int main(int argc, char* argv[]) {
 	Scene scenetwo;
 
 	Entity Quote; 
-	Quote.transform.setTranslationVector(vector3(10.0f, 17.5f, 12.0f));
+	Quote.transform.setPosition(vector3(10.0f, 17.5f, 12.0f));
 	Meshrenderer component(quotemodel, material);
 	Quote.addComponent(&component);
 
 	Entity Cloud;
-	Cloud.transform.setTranslationVector(vector3(5.0f, 0.0f, 10.0f));
-	Cloud.transform.setScalingVector(vector3(0.05f, 0.05f, 0.05f));
+	Cloud.transform.setPosition(vector3(5.0f, 0.0f, 10.0f));
+	Cloud.transform.setScale(vector3(0.05f, 0.05f, 0.05f));
 	Meshrenderer cloudcomponent(cloudmodel, material);
 	Cloud.addComponent(&cloudcomponent);
 	Quote.addSubEntity(&Cloud);
 
 	Entity Snake;
-	Snake.transform.setTranslationVector(vector3(10.0f, -3.0f, 20.0f));
-	Snake.transform.setScalingVector(vector3(0.08f, 0.08f, 0.08f));
+	Snake.transform.setPosition(vector3(10.0f, -3.0f, 20.0f));
+	Snake.transform.setScale(vector3(0.08f, 0.08f, 0.08f));
 	Meshrenderer snakecomponent(snakemodel, material);
 	Snake.addComponent(&snakecomponent);
 	Cloud.addSubEntity(&Snake);
 
 	Entity Scout;
-	Scout.transform.setTranslationVector(vector3(30.0f, 0.0f, 15.0f));
-	Scout.transform.setScalingVector(vector3(0.07f, 0.07f, 0.07f));
+	Scout.transform.setPosition(vector3(30.0f, 0.0f, 15.0f));
+	Scout.transform.setScale(vector3(0.07f, 0.07f, 0.07f));
 	Meshrenderer scoutcomponent(scoutmodel, material);
 	Scout.addComponent(&scoutcomponent);
 	Snake.addSubEntity(&Scout);
-	
+
+	/*Entity Rintezuka;
+	Rintezuka.transform.setPosition(vector3(30.0f, 0.0f, 15.0f));
+	Rintezuka.transform.setScale(vector3(0.07f, 0.07f, 0.07f));
+	Meshrenderer rincomponent(rinmodel, material);
+	Rintezuka.addComponent(&rincomponent);
+	Scout.addSubEntity(&Rintezuka);*/
+
 	Entity field;
 	Vertex vertices[] = { Vertex(vector3(-fieldWidth, 0.0f, -fieldDepth), vector2(0.0f, 0.0f)),
 						Vertex(vector3(-fieldWidth, 0.0f, fieldDepth * 3), vector2(0.0f, 1.0f)),
@@ -311,7 +325,7 @@ int main(int argc, char* argv[]) {
 					  2, 1, 3 };
 	Mesh meshme(vertices, indices, sizeof(vertices) / sizeof(vertices[0]), sizeof(indices) / sizeof(indices[0]));
 	Meshrenderer fieldcomponent(meshme, material);
-	field.transform.setTranslationVector(vector3(0.0f, -1.0f, 5.0f));
+	field.transform.setPosition(vector3(0.0f, -1.0f, 5.0f));
 	field.addComponent(&fieldcomponent);
 	Scout.addSubEntity(&field);
 
@@ -446,7 +460,7 @@ int main(int argc, char* argv[]) {
 		}
 
 		//enginetests
-		transform.setTranslationVector(vector3(0.0f, -1.0f, 5.0f));
+		transform.setPosition(vector3(0.0f, -1.0f, 5.0f));
 		plights[0].setPosition(vector3(3.0f, 0.0f, 8.0 * (float)(sin(unitest) + 1.0f / 2.0f) + 10.0f));
 		plights[1].setPosition(vector3(7.0f, 0.0f, 8.0 * (float)(cos(unitest) + 1.0f / 2.0f) + 10.0f));
 		unitest += deltatime;

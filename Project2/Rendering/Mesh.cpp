@@ -120,6 +120,29 @@ void Mesh::loadMeshObj(std::string file) //max size of vector?
 							importedvertices.back().position.z = stof(buffer);
 					}
 
+					else if (buffer[0] == 'v' && buffer.size() == 2) {   //texture coordinates
+						if (buffer[1] == 't') {
+							getline(streamer, buffer, ' ');			//x
+							while (buffer == "") {				//eliminate whitespaces
+								getline(streamer, buffer, ' ');
+							}
+							importedvertices.push_back(Vertex(stof(buffer), 0.0f, 0.0f));
+
+							getline(streamer, buffer, ' ');			//y
+							while (buffer == "") {
+								getline(streamer, buffer, ' ');
+							}
+							importedvertices.back().position.y = stof(buffer);
+
+
+							getline(streamer, buffer, ' ');			//z
+							while (buffer == "") {
+								getline(streamer, buffer, ' ');
+							}
+							importedvertices.back().position.z = stof(buffer);
+						}
+					}
+
 					else if (buffer[0] == 'f' && buffer.size() == 1) {   //indices
 						getline(streamer, buffer, '/');				//x1
 						importedindices.push_back(stoi(buffer) - 1);

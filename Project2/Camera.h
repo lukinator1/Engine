@@ -6,10 +6,9 @@ class Camera	//maybe make this inheret from window?
 private: 
 public:
 	static vector3 position;
-	static vector3 forwardvector;
-	static vector3 upvector;
+	/*static vector3 forwardvector;
+	static vector3 upvector;*/
 	static Quaternion camerarotation;
-	static bool mouselook;
 	static float fov;
 	static float maxviewdistance;
 	static float minviewdistance;
@@ -57,8 +56,22 @@ public:
 
 		upvector = forwardvector.crossProduct(horizontalaxis).Normalize();*/
 		vector3 yaxis = vector3(0.0f, 1.0f, 0.0f);
-		vector3 horizontalaxis;
+		vector3 horizontalaxis = camerarotation.getRight();
 		Quaternion quat;
+
+		if (rotation.y != 0.0f) {
+
+			quat = quat.Rotate(rotation.y, horizontalaxis);
+			camerarotation = (camerarotation).Multiply(quat);
+			camerarotation = camerarotation.Normalize();
+		}
+
+		Quaternion otherquat;
+		if (rotation.x != 0.0f) {
+			otherquat = otherquat.Rotate(-rotation.y, yaxis);
+			camerarotation = camerarotation.Multiply(otherquat);
+			camerarotation = camerarotation.Normalize();
+		}
 	/*	if (rotation.y != 0.0f) {
 			rotation.y = -rotation.y;
 			horizontalaxis = yaxis.crossProduct(camerarotation.getForward()).Normalize();
