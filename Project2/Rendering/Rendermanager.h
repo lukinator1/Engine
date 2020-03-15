@@ -23,7 +23,7 @@ public:
 	void renderingStartup(Window &window);
 	void renderingShutdown();
 	void update(Scene &currentscene);
-	void renderEntity(Entity &gameobject, Shader *shade);
+	void renderEntity(Entity &gameobject, Shader * &shade);
 	void renderScene(Scene & currentscene);
 	vector3 getAmbientLight();
 	void setAmbientLight(vector3 _ambientlight);

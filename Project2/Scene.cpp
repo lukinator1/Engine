@@ -23,6 +23,27 @@ void Scene::inputScene()
 {
 	root.entityInput();
 }
+void Scene::setAmbientLight(vector3 alight) {
+	ambientlight = alight;
+}
+void Scene::addDirectionalLight(Directionallight &dlight){
+	directionallights.push_back(&dlight);
+}
+void Scene::addSpotLight(Spotlight &slight) {
+	spotlights.push_back(&slight);
+}
+void Scene::addPointLight(Pointlight &plight) {
+	pointlights.push_back(&plight);
+}
+/*void Scene::removeDirectionalLight(Directionallight &dlight) { //todo: removing
+	directionallights.push_back(&dlight);
+}
+void Scene::addSpotLight(Spotlight &slight) {
+	spotlights.push_back(&slight);
+}
+void Scene::addPointLight(Pointlight &plight) {
+	pointlights.push_back(&plight);
+}*/
 void Scene::renderScene()
 {
 	/*root.renderEntity();*/

@@ -14,7 +14,13 @@ public:
 		this->materials = &materials;
 	}
 	~Meshrenderer();
-	void renderComponent(Transforming &transform, Shader *shader) {
+	void setMesh(Mesh &mesh) {
+		this->mesh = &mesh;
+	}
+	void setMaterials(Materials &materials) {
+		this->materials = &materials;
+	}
+	void renderComponent(Transforming &transform, Shader * &shader) {
 		shader->useShader();
 		shader->updateUniforms(transform.newUnprojectedMatrix(), transform.newTransformationMatrix(), transform.position, *materials);
 		mesh->drawMesh();

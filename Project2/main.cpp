@@ -257,7 +257,7 @@ int main(int argc, char* argv[]) {
 	Window Window(windowwidth, windowheight, title, windowicon, fullscreen, desktopfullscreen, borderless, vsync);
 	Rendering Renderer;
 	Renderer.renderingStartup(Window);
-	Resourcemanager ResourceManager;
+	Resourcemanager SS;
 	Camera Camera;
 	Camera.cameraStartup(fov, maxviewdistance, minviewdistance, arwidth, arheight);
 	Transforming transform;
@@ -266,14 +266,6 @@ int main(int argc, char* argv[]) {
 	Console Console;
 	Console.consoleStartup(log, MemoryManager, Window, Inputs, Renderer, Camera);
 
-
-	ResourceManager.addMaterials("mats1", Materials("test.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f));
-	ResourceManager.addMaterials("mats2", Materials("container.jpg", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f)); 
-	ResourceManager.addMesh("Quote", "quote.obj");
-	ResourceManager.addMesh("Cloud", Mesh("Cloud.obj"));
-	ResourceManager.addMesh("Snake", "snake.obj");
-	ResourceManager.addMesh("Scout", Mesh("scout.obj"));
-	ResourceManager.addMesh("Cube", "cube.obj");
 	/*Materials material("test.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f);		// from basicshader change to render manager startup?
 	Materials othermat("container.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f);
 	Mesh quotemodel("quote.obj");
@@ -285,39 +277,60 @@ int main(int argc, char* argv[]) {
 	//test scene
 	Scene sceneone;		
 	sceneone.setSkybox("right.jpg", "left.jpg", "top.jpg", "bottom.jpg", "front.jpg", "back.jpg");
-	Scene scenetwo;
 
+	//lights
+	sceneone.setAmbientLight(vector3(0.3f, 0.3f, 0.3f));
+	SS.addDirectionalLight("dlight1", Directionallight(vector3(0, 0, 1.0f), vector3(1.0f, 1.0f, 1.0f), 0.4f));
+	SS.addDirectionalLight("dlight2", Directionallight(vector3(1.0f, 0, 0), vector3(-1.0f, 1.0f, -1.0f), 0.4f));
+	SS.addPointLight("plight1", Pointlight(vector3(0.0f, 0.5f, 1.0f), vector3(2.0f, 0.0f, 7.0f), 4.0f, 2.0f, 0.0f, 1.0f));
+	SS.addSpotLight("slight1", Spotlight(vector3(0.0f, 1.0f, 1.0f), vector3(5.0f, 0.0f, 5.0f), vector3(1.0f, -1.0f, 1.0f), 80.0f, 0.7f, 3.0f, 0.0f, 0.1f));
+
+	sceneone.addDirectionalLight(SS.getDirectionalLight("dlight1"));
+	sceneone.addDirectionalLight(SS.getDirectionalLight("dlight2"));
+	sceneone.addPointLight(SS.getPointLight("plight1"));
+	sceneone.addSpotLight(SS.getSpotLight("slight1"));
+
+	//meshes
+	SS.addMaterials("mats1", Materials("test.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f));
+	SS.addMaterials("mats2", Materials("container.jpg", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f));
+	SS.addMesh("Quote", Mesh("quote.obj"));
+	SS.addMesh("Cloud", Mesh("Cloud.obj"));
+	SS.addMesh("Snake", Mesh("snake.obj"));
+	SS.addMesh("Scout", Mesh("scout.obj"));
+	SS.addMesh("Cube", Mesh("cube.obj"));
+
+	//entites
 	Entity Quote; 
 	Quote.transform.setPosition(vector3(10.0f, 17.5f, 12.0f));
-	Meshrenderer component(ResourceManager.getMesh("Quote"), ResourceManager.getMaterials("mats1"));
+	Meshrenderer component(SS.getMesh("Quote"), SS.getMaterials("mats1"));
 	Quote.transform.setRotation(0.0f, 0.0f, 50.0f);
 	Quote.addComponent(&component);
 
 	Entity Cloud;
 	Cloud.transform.setPosition(vector3(5.0f, 0.0f, 10.0f));
 	Cloud.transform.setScale(vector3(0.05f, 0.05f, 0.05f));
-	Meshrenderer cloudcomponent(ResourceManager.getMesh("Cloud"), ResourceManager.getMaterials("mats2"));
+	Meshrenderer cloudcomponent(SS.getMesh("Cloud"), SS.getMaterials("mats2"));
 	Cloud.addComponent(&cloudcomponent);
 	Quote.addSubEntity(&Cloud);
 
 	Entity Snake;
 	Snake.transform.setPosition(vector3(10.0f, -3.0f, 20.0f));
 	Snake.transform.setScale(vector3(0.08f, 0.08f, 0.08f));
-	Meshrenderer snakecomponent(ResourceManager.getMesh("Snake"), ResourceManager.getMaterials("mats1"));
+	Meshrenderer snakecomponent(SS.getMesh("Snake"), SS.getMaterials("mats1"));
 	Snake.addComponent(&snakecomponent);
 	Cloud.addSubEntity(&Snake);
 
 	Entity Scout;
 	Scout.transform.setPosition(vector3(30.0f, 0.0f, 15.0f));
 	Scout.transform.setScale(vector3(0.07f, 0.07f, 0.07f));
-	Meshrenderer scoutcomponent(ResourceManager.getMesh("Scout"), ResourceManager.getMaterials("mats2"));
+	Meshrenderer scoutcomponent(SS.getMesh("Scout"),SS.getMaterials("mats2"));
 	Scout.addComponent(&scoutcomponent);
 	Snake.addSubEntity(&Scout);
 
 	Entity Rintezuka;
 	Rintezuka.transform.setPosition(vector3(15.0f, 0.0f, 15.0f));
 	Rintezuka.transform.setScale(vector3(0.07f, 0.07f, 0.07f));
-	Meshrenderer rincomponent(ResourceManager.getMesh("Cube"), ResourceManager.getMaterials("mats1"));
+	Meshrenderer rincomponent(SS.getMesh("Cube"), SS.getMaterials("mats1"));
 	Rintezuka.addComponent(&rincomponent);
 	Scout.addSubEntity(&Rintezuka);
 

@@ -9,9 +9,12 @@ class Resourcemanager
 	std::map<std::string, Mesh> meshes;
 	std::map<std::string, Materials> materials;
 	std::map<std::string, Light> lights;
+	std::map<std::string, Directionallight> directionallights;
+	std::map<std::string, Pointlight> pointlights;
+	std::map<std::string, Spotlight> spotlights;
 	std::map<std::string, Entity>entities;
 public:
-	/*void addEntity(Entity &entity, std::string id) {
+	void addEntity(Entity &entity, std::string id) {
 		entities.emplace(id, entity);
 	}
 	void deleteEntities (std::string id) {
@@ -21,7 +24,7 @@ public:
 	}
 	Entity getEntity(std::string id) {
 		return entities.at(id);
-	}*/
+	}
 	void addMesh(std::string id, Mesh mesh) {
 		meshes.emplace(id, mesh);
 	}
@@ -45,15 +48,45 @@ public:
 		materials.at(id).freeMaterial();
 		materials.erase(id);
 	}
-	void addLight(std::string id, Light light) {
+	/*void addLight(std::string id, Light light) {
 		lights.emplace(id, light);
 	}
-	Light &getLight(std::string id) {
+	Light getLight(std::string id) {
 		return lights.at(id);
 	}
 	void deleteLight(std::string id) {
-		/*lights.at(id).freeLight();*/
+		lights.at(id).freeLight();
 		lights.erase(id);
+	}*/
+	void addDirectionalLight(std::string id, Directionallight dlight) {
+		directionallights.emplace(id, dlight);
+	}
+	Directionallight &getDirectionalLight(std::string id) {
+		return directionallights.at(id);
+	}
+	void deleteDirectionalLight(std::string id) {
+		/*lights.at(id).freeLight();*/
+		directionallights.erase(id);
+	}
+	void addPointLight(std::string id, Pointlight plight) {
+		pointlights.emplace(id, plight);
+	}
+	Pointlight &getPointLight(std::string id) {
+		return pointlights.at(id);
+	}
+	void deletePointLight(std::string id) {
+		/*lights.at(id).freeLight();*/
+		pointlights.erase(id);
+	}
+	void addSpotLight(std::string id, Spotlight slight) {
+		spotlights.emplace(id, slight);
+	}
+	Spotlight &getSpotLight(std::string id) {
+		return spotlights.at(id);
+	}
+	void deleteSpotLight(std::string id) {
+		/*lights.at(id).freeLight();*/
+		spotlights.erase(id);
 	}
 
 

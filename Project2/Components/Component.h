@@ -3,13 +3,13 @@
 #include "../Rendering/Shader.h"
 class Component{
 public:  //deltas passed in here
-	void updateComponent(Transforming t) {
+	virtual void updateComponent(Transforming t) {
 
 	}
-	void componentInput(Transforming t) {
+	virtual void componentInput(Transforming t) {
 
 	}
-	virtual void renderComponent(Transforming &t, Shader *s) {
+	virtual void renderComponent(Transforming &t, Shader * &s) {
 
 	}
 	virtual void renderComponent() {

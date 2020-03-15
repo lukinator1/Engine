@@ -28,18 +28,23 @@ void Rendering::update(Scene &currentscene)
 {
 	currentscene.renderScene();
 }
-void Rendering::renderEntity(Entity &gameobject, Shader *shade) {
+void Rendering::renderEntity(Entity &gameobject, Shader * &shade) {
 	gameobject.renderEntity(shade);
 }
 void Rendering::renderScene(Scene &currentscene)
 {
+	forwardambientshader.ambientlight = currentscene.ambientlight;
 	currentscene.root.renderEntity(&forwardambientshader);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_ONE, GL_ONE);
 	glDepthMask(false);
 	glDepthFunc(GL_EQUAL);
-	forwarddirectionalshader.setDirectionalLight(dlight);
+	for (int i = 0; i < currentscene.directionallights.size(); i++) {
+		forwarddirectionalshader.setDirectionalLight(*currentscene.directionallights[i]);
+		currentscene.root.renderEntity(&forwarddirectionalshader);
+	}
+	/*forwarddirectionalshader.setDirectionalLight(dlight);
 	currentscene.root.renderEntity(&forwarddirectionalshader);
 	Directionallight temp = dlight;
 	dlight = dlighttwo;
@@ -48,17 +53,26 @@ void Rendering::renderScene(Scene &currentscene)
 	currentscene.root.renderEntity(&forwarddirectionalshader);
 	temp = dlight;
 	dlight = dlighttwo;
-	dlighttwo = temp;
+	dlighttwo = temp;*/
 
-	for (int i = 0; i < 1; i++) {
+	for (int i = 0; i < currentscene.pointlights.size(); i++) {
+		forwardpointshader.pointlight = (*currentscene.pointlights[i]);
+		currentscene.root.renderEntity(&forwardpointshader);
+	}
+
+	/*for (int i = 0; i < 1; i++) {
 		if (pointlights[i].intensity != 0.0f) {
 			forwardpointshader.pointlight = pointlights[i];
 			currentscene.root.renderEntity(&forwardpointshader);
 		}
-	}
+	}*/
 
-	forwardspotshader.spotlight = slight;
-	currentscene.root.renderEntity(&forwardspotshader);
+	for (int i = 0; i < currentscene.spotlights.size(); i++) {
+		forwardspotshader.spotlight = (*currentscene.spotlights[i]);
+		currentscene.root.renderEntity(&forwardspotshader);
+	}
+	/*forwardspotshader.spotlight = slight;
+	currentscene.root.renderEntity(&forwardspotshader);*/
 
 	glDepthFunc(GL_LESS);
 	glDepthMask(true);
