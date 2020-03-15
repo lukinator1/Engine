@@ -52,7 +52,6 @@ void Input::getInputs() {
 				if (sdlevent.button.clicks == 2) {
 					/*postMessage(Message::Messagetypes::Doubleclick);*/
 					doubleclicked = true;
-					std::cout << "Doubleclicked" << std::endl;
 				}
 				/*else {
 					postMessage(Message::Messagetypes::Leftmousepressed);
@@ -61,11 +60,9 @@ void Input::getInputs() {
 			}
 			if (sdlevent.button.button == SDL_BUTTON_RIGHT) {
 				/*postMessage(Message::Messagetypes::Rightmousepressed);*/
-				std::cout << "RM clicked" << std::endl;
 				rightmouse.first = true;
 			}
 			if (sdlevent.button.button == SDL_BUTTON_MIDDLE) {
-				std::cout << "M3 clicked" << std::endl;
 				middlemouse.first = true;
 				/*postMessage(Message::Messagetypes::M3pressed);*/
 			}

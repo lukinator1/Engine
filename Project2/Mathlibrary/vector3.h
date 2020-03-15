@@ -33,5 +33,6 @@ public:
 	vector2 getXZ();
 	vector3 interpolateVector(vector3 destination, float interpfactor);
 	bool operator!= (vector3 rhs);
+	bool operator==(vector3 & rhs);
 };
 

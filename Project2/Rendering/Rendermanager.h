@@ -25,11 +25,11 @@ public:
 	void update(Scene &currentscene);
 	void renderEntity(Entity &gameobject, Shader *shade);
 	void renderScene(Scene & currentscene);
+	vector3 getAmbientLight();
 	void setAmbientLight(vector3 _ambientlight);
 	void setAmbientLight(float x, float y, float z);
 	void setDirectionalLight(vector3 _ambientlight);
 	void setDirectionalLight(float x, float y, float z);
-	vector3 ambientlight;
 	Directionallight dlight;
 	Directionallight dlighttwo;
 	std::vector<Pointlight> pointlights;

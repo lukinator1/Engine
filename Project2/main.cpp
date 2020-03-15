@@ -7,9 +7,10 @@
 #include "Rendering/Rendering.h"
 #include "Mathlibrary/Mathlibrary.h"
 #include "CustomMemoryAllocation/Memorymanager.h"
+#include "Resourcemanager.h"
 #include "Messaging/Messagesystem.h"
 #include "Messaging/Messaging.h"
-#include "Meshrenderer.h"
+#include "Components/Meshrenderer.h"
 #include "Textrenderer.h"
 #include "Scene.h"
 #include "Logger.h"
@@ -62,13 +63,7 @@ void frameByFrame() {
 	framekeyheld = false;
 }
 int main(int argc, char* argv[]) {
-	float answer = 6.0f + 4.165f + (1024.0f / 1048576.0f) * (15, 000.0f * (1.0f / 60.0f) * (1.0f / 1000.0f));
-	std::cout << answer << std::endl;
-	answer = 6.0f + 4.165f + (2048.0f / 1048576.0f) * (15, 000.0f * (1.0f / 60.0f) * (1.0f / 1000.0f));
-	std::cout << answer << std::endl;
-	answer = 6.0f + 4.165f + (4096.0f / 1048576.0f) * (15, 000.0f * (1.0f / 60.0f) * (1.0f / 1000.0f));
-	std::cout << answer << std::endl;
-	int count = 0;
+		int count = 0;
 		int sfsize = 500;  //settting configurations
 		int sfalignment = 8;
 		int dbsize = 500;
@@ -262,6 +257,7 @@ int main(int argc, char* argv[]) {
 	Window Window(windowwidth, windowheight, title, windowicon, fullscreen, desktopfullscreen, borderless, vsync);
 	Rendering Renderer;
 	Renderer.renderingStartup(Window);
+	Resourcemanager ResourceManager;
 	Camera Camera;
 	Camera.cameraStartup(fov, maxviewdistance, minviewdistance, arwidth, arheight);
 	Transforming transform;
@@ -271,12 +267,20 @@ int main(int argc, char* argv[]) {
 	Console.consoleStartup(log, MemoryManager, Window, Inputs, Renderer, Camera);
 
 
-	Materials material("test.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f);		// from basicshader change to render manager startup?
+	ResourceManager.addMaterials("mats1", Materials("test.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f));
+	ResourceManager.addMaterials("mats2", Materials("container.jpg", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f)); 
+	ResourceManager.addMesh("Quote", "quote.obj");
+	ResourceManager.addMesh("Cloud", Mesh("Cloud.obj"));
+	ResourceManager.addMesh("Snake", "snake.obj");
+	ResourceManager.addMesh("Scout", Mesh("scout.obj"));
+	ResourceManager.addMesh("Cube", "cube.obj");
+	/*Materials material("test.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f);		// from basicshader change to render manager startup?
+	Materials othermat("container.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f);
 	Mesh quotemodel("quote.obj");
 	Mesh cloudmodel("Cloud.obj");
 	Mesh snakemodel("snake.obj");
 	Mesh scoutmodel("scout.obj");
-	Mesh rinmodel("rintezuka.obj");
+	Mesh rinmodel("cube.obj");*/
 
 	//test scene
 	Scene sceneone;		
@@ -285,36 +289,37 @@ int main(int argc, char* argv[]) {
 
 	Entity Quote; 
 	Quote.transform.setPosition(vector3(10.0f, 17.5f, 12.0f));
-	Meshrenderer component(quotemodel, material);
+	Meshrenderer component(ResourceManager.getMesh("Quote"), ResourceManager.getMaterials("mats1"));
+	Quote.transform.setRotation(0.0f, 0.0f, 50.0f);
 	Quote.addComponent(&component);
 
 	Entity Cloud;
 	Cloud.transform.setPosition(vector3(5.0f, 0.0f, 10.0f));
 	Cloud.transform.setScale(vector3(0.05f, 0.05f, 0.05f));
-	Meshrenderer cloudcomponent(cloudmodel, material);
+	Meshrenderer cloudcomponent(ResourceManager.getMesh("Cloud"), ResourceManager.getMaterials("mats2"));
 	Cloud.addComponent(&cloudcomponent);
 	Quote.addSubEntity(&Cloud);
 
 	Entity Snake;
 	Snake.transform.setPosition(vector3(10.0f, -3.0f, 20.0f));
 	Snake.transform.setScale(vector3(0.08f, 0.08f, 0.08f));
-	Meshrenderer snakecomponent(snakemodel, material);
+	Meshrenderer snakecomponent(ResourceManager.getMesh("Snake"), ResourceManager.getMaterials("mats1"));
 	Snake.addComponent(&snakecomponent);
 	Cloud.addSubEntity(&Snake);
 
 	Entity Scout;
 	Scout.transform.setPosition(vector3(30.0f, 0.0f, 15.0f));
 	Scout.transform.setScale(vector3(0.07f, 0.07f, 0.07f));
-	Meshrenderer scoutcomponent(scoutmodel, material);
+	Meshrenderer scoutcomponent(ResourceManager.getMesh("Scout"), ResourceManager.getMaterials("mats2"));
 	Scout.addComponent(&scoutcomponent);
 	Snake.addSubEntity(&Scout);
 
-	/*Entity Rintezuka;
-	Rintezuka.transform.setPosition(vector3(30.0f, 0.0f, 15.0f));
+	Entity Rintezuka;
+	Rintezuka.transform.setPosition(vector3(15.0f, 0.0f, 15.0f));
 	Rintezuka.transform.setScale(vector3(0.07f, 0.07f, 0.07f));
-	Meshrenderer rincomponent(rinmodel, material);
+	Meshrenderer rincomponent(ResourceManager.getMesh("Cube"), ResourceManager.getMaterials("mats1"));
 	Rintezuka.addComponent(&rincomponent);
-	Scout.addSubEntity(&Rintezuka);*/
+	Scout.addSubEntity(&Rintezuka);
 
 	Entity field;
 	Vertex vertices[] = { Vertex(vector3(-fieldWidth, 0.0f, -fieldDepth), vector2(0.0f, 0.0f)),
@@ -323,16 +328,32 @@ int main(int argc, char* argv[]) {
 						Vertex(vector3(fieldWidth * 3, 0.0f, fieldDepth * 3), vector2(1.0f, 1.0f)) };
 	unsigned int indices[] = { 0, 1, 2,
 					  2, 1, 3 };
+	for (unsigned int i = 0; i < (sizeof(indices) / sizeof(indices[0])); i += 3) {
+		unsigned int i0 = indices[i];
+		unsigned int i1 = indices[i + 1];
+		unsigned int i2 = indices[i + 2];
+		vector3 edge1 = vertices[i1].position.subtract(vertices[i0].position);
+		vector3 edge2 = vertices[i2].position.subtract(vertices[i0].position);
+		vector3 normal = (edge1.crossProduct(edge2)).Normalize();
+
+		vertices[i0].normal = vertices[i0].normal.add(normal);
+		vertices[i1].normal = vertices[i1].normal.add(normal);
+		vertices[i2].normal = vertices[i2].normal.add(normal);
+	}
+	for (int i = 0; i < (sizeof(vertices) / sizeof(vertices[0])); i++) {
+		vertices[i].normal = (vertices[i].normal).Normalize();
+	}
+	Materials fieldmaterials("test.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f);
 	Mesh meshme(vertices, indices, sizeof(vertices) / sizeof(vertices[0]), sizeof(indices) / sizeof(indices[0]));
-	Meshrenderer fieldcomponent(meshme, material);
+	Meshrenderer fieldcomponent(meshme, fieldmaterials);
 	field.transform.setPosition(vector3(0.0f, -1.0f, 5.0f));
 	field.addComponent(&fieldcomponent);
-	Scout.addSubEntity(&field);
+	Cloud.addSubEntity(&field);
 
 	sceneone.root = Quote;
 	
 	//shaders
-	Shader shaderit("Forwardpoint");
+	Shader shaderit("phong");
 	shaderit.setAmbientLight(vector3(0.5f, 0.5f, 0.5f));
 	shaderit.directionallight = Directionallight(vector3(1.0f, 1.0f, 1.0f), vector3(1.0f, 1.0f, 1.0f), 0.1f);
 
@@ -467,7 +488,7 @@ int main(int argc, char* argv[]) {
 		flashlight.setPosition(Camera.getCameraposition());
 		flashlight.setDirection(Camera.camerarotation.getForward());
 		/*shaderit.useShader();
-		shaderit.updateUniforms(transform.newUnprojectedMatrix(), transform.newTransformationMatrix(), transform.position, material);
+		shaderit.updateUniforms(transform.newUnprojectedMatrix(), transform.newTransformationMatrix(), transform.position, fieldmaterials);
 		meshme.drawMesh();*/
 		Renderer.renderScene(sceneone);
 		/*text.renderComponent(transform, shaderit);*/     //interesting effect

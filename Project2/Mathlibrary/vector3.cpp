@@ -154,6 +154,15 @@ bool vector3::operator!=(vector3 rhs)
 		return true;
 	}
 }
+bool vector3::operator==(vector3 & rhs)
+{
+	if (x == rhs.x && y == rhs.y && z == rhs.z) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
 vector3::~vector3()
 {
 }

@@ -9,12 +9,11 @@ class Mesh : public Logger
 {
 public:
 	unsigned int size;
-	std::string name;
 	GLuint vbo;
-	GLuint tbo;
 	GLuint ibo;
 	GLuint vao;
 	void normalizeNormalVertices(Vertex * vertices, int numvertices);
+	void freeMesh();
 	void calculateNormals(Vertex* vertices, unsigned int* indices, unsigned int numvertices, unsigned int numindices);
 	Mesh(Vertex* vertices, unsigned int * indices, unsigned int numvertices, unsigned int numindices);
 	Mesh();

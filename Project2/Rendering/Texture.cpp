@@ -137,8 +137,8 @@ void Texture::loadIconPixels(std::string filename, unsigned char * &data, int & 
 	data = stbi_load((filename).c_str(), &width, &height, &components, STBI_rgb_alpha);
 
 	if (data == NULL) {
-		engineLog(__FILE__, __LINE__, "Warning: Icon failed to load. Returned an error icon instead.", 1, 2, true); //todo
-		data = stbi_load("DefaultWindowIcon.png", &width, &height, &components, STBI_rgb_alpha);
+		engineLog(__FILE__, __LINE__, "Warning: Icon failed to load. Returned default icon instead.", 1, 2, true); //todo
+		data = stbi_load("Errorwindowicon.png", &width, &height, &components, STBI_rgb_alpha);
 		return;
 	}
 	else {
@@ -151,6 +151,9 @@ void Texture::useTexture()
 }
 void Texture::useCubeMapTexture() {
 	glBindTexture(GL_TEXTURE_CUBE_MAP, textureid);
+}
+void Texture::freeTexture() {
+	glDeleteTextures(1, &textureid);
 }
 /*void Texture::setTexture(Texture &text) {
 	*this = text;
@@ -190,5 +193,4 @@ Texture::Texture(std::string filename)
 }
 Texture::~Texture()
 {
-	glDeleteTextures(1, &textureid);
 }

@@ -45,12 +45,6 @@
     <ClInclude Include="Entity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Component.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Meshrenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\Test\Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -141,6 +135,15 @@
     <ClInclude Include="Textrenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Resourcemanager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\Meshrenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\Component.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Window.cpp">
@@ -162,12 +165,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Component.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Meshrenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Messaging\Message.cpp">
@@ -240,6 +237,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Textrenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Resourcemanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\Meshrenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\Component.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

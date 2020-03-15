@@ -20,6 +20,7 @@ Vertex::Vertex(vector3 newposition, vector2 newtexture)
 Vertex::Vertex(vector3 newposition) {		//both temporariy/probably will be deleted
 	position = newposition;
 	texture = vector2(0.0f, 0.0f);
+	normal = vector3(0.0f, 0.0f, 0.0f);
 }
 Vertex::Vertex(float x, float y, float z) {
 	position.x = x;
@@ -42,6 +43,15 @@ void Vertex::setNormal(float newx, float newy, float newz) {
 	normal.x = newx;
 	normal.y = newy;
 	normal.z = newz;
+}
+bool Vertex::operator==(Vertex & rhs)
+{
+	if (position == rhs.position && texture == rhs.texture && normal == rhs.normal) {
+		return true;
+	}
+	else {
+		return false; 
+	}
 }
 Vertex::~Vertex()
 {

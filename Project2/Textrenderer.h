@@ -1,9 +1,9 @@
 #pragma once
-#include "Rendering/Rendermanager.h"
-#include "Component.h"
-#include "Mathlibrary/vector2.h"
-class Textrenderer //this class is on hold for now
-{
+//#include "Rendering/Rendermanager.h"
+//#include "Component.h"
+//#include "Mathlibrary/vector2.h"
+//class Textrenderer //this class is on hold for now
+//{
 /*public:
 	Rendertext textrenderer;
 	std::string text;
@@ -27,5 +27,5 @@ class Textrenderer //this class is on hold for now
 		scale = 1.0f;
 	}
 	~Textrenderer();*/
-};
+//};
 

@@ -2,7 +2,7 @@
 #include <vector>
 #include "Rendering/Transforming.h"
 #include "Rendering/Shader.h"
-#include "Component.h"
+#include "Components/Component.h"
 class Entity //set parent to transform
 {
 private:

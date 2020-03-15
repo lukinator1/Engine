@@ -71,7 +71,7 @@ Shader::Shader(std::string shadertype) : directionallight(vector3(1.0f, 1.0f, 1.
 	}
 	else if (shadertype == "Forwardambient" || shadertype == "forwardambient") {
 		type = "forwardambient";
-		ambientlight = vector3(0.2f, 0.2f, 0.2f);
+		ambientlight = vector3(0.30f, 0.30f, 0.30f);
 		program = glCreateProgram();
 		if (program == 0) {
 			engineLog(__FILE__, __LINE__, "Warning: Shader program failed to create.", 1, 2, true);

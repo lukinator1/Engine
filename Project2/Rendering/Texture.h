@@ -14,6 +14,7 @@ public:
 	void loadIconPixels(std::string filename, unsigned char * &data, int & width, int & height, int & components);
 	void useTexture();
 	void useCubeMapTexture();
+	void freeTexture();
 	/*void setTexture(Texture &text);
 	void setTexture(std::string newtext);*/
 	Texture();

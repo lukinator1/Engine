@@ -13,9 +13,9 @@ void Rendering::renderingStartup(Window &window)
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);*/
 	windowptr = &window;
 	Textrenderer.loadText();
-	ambientlight.setVector(1.0f, 1.0f, 1.0f);
-	dlight.setLight(vector3(0, 0, 1.0f), vector3(1.0f, 1.0f, 1.0f), .4f); //make point to lights?
-	dlighttwo.setLight(vector3(1.0f, 0, 0), vector3(-1.0f, 1.0f, -1.0f), .4f);
+	forwardambientshader.setAmbientLight(vector3(0.3f, 0.3f, 0.3f));
+	dlight.setLight(vector3(0, 0, 1.0f), vector3(1.0f, 1.0f, 1.0f), 0.4f); //make point to lights?
+	dlighttwo.setLight(vector3(1.0f, 0, 0), vector3(-1.0f, 1.0f, -1.0f), 0.4f);
 	plight.setLight(vector3(0.0f, 0.5f, 1.0f), vector3(2.0f, 0.0f, 7.0f), 4.0f, 2.0f, 0.0f, 1.0f);
 	for (int i = 0; i < 10; i++) {
 		plight.position.x += 7.0f;
@@ -68,6 +68,9 @@ void Rendering::renderScene(Scene &currentscene)
 	if (currentscene.skybox.skyboxbox.size != 0) {
 	currentscene.skybox.useSkybox();
 	}
+}
+vector3 Rendering::getAmbientLight() {
+	return forwardambientshader.ambientlight;
 }
 void Rendering::setAmbientLight(vector3 _ambientlight)
 {

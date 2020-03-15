@@ -124,14 +124,16 @@ void Window::setWindowIcon(std::string filename) {
 	unsigned char * pixels;
 	icon.loadIconPixels(filename, pixels, width, height, components);
 	
-	if (SDL_BYTEORDER == SDL_BIG_ENDIAN) {
-		SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(pixels, width, height, 32, 4 * width, 0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
-		SDL_SetWindowIcon(window, surface);
-	}
-	else {
-		SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(pixels, width, height, 32, 4 * width, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
-		SDL_SetWindowIcon(window, surface);
-		SDL_FreeSurface(surface);
+	if (pixels != NULL) {
+		if (SDL_BYTEORDER == SDL_BIG_ENDIAN) {
+			SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(pixels, width, height, 32, 4 * width, 0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
+			SDL_SetWindowIcon(window, surface);
+		}
+		else {
+			SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(pixels, width, height, 32, 4 * width, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
+			SDL_SetWindowIcon(window, surface);
+			SDL_FreeSurface(surface);
+		}
 	}
 }
 bool Window::closeRequested()

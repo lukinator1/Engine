@@ -15,6 +15,7 @@ public:
 	Vertex(float x, float y, float z, float textx, float texty);
 	void setNormal(vector3 newnormal);
 	void setNormal(float newx, float newy, float newz);
+	bool operator==(Vertex &rhs);
 	~Vertex();
 	vector3 position;
 	vector2 texture;

@@ -11,7 +11,7 @@
 #include "Mathlibrary/Mathlibrary.h"
 #include "CustomMemoryAllocation/Memorymanager.h"
 #include "Messaging/Messaging.h"
-#include "Meshrenderer.h"
+#include "Components/Meshrenderer.h"
 #include "Scene.h"
 #include "Logger.h"
 /*namespace SS {

@@ -1,0 +1,63 @@
+#pragma once
+#include <map>
+#include "Rendering/Materials.h"
+#include "Rendering/Mesh.h"
+#include "Rendering/Lighting/Lighting.h" 
+#include "Entity.h"
+class Resourcemanager
+{
+	std::map<std::string, Mesh> meshes;
+	std::map<std::string, Materials> materials;
+	std::map<std::string, Light> lights;
+	std::map<std::string, Entity>entities;
+public:
+	/*void addEntity(Entity &entity, std::string id) {
+		entities.emplace(id, entity);
+	}
+	void deleteEntities (std::string id) {
+		for (int i = 0; i < entities.at(id).children.size(); i++) {
+			
+		}
+	}
+	Entity getEntity(std::string id) {
+		return entities.at(id);
+	}*/
+	void addMesh(std::string id, Mesh mesh) {
+		meshes.emplace(id, mesh);
+	}
+	void addMesh(std::string id, std::string Meshfile) {
+		meshes.emplace(id, Mesh (Meshfile));
+	}
+	Mesh &getMesh(std::string id) {
+		return meshes.at(id);
+	}
+	void deleteMesh(std::string id) {
+		meshes.at(id).freeMesh();
+		meshes.erase(id);
+	}
+	void addMaterials(std::string id, Materials material) {
+		materials.emplace(id, material);
+	}
+	Materials &getMaterials(std::string id) {
+		return materials.at(id);
+	}
+	void deleteMaterials(std::string id) {
+		materials.at(id).freeMaterial();
+		materials.erase(id);
+	}
+	void addLight(std::string id, Light light) {
+		lights.emplace(id, light);
+	}
+	Light &getLight(std::string id) {
+		return lights.at(id);
+	}
+	void deleteLight(std::string id) {
+		/*lights.at(id).freeLight();*/
+		lights.erase(id);
+	}
+
+
+	Resourcemanager();
+	~Resourcemanager();
+};
+
