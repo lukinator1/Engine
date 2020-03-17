@@ -25,6 +25,7 @@ public:
 	Quaternion(float x, float y, float z, float w);
 	void setQuaternion(float _x, float _y, float _z, float _w);
 	void setQuaternion(Quaternion newquat);
+	float Magnitude();
 	Quaternion Rotate(float angle, vector3 axis);
 	~Quaternion();
 };

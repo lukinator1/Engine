@@ -67,24 +67,31 @@ public:
 	projectionmatrix.makeProjection(fov, aspectratiowidth, aspectratioheight, minviewdistance, maxviewdistance);
 	return projectionmatrix;
 }
-	matrix4f newSkyboxMatrix() {
-		matrix4f translationmatrix;
+	matrix4f newSkyboxMatrix(/*bool infinitelyscaling*/) {
+		/*matrix4f translationmatrix;*/
 		matrix4f rotationmatrix;
 		matrix4f scalematrix;
 		matrix4f camerarotationmatrix;
 		matrix4f quatrotationmatrix;
-		matrix4f cameratranslation;
+		/*matrix4f cameratranslation;*/
 		matrix4f projectionmatrix;
 
-		translationmatrix.makeTranslation(translation);
-		/*rotationmatrix.makeRotation(rotation);*/
+		/*translationmatrix.makeTranslation(translation);
+		rotationmatrix.makeRotation(rotation);*/
 		quatrotationmatrix.makeQuatRotation(rotation);
 		scalematrix.makeScaling(scaling);
 		camerarotationmatrix.makeQuatRotation(camerarotation);
-		cameratranslation.makeTranslation(-(position.x), -(position.y), -(position.z));
+		/*cameratranslation.makeTranslation(-(position.x), -(position.y), -(position.z));*/
 		projectionmatrix.makeProjection(fov, aspectratiowidth, aspectratioheight, minviewdistance, maxviewdistance);
 
 		return projectionmatrix * (camerarotationmatrix * (quatrotationmatrix * scalematrix));
+
+		/*if (infinitelyscaling) {
+			return projectionmatrix * (camerarotationmatrix * (quatrotationmatrix * scalematrix));
+		}
+		else {
+			return projectionmatrix * (cameratranslation * (camerarotationmatrix * (translationmatrix * (quatrotationmatrix * scalematrix))));
+		}*/
 	}
 	matrix4f newTextMatrix() {
 		matrix4f textmatrix;

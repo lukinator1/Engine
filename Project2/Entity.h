@@ -3,7 +3,7 @@
 #include "Rendering/Transforming.h"
 #include "Rendering/Shader.h"
 #include "Components/Component.h"
-class Entity //set parent to transform
+class Entity //todo: set parent to transform, remove entity
 {
 private:
 public:
@@ -12,28 +12,52 @@ public:
 	std::vector <Component *> components; //maybe make a map?
 	Entity();
 	~Entity();
-	void updateEntity() { //deltas passed in here
+	void updateEntities() { //deltas passed in here
 		for (int i = 0; i < components.size(); i++) {
 			components[i]->updateComponent(transform);
 		}
 		for (int i = 0; i < children.size(); i++) {
-			children[i]->updateEntity();
+			children[i]->updateEntities();
 		}
 	}
-	void entityInput() {
+	void entitiesInput() {
 		for (int i = 0; i < components.size(); i++) {
 			components[i]->componentInput(transform);
 		}
 		for (int i = 0; i < children.size(); i++) {
-			children[i]->entityInput();
+			children[i]->entitiesInput();
+		}
+	}
+	void renderEntities(Shader *s) {
+		for (int i = 0; i < components.size(); i++) {
+			components[i]->renderComponent(transform, s);
+		}
+		for (int i = 0; i < children.size(); i++) {
+			children[i]->renderEntities(s);
+		}
+	}
+	void updateEntity() { //deltas passed in here
+		for (int i = 0; i < components.size(); i++) {
+			components[i]->updateComponent(transform);
 		}
 	}
 	void renderEntity(Shader *s) {
 		for (int i = 0; i < components.size(); i++) {
 			components[i]->renderComponent(transform, s);
 		}
-		for (int i = 0; i < children.size(); i++) {
-			children[i]->renderEntity(s);
+	}
+	void entityInput() {
+		for (int i = 0; i < components.size(); i++) {
+			components[i]->componentInput(transform);
+		}
+	}
+	void removeComponent(Component &component) {
+		int counter = 0;
+		for (auto i = components.begin(); i != components.end(); i++) {
+			if (components[counter] == &component) {
+				components.erase(i);
+			}
+			counter++;
 		}
 	}
 	void addSubEntity(Entity * subentity) {

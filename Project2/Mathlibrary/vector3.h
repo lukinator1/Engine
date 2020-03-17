@@ -12,6 +12,7 @@ public:
 	float getY();
 	float getZ();*/
 	void setVector(float newx, float newy, float newz);
+	float Magnitude();
 	vector3 Rotate(float angle, vector3 axis);
 	vector3 quatRotate(Quaternion quat);
 	vector3 crossProduct(vector3 newv);
@@ -23,8 +24,8 @@ public:
 	vector3 add(float adder);
 	vector3 multiply(vector3 multiplier);
 	vector3 multiply(float multiplier);
-	vector3 subtract(vector3 sub);
-	vector3 subtract(float sub);
+	vector3 Subtract(vector3 sub);
+	vector3 Subtract(float sub);
 	vector2 getXY();
 	vector2 getYX();
 	vector2 getYZ();

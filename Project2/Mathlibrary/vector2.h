@@ -19,6 +19,9 @@
 			this->x = x;
 			this->y = y;
 		}
+		float Magnitude() {
+			return sqrt((x * x) + (y * y));
+		}
 		vector2 Normalize() {
 			float length = sqrt((x * x) + (y * y));
 			/*x = x / length;

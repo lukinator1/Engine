@@ -25,6 +25,9 @@ void Quaternion::setQuaternion(Quaternion newquat)
 {
 	*this = newquat;
 }
+float Quaternion::Magnitude() {
+	return sqrt((x * x) + (y * y) + (z * z) + (w * w));
+}
 Quaternion Quaternion::Rotate(float angle, vector3 axis) {
 	float sinhalfangle = sinf((angle / 2.0f) * (3.1415926535897932384626433832795f / 180.0f));
 	float coshalfangle = cosf((angle / 2.0f) * (3.1415926535897932384626433832795f / 180.0f));

@@ -28,6 +28,9 @@ void vector3::setVector(float newx, float newy, float newz) {
 	y = newy;
 	z = newz;
 }
+float vector3::Magnitude() {
+	return sqrt((x * x) + (y * y) + (z * z));
+}
 vector3 vector3::Rotate(float angle, vector3 axis) {
 	float sinhalfangle = sinf((angle / 2.0f) * (3.14159265358979323f / 180.0f));
 	float coshalfangle = cosf((angle / 2.0f) * (3.14159265358979323f / 180.0f));
@@ -112,10 +115,10 @@ vector3 vector3::multiply(float multiplier)
 	return *this;*/
 	return vector3(x * multiplier, y * multiplier, z * multiplier);
 }
-vector3 vector3::subtract(vector3 sub) {
+vector3 vector3::Subtract(vector3 sub) {
 	return vector3(x - sub.x, y - sub.y, z - sub.z);
 }
-vector3 vector3::subtract(float sub) {
+vector3 vector3::Subtract(float sub) {
 	return vector3(x - sub, y - sub, z - sub);
 }
 vector2 vector3::getXY()

@@ -24,8 +24,9 @@ public:
 	void renderingShutdown();
 	void update(Scene &currentscene);
 	void renderEntity(Entity &gameobject, Shader * &shade);
+	void renderEntities(Entity & gameobject, Shader *& shade);
 	void renderScene(Scene & currentscene);
-	vector3 getAmbientLight();
+/*	vector3 getAmbientLight();
 	void setAmbientLight(vector3 _ambientlight);
 	void setAmbientLight(float x, float y, float z);
 	void setDirectionalLight(vector3 _ambientlight);
@@ -34,7 +35,7 @@ public:
 	Directionallight dlighttwo;
 	std::vector<Pointlight> pointlights;
 	Pointlight plight;
-	Spotlight slight;
+	Spotlight slight;*/
 	Shader phongshader;
 	Shader forwardambientshader;
 	Shader forwarddirectionalshader;

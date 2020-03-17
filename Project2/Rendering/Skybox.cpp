@@ -154,7 +154,7 @@ void Skybox::useSkybox()
 	skyboxshader.useShader();
 	/*Materials mat("test.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f);
 	skyboxshader.updateUniforms(t.newUnprojectedMatrix(), t.newTransformationMatrix(), t.position, mat);*/
-	skyboxshader.setUniform("skyboxmatrix", t.newSkyboxMatrix());
+	skyboxshader.setUniform("skyboxmatrix", t.newSkyboxMatrix(/*infinitelyscaling*/));
 	/*skyboxshader.setUniform("projectedtransform", t.newTransformationMatrix());
 	skyboxshader.setUniform("view", t.newViewMatrix());
 	skyboxshader.setUniform("projection", t.newProjectionMatrix());*/

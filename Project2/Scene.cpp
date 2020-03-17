@@ -21,7 +21,7 @@ void Scene::initScene()
 }
 void Scene::inputScene()
 {
-	root.entityInput();
+	root.entitiesInput();
 }
 void Scene::setAmbientLight(vector3 alight) {
 	ambientlight = alight;

@@ -13,16 +13,6 @@ void Rendering::renderingStartup(Window &window)
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);*/
 	windowptr = &window;
 	Textrenderer.loadText();
-	forwardambientshader.setAmbientLight(vector3(0.3f, 0.3f, 0.3f));
-	dlight.setLight(vector3(0, 0, 1.0f), vector3(1.0f, 1.0f, 1.0f), 0.4f); //make point to lights?
-	dlighttwo.setLight(vector3(1.0f, 0, 0), vector3(-1.0f, 1.0f, -1.0f), 0.4f);
-	plight.setLight(vector3(0.0f, 0.5f, 1.0f), vector3(2.0f, 0.0f, 7.0f), 4.0f, 2.0f, 0.0f, 1.0f);
-	for (int i = 0; i < 10; i++) {
-		plight.position.x += 7.0f;
-		plight.position.z += 7.0f;
-		pointlights.push_back(plight);
-	}
-	slight.setLight(vector3(0.0f, 1.0f, 1.0f), vector3(5.0f, 0.0f, 5.0f), vector3(1.0f, -1.0f, 1.0f), 80.0f, 0.7f, 3.0f, 0.0f, 0.1f);
 }
 void Rendering::update(Scene &currentscene)
 {
@@ -31,10 +21,13 @@ void Rendering::update(Scene &currentscene)
 void Rendering::renderEntity(Entity &gameobject, Shader * &shade) {
 	gameobject.renderEntity(shade);
 }
+void Rendering::renderEntities(Entity &gameobject, Shader * &shade) {
+	gameobject.renderEntities(shade);
+}
 void Rendering::renderScene(Scene &currentscene)
 {
-	forwardambientshader.ambientlight = currentscene.ambientlight;
-	currentscene.root.renderEntity(&forwardambientshader);
+	forwardambientshader.ambientlight = currentscene.ambientlight;  //todo: optimize with pointers
+	currentscene.root.renderEntities(&forwardambientshader);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_ONE, GL_ONE);
@@ -42,7 +35,7 @@ void Rendering::renderScene(Scene &currentscene)
 	glDepthFunc(GL_EQUAL);
 	for (int i = 0; i < currentscene.directionallights.size(); i++) {
 		forwarddirectionalshader.setDirectionalLight(*currentscene.directionallights[i]);
-		currentscene.root.renderEntity(&forwarddirectionalshader);
+		currentscene.root.renderEntities(&forwarddirectionalshader);
 	}
 	/*forwarddirectionalshader.setDirectionalLight(dlight);
 	currentscene.root.renderEntity(&forwarddirectionalshader);
@@ -57,7 +50,7 @@ void Rendering::renderScene(Scene &currentscene)
 
 	for (int i = 0; i < currentscene.pointlights.size(); i++) {
 		forwardpointshader.pointlight = (*currentscene.pointlights[i]);
-		currentscene.root.renderEntity(&forwardpointshader);
+		currentscene.root.renderEntities(&forwardpointshader);
 	}
 
 	/*for (int i = 0; i < 1; i++) {
@@ -69,7 +62,7 @@ void Rendering::renderScene(Scene &currentscene)
 
 	for (int i = 0; i < currentscene.spotlights.size(); i++) {
 		forwardspotshader.spotlight = (*currentscene.spotlights[i]);
-		currentscene.root.renderEntity(&forwardspotshader);
+		currentscene.root.renderEntities(&forwardspotshader);
 	}
 	/*forwardspotshader.spotlight = slight;
 	currentscene.root.renderEntity(&forwardspotshader);*/
@@ -83,7 +76,7 @@ void Rendering::renderScene(Scene &currentscene)
 	currentscene.skybox.useSkybox();
 	}
 }
-vector3 Rendering::getAmbientLight() {
+/*vector3 Rendering::getAmbientLight() {
 	return forwardambientshader.ambientlight;
 }
 void Rendering::setAmbientLight(vector3 _ambientlight)
@@ -95,7 +88,7 @@ void Rendering::setAmbientLight(float x, float y, float z)
 	forwardambientshader.ambientlight.x = x;
 	forwardambientshader.ambientlight.y = y;
 	forwardambientshader.ambientlight.z = z;
-}
+}*/
 void Rendering::renderingShutdown()
 {
 	windowptr->closeWindow();

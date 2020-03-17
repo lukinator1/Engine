@@ -284,11 +284,15 @@ int main(int argc, char* argv[]) {
 	SS.addDirectionalLight("dlight2", Directionallight(vector3(1.0f, 0, 0), vector3(-1.0f, 1.0f, -1.0f), 0.4f));
 	SS.addPointLight("plight1", Pointlight(vector3(0.0f, 0.5f, 1.0f), vector3(2.0f, 0.0f, 7.0f), 4.0f, 2.0f, 0.0f, 1.0f));
 	SS.addSpotLight("slight1", Spotlight(vector3(0.0f, 1.0f, 1.0f), vector3(5.0f, 0.0f, 5.0f), vector3(1.0f, -1.0f, 1.0f), 80.0f, 0.7f, 3.0f, 0.0f, 0.1f));
+	SS.addPointLight("orangeplight", Pointlight(vector3(1.0f, 0.5f, 0.0f), vector3(-2.0f, 0.0f, 5.0f), 4.0f, 0.8f, 0.0f, 1.0f));
+	SS.addPointLight("blueplight", Pointlight(vector3(0.0f, 0.5f, 1.0f), vector3(2.0f, 0.0f, 7.0f), 4.0f, 2.0f, 0.0f, 1.0f));
 
 	sceneone.addDirectionalLight(SS.getDirectionalLight("dlight1"));
 	sceneone.addDirectionalLight(SS.getDirectionalLight("dlight2"));
 	sceneone.addPointLight(SS.getPointLight("plight1"));
 	sceneone.addSpotLight(SS.getSpotLight("slight1"));
+	sceneone.addPointLight(SS.getPointLight("orangeplight"));
+	sceneone.addPointLight(SS.getPointLight("blueplight"));
 
 	//meshes
 	SS.addMaterials("mats1", Materials("test.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f));
@@ -376,7 +380,7 @@ int main(int argc, char* argv[]) {
 	plights[0] = Pointlight(vector3(1.0f, 0.5f, 0.0f), vector3(-2.0f, 0.0f, 5.0f), 4.0f, 0.8f, 0.0f, 1.0f);
 	plights[1] = Pointlight(vector3(0.0f, 0.5f, 1.0f), vector3(2.0f, 0.0f, 7.0f), 4.0f, 2.0f, 0.0f, 1.0f);
 	/*shaderit.getPointLights()[0] = &plights[0];
-	shaderit.getPointLights()[1] = &plights[1];*/
+	shaderit.getPointLights()[1] = &plights[1];
 	shaderit.pointlight = plights[1];
 	Spotlight *slights = new Spotlight[1];
 	slights[0] = Spotlight(vector3(0.6f, 0.0f, 0.0f), vector3(-2.0f, 0.0f, 5.0f), vector3(1.0f, 1.0f, 1.0f), 30.0f, 0.7f, 0.8f, 0.0f, 0.1f);
@@ -427,7 +431,7 @@ int main(int argc, char* argv[]) {
 					}
 				}
 			}
-			if (framekeyheld == true) {
+			if (framekeyheld == true && Inputs.sdlkeyboard[41]) {
 				break;
 			}
 			if (stepframe == true) {
@@ -494,9 +498,11 @@ int main(int argc, char* argv[]) {
 		}
 
 		//enginetests
-		transform.setPosition(vector3(0.0f, -1.0f, 5.0f));
+		/*transform.setPosition(vector3(0.0f, -1.0f, 5.0f));
 		plights[0].setPosition(vector3(3.0f, 0.0f, 8.0 * (float)(sin(unitest) + 1.0f / 2.0f) + 10.0f));
-		plights[1].setPosition(vector3(7.0f, 0.0f, 8.0 * (float)(cos(unitest) + 1.0f / 2.0f) + 10.0f));
+		plights[1].setPosition(vector3(7.0f, 0.0f, 8.0 * (float)(cos(unitest) + 1.0f / 2.0f) + 10.0f));*/
+		SS.getPointLight("orangeplight").setPosition(vector3(3.0f, 0.0f, 8.0 * (float)(sin(unitest) + 1.0f / 2.0f) + 10.0f));
+		SS.getPointLight("blueplight").setPosition(vector3(7.0f, 0.0f, 8.0 * (float)(cos(unitest) + 1.0f / 2.0f) + 10.0f));
 		unitest += deltatime;
 		flashlight.setPosition(Camera.getCameraposition());
 		flashlight.setDirection(Camera.camerarotation.getForward());

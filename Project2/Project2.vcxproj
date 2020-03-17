@@ -132,6 +132,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Test\Game.h" />
+    <ClInclude Include="Physics\Boundingbox.h" />
+    <ClInclude Include="Physics\Boundingsphere.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Components\Component.h" />
     <ClInclude Include="Components\Meshrenderer.h" />
@@ -176,6 +178,8 @@
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Physics\Boundingbox.cpp" />
+    <ClCompile Include="Physics\Boundingsphere.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Components\Component.cpp" />
     <ClCompile Include="Components\Meshrenderer.cpp" />
