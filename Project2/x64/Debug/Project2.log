@@ -1,25 +1,19 @@
-﻿  Boundingspherecollider.cpp
+﻿  Physicsmanager.cpp
   Console.cpp
 c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\console.cpp(236): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
 c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\console.cpp(238): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
 c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\console.cpp(269): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\console.cpp(313): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\console.cpp(357): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-  Entity.cpp
-  Messagesystem.cpp
-  Boundingsphere.cpp
-  Physicsmanager.cpp
-  Physicsobject.cpp
-  Planecollider.cpp
-  Rendermanager.cpp
-  Resourcemanager.cpp
-  Scene.cpp
   main.cpp
 c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(73): warning C4305: 'initializing': truncation from 'double' to 'float'
 c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(532): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
 c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(533): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
 c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(551): warning C4305: 'argument': truncation from 'double' to 'float'
 c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(87): warning C4101: 'loggerchannels': unreferenced local variable
+  Rendermanager.cpp
+  Resourcemanager.cpp
+  Scene.cpp
+  Messagesystem.cpp
   Generating Code...
-  LINK : C:\Users\lukinator1\Desktop\engine\The Super Suspension System\Project2\x64\Debug\Project2.exe not found or not built by the last incremental link; performing full link
   Project2.vcxproj -> C:\Users\lukinator1\Desktop\engine\The Super Suspension System\Project2\x64\Debug\Project2.exe

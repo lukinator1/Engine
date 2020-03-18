@@ -1,6 +1,7 @@
 #include "Scene.h"
 Scene::Scene() 
 {
+
 }
 int Scene::setSkybox(std::string right, std::string left, std::string top, std::string bottom, std::string front, std::string back) {
 	if (skybox.setSkybox(right, left, top, bottom, front, back) == -1) {

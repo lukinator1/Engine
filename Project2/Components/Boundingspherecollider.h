@@ -10,7 +10,8 @@ public:
 			 std::cout << "collided" << std::endl;
 		 }
 		 boundingsphere.collidertransform.position = boundingsphere.collidertransform.position.add(boundingsphere.velocity.multiply(deltatime));
-		 t = boundingsphere.collidertransform;
+		 t.position = boundingsphere.collidertransform.position;
+		 t.rotation = boundingsphere.collidertransform.rotation;
 	}
 	 Boundingspherecollider(Boundingsphere bsphere)  {
 		 boundingsphere = bsphere;
