@@ -11,6 +11,25 @@ public:
 	std::vector <Entity *> children;
 	std::vector <Component *> components; //maybe make a map?
 	Entity();
+	Entity(Transforming t) {
+		transform = t;
+	}
+	Entity(Transforming t, std::vector <Entity *> _children) {
+		transform = t;
+		for (int i = 0; i < _children.size(); i++) {
+			children.push_back(_children[i]);
+		}
+	}
+	Entity(Transforming t, std::vector <Entity *> _children, std::vector <Component *> _component) {
+		transform = t;
+		for (int i = 0; i < _children.size(); i++) {
+			children.push_back(_children[i]);
+		}
+		for (int i = 0; i < _component.size(); i++) {
+			components.push_back(_component[i]);
+		}
+	}
+
 	~Entity();
 	void updateEntities() { //deltas passed in here
 		for (int i = 0; i < components.size(); i++) {

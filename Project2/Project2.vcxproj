@@ -132,16 +132,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Test\Game.h" />
+    <ClInclude Include="Components\Boundingspherecollider.h" />
+    <ClInclude Include="Components\Components.h" />
+    <ClInclude Include="Physics\Physicsobject.h" />
+    <ClInclude Include="Physics\Physics.h" />
+    <ClInclude Include="Physics\Physicsmanager.h" />
     <ClInclude Include="Physics\Boundingbox.h" />
     <ClInclude Include="Physics\Boundingsphere.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Components\Component.h" />
     <ClInclude Include="Components\Meshrenderer.h" />
     <ClInclude Include="Console.h" />
-    <ClInclude Include="Components\Directionallightc.h" />
     <ClInclude Include="Mathlibrary\Mathlibrary.h" />
     <ClInclude Include="Messaging\Messaging.h" />
     <ClInclude Include="Global.h" />
+    <ClInclude Include="Physics\Planecollider.h" />
     <ClInclude Include="Rendering\Rendering.h" />
     <ClInclude Include="Rendering\Lighting\Directionallight.h" />
     <ClInclude Include="Engine.h" />
@@ -178,14 +183,17 @@
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Components\Boundingspherecollider.cpp" />
+    <ClCompile Include="Physics\Physicsobject.cpp" />
+    <ClCompile Include="Physics\Physicsmanager.cpp" />
     <ClCompile Include="Physics\Boundingbox.cpp" />
     <ClCompile Include="Physics\Boundingsphere.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Components\Component.cpp" />
     <ClCompile Include="Components\Meshrenderer.cpp" />
     <ClCompile Include="Console.cpp" />
-    <ClCompile Include="Components\Directionallightc.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Physics\Planecollider.cpp" />
     <ClCompile Include="Rendering\Lighting\Directionallight.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Rendering\Lighting\Light.cpp" />

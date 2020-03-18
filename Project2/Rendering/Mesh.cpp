@@ -263,8 +263,8 @@ void Mesh::calculateNormals(Vertex* vertices, unsigned int* indices, unsigned in
 		unsigned int i0 = indices[i];
 		unsigned int i1 = indices[i + 1];
 		unsigned int i2 = indices[i + 2];
-		vector3 edge1 = vertices[i1].position.subtract(vertices[i0].position);
-		vector3 edge2 = vertices[i2].position.subtract(vertices[i0].position);
+		vector3 edge1 = vertices[i1].position.Subtract(vertices[i0].position);
+		vector3 edge2 = vertices[i2].position.Subtract(vertices[i0].position);
 		vector3 normal = (edge1.crossProduct(edge2)).Normalize();
 
 		vertices[i0].normal = vertices[i0].normal.add(normal);

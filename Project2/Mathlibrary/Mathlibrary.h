@@ -3,3 +3,6 @@
 #include "Quaternion.h"
 #include "vector2.h"
 #include "vector3.h"
+/*float absoluteValue() {
+
+}*/

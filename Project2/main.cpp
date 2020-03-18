@@ -10,11 +10,12 @@
 #include "Resourcemanager.h"
 #include "Messaging/Messagesystem.h"
 #include "Messaging/Messaging.h"
-#include "Components/Meshrenderer.h"
+#include "Components/Components.h"
 #include "Textrenderer.h"
 #include "Scene.h"
 #include "Logger.h"
 #include "Global.h"
+#include "Physics/Physics.h"
 #include "Console.h"
 #undef main
 #include <iostream>
@@ -255,6 +256,7 @@ int main(int argc, char* argv[]) {
 	Memorymanager MemoryManager(sfsize, sfalignment, dbsize, dbalignment);
 	Messagesystem Messages;
 	Window Window(windowwidth, windowheight, title, windowicon, fullscreen, desktopfullscreen, borderless, vsync);
+	Physicsmanager Physics;
 	Rendering Renderer;
 	Renderer.renderingStartup(Window);
 	Resourcemanager SS;
@@ -302,6 +304,11 @@ int main(int argc, char* argv[]) {
 	SS.addMesh("Snake", Mesh("snake.obj"));
 	SS.addMesh("Scout", Mesh("scout.obj"));
 	SS.addMesh("Cube", Mesh("cube.obj"));
+	SS.addMesh("Sphere", Mesh("sphere.obj"));
+
+	//physics
+	SS.addBoundingSphere("bsphere1", Boundingsphere());
+	SS.addBoundingSphere("bsphere2", Boundingsphere());
 
 	//entites
 	Entity Quote; 
@@ -338,6 +345,26 @@ int main(int argc, char* argv[]) {
 	Rintezuka.addComponent(&rincomponent);
 	Scout.addSubEntity(&Rintezuka);
 
+	Entity sphereone;
+	sphereone.transform.setPosition(7.5f, 20.0f, -14.0f);
+	sphereone.transform.setScale(vector3(2.0f, 2.0f, 2.0f));
+	Meshrenderer spheremesh(SS.getMesh("Sphere"), SS.getMaterials("mats1"));
+	sphereone.addComponent(&spheremesh);
+	Boundingspherecollider sphereonecollider(SS.getBoundingSphere("bsphere1"));
+	sphereonecollider.boundingsphere.collidertransform = sphereone.transform;
+	sphereone.addComponent(&sphereonecollider);
+	Rintezuka.addSubEntity(&sphereone);
+
+	Entity spheretwo;
+	spheretwo.transform.setPosition(7.5f, 20.0f, -21.0f);
+	spheretwo.transform.setScale(vector3(2.0f, 2.0f, 2.0f));
+	spheretwo.addComponent(&spheremesh);
+	Boundingspherecollider spheretwocollider(SS.getBoundingSphere("bsphere2"));
+	spheretwocollider.boundingsphere.collidertransform = spheretwo.transform;
+	spheretwocollider.boundingsphere.velocity = vector3(0, 0, 0.4f);
+	spheretwo.addComponent(&spheretwocollider);
+	sphereone.addSubEntity(&spheretwo);
+
 	Entity field;
 	Vertex vertices[] = { Vertex(vector3(-fieldWidth, 0.0f, -fieldDepth), vector2(0.0f, 0.0f)),
 						Vertex(vector3(-fieldWidth, 0.0f, fieldDepth * 3), vector2(0.0f, 1.0f)),
@@ -349,8 +376,8 @@ int main(int argc, char* argv[]) {
 		unsigned int i0 = indices[i];
 		unsigned int i1 = indices[i + 1];
 		unsigned int i2 = indices[i + 2];
-		vector3 edge1 = vertices[i1].position.subtract(vertices[i0].position);
-		vector3 edge2 = vertices[i2].position.subtract(vertices[i0].position);
+		vector3 edge1 = vertices[i1].position.Subtract(vertices[i0].position);
+		vector3 edge2 = vertices[i2].position.Subtract(vertices[i0].position);
 		vector3 normal = (edge1.crossProduct(edge2)).Normalize();
 
 		vertices[i0].normal = vertices[i0].normal.add(normal);
@@ -395,7 +422,8 @@ int main(int argc, char* argv[]) {
 	std::chrono::duration<float> chronodelta = std::chrono::duration<float>(deltatime);
 	
 	//engine tools
-	Scene currentscene; 
+	Scene *currentscene; 
+	currentscene = &sceneone;
 	int frames = 0;
 	double framecounter = 0;
 	int fps = -1;
@@ -509,9 +537,10 @@ int main(int argc, char* argv[]) {
 		/*shaderit.useShader();
 		shaderit.updateUniforms(transform.newUnprojectedMatrix(), transform.newTransformationMatrix(), transform.position, fieldmaterials);
 		meshme.drawMesh();*/
-		Renderer.renderScene(sceneone);
+		Physics.Update(*currentscene);
+		Renderer.renderScene(*currentscene);
 		/*text.renderComponent(transform, shaderit);*/     //interesting effect
-		Console.consoleUpdate(currentscene, gameisrunning, framebyframe, stepframekey, exitframekey, framelock, fpscounter, deltatime, dtime, deltatimeweight);
+		Console.consoleUpdate(*currentscene, gameisrunning, framebyframe, stepframekey, exitframekey, framelock, fpscounter, deltatime, dtime, deltatimeweight);
 		frames++;
 		if (framecounter >= 1.0f) {
 			fps = frames;

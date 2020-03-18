@@ -21,7 +21,7 @@ float Boundingbox::boundingBoxCollision(Boundingbox & otherbox) {
 	else {
 		distance.z = otherdifference.z;
 	}
-	float maxdistance = distance.x;
+	maxdistance = distance.x;
 	if (distance.y > maxdistance) {
 		maxdistance = distance.y;
 	}
@@ -30,9 +30,9 @@ float Boundingbox::boundingBoxCollision(Boundingbox & otherbox) {
 	}
 
 	if (maxdistance < 0) {
-		intersected = true;
-		m
+		collided = true;
 	}
+	return 0;
 }
 
 

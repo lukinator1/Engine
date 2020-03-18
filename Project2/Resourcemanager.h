@@ -3,8 +3,9 @@
 #include "Rendering/Materials.h"
 #include "Rendering/Mesh.h"
 #include "Rendering/Lighting/Lighting.h" 
+#include "Physics/Physics.h"
 #include "Entity.h"
-class Resourcemanager
+class Resourcemanager //todo: error when can't find in map
 {
 	std::map<std::string, Mesh> meshes;
 	std::map<std::string, Materials> materials;
@@ -12,7 +13,8 @@ class Resourcemanager
 	std::map<std::string, Directionallight> directionallights;
 	std::map<std::string, Pointlight> pointlights;
 	std::map<std::string, Spotlight> spotlights;
-	std::map<std::string, Entity>entities;
+	std::map<std::string, Boundingsphere> boundingspheres;
+	std::map<std::string, Entity> entities;
 public:
 	void addEntity(Entity &entity, std::string id) {
 		entities.emplace(id, entity);
@@ -88,7 +90,16 @@ public:
 		/*lights.at(id).freeLight();*/
 		spotlights.erase(id);
 	}
-
+	void addBoundingSphere(std::string id, Boundingsphere bsphere) {
+		boundingspheres.emplace(id, bsphere);
+	}
+	Boundingsphere &getBoundingSphere(std::string id) {
+		return boundingspheres.at(id);
+	}
+	void deleteBoundingSpheres(std::string id) {
+		/*lights.at(id).freeLight();*/
+		boundingspheres.erase(id);
+	}
 
 	Resourcemanager();
 	~Resourcemanager();

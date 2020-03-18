@@ -1,19 +1,29 @@
 #include "Boundingsphere.h"
 
-float Boundingsphere::boundingSphereCollision(Boundingsphere & othersphere) {
+bool Boundingsphere::boundingSphereCollision(Boundingsphere &othersphere/*, float &collisiondistance*/) {
 	float radiusdistance = radius + othersphere.radius;
-	float centerdistance = (othersphere.center.Subtract(center)).Magnitude();
+	float centerdistance = (othersphere.collidertransform.position.Subtract(othersphere.collidertransform.position)).Magnitude();
+	collisiondistance = centerdistance - radiusdistance;
 	if (centerdistance < radiusdistance) {
-		intersected = true;
+		collided = true;
+		return true;
 	}
 	else {
-		intersected = false;
+		collided = false;
+		return false;
 	}
-	intersectiondistance = centerdistance - radiusdistance;
+}
+
+void Boundingsphere::Simulate(Physicsobject physicsobject)
+{
 }
 
 Boundingsphere::Boundingsphere()
 {
+	shape = Physicsobject::Sphere;
+	radius = 20.0f;
+	collided = false;
+	collisiondistance = 0.0f;
 }
 
 

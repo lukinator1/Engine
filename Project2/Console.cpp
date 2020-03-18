@@ -269,15 +269,15 @@ void Console::interpretInput(Scene &_currentscene, bool &gameisrunning, bool &fr
 				pos = std::stod(buffer);
 				switch (count) {
 				case 0:
-					thecamera->position.x = pos;
+					thecamera->cameraposition.x = pos;
 					response += std::to_string(pos);
 					break;
 				case 1:
-					thecamera->position.y = pos;
+					thecamera->cameraposition.y = pos;
 					response += ", " + std::to_string(pos);
 					break;
 				case 2:
-					thecamera->position.z = pos;
+					thecamera->cameraposition.z = pos;
 					response += ", " + std::to_string(pos);
 					break;
 				}
@@ -313,15 +313,15 @@ void Console::interpretInput(Scene &_currentscene, bool &gameisrunning, bool &fr
 				pos = std::stod(buffer);
 				switch (count) {
 				case 0:
-					thecamera->position.x += pos;
+					thecamera->cameraposition.x += pos;
 					response += std::to_string(pos);
 					break;
 				case 1:
-					thecamera->position.y += pos;
+					thecamera->cameraposition.y += pos;
 					response += ", " + std::to_string(pos);
 					break;
 				case 2:
-					thecamera->position.z += pos;
+					thecamera->cameraposition.z += pos;
 					response += ", " + std::to_string(pos);
 					break;
 				}

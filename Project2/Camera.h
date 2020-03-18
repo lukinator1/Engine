@@ -5,7 +5,7 @@ class Camera	//maybe make this inheret from window?
 {
 private: 
 public:
-	static vector3 position;
+	static vector3 cameraposition;
 	/*static vector3 forwardvector;
 	static vector3 upvector;*/
 	static Quaternion camerarotation;
@@ -16,12 +16,12 @@ public:
 	static float aspectratioheight;
 	static bool orthographicprojection;
 	void setCameraPosition(vector3 newcameraposition) {
-		position = newcameraposition;
+		cameraposition = newcameraposition;
 	}
 	void setCameraPosition(float newx, float newy, float newz) {
-		position.x = newx;
-		position.y = newy;
-		position.z = newz;
+		cameraposition.x = newx;
+		cameraposition.y = newy;
+		cameraposition.z = newz;
 	}
 	void setCameraDirection() {
 
@@ -30,7 +30,7 @@ public:
 
 	}
 	void moveCamera(vector3 direction, float distance) {
-		position = position.add(direction.multiply(distance));
+		cameraposition = cameraposition.add(direction.multiply(distance));
 	}
 	/*vector3 getRightVector(){
 		vector3 rightvector = upvector.crossProduct(forwardvector).Normalize();
@@ -143,7 +143,7 @@ public:
 		}
 	}
 	static vector3 getCameraposition() {
-		return position;
+		return cameraposition;
 	}
 /*	static vector3 getUpvector() {
 		return upvector;
@@ -250,13 +250,13 @@ public:
 		camerarotation.Normalize();*/
 	}
 	Camera(vector3 newposition) { //check if falls within world space
-		position = newposition;
+		cameraposition = newposition;
 		camerarotation = Quaternion(0.0f, 0.0f, 0.0f, 1.0f);
 		/*upvector = vector3(0.0f, 1.0f, 0.0f);
 		forwardvector = vector3(0.0f, 0.0f, 1.0f);*/
 	};
 	Camera(vector3 newposition, vector3 newupvector, vector3 newforwardvector) {
-		position = newposition;
+		cameraposition = newposition;
 		/*upvector = newupvector;
 		forwardvector = newforwardvector;
 
@@ -264,7 +264,7 @@ public:
 		forwardvector = forwardvector.Normalize();*/
 	};
 	Camera(vector3 newposition, vector3 newupvector, vector3 newforwardvector, float newfov, float max, float min, float w, float h, bool o = false) { 
-		position = newposition;
+		cameraposition = newposition;
 		/*upvector = newupvector;
 		forwardvector = newforwardvector;*/
 		fov = newfov;

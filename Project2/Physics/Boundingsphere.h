@@ -1,14 +1,14 @@
 #pragma once
 #include "../Mathlibrary/vector3.h"
-class Boundingsphere
+#include "Physicsobject.h"
+class Boundingsphere : public Physicsobject
 {
 public:
-	vector3 center;
 	float radius;
-	float boundingSphereCollision(Boundingsphere & othersphere);
-	bool intersected;
-	float intersectiondistance;
+	bool boundingSphereCollision(Boundingsphere & othersphere/*, float &collisiondistance*/);
+	bool collided;
+	float collisiondistance;
+	void Simulate(Physicsobject physicsobject);
 	Boundingsphere();
 	~Boundingsphere();
 };
-

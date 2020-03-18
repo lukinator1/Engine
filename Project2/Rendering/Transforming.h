@@ -5,12 +5,12 @@ class Transforming : public Camera //transform parent + matrix
 {
 private:
 public:
-	vector3 translation;
+	vector3 position;
 	/*vector3 rotation;*/
 	vector3 scaling;
 	Quaternion rotation;
 	Transforming() {
-		translation.setVector(0.0f, 0.0f, 0.0f);
+		position.setVector(0.0f, 0.0f, 0.0f);
 		/*rotation.setVector(0.0f, 0.0f, 0.0f);*/
 		scaling.setVector(1.0f, 1.0f, 1.0f);
 		rotation.setQuaternion(0.0, 0.0, 0.0, 1.0f);
@@ -32,7 +32,7 @@ public:
 		matrix4f transformationmatrix = translationmatrix * ( /*rotationamtrix quatrotationmatrix * scalematrix);*/
 		unprojected = newUnprojectedMatrix();
 		camerarotationmatrix.makeQuatRotation(camerarotation);
-		cameratranslation.makeTranslation(-(position.x), -(position.y), -(position.z));
+		cameratranslation.makeTranslation(-(cameraposition.x), -(cameraposition.y), -(cameraposition.z));
 		projectionmatrix.makeProjection(fov, aspectratiowidth, aspectratioheight, minviewdistance, maxviewdistance);
 		/*	if (orthographicprojection == false) { */
 
@@ -48,7 +48,7 @@ public:
 		matrix4f rotationmatrix;
 		matrix4f quatrotationmatrix;
 		matrix4f scalematrix;
-		translationmatrix.makeTranslation(translation);
+		translationmatrix.makeTranslation(position);
 		/*rotationmatrix.makeRotation(rotation);*/
 		quatrotationmatrix.makeQuatRotation(rotation);
 		scalematrix.makeScaling(scaling);
@@ -58,7 +58,7 @@ public:
 		matrix4f camerarotationmatrix;
 		matrix4f cameratranslation;
 		camerarotationmatrix.makeQuatRotation(camerarotation);
-		cameratranslation.makeTranslation(-(position.x), -(position.y), -(position.z));
+		cameratranslation.makeTranslation(-(cameraposition.x), -(cameraposition.y), -(cameraposition.z));
 		return camerarotationmatrix * (cameratranslation * newUnprojectedMatrix());
 	}
 	matrix4f newProjectionMatrix()
@@ -107,7 +107,7 @@ public:
 		maxviewdistance = newmaxviewdistance;
 	}
 	vector3 getPosition() {
-		return translation;
+		return position;
 	}
 	Quaternion getRotation() {
 		return rotation;
@@ -116,7 +116,7 @@ public:
 		return scaling;
 	}
 	void setPosition(vector3 newtranslationvector){
-		translation = newtranslationvector;
+		position = newtranslationvector;
 		}
 	/*void setRotation(vector3 newrotationvector) {
 		rotation = newrotationvector;
@@ -125,9 +125,9 @@ public:
 		scaling = newscalingvector;
 	}
 	void setPosition(float x, float y, float z) {
-		translation.x = x;
-		translation.y = y;
-		translation.z = z;
+		position.x = x;
+		position.y = y;
+		position.z = z;
 	}
 	/*void setRotationVector(float x, float y, float z) {
 		rotation.x = x;

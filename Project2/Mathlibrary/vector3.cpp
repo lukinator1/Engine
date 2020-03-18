@@ -31,6 +31,9 @@ void vector3::setVector(float newx, float newy, float newz) {
 float vector3::Magnitude() {
 	return sqrt((x * x) + (y * y) + (z * z));
 }
+float vector3::dotProduct(vector3 vec) {
+	return (x * vec.x) + (y * vec.y) + (z * vec.z);
+}
 vector3 vector3::Rotate(float angle, vector3 axis) {
 	float sinhalfangle = sinf((angle / 2.0f) * (3.14159265358979323f / 180.0f));
 	float coshalfangle = cosf((angle / 2.0f) * (3.14159265358979323f / 180.0f));
@@ -146,7 +149,7 @@ vector2 vector3::getXZ()
 	return vector2(x, z);
 }
 vector3 vector3::interpolateVector(vector3 destination, float interpfactor) {
-	return destination.subtract(*this).multiply(interpfactor).add(*this);
+	return destination.Subtract(*this).multiply(interpfactor).add(*this);
 }
 bool vector3::operator!=(vector3 rhs)
 {
