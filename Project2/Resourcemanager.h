@@ -3,7 +3,7 @@
 #include "Rendering/Materials.h"
 #include "Rendering/Mesh.h"
 #include "Rendering/Lighting/Lighting.h" 
-#include "Physics/Physics.h"
+#include "Physics/Boundingsphere.h"
 #include "Entity.h"
 class Resourcemanager //todo: error when can't find in map
 {

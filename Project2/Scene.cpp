@@ -1,7 +1,6 @@
 #include "Scene.h"
 Scene::Scene() 
 {
-
 }
 int Scene::setSkybox(std::string right, std::string left, std::string top, std::string bottom, std::string front, std::string back) {
 	if (skybox.setSkybox(right, left, top, bottom, front, back) == -1) {
@@ -11,6 +10,14 @@ int Scene::setSkybox(std::string right, std::string left, std::string top, std::
 		return 0;
 	}
 }
+Entity Scene::getRoot()
+{
+	return root;
+}
+void Scene::setRoot(Entity &e)
+{
+	root = e;
+}
 /*void Scene::setSkybox(Skybox &_skybox) {
 	skybox.setSkybox(skybox);
 }*/
@@ -19,6 +26,7 @@ void Scene::saveScene()
 }
 void Scene::initScene()
 {
+	root.initializeEntities();
 }
 void Scene::inputScene()
 {
@@ -47,7 +55,7 @@ void Scene::addPointLight(Pointlight &plight) {
 }*/
 void Scene::renderScene()
 {
-	/*root.renderEntity();*/
+	/*root.renderEntity(); 7*/
 }
 
 void Scene::updateScene()

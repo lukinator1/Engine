@@ -7,7 +7,6 @@
 #include "../Camera.h"
 #include "../Global.h"
 #include "../Console.h"
-//the user should define the logic of this class
 class Messagesystem
 {
 private:

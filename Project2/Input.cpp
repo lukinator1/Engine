@@ -48,7 +48,6 @@ void Input::getInputs() {
 		if (sdlevent.type == SDL_MOUSEBUTTONDOWN) { //mouse buttons down
 			if (sdlevent.button.button == SDL_BUTTON_LEFT) {
 				leftmouse.first = true;
-				std::cout << "LM clcicked" << std::endl;
 				if (sdlevent.button.clicks == 2) {
 					/*postMessage(Message::Messagetypes::Doubleclick);*/
 					doubleclicked = true;
@@ -117,7 +116,6 @@ void Input::getInputs() {
 			/*postMessage(Message::Messagetypes::Mousescrolled, sdlevent.wheel.x, sdlevent.wheel.y);
 			scrolled = true;*/
 			setScrolldistance(sdlevent.wheel.x, sdlevent.wheel.y);
-			std::cout << "x scroll distance: " << scrolldistance.x << ", y scroll distance: " << scrolldistance.y << std::endl;
 			scrolled = true;
 		}
 
@@ -159,7 +157,6 @@ void Input::getInputs() {
 			postMessage(Message::Messagetypes::Closebuttonpressed);
 			/*Message message(Windowclose);
 			postMessage(Windowclose);*/
-			std::cout << "messagequeue size: " << messagequeue.size() << std::endl;
 		}
 	}
 	if (scrolled == false) {

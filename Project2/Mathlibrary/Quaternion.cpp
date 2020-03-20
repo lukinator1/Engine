@@ -60,6 +60,16 @@ Quaternion Quaternion::Conjugate() {
 	Quaternion quat(newx, newy, newz, this->w);
 	return quat;
 }
+Quaternion Quaternion::Add(Quaternion inc)
+{
+	float myx = x + inc.x;
+	float myy = y + inc.y;
+	float myz = z + inc.z;
+	float myw = w + inc.w;
+
+	Quaternion newquat(myx, myy, myz, myw);
+	return newquat;
+}
 Quaternion Quaternion::Multiply(Quaternion inc)
 {
 	float myx = x * inc.w + w * inc.x + y * inc.z - z * inc.y;
@@ -76,6 +86,16 @@ Quaternion Quaternion::Multiply(float incx, float incy, float incz)
 	float myy = w * incy + z * incx - x * incz;
 	float myz = w * incz + x * incy - y * incx;
 	float myw = -(x * incx) - (y * incy) - (z * incz);
+
+	Quaternion newquat(myx, myy, myz, myw);
+	return newquat;
+}
+Quaternion Quaternion::Multiply(float inc)
+{
+	float myx = x * inc;
+	float myy = y * inc;
+	float myz = z * inc;
+	float myw = w * inc;
 
 	Quaternion newquat(myx, myy, myz, myw);
 	return newquat;

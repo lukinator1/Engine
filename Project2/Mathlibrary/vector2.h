@@ -102,6 +102,24 @@
 				return false;
 			}
 		}
+		vector2 operator*(vector2 & rhs)
+		{
+			return vector2(x * rhs.x, y * rhs.y);
+		}
+		vector2 operator+(vector2 & rhs)
+		{
+			return vector2(x + rhs.x, y + rhs.y);
+		}
+		vector2 operator+=(vector2 & rhs)
+		{
+			x += rhs.x;
+			y += rhs.y;
+			return *this;
+		}
+		vector2 operator-(vector2 & rhs)
+		{
+			return vector2(x - rhs.x, y - rhs.y);
+		}
 		float x;
 		float y;
 	};

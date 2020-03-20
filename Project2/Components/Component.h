@@ -13,6 +13,9 @@ public:  //deltas passed in here
 	virtual void renderComponent(Transforming &t, Shader * &s) {
 
 	}
+	virtual void initializeComponent() {
+
+	}
 	/*virtual void renderComponent() {
 
 	}*/

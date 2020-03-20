@@ -134,7 +134,7 @@ public:
 		rotation.y = y;
 		rotation.z = z;
 	}*/
-	void setRotation(vector3 vectorrotation) {
+	void Rotate(vector3 vectorrotation) { //todo: account for rotations +360
 		Quaternion newquat;
 		if (vectorrotation.y != 0) {
 			newquat = newquat.Rotate(vectorrotation.y, vector3(1.0, 0.0f, 0.0f));
@@ -154,7 +154,7 @@ public:
 			rotation = rotation.Normalize();
 		}
 	}
-	void setRotation(float x, float y, float z) {
+	void Rotate(float x, float y, float z) {
 		Quaternion newquat;
 		if (y != 0) {
 			newquat = newquat.Rotate(y, vector3(1.0, 0.0f, 0.0f));
@@ -174,16 +174,33 @@ public:
 			rotation = rotation.Normalize();
 		}
 	}
-	void setQuatRotation(Quaternion newquatrotation) {
+/*	void setRotation(vector3 vectorrotation) { //todo: account for rotations +360
+		float todegrees = (180.0f / 3.14159265358979323f);
+		vector3 newvec(rotation.x, rotation.y, rotation.z);
+		if (vectorrotation != vector3(0, 0, 0)) {
+			vectorrotation = vectorrotation.Normalize();
+		}
+		Rotate(vectorrotation.Subtract(newvec));
+	}
+	void setRotation(float x, float y, float z) { //todo: account for rotations +360
+		vector3 vectorrotation(x, y, z);
+		if (vectorrotation != vector3(0, 0, 0)) {
+			vectorrotation = vectorrotation.Normalize();
+		}
+		float todegrees = (180.0f/3.14159265358979323f);
+		vector3 newvec(rotation.x, rotation.y, rotation.z);
+		Rotate(vectorrotation.Subtract(newvec));
+	}*/
+	void setRotation(Quaternion newquatrotation) {
 		rotation = newquatrotation;
 	}
-	void setQuatRotation(float _x, float _y, float _z, float _w) {
+	void setRotation(float _x, float _y, float _z, float _w) {
 		rotation.x = _x;
 		rotation.y = _y;
 		rotation.z = _z;
 		rotation.w = _w;
 	}
-	void setScalingVector(float x, float y, float z) {
+	void setScale(float x, float y, float z) {
 		scaling.x = x;
 		scaling.y = y;
 		scaling.z = z;

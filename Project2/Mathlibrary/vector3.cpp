@@ -169,6 +169,25 @@ bool vector3::operator==(vector3 & rhs)
 		return false;
 	}
 }
+vector3 vector3::operator*(vector3 & rhs)
+{
+	return vector3(x * rhs.x, y * rhs.y, z * rhs.z);
+}
+vector3 vector3::operator+(vector3 & rhs)
+{
+	return vector3(x + rhs.x, y + rhs.y, z + rhs.z);
+}
+vector3 vector3::operator+=(vector3 & rhs)
+{
+	x += rhs.x;
+	y += rhs.y;
+	z += rhs.z;
+	return *this;
+}
+vector3 vector3::operator-(vector3 & rhs)
+{
+	return vector3(x - rhs.x, y - rhs.y, z - rhs.z);
+}
 vector3::~vector3()
 {
 }

@@ -11,8 +11,10 @@ public:
 	float w;
 	Quaternion Normalize();
 	Quaternion Conjugate();
+	Quaternion Add(Quaternion inc);
 	Quaternion Multiply(Quaternion multiplier);
 	Quaternion Multiply(float , float y, float z);
+	Quaternion Multiply(float inc);
 	vector3 getForward();
 	vector3 getBack();
 	vector3 getUp();

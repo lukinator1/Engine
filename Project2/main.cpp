@@ -30,6 +30,7 @@ bool stepframe = false;
 bool framekeyheld = false;
 int stepframekey = 225;
 int exitframekey = 41;
+std::vector<Boundingsphere *> spherecolliders;
 
 float fieldDepth = 10.0f;
 float fieldWidth = 10.0f;
@@ -314,7 +315,8 @@ int main(int argc, char* argv[]) {
 	Entity Quote; 
 	Quote.transform.setPosition(vector3(10.0f, 17.5f, 12.0f));
 	Meshrenderer component(SS.getMesh("Quote"), SS.getMaterials("mats1"));
-	Quote.transform.setRotation(0.0f, 0.0f, 50.0f);
+	Quote.transform.Rotate(0.0f, 0.0f, 50.0f);
+	Quote.transform.setRotation(0.0f, 0.0f, 0.0f, 0.0f);
 	Quote.addComponent(&component);
 
 	Entity Cloud;
@@ -346,22 +348,25 @@ int main(int argc, char* argv[]) {
 	Scout.addSubEntity(&Rintezuka);
 
 	Entity sphereone;
-	sphereone.transform.setPosition(7.5f, 20.0f, -14.0f);
+	sphereone.transform.setPosition(7.5f, 40.0f, -14.0f);
 	sphereone.transform.setScale(vector3(2.0f, 2.0f, 2.0f));
 	Meshrenderer spheremesh(SS.getMesh("Sphere"), SS.getMaterials("mats1"));
 	sphereone.addComponent(&spheremesh);
 	Boundingspherecollider sphereonecollider(SS.getBoundingSphere("bsphere1"));
 	sphereonecollider.boundingsphere.collidertransform = sphereone.transform;
+	sphereonecollider.boundingsphere.radius = 2.0f;
 	sphereone.addComponent(&sphereonecollider);
 	Rintezuka.addSubEntity(&sphereone);
 
 	Entity spheretwo;
-	spheretwo.transform.setPosition(7.5f, 20.0f, -21.0f);
+	spheretwo.transform.setPosition(7.5f, 40.0f, -21.0f);
 	spheretwo.transform.setScale(vector3(2.0f, 2.0f, 2.0f));
 	spheretwo.addComponent(&spheremesh);
 	Boundingspherecollider spheretwocollider(SS.getBoundingSphere("bsphere2"));
 	spheretwocollider.boundingsphere.collidertransform = spheretwo.transform;
-	spheretwocollider.boundingsphere.velocity = vector3(0, 0, 0.4f);
+	spheretwocollider.boundingsphere.radius = 2.0f;
+/*	spheretwocollider.boundingsphere.velocity = vector3(0, 0, 0.4f);
+	spheretwocollider.boundingsphere.angularvelocity = vector3(0, 90.0f, 0);*/
 	spheretwo.addComponent(&spheretwocollider);
 	sphereone.addSubEntity(&spheretwo);
 
@@ -394,7 +399,8 @@ int main(int argc, char* argv[]) {
 	field.addComponent(&fieldcomponent);
 	Cloud.addSubEntity(&field);
 
-	sceneone.root = Quote;
+	sceneone.setRoot(Quote);
+	sceneone.initScene();
 	
 	//shaders
 	Shader shaderit("phong");
@@ -497,14 +503,39 @@ int main(int argc, char* argv[]) {
 			Camera.rotateCamera(2.0f, 0.0f);
 		}
 		if (Inputs.keyboardstate[Input::L].first == 1 && Inputs.keyboardstate[Input::L].second == 0) {  //flashlight 
-				if (flashlighton == true) {
+				/*if (flashlighton == true) {
 					flashlight.setIntensity(0.0f);
 					flashlighton = false;
 				}
 				else if (flashlighton == false) {
 					flashlight.setIntensity(3.0f);
 					flashlighton = true;
+				}*/
+			vector3 right(0, 0, 0.01f);
+			if (Inputs.keyboardstate[Input::Rightshift].first) {
+				if (right.z > 0) {
+					right.z = -right.z;
 				}
+			}
+			spheretwocollider.boundingsphere.acceleration += right;
+		}
+		if (Inputs.keyboardstate[Input::I].first == true) {
+			vector3 forward(0.01f, 0, 0);
+			if (Inputs.keyboardstate[Input::Rightshift].first) {
+				if (forward.x > 0) {
+					forward.x = -forward.x;
+				}
+			}
+			spheretwocollider.boundingsphere.acceleration += forward;
+		}
+		if (Inputs.keyboardstate[Input::J].first == true) {
+			vector3 up(0, 0.01f, 0);
+			if (Inputs.keyboardstate[Input::Rightshift].first) {
+				if (up.y > 0) {
+					up.y = -up.y;
+			}
+			}
+			spheretwocollider.boundingsphere.acceleration += up;
 		}
 		if (Inputs.getScrolldistance().y != 0) {
 			Camera.Zoom(Inputs.getScrolldistance().y);

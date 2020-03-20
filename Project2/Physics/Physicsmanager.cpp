@@ -9,9 +9,11 @@ void Physicsmanager::Update(Scene & currentscene)
 			physicsobjects[i]->Simulate(*physicsobjects[u]);
 		}
 	}*/
-	for (int i = 0; i < spheres.size(); i++) {
-		for (int u = i + 1; i < spheres.size(); i++) {
-			spheres[i]->boundingSphereCollision(*spheres[u]);
+	for (int i = 0; i < spherecolliders.size(); i++) {
+		for (int u = 0; i < spherecolliders.size(); i++) {
+			if (i != u) {
+				spherecolliders[i]->boundingSphereCollision(*spherecolliders[u]);
+			}
 		}
 	}
 	currentscene.root.updateEntities();

@@ -31,6 +31,14 @@ public:
 	}
 
 	~Entity();
+	void initializeEntities() {
+		for (int i = 0; i < components.size(); i++) {
+			components[i]->initializeComponent();
+		}
+		for (int i = 0; i < children.size(); i++) {
+			children[i]->initializeEntities();
+		}
+	}
 	void updateEntities() { //deltas passed in here
 		for (int i = 0; i < components.size(); i++) {
 			components[i]->updateComponent(transform);

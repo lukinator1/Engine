@@ -2,7 +2,6 @@
 #include "../Scene.h"
 #include "Boundingsphere.h"
 #include "Boundingbox.h"
-#include "Planecollider.h"
 #include <vector>
 class Physicsmanager
 {
@@ -14,4 +13,4 @@ public:
 	Physicsmanager();
 	~Physicsmanager();
 };
-
+extern std::vector<Boundingsphere *> spherecolliders; //add back to here when scene swaps

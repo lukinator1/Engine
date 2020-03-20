@@ -1,16 +1,14 @@
 #include "Boundingsphere.h"
 
-bool Boundingsphere::boundingSphereCollision(Boundingsphere &othersphere/*, float &collisiondistance*/) {
+void Boundingsphere::boundingSphereCollision(Boundingsphere &othersphere/*, float &collisiondistance*/) {
 	float radiusdistance = radius + othersphere.radius;
-	float centerdistance = (othersphere.collidertransform.position.Subtract(othersphere.collidertransform.position)).Magnitude();
-	collisiondistance = centerdistance - radiusdistance;
+	float centerdistance = (othersphere.collidertransform.position.Subtract(collidertransform.position)).Magnitude();
+	collisiondata.collisiondistance = centerdistance - radiusdistance;
 	if (centerdistance < radiusdistance) {
-		collided = true;
-		return true;
+		collisiondata.collided = true;
 	}
 	else {
-		collided = false;
-		return false;
+		collisiondata.collided = false;
 	}
 }
 
@@ -18,12 +16,22 @@ void Boundingsphere::Simulate(Physicsobject physicsobject)
 {
 }
 
+void Boundingsphere::setMOI(float _MOI) {
+	MOI = _MOI;
+}
+float Boundingsphere::getMOI()
+{
+	return MOI;
+}
+void Boundingsphere::calculateMOI() {
+	MOI = (2.0f / 5.0f) * mass * radius * radius;
+}
 Boundingsphere::Boundingsphere()
 {
-	shape = Physicsobject::Sphere;
 	radius = 20.0f;
-	collided = false;
-	collisiondistance = 0.0f;
+	collisiondata.collided = false;
+	collisiondata.collisiondistance = 0.0f;
+	MOI = (2.0f / 5.0f) * mass * radius * radius;
 }
 
 
