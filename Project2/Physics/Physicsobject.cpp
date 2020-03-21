@@ -24,6 +24,7 @@ Physicsobject::Physicsobject()
 {
 	mass = 10.0f;
 	torque = 0.0f;
+	forces.push_back(vector3(0, gravity, 0));
 	/*acceleration.y = acceleration.y - 1100.81f;*/
 }
 Physicsobject::~Physicsobject()

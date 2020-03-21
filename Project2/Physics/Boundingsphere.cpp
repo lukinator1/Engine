@@ -1,14 +1,20 @@
 #include "Boundingsphere.h"
-
 void Boundingsphere::boundingSphereCollision(Boundingsphere &othersphere/*, float &collisiondistance*/) {
 	float radiusdistance = radius + othersphere.radius;
 	float centerdistance = (othersphere.collidertransform.position.Subtract(collidertransform.position)).Magnitude();
-	collisiondata.collisiondistance = centerdistance - radiusdistance;
+	float collisiondistance = centerdistance - radiusdistance;
 	if (centerdistance < radiusdistance) {
-		collisiondata.collided = true;
+		collisiondata.clear();
+		momentia.clear();
+		forces.clear();
+		collided = true;
+		collisiondata.push_back(Collisiondata(collisiondistance, &othersphere));
+		std::pair <float, vector3> momentum = { othersphere.mass, othersphere.velocity };
+		momentia.push_back(momentum);
+		forces.push_back(othersphere.acceleration.multiply(othersphere.mass));
 	}
 	else {
-		collisiondata.collided = false;
+		collided = false;
 	}
 }
 
@@ -29,8 +35,7 @@ void Boundingsphere::calculateMOI() {
 Boundingsphere::Boundingsphere()
 {
 	radius = 20.0f;
-	collisiondata.collided = false;
-	collisiondata.collisiondistance = 0.0f;
+	collided = false;
 	MOI = (2.0f / 5.0f) * mass * radius * radius;
 }
 

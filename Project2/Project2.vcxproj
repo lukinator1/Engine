@@ -147,6 +147,7 @@
     <ClInclude Include="Messaging\Messaging.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="Physics\Planecollider.h" />
+    <ClInclude Include="Physics\Raytrace.h" />
     <ClInclude Include="Rendering\Rendering.h" />
     <ClInclude Include="Rendering\Lighting\Directionallight.h" />
     <ClInclude Include="Engine.h" />
@@ -194,6 +195,7 @@
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Physics\Planecollider.cpp" />
+    <ClCompile Include="Physics\Raytrace.cpp" />
     <ClCompile Include="Rendering\Lighting\Directionallight.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Rendering\Lighting\Light.cpp" />

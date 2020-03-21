@@ -118,6 +118,22 @@ vector3 vector3::multiply(float multiplier)
 	return *this;*/
 	return vector3(x * multiplier, y * multiplier, z * multiplier);
 }
+vector3 vector3::divide(vector3 d)
+{
+	/*x = x * multiplier.x;
+	y = y * multiplier.y;
+	z = z * multiplier.z;
+	return *this;*/
+	return vector3(x / d.x, y / d.y, z / d.z);
+}
+vector3 vector3::divide(float d)
+{
+	/*x = x * multiplier.x;
+	y = y * multiplier.y;
+	z = z * multiplier.z;
+	return *this;*/
+	return vector3(x / d, y / d, z / d);
+}
 vector3 vector3::Subtract(vector3 sub) {
 	return vector3(x - sub.x, y - sub.y, z - sub.z);
 }
@@ -187,6 +203,10 @@ vector3 vector3::operator+=(vector3 & rhs)
 vector3 vector3::operator-(vector3 & rhs)
 {
 	return vector3(x - rhs.x, y - rhs.y, z - rhs.z);
+}
+vector3 vector3::operator/(vector3 & rhs)
+{
+	return vector3(x / rhs.x, y / rhs.y, z / rhs.z);
 }
 vector3::~vector3()
 {

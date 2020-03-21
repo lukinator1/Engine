@@ -25,6 +25,8 @@ public:
 	vector3 add(float adder);
 	vector3 multiply(vector3 multiplier);
 	vector3 multiply(float multiplier);
+	vector3 divide(vector3 d);
+	vector3 divide(float d);
 	vector3 Subtract(vector3 sub);
 	vector3 Subtract(float sub);
 	vector2 getXY();
@@ -40,5 +42,6 @@ public:
 	vector3 operator+(vector3 & rhs);
 	vector3 operator+=(vector3 & rhs);
 	vector3 operator-(vector3 & rhs);
+	vector3 operator/(vector3 & rhs);
 };
 

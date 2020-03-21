@@ -6,9 +6,13 @@ class Boundingspherecollider : public Component
 public:
 	Boundingsphere boundingsphere;
 	 void updateComponent(Transforming &t) {
-		 if (boundingsphere.collisiondata.collided == true) {
+		 if (boundingsphere.collided == true) {
+			/* for (int i = 0; i < boundingsphere.collisiondata.size(); i++) {
+				 boundingsphere
+			 }*/
 			 handleCollision();  //resolve forces/collisions
 		 }
+
 		 vector3 acceleration(boundingsphere.acceleration.x, boundingsphere.acceleration.y - boundingsphere.gravity, boundingsphere.acceleration.z);
 		 Quaternion angularvelocity(boundingsphere.angularvelocity.x, boundingsphere.angularvelocity.y, boundingsphere.angularvelocity.z, 0);
 		 boundingsphere.velocity = boundingsphere.velocity.add(boundingsphere.acceleration.multiply(deltatime));
@@ -22,14 +26,29 @@ public:
 		 t.position = boundingsphere.collidertransform.position;
 		 t.rotation = boundingsphere.collidertransform.rotation;
 	}
-	 void handleCollision(){
-		 if (boundingsphere.forces.size() != 0) {
-
+	 void handleCollision() {
+		 float momentiamass = 0; //linear
+		 vector3 momentums;
+		 for (int i = 0; i < boundingsphere.momentia.size(); i++) {
+			 momentums = momentums.add(boundingsphere.momentia[i].second.multiply(boundingsphere.momentia[i].first));
+			 momentiamass += boundingsphere.momentia[i].first;
 		 }
-		 /*boundingsphere.acceleration =*/
-		 boundingsphere.velocity.x = -boundingsphere.velocity.x;  //linear movmement
+		 momentums = momentums.add(boundingsphere.velocity.multiply(boundingsphere.mass));
+		 momentiamass += boundingsphere.mass;
+		 boundingsphere.velocity = momentums.divide(momentiamass);
+		 vector3 netforce = boundingsphere.forces[0];
+		 for (int i = 1; i < boundingsphere.forces.size(); i++) {
+			 netforce += boundingsphere.forces[i];
+		}
+		boundingsphere.acceleration = netforce.divide(boundingsphere.mass);
+
+		//angle
+		
+		 /*boundingsphere.acceleration += boundingsphere.resultingdirection/boundingsphere.mass;
+		 boundingsphere.acceleration =*/
+		 /*boundingsphere.velocity.x = -boundingsphere.velocity.x;  //linear movmement
 		 boundingsphere.velocity.y = -boundingsphere.velocity.y;
-		 boundingsphere.velocity.z = -boundingsphere.velocity.z;
+		 boundingsphere.velocity.z = -boundingsphere.velocity.z;*/
 
 	 }
 	 void initializeComponent() {

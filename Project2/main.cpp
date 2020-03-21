@@ -350,18 +350,20 @@ int main(int argc, char* argv[]) {
 	Entity sphereone;
 	sphereone.transform.setPosition(7.5f, 40.0f, -14.0f);
 	sphereone.transform.setScale(vector3(2.0f, 2.0f, 2.0f));
-	Meshrenderer spheremesh(SS.getMesh("Sphere"), SS.getMaterials("mats1"));
+	Meshrenderer spheremesh(SS.getMesh("Sphere"), SS.getMaterials("mats2"));
 	sphereone.addComponent(&spheremesh);
 	Boundingspherecollider sphereonecollider(SS.getBoundingSphere("bsphere1"));
 	sphereonecollider.boundingsphere.collidertransform = sphereone.transform;
 	sphereonecollider.boundingsphere.radius = 2.0f;
+	sphereonecollider.boundingsphere.mass /=  1.0f;
 	sphereone.addComponent(&sphereonecollider);
 	Rintezuka.addSubEntity(&sphereone);
 
 	Entity spheretwo;
 	spheretwo.transform.setPosition(7.5f, 40.0f, -21.0f);
 	spheretwo.transform.setScale(vector3(2.0f, 2.0f, 2.0f));
-	spheretwo.addComponent(&spheremesh);
+	Meshrenderer otherspheremesh(SS.getMesh("Sphere"), SS.getMaterials("mats1"));
+	spheretwo.addComponent(&otherspheremesh);
 	Boundingspherecollider spheretwocollider(SS.getBoundingSphere("bsphere2"));
 	spheretwocollider.boundingsphere.collidertransform = spheretwo.transform;
 	spheretwocollider.boundingsphere.radius = 2.0f;
@@ -478,17 +480,23 @@ int main(int argc, char* argv[]) {
 		Inputs.getInputs();
 
 		//game
+		Camera.setCameraPosition(vector3(Cloud.transform.position.x, Cloud.transform.position.y + 5.5f, Cloud.transform.position.z - 7.5f));
 		if (Inputs.keyboardstate[Input::W].first == 1) {
-			Camera.moveCamera(Camera.camerarotation.getForward(), deltatime * 20);
+			Camera.moveCamera(Camera.camerarotation.getForward(), deltatime * 20);	
+			Cloud.transform.position.z = Camera.cameraposition.z + 7.5;
+			Cloud.transform.position.y = Camera.cameraposition.y - 5.5;
 		}
 		if (Inputs.keyboardstate[Input::A].first == 1) {
 			Camera.moveCamera(Camera.camerarotation.getLeft(), deltatime * 20);
+			Cloud.transform.position.x -= deltatime * 20;
 		}
 		if (Inputs.keyboardstate[Input::S].first == 1) {
 			Camera.moveCamera(Camera.camerarotation.getBack(), (deltatime * 20));
+			Cloud.transform.position.z -= deltatime * 20;
 		}
 		if (Inputs.keyboardstate[Input::D].first == 1) {
 			Camera.moveCamera(Camera.camerarotation.getRight(), (deltatime * 20));
+			Cloud.transform.position.x += deltatime * 20;
 		}
 		if (Inputs.keyboardstate[Input::Keyup].first == 1) {
 			Camera.rotateCamera(0.0f, 2.0f);
@@ -511,16 +519,16 @@ int main(int argc, char* argv[]) {
 					flashlight.setIntensity(3.0f);
 					flashlighton = true;
 				}*/
-			vector3 right(0, 0, 0.01f);
+			vector3 right(0, 0, 10.0f);
 			if (Inputs.keyboardstate[Input::Rightshift].first) {
 				if (right.z > 0) {
 					right.z = -right.z;
 				}
 			}
-			spheretwocollider.boundingsphere.acceleration += right;
+		spheretwocollider.boundingsphere.acceleration += right;
 		}
 		if (Inputs.keyboardstate[Input::I].first == true) {
-			vector3 forward(0.01f, 0, 0);
+			vector3 forward(0.1f, 0, 0);
 			if (Inputs.keyboardstate[Input::Rightshift].first) {
 				if (forward.x > 0) {
 					forward.x = -forward.x;
@@ -529,7 +537,7 @@ int main(int argc, char* argv[]) {
 			spheretwocollider.boundingsphere.acceleration += forward;
 		}
 		if (Inputs.keyboardstate[Input::J].first == true) {
-			vector3 up(0, 0.01f, 0);
+			vector3 up(0, 0.1f, 0);
 			if (Inputs.keyboardstate[Input::Rightshift].first) {
 				if (up.y > 0) {
 					up.y = -up.y;
@@ -616,6 +624,9 @@ int main(int argc, char* argv[]) {
 				prevtimecounter = 0;
 			}
 			deltatime = (prevdeltatimes[0] + prevdeltatimes[1] + prevdeltatimes[2] + prevdeltatimes[3] + prevdeltatimes[4]) / 5.0f;
+			if (deltatime > 2.0f) {
+				deltatime = (1.0f / 6.0f);
+			}
 			framecounter += deltatime;
 			deltatime *= deltatimeweight;
 		}
@@ -628,6 +639,9 @@ int main(int argc, char* argv[]) {
 				}
 			else if (timeduration.count() > chronodelta.count()) {
 				float totaldeltas = ((timeduration.count() / chronodelta.count()));
+				if (totaldeltas > 20) {
+					totaldeltas = 2;
+				}
 					float remain = remainder(timeduration.count(), chronodelta.count());
 					totaldeltas -= remain;
 				    std::this_thread::sleep_for(std::chrono::duration<float>( ((totaldeltas * chronodelta.count()) + chronodelta.count()) - timeduration.count() ));

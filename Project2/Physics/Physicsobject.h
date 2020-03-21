@@ -10,8 +10,12 @@ public:
 		Box
 	};
 	struct Collisiondata {
-		bool collided;
 		float collisiondistance;
+		Physicsobject * otherobject;
+		Collisiondata(float distance, Physicsobject* other) {
+			collisiondistance = distance;
+			otherobject = other;
+		}
 	};
 	vector3 velocity;
 	vector3 angularvelocity;
@@ -23,8 +27,14 @@ public:
 	float torque;
 	float mass;
 	float MOI;
-	Collisiondata collisiondata;
-	std::vector <vector3> forces;
+	float momentum;
+	float frictionconstant;
+	float elasticity;
+	bool collided;
+	vector3 resultingdirection;
+	std::vector<vector3> forces;
+	std::vector<Collisiondata> collisiondata;
+	std::vector <std::pair<float, vector3>> momentia;
 	static float gravity;
 	virtual void Simulate(Physicsobject _physicsobject);
 	virtual void calculateMOI();

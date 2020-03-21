@@ -10,7 +10,7 @@ void Physicsmanager::Update(Scene & currentscene)
 		}
 	}*/
 	for (int i = 0; i < spherecolliders.size(); i++) {
-		for (int u = 0; i < spherecolliders.size(); i++) {
+		for (int u = 0; u < spherecolliders.size(); u++) {
 			if (i != u) {
 				spherecolliders[i]->boundingSphereCollision(*spherecolliders[u]);
 			}
