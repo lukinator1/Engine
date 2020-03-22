@@ -71,7 +71,7 @@ int main(int argc, char* argv[]) {
 		int dbsize = 500;
 		int dbalignment = 8;
 		bool framelock = false;
-		float dtime = 1.0 / 60.0f;
+		float dtime = 1.0f / 60.0f;
 		bool vsync = false;
 		std::string title = "Untitled";
 		std::string windowicon = "GameWindowIcon.png";
@@ -319,15 +319,18 @@ int main(int argc, char* argv[]) {
 	Quote.transform.setRotation(0.0f, 0.0f, 0.0f, 0.0f);
 	Quote.addComponent(&component);
 
+	Meshrenderer otherspheremesh(SS.getMesh("Sphere"), SS.getMaterials("mats1"));
 	Entity Cloud;
 	Cloud.transform.setPosition(vector3(5.0f, 0.0f, 10.0f));
-	Cloud.transform.setScale(vector3(0.05f, 0.05f, 0.05f));
+	/*Cloud.transform.setScale(vector3(0.05f, 0.05f, 0.05f));*/
+	Cloud.transform.setScale(vector3(2.05f, 2.0f, 2.0f));
 	Meshrenderer cloudcomponent(SS.getMesh("Cloud"), SS.getMaterials("mats2"));
 	Boundingspherecollider bspherecloud(SS.getBoundingSphere("bsphere1"));
 	bspherecloud.boundingsphere.collidertransform = Cloud.transform;
-	bspherecloud.boundingsphere.radius = 30.0f;
-	bspherecloud.boundingsphere.mass = 30.0f;
-	Cloud.addComponent(&cloudcomponent);
+	bspherecloud.boundingsphere.radius = 20.0f;
+	bspherecloud.boundingsphere.mass = 350.0f;
+	/*Cloud.addComponent(&cloudcomponent);*/
+	Cloud.addComponent(&otherspheremesh);
 	Cloud.addComponent(&bspherecloud);
 	Quote.addSubEntity(&Cloud);
 
@@ -367,7 +370,6 @@ int main(int argc, char* argv[]) {
 	Entity spheretwo;
 	spheretwo.transform.setPosition(7.5f, 40.0f, -21.0f);
 	spheretwo.transform.setScale(vector3(2.0f, 2.0f, 2.0f));
-	Meshrenderer otherspheremesh(SS.getMesh("Sphere"), SS.getMaterials("mats1"));
 	spheretwo.addComponent(&otherspheremesh);
 	Boundingspherecollider spheretwocollider(SS.getBoundingSphere("bsphere2"));
 	spheretwocollider.boundingsphere.collidertransform = spheretwo.transform;
@@ -485,29 +487,30 @@ int main(int argc, char* argv[]) {
 		Inputs.getInputs();
 
 		//game
-		Camera.setCameraPosition(vector3(Cloud.transform.position.x, Cloud.transform.position.y + 5.5f, Cloud.transform.position.z - 7.5f));
-		if (Inputs.keyboardstate[Input::W].first == 1) {
+		/*Camera.setCameraPosition(vector3(Cloud.transform.position.x, Cloud.transform.position.y + 5.5f, Cloud.transform.position.z - 7.5f));*/
+		Camera.cameraposition = bspherecloud.boundingsphere.collidertransform.position;
+			if (Inputs.keyboardstate[Input::W].first == 1) {
 			Camera.moveCamera(Camera.camerarotation.getForward(), deltatime * 20);	
-			bspherecloud.boundingsphere.velocity += (Camera.camerarotation.getForward().divide(7.0f));
+			bspherecloud.boundingsphere.acceleration += (Camera.camerarotation.getForward().divide(100.0f));
 			/*bspherecloud.boundingsphere.acceleration += (Camera.camerarotation.getForward().divide(650.0f));*/
 			/*bspherecloud.boundingsphere.collidertransform.position.z = Camera.cameraposition.z + 7.5;
 			bspherecloud.boundingsphere.collidertransform.position.y = Camera.cameraposition.y - 5.5;*/
 		}
 		if (Inputs.keyboardstate[Input::A].first == 1) {
 			Camera.moveCamera(Camera.camerarotation.getLeft(), deltatime * 20);
-			bspherecloud.boundingsphere.velocity += (Camera.camerarotation.getLeft().divide(7.0f));
+			bspherecloud.boundingsphere.acceleration += (Camera.camerarotation.getLeft().divide(7.0f));
 			/*bspherecloud.boundingsphere.acceleration += (Camera.camerarotation.getLeft().divide(650.0f));
 			bspherecloud.boundingsphere.collidertransform.position.x -= deltatime * 20;*/
 		}
 		if (Inputs.keyboardstate[Input::S].first == 1) {
 			Camera.moveCamera(Camera.camerarotation.getBack(), (deltatime * 20));
-			bspherecloud.boundingsphere.velocity += (Camera.camerarotation.getBack().divide(7.0f));
+			bspherecloud.boundingsphere.acceleration += (Camera.camerarotation.getBack().divide(7.0f));
 			/*bspherecloud.boundingsphere.acceleration += (Camera.camerarotation.getBack().divide(650.0f));
 			bspherecloud.boundingsphere.collidertransform.position.z -= deltatime * 20;*/
 		}
 		if (Inputs.keyboardstate[Input::D].first == 1) {
 			Camera.moveCamera(Camera.camerarotation.getRight(), (deltatime * 20));
-			bspherecloud.boundingsphere.velocity += (Camera.camerarotation.getRight().divide(7.0f));
+			bspherecloud.boundingsphere.acceleration += (Camera.camerarotation.getRight().divide(600.0f));
 			/*bspherecloud.boundingsphere.acceleration += (Camera.camerarotation.getRight().divide(650.0f));
 			bspherecloud.boundingsphere.collidertransform.position.x += deltatime * 20;*/
 		}
@@ -557,6 +560,11 @@ int main(int argc, char* argv[]) {
 			}
 			}
 			spheretwocollider.boundingsphere.acceleration += up;
+		}
+		if (Inputs.keyboardstate[Input::M].first == true) {
+			bspherecloud.boundingsphere.acceleration = vector3(0, 0, 0);
+			bspherecloud.boundingsphere.velocity = vector3(0, 0, 0);
+			bspherecloud.boundingsphere.collidertransform.position = Camera.cameraposition;
 		}
 		if (Inputs.getScrolldistance().y != 0) {
 			Camera.Zoom(Inputs.getScrolldistance().y);

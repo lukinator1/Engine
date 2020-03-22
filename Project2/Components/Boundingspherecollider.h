@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "../Physics/Physicsmanager.h"
+#include "../Physics/Raytrace.h"
 class Boundingspherecollider : public Component
 {
 public:
@@ -14,6 +15,7 @@ public:
 			 handleCollision();  //resolve forces/collisions
 		 }
 
+		 boundingsphere.oldpos = boundingsphere.collidertransform.position;
 		 vector3 acceleration(boundingsphere.acceleration.x, boundingsphere.acceleration.y - boundingsphere.gravity, boundingsphere.acceleration.z);
 		 Quaternion angularvelocity(boundingsphere.angularvelocity.x, boundingsphere.angularvelocity.y, boundingsphere.angularvelocity.z, 0);
 		 boundingsphere.velocity = boundingsphere.velocity.add(boundingsphere.acceleration.multiply(deltatime));
@@ -30,23 +32,42 @@ public:
 		 }
 	}
 	 void handleCollision() {
-		 float momentiamass = 0; //linear
+	 float momentiamass = 0; //linear
 		 vector3 momentums;
-		 for (int i = 0; i < boundingsphere.momentia.size(); i++) {
-			 momentums = momentums.add(boundingsphere.momentia[i].second.multiply(boundingsphere.momentia[i].first));
-			 momentiamass += boundingsphere.momentia[i].first;
+		 for (int i = 0; i < boundingsphere.collisiondata.momentia.size(); i++) {
+			 momentums = momentums.add(boundingsphere.collisiondata.momentia[i].second.multiply(boundingsphere.collisiondata.momentia[i].first));
+			 momentiamass += boundingsphere.collisiondata.momentia[i].first;
 		 }
 		 momentums = momentums.add(boundingsphere.velocity.multiply(boundingsphere.mass));
 		 momentiamass += boundingsphere.mass;
 		 boundingsphere.velocity = momentums.divide(momentiamass);
-		 vector3 netforce = boundingsphere.forces[0];
-		 for (int i = 1; i < boundingsphere.forces.size(); i++) {
-			 netforce += boundingsphere.forces[i];
+		vector3 netforce = boundingsphere.collisiondata.forces[0];
+		 for (int i = 1; i < boundingsphere.collisiondata.forces.size(); i++) {
+			 netforce += boundingsphere.collisiondata.forces[i];
+			 if (raytrace.Trace(boundingsphere.collisiondata[i].otherobject->oldpos, boundingsphere.collisiondata[i].otherobject->collidertransform.position)) {
+				 boundingsphere.torque = (raytrace.intersectionpoint - boundingsphere.collidertransform.position).crossProduct(boundingsphere.collisiondata[i].other);
+			 }
+			 else {
+				 std::cout << "Something's probably broken." << std::endl;
+			 }
 		}
 		boundingsphere.acceleration = netforce.divide(boundingsphere.mass);
-
 		//angle
+		Raytrace raytrace;
+		for (int i = 0; i < boundingsphere.collisiondata.otherobjecsize(); i++) {
+			if (raytrace.Trace(boundingsphere.collisiondata[i].otherobject->oldpos, boundingsphere.collisiondata[i].otherobject->collidertransform.position)) {
+				boundingsphere.torque = (raytrace.intersectionpoint - boundingsphere.collidertransform.position).crossProduct(boundingsphere.collisiondata[i].other);
+			}
+			else {
+				std::cout << "Something's probably broken." << std::endl;
+			}
+		}
 		
+
+		boundingsphere.collisiondata.clear();
+		boundingsphere.momentia.clear();
+		boundingsphere.forces.clear();
+		boundingsphere.collided = false;
 		 /*boundingsphere.acceleration += boundingsphere.resultingdirection/boundingsphere.mass;
 		 boundingsphere.acceleration =*/
 		 /*boundingsphere.velocity.x = -boundingsphere.velocity.x;  //linear movmement

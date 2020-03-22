@@ -158,7 +158,7 @@ vector3 vector3::negativeVector() {
 vector3 vector3::absValue() {
 	float tempx = x;
 	float tempy = y;
-	float tempz
+	float tempz = z;
 	if (x < 0) {
 		tempx = -x;
 	}
@@ -182,7 +182,7 @@ vector2 vector3::getYZ()
 {
 	return vector2(y, z);
 }
-vector2 vector3::getZY().
+vector2 vector3::getZY()
 {
 	return vector2(z, y);
 }

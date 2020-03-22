@@ -11,16 +11,19 @@ public:
 	};
 	struct Collisiondata {
 		float collisiondistance;
-		Physicsobject * otherobject;
-		Collisiondata(float distance, Physicsobject* other) {
+		/*Collisiondata(float distance, Physicsobject* other, vector3 force) {
 			collisiondistance = distance;
-			otherobject = other;
-		}
+			 otherobjects.push_back(other);
+		}*/
+		std::vector<Physicsobject *> otherobjects;
+		std::vector<vector3> forces;
+		std::vector <std::pair<float, vector3>> momentia;
 	};
 	vector3 velocity;
 	vector3 angularvelocity;
 	Transforming collidertransform;
 	/*vector3 position;*/
+	vector3 oldpos;
 	vector3 force;
 	vector3 acceleration;
 	vector3 angularacceleration;
@@ -32,9 +35,7 @@ public:
 	float elasticity;
 	bool collided;
 	vector3 resultingdirection;
-	std::vector<vector3> forces;
-	std::vector<Collisiondata> collisiondata;
-	std::vector <std::pair<float, vector3>> momentia;
+	Collisiondata collisiondata;
 	static float gravity;
 	virtual void Simulate(Physicsobject _physicsobject);
 	virtual void calculateMOI();
