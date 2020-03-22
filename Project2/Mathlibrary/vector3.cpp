@@ -140,6 +140,36 @@ vector3 vector3::Subtract(vector3 sub) {
 vector3 vector3::Subtract(float sub) {
 	return vector3(x - sub, y - sub, z - sub);
 }
+vector3 vector3::negativeVector() {
+	float tempx = x;
+	float tempy = y;
+	float tempz = z;
+	if (x > 0) {
+		tempx = -x;
+	}
+	if (y > 0) {
+		tempy = -y;
+	}
+	if (z > 0) {
+		tempz = -z;
+	}
+	return vector3(tempx, tempy, tempz);
+}
+vector3 vector3::absValue() {
+	float tempx = x;
+	float tempy = y;
+	float tempz
+	if (x < 0) {
+		tempx = -x;
+	}
+	if (y < 0) {
+		tempy = -y;
+	}
+	if (z < 0) {
+		tempz = -z;
+	}
+	return vector3(tempx, tempy, tempz);
+}
 vector2 vector3::getXY()
 {
 	return vector2(x, y);
@@ -152,7 +182,7 @@ vector2 vector3::getYZ()
 {
 	return vector2(y, z);
 }
-vector2 vector3::getZY()
+vector2 vector3::getZY().
 {
 	return vector2(z, y);
 }
@@ -176,7 +206,7 @@ bool vector3::operator!=(vector3 rhs)
 		return true;
 	}
 }
-bool vector3::operator==(vector3 & rhs)
+bool vector3::operator==(vector3 rhs)
 {
 	if (x == rhs.x && y == rhs.y && z == rhs.z) {
 		return true;
@@ -185,26 +215,26 @@ bool vector3::operator==(vector3 & rhs)
 		return false;
 	}
 }
-vector3 vector3::operator*(vector3 & rhs)
+vector3 vector3::operator*(vector3 rhs)
 {
 	return vector3(x * rhs.x, y * rhs.y, z * rhs.z);
 }
-vector3 vector3::operator+(vector3 & rhs)
+vector3 vector3::operator+(vector3 rhs)
 {
 	return vector3(x + rhs.x, y + rhs.y, z + rhs.z);
 }
-vector3 vector3::operator+=(vector3 & rhs)
+vector3 vector3::operator+=(vector3 rhs)
 {
 	x += rhs.x;
 	y += rhs.y;
 	z += rhs.z;
 	return *this;
 }
-vector3 vector3::operator-(vector3 & rhs)
+vector3 vector3::operator-(vector3 rhs)
 {
 	return vector3(x - rhs.x, y - rhs.y, z - rhs.z);
 }
-vector3 vector3::operator/(vector3 & rhs)
+vector3 vector3::operator/(vector3 rhs)
 {
 	return vector3(x / rhs.x, y / rhs.y, z / rhs.z);
 }

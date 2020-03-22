@@ -85,6 +85,29 @@
 		vector2 interpolateVector(vector2 destination, float interpfactor) {
 			return destination.Subtract(*this).Multiply(interpfactor).Add(*this);
 		}
+		vector2 negativeVector() {
+			float tempx = x;
+			float tempy = y;
+			if (x > 0) {
+				tempx = -x;
+			}
+			if (y > 0) {
+				tempy = -y;
+			}
+
+			return vector2(tempx, tempy);
+		}
+		vector2 absValue() {
+			float tempx = x;
+			float tempy = y;
+			if (x < 0) {
+				tempx = -x;
+			}
+			if (y < 0) {
+				tempy = -y;
+			}
+			return vector2(tempx, tempy);
+		}
 		bool operator==(vector2 & rhs) {
 			if (x == rhs.x && y == rhs.y) {
 				return true;

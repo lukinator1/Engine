@@ -323,7 +323,12 @@ int main(int argc, char* argv[]) {
 	Cloud.transform.setPosition(vector3(5.0f, 0.0f, 10.0f));
 	Cloud.transform.setScale(vector3(0.05f, 0.05f, 0.05f));
 	Meshrenderer cloudcomponent(SS.getMesh("Cloud"), SS.getMaterials("mats2"));
+	Boundingspherecollider bspherecloud(SS.getBoundingSphere("bsphere1"));
+	bspherecloud.boundingsphere.collidertransform = Cloud.transform;
+	bspherecloud.boundingsphere.radius = 30.0f;
+	bspherecloud.boundingsphere.mass = 30.0f;
 	Cloud.addComponent(&cloudcomponent);
+	Cloud.addComponent(&bspherecloud);
 	Quote.addSubEntity(&Cloud);
 
 	Entity Snake;
@@ -483,20 +488,28 @@ int main(int argc, char* argv[]) {
 		Camera.setCameraPosition(vector3(Cloud.transform.position.x, Cloud.transform.position.y + 5.5f, Cloud.transform.position.z - 7.5f));
 		if (Inputs.keyboardstate[Input::W].first == 1) {
 			Camera.moveCamera(Camera.camerarotation.getForward(), deltatime * 20);	
-			Cloud.transform.position.z = Camera.cameraposition.z + 7.5;
-			Cloud.transform.position.y = Camera.cameraposition.y - 5.5;
+			bspherecloud.boundingsphere.velocity += (Camera.camerarotation.getForward().divide(7.0f));
+			/*bspherecloud.boundingsphere.acceleration += (Camera.camerarotation.getForward().divide(650.0f));*/
+			/*bspherecloud.boundingsphere.collidertransform.position.z = Camera.cameraposition.z + 7.5;
+			bspherecloud.boundingsphere.collidertransform.position.y = Camera.cameraposition.y - 5.5;*/
 		}
 		if (Inputs.keyboardstate[Input::A].first == 1) {
 			Camera.moveCamera(Camera.camerarotation.getLeft(), deltatime * 20);
-			Cloud.transform.position.x -= deltatime * 20;
+			bspherecloud.boundingsphere.velocity += (Camera.camerarotation.getLeft().divide(7.0f));
+			/*bspherecloud.boundingsphere.acceleration += (Camera.camerarotation.getLeft().divide(650.0f));
+			bspherecloud.boundingsphere.collidertransform.position.x -= deltatime * 20;*/
 		}
 		if (Inputs.keyboardstate[Input::S].first == 1) {
 			Camera.moveCamera(Camera.camerarotation.getBack(), (deltatime * 20));
-			Cloud.transform.position.z -= deltatime * 20;
+			bspherecloud.boundingsphere.velocity += (Camera.camerarotation.getBack().divide(7.0f));
+			/*bspherecloud.boundingsphere.acceleration += (Camera.camerarotation.getBack().divide(650.0f));
+			bspherecloud.boundingsphere.collidertransform.position.z -= deltatime * 20;*/
 		}
 		if (Inputs.keyboardstate[Input::D].first == 1) {
 			Camera.moveCamera(Camera.camerarotation.getRight(), (deltatime * 20));
-			Cloud.transform.position.x += deltatime * 20;
+			bspherecloud.boundingsphere.velocity += (Camera.camerarotation.getRight().divide(7.0f));
+			/*bspherecloud.boundingsphere.acceleration += (Camera.camerarotation.getRight().divide(650.0f));
+			bspherecloud.boundingsphere.collidertransform.position.x += deltatime * 20;*/
 		}
 		if (Inputs.keyboardstate[Input::Keyup].first == 1) {
 			Camera.rotateCamera(0.0f, 2.0f);

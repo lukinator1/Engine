@@ -5,6 +5,7 @@ class Boundingspherecollider : public Component
 {
 public:
 	Boundingsphere boundingsphere;
+	bool settotransform;
 	 void updateComponent(Transforming &t) {
 		 if (boundingsphere.collided == true) {
 			/* for (int i = 0; i < boundingsphere.collisiondata.size(); i++) {
@@ -23,8 +24,10 @@ public:
 		 torque = boundingsphere.angularvelocity.multiply(boundingsphere.MOI);*/
 		 boundingsphere.collidertransform.Rotate(boundingsphere.angularvelocity.multiply(deltatime).add(boundingsphere.angularacceleration.multiply((deltatime * deltatime) / 0.5f)));
 		 /*boundingsphere.collidertransform.rotation = boundingsphere.collidertransform.rotation.Add(angularvelocity.Multiply(boundingsphere.collidertransform.rotation).Multiply(deltatime/0.5));*/
-		 t.position = boundingsphere.collidertransform.position;
-		 t.rotation = boundingsphere.collidertransform.rotation;
+		 if (settotransform) {
+			 t.position = boundingsphere.collidertransform.position;
+			 t.rotation = boundingsphere.collidertransform.rotation;
+		 }
 	}
 	 void handleCollision() {
 		 float momentiamass = 0; //linear
@@ -54,8 +57,12 @@ public:
 	 void initializeComponent() {
 		 spherecolliders.push_back(&boundingsphere);
 	 }
+	 void setToTransform(bool trans) {
+		 settotransform = trans;
+	 }
 	 Boundingspherecollider(Boundingsphere bsphere)  {
 		 boundingsphere = bsphere;
+		 settotransform = true;
 		 /*boundingsphere.position = physicstransform.position;
 		 physicstransform = t;*/
 	 }

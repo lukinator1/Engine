@@ -29,6 +29,8 @@ public:
 	vector3 divide(float d);
 	vector3 Subtract(vector3 sub);
 	vector3 Subtract(float sub);
+	vector3 negativeVector();
+	vector3 absValue();
 	vector2 getXY();
 	vector2 getYX();
 	vector2 getYZ();
@@ -37,11 +39,11 @@ public:
 	vector2 getXZ();
 	vector3 interpolateVector(vector3 destination, float interpfactor);
 	bool operator!= (vector3 rhs);
-	bool operator==(vector3 & rhs);
-	vector3 operator*(vector3 & rhs);
-	vector3 operator+(vector3 & rhs);
-	vector3 operator+=(vector3 & rhs);
-	vector3 operator-(vector3 & rhs);
-	vector3 operator/(vector3 & rhs);
+	bool operator==(vector3 rhs);
+	vector3 operator*(vector3 rhs);
+	vector3 operator+(vector3 rhs);
+	vector3 operator+=(vector3 rhs);
+	vector3 operator-(vector3 rhs);
+	vector3 operator/(vector3 rhs);
 };
 
