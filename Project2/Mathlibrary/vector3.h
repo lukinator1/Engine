@@ -30,6 +30,7 @@ public:
 	vector3 Subtract(vector3 sub);
 	vector3 Subtract(float sub);
 	vector3 negativeVector();
+	vector3 negateVector();
 	vector3 absValue();
 	vector2 getXY();
 	vector2 getYX();

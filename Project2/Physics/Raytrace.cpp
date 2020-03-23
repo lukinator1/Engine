@@ -120,6 +120,37 @@ bool Raytrace::Trace(vector3 start, vector3 end, Boundingsphere * sphereobject) 
 		return false;
 	}
 }
+bool Raytrace::Trace(vector3 start, vector3 end, vector3 position, float radius) {
+	if (end.Magnitude() != 1) {
+		end = end.Normalize();
+	}
+	vector3 l;
+	float a = end.dotProduct(end);
+	float b;
+	float c;
+	float newt = 0;
+	/*vector3 bsqr = b * b; (start * start * end * end).multiply(4.0f);
+	vector3 discriminant;*/
+	/*discriminant = bsqr.Subtract(((start * start).Subtract(spherecolliders[i]->radius * spherecolliders[i]->radius) * a).multiply(4.0f));*/
+	l = start - position;
+	b = 2.0f * end.dotProduct(l);
+	c = l.dotProduct(l) - radius;
+	if (quadraticEquation(a, b, c, newt)) {
+		t = newt;
+		intersectionpoint = start + end.multiply(t);
+		tracedobject = nullptr;
+		normal = intersectionpoint - position;
+		normal = normal.Normalize();
+		return true;
+	}
+	else {
+		t = -1;
+		tracedobject = nullptr;
+		normal = vector3(0.0, 0.0, 0.0);
+		intersectionpoint = vector3(0.0, 0.0, 0.0);
+		return false;
+	}
+}
 
 bool Raytrace::quadraticEquation(float &a, float &b, float &c, float &t) {
 	float discrimenant = (b * b) - (4.0f  * a * c);

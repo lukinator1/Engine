@@ -155,6 +155,9 @@ vector3 vector3::negativeVector() {
 	}
 	return vector3(tempx, tempy, tempz);
 }
+vector3 vector3::negateVector() {
+	return vector3(-x, -y, -z);
+}
 vector3 vector3::absValue() {
 	float tempx = x;
 	float tempy = y;

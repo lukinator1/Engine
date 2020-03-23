@@ -24,7 +24,7 @@ Physicsobject::Physicsobject()
 {
 	mass = 10.0f;
 	collisiondata.forces.push_back(vector3(0, gravity, 0));
-	elasticity = 1.0f;
+	elasticity = 0.0f;
 	oldpos = collidertransform.position;
 	tempvel = velocity;
 	/*acceleration.y = acceleration.y - 1100.81f;*/
