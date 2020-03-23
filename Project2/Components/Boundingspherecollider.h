@@ -12,6 +12,7 @@ public:
 			/* for (int i = 0; i < boundingsphere.collisiondata.size(); i++) {
 				 boundingsphere
 			 }*/
+			 boundingsphere.tempvel = boundingsphere.velocity;
 			 handleCollision();  //resolve forces/collisions
 		 }
 
@@ -24,50 +25,65 @@ public:
 		 boundingsphere.collidertransform.position = boundingsphere.collidertransform.position.add(boundingsphere.velocity.multiply(deltatime)).add(acceleration.multiply((deltatime * deltatime)/0.5f)); //physics calculations here
 		 /*boundingsphere.collidertransform.rotation = boundingsphere.collidertransform.rotation.Add(angularvelocity.Multiply(boundingsphere.collidertransform.rotation);
 		 torque = boundingsphere.angularvelocity.multiply(boundingsphere.MOI);*/
-		 boundingsphere.collidertransform.Rotate(boundingsphere.angularvelocity.multiply(deltatime).add(boundingsphere.angularacceleration.multiply((deltatime * deltatime) / 0.5f)));
-		 /*boundingsphere.collidertransform.rotation = boundingsphere.collidertransform.rotation.Add(angularvelocity.Multiply(boundingsphere.collidertransform.rotation).Multiply(deltatime/0.5));*/
+		 /*boundingsphere.collidertransform.Rotate(boundingsphere.angularvelocity.multiply(deltatime).add(boundingsphere.angularacceleration.multiply((deltatime * deltatime) / 0.5f)));*/
+		 boundingsphere.collidertransform.rotation = boundingsphere.collidertransform.rotation.Add(angularvelocity.Multiply(boundingsphere.collidertransform.rotation).Multiply(deltatime/0.5));
 		 if (settotransform) {
 			 t.position = boundingsphere.collidertransform.position;
 			 t.rotation = boundingsphere.collidertransform.rotation;
 		 }
+
+		 if (boundingsphere.collided != true){
+			 boundingsphere.tempvel = boundingsphere.velocity;
+		 }
+		 if (boundingsphere.collided) {
+			 boundingsphere.collided = false;
+		 }
 	}
 	 void handleCollision() {
-	 float momentiamass = 0; //linear
+		 float momentiamass = 0;
 		 vector3 momentums;
-		 for (int i = 0; i < boundingsphere.collisiondata.momentia.size(); i++) {
-			 momentums = momentums.add(boundingsphere.collisiondata.momentia[i].second.multiply(boundingsphere.collisiondata.momentia[i].first));
+		 vector3 netforce = boundingsphere.collisiondata.forces[0];
+		 vector3 nettorque;
+		 vector3 angularimpulse;
+		 float impulse = 0;
+		 Raytrace raytrace;
+		 for (int i = 0; i < boundingsphere.collisiondata.otherobjects.size(); i++) {
+			 momentums = momentums.add(boundingsphere.collisiondata.momentia[i].second.multiply(boundingsphere.collisiondata.momentia[i].first)); //impulse
 			 momentiamass += boundingsphere.collisiondata.momentia[i].first;
-		 }
-		 momentums = momentums.add(boundingsphere.velocity.multiply(boundingsphere.mass));
-		 momentiamass += boundingsphere.mass;
-		 boundingsphere.velocity = momentums.divide(momentiamass);
-		vector3 netforce = boundingsphere.collisiondata.forces[0];
-		 for (int i = 1; i < boundingsphere.collisiondata.forces.size(); i++) {
-			 netforce += boundingsphere.collisiondata.forces[i];
-			 if (raytrace.Trace(boundingsphere.collisiondata[i].otherobject->oldpos, boundingsphere.collisiondata[i].otherobject->collidertransform.position)) {
-				 boundingsphere.torque = (raytrace.intersectionpoint - boundingsphere.collidertransform.position).crossProduct(boundingsphere.collisiondata[i].other);
+
+			 netforce += boundingsphere.collisiondata.forces[i + 1];    //acceleration
+
+			 vector3 dir = boundingsphere.oldpos - boundingsphere.collisiondata.otherobjects[i]->oldpos;
+			 /*std::vector <Physicsobject *> ignore = { &boundingsphere};
+			 raytrace.Trace(boundingsphere.collisiondata.otherobjects[i]->oldpos, dir);
+			 vector3 dir = boundingsphere.oldpos - raytrace.intersectionpoint;*/
+			 if (raytrace.Trace(boundingsphere.collisiondata.otherobjects[i]->oldpos, dir, &boundingsphere)) {  //angle
+				 nettorque += (raytrace.intersectionpoint - boundingsphere.collidertransform.position).crossProduct(boundingsphere.collisiondata.forces[i + 1]);
+				 impulse = -(1.0f + boundingsphere.elasticity);
+				 impulse *= (boundingsphere.collisiondata.otherobjects[i]->tempvel - boundingsphere.velocity).dotProduct(raytrace.normal);
+				 impulse /= ( (1.0f/boundingsphere.collisiondata.otherobjects[i]->mass) + (1.0f / boundingsphere.mass));
+				 boundingsphere.velocity = boundingsphere.velocity - raytrace.normal.multiply((impulse / boundingsphere.mass));
 			 }
 			 else {
 				 std::cout << "Something's probably broken." << std::endl;
 			 }
 		}
-		boundingsphere.acceleration = netforce.divide(boundingsphere.mass);
-		//angle
-		Raytrace raytrace;
-		for (int i = 0; i < boundingsphere.collisiondata.otherobjecsize(); i++) {
-			if (raytrace.Trace(boundingsphere.collisiondata[i].otherobject->oldpos, boundingsphere.collisiondata[i].otherobject->collidertransform.position)) {
-				boundingsphere.torque = (raytrace.intersectionpoint - boundingsphere.collidertransform.position).crossProduct(boundingsphere.collisiondata[i].other);
-			}
-			else {
-				std::cout << "Something's probably broken." << std::endl;
-			}
-		}
+		momentums = momentums.add(boundingsphere.velocity.multiply(boundingsphere.mass));
+		momentiamass += boundingsphere.mass;
+		vector3 newv = momentums.divide(momentiamass);
+		/*boundingsphere.acceleration = momentums.divide(deltatime);
+		boundingsphere.acceleration = netforce.divide(boundingsphere.mass);*/
+
+		angularimpulse = nettorque.multiply(deltatime);
+		boundingsphere.angularvelocity = angularimpulse.divide(boundingsphere.MOI);
+		boundingsphere.angularacceleration = nettorque.divide(boundingsphere.MOI);
 		
 
-		boundingsphere.collisiondata.clear();
-		boundingsphere.momentia.clear();
-		boundingsphere.forces.clear();
-		boundingsphere.collided = false;
+		boundingsphere.collisiondata.otherobjects.clear();
+		boundingsphere.collisiondata.momentia.clear();
+		if (boundingsphere.collisiondata.forces.size() != 1) {
+			boundingsphere.collisiondata.forces.erase(boundingsphere.collisiondata.forces.begin() + 1, boundingsphere.collisiondata.forces.end());
+		}
 		 /*boundingsphere.acceleration += boundingsphere.resultingdirection/boundingsphere.mass;
 		 boundingsphere.acceleration =*/
 		 /*boundingsphere.velocity.x = -boundingsphere.velocity.x;  //linear movmement

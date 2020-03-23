@@ -23,8 +23,10 @@ float Physicsobject::getMass()
 Physicsobject::Physicsobject()
 {
 	mass = 10.0f;
-	torque = 0.0f;
-	forces.push_back(vector3(0, gravity, 0));
+	collisiondata.forces.push_back(vector3(0, gravity, 0));
+	elasticity = 1.0f;
+	oldpos = collidertransform.position;
+	tempvel = velocity;
 	/*acceleration.y = acceleration.y - 1100.81f;*/
 }
 Physicsobject::~Physicsobject()

@@ -24,10 +24,9 @@ public:
 	Transforming collidertransform;
 	/*vector3 position;*/
 	vector3 oldpos;
-	vector3 force;
+	vector3 tempvel;
 	vector3 acceleration;
 	vector3 angularacceleration;
-	float torque;
 	float mass;
 	float MOI;
 	float momentum;

@@ -5,10 +5,11 @@ void Boundingsphere::boundingSphereCollision(Boundingsphere &othersphere/*, floa
 	float collisiondistance = centerdistance - radiusdistance;
 	if (centerdistance < radiusdistance) {
 		collided = true;
-		collisiondata.push_back(Collisiondata(collisiondistance, &othersphere));
+		collisiondata.collisiondistance = collisiondistance;
+		collisiondata.otherobjects.push_back(&othersphere);
 		std::pair <float, vector3> momentum = { othersphere.mass, othersphere.velocity };
-		momentia.push_back(momentum);
-		forces.push_back(othersphere.acceleration.multiply(othersphere.mass));
+		collisiondata.momentia.push_back(momentum);
+		collisiondata.forces.push_back(acceleration.multiply(mass));
 	}
 	else {
 	}
