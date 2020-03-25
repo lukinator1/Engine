@@ -541,7 +541,7 @@ int main(int argc, char* argv[]) {
 					right.z = -right.z;
 				}
 			}
-		spheretwocollider.boundingsphere.acceleration += right;
+		spheretwocollider.boundingsphere.velocity += right;
 		}
 		if (Inputs.keyboardstate[Input::I].first == true) {
 			vector3 forward(0.1f, 0, 0);

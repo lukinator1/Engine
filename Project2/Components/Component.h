@@ -7,6 +7,9 @@ public:  //deltas passed in here
 	virtual void updateComponent(Transforming &t) {
 
 	}
+	virtual void componentPhysics(Transforming &t) {
+
+	}
 	virtual void componentInput(Transforming &t) {
 
 	}

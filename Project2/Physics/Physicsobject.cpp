@@ -10,6 +10,15 @@ void Physicsobject::calculateMOI()
 {
 }
 
+float Physicsobject::getRadius()
+{
+	return 0;
+}
+
+void Physicsobject::handleConstraints()
+{
+}
+
 void Physicsobject::setMass(float _mass)
 {
 	mass = _mass;
@@ -24,7 +33,7 @@ Physicsobject::Physicsobject()
 {
 	mass = 10.0f;
 	collisiondata.forces.push_back(vector3(0, gravity, 0));
-	elasticity = 0.0f;
+	elasticity = 1.0f;
 	oldpos = collidertransform.position;
 	tempvel = velocity;
 	/*acceleration.y = acceleration.y - 1100.81f;*/

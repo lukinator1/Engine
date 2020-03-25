@@ -25,6 +25,7 @@ public:
 	/*vector3 position;*/
 	vector3 oldpos;
 	vector3 tempvel;
+	vector3 tempoldpos;
 	vector3 acceleration;
 	vector3 angularacceleration;
 	float mass;
@@ -38,6 +39,8 @@ public:
 	static float gravity;
 	virtual void Simulate(Physicsobject _physicsobject);
 	virtual void calculateMOI();
+	virtual float getRadius();
+	virtual void handleConstraints();
 	void setMass(float _mass);
 	float getMass();
 	Physicsobject();
