@@ -1,9 +1,10 @@
 #pragma once
 #include "../Mathlibrary/vector3.h"
-#include "../Rendering/Transforming.h"
+#include "Physicstransform.h"
 #include <vector>
-class Physicsobject
+class Physicsobject //0 = sphere, 1 = AABB
 {
+	Physicstransform collidertransform;
 public:
 	enum Shape {
 		Sphere,
@@ -19,9 +20,9 @@ public:
 		std::vector<vector3> forces;
 		std::vector <std::pair<float, vector3>> momentia;
 	};
+	unsigned int shape;
 	vector3 velocity;
 	vector3 angularvelocity;
-	Transforming collidertransform;
 	/*vector3 position;*/
 	vector3 oldpos;
 	vector3 tempvel;
@@ -31,15 +32,21 @@ public:
 	float mass;
 	float MOI;
 	float momentum;
-	float frictionconstant;
+	float kineticfrictionconstant;
 	float elasticity;
 	bool collided;
 	vector3 resultingdirection;
 	Collisiondata collisiondata;
 	static float gravity;
-	virtual void Simulate(Physicsobject _physicsobject);
-	virtual void calculateMOI();
+	virtual void Integrate();
+	virtual bool Simulate(Physicsobject &_physicsobject);
+	virtual void handleCollision();
+	virtual void recalculateMOI();
 	virtual float getRadius();
+	virtual vector3 getMinextents();
+	virtual vector3 getMaxextents();
+	void setPosition(vector3 pos);
+	void setRotation(vector3 rot);
 	virtual void handleConstraints();
 	void setMass(float _mass);
 	float getMass();

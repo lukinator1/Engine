@@ -1,2 +1,31 @@
-﻿  Physicsobject.cpp
-  Project2.vcxproj -> C:\Users\lukinator1\Desktop\engine\The Super Suspension System\Project2\x64\Debug\Project2.exe
+﻿  AABBcollider.cpp
+  Boundingspherecollider.cpp
+  Physicstransform.cpp
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\physics\physicstransform.h(97): error C2535: 'void Physicstransform::setRotation(vector3)': member function already defined or declared
+  c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\physics\physicstransform.h(29): note: see declaration of 'Physicstransform::setRotation'
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\physics\physicstransform.h(14): error C2039: 'setQuaternion': is not a member of 'vector3'
+  c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\mathlibrary\vector3.h(6): note: see declaration of 'vector3'
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\physics\physicstransform.cpp(6): error C2084: function 'Physicstransform::Physicstransform(void)' already has a body
+  c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\physics\physicstransform.h(10): note: see previous definition of '{ctor}'
+  Physicsobject.cpp
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\physics\physicsobject.cpp(30): error C2511: 'void Physicsobject::setPosition(vector3)': overloaded member function not found in 'Physicsobject'
+  c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\physics\physicsobject.h(5): note: see declaration of 'Physicsobject'
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\physics\physicsobject.cpp(33): error C2039: 'setRotation': is not a member of 'Physicsobject'
+  c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\physics\physicsobject.h(5): note: see declaration of 'Physicsobject'
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\physics\physicsobject.cpp(34): error C2065: 'collidertransform': undeclared identifier
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\physics\physicsobject.cpp(35): error C2059: syntax error: '}'
+  Physicsmanager.cpp
+  Boundingbox.cpp
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\physics\boundingbox.cpp(74): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\physics\boundingbox.cpp(147): error C2064: term does not evaluate to a function taking 0 arguments
+  Boundingsphere.cpp
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\physics\boundingsphere.cpp(54): warning C4305: 'initializing': truncation from 'double' to 'float'
+  Planecollider.cpp
+  Raytrace.cpp
+  main.cpp
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(598): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(599): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(617): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(88): warning C4101: 'loggerchannels': unreferenced local variable
+  Resourcemanager.cpp
+  Generating Code...

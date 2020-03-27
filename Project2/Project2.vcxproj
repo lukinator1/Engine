@@ -132,8 +132,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Test\Game.h" />
+    <ClInclude Include="Components\AABBcollider.h" />
     <ClInclude Include="Components\Boundingspherecollider.h" />
     <ClInclude Include="Components\Components.h" />
+    <ClInclude Include="Physics\Physicstransform.h" />
     <ClInclude Include="Physics\Physicsobject.h" />
     <ClInclude Include="Physics\Physics.h" />
     <ClInclude Include="Physics\Physicsmanager.h" />
@@ -185,7 +187,9 @@
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Components\AABBcollider.cpp" />
     <ClCompile Include="Components\Boundingspherecollider.cpp" />
+    <ClCompile Include="Physics\Physicstransform.cpp" />
     <ClCompile Include="Physics\Physicsobject.cpp" />
     <ClCompile Include="Physics\Physicsmanager.cpp" />
     <ClCompile Include="Physics\Boundingbox.cpp" />

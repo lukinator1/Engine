@@ -9,15 +9,15 @@ void Physicsmanager::Update(Scene & currentscene)
 			physicsobjects[i]->Simulate(*physicsobjects[u]);
 		}
 	}*/
-	for (int i = 0; i < spherecolliders.size(); i++) {  //test collisions
-		for (int u = 0; u < spherecolliders.size(); u++) {
+	for (int i = 0; i < colliders.size(); i++) {  //test collisions
+		for (int u = 0; u < colliders.size(); u++) {
 			if (i != u) {
-				spherecolliders[i]->Simulate(*spherecolliders[u]);
+				colliders[i]->Simulate(*colliders[u]);
 			}
 		}
 	}
-	for (int i = 0; i < spherecolliders.size(); i++) {  //handle collisions, update new velocities/positions
-		spherecolliders[i]->Integrate();
+	for (int i = 0; i < colliders.size(); i++) {  //handle collisions, update new velocities/positions
+		colliders[i]->Integrate();
 	}
 	/*for (int i = 0; i < spherecolliders.size(); i++) {
 		spherecolliders[i]->handleConstraints();

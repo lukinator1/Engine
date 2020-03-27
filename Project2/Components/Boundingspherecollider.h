@@ -91,7 +91,7 @@ public:
 		boundingsphere.angularacceleration += nettorque.divide(boundingsphere.MOI);
 	}*/
 	void initializeComponent() {
-		spherecolliders.push_back(&boundingsphere);
+		colliders.push_back(&boundingsphere);
 	}
 	void setToTransform(bool trans) {
 		settotransform = trans;

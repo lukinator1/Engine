@@ -15,9 +15,8 @@ public:
 	vector3 normal;
 	bool Trace(vector3 start, vector3 direction);
 	bool Trace(vector3 start, vector3 end, std::vector<Physicsobject *> ignore);
-	bool Trace(vector3 start, vector3 direction, Boundingsphere *ignore);
+	bool Trace(vector3 start, vector3 direction, Physicsobject *ignore);
 	bool Trace(vector3 start, vector3 end, vector3 position, float radius);
-	bool Trace(vector3 start, vector3 direction, Boundingbox * ignore); //todo
 	Raytrace();
 	~Raytrace();
 };

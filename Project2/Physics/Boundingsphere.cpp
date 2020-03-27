@@ -1,8 +1,8 @@
 #include "Boundingsphere.h"
 #include "Raytrace.h"
 #include "../Global.h"
-bool Boundingsphere::Simulate(Boundingsphere &othersphere/*, float &collisiondistance*/){
-	float radiusdistance = radius + othersphere.radius;
+/*bool Boundingsphere::Simulate(Boundingsphere &othersphere/*, float &collisiondistance){
+	/loat radiusdistance = radius + othersphere.radius;
 	float centerdistance = (othersphere.collidertransform.position.Subtract(collidertransform.position)).Magnitude();
 	float collisiondistance = centerdistance - radiusdistance;
 	if (centerdistance < radiusdistance) {
@@ -16,22 +16,74 @@ bool Boundingsphere::Simulate(Boundingsphere &othersphere/*, float &collisiondis
 	}
 	else {
 		return false;
-	}
-}
-bool Boundingsphere::intersectionTest(float _radius, vector3 _position) {
-	float radiusdistance = radius + _radius;
-	float centerdistance = (_position.Subtract(collidertransform.position)).Magnitude();
-	float collisiondistance = centerdistance - radiusdistance;
-	if (centerdistance < radiusdistance) {
-		return true;
-	}
-	else {
-		return false;
-	}
-}
-
-void Boundingsphere::Simulate(Physicsobject physicsobject)
+	}	
+}*/
+bool Boundingsphere::Simulate(Physicsobject &physicsobject)
 {
+	float radiusdistance;
+	float centerdistance;
+	float collisiondistance;
+	switch (physicsobject.shape) {
+	case 0:													//sphere
+		radiusdistance = radius + physicsobject.getRadius();
+		centerdistance = (physicsobject.collidertransform.position.Subtract(collidertransform.position)).Magnitude();
+		collisiondistance = centerdistance - radiusdistance;
+		if (centerdistance < radiusdistance) {
+			collided = true;
+			collisiondata.collisiondistance = collisiondistance;
+			collisiondata.otherobjects.push_back(&physicsobject);
+			std::pair <float, vector3> momentum = { physicsobject.mass, physicsobject.velocity };
+			collisiondata.momentia.push_back(momentum);
+			collisiondata.forces.push_back(acceleration.multiply(mass));
+			return true;
+		}
+		else {
+			return false;
+		}
+		break;
+	case 1:													//box
+		break;
+	}
+	return false;
+}
+void Boundingsphere::handleCollision() {
+	float momentiamass = 0;
+	vector3 momentums;
+	vector3 netforce = collisiondata.forces[0];
+	vector3 nettorque;
+	float angularimpulse = 0.1;
+	float impulse = 0;
+	vector3 t;
+	Raytrace raytrace;
+	for (int i = 0; i < collisiondata.otherobjects.size(); i++) {
+		/*momentums = momentums.add(collisiondata.momentia[i].second.multiply(collisiondata.momentia[i].first)); //impulse
+		momentiamass += collisiondata.momentia[i].first;
+		netforce += collisiondata.forces[i + 1];    //acceleration*/
+
+		vector3 dir = tempoldpos - collisiondata.otherobjects[i]->tempoldpos;
+		if (raytrace.Trace(collisiondata.otherobjects[i]->tempoldpos, dir, tempoldpos, radius)) {  //angle
+			impulse = -(1.0f + elasticity);
+			impulse *= (collisiondata.otherobjects[i]->tempvel - tempvel).dotProduct(raytrace.normal);
+			vector3 rb = raytrace.intersectionpoint - tempoldpos;
+			vector3 ra = raytrace.intersectionpoint - collisiondata.otherobjects[i]->tempoldpos;
+			vector3 angimpa = (ra * raytrace.normal).divide(collisiondata.otherobjects[i]->MOI) * (ra);
+			vector3 angimpb = (rb * raytrace.normal).divide(MOI) * rb;
+			angularimpulse = (angimpa + angimpb).dotProduct(raytrace.normal);
+			impulse /= ( (1.0f / collisiondata.otherobjects[i]->mass) + (1.0f / mass) + angularimpulse);
+
+			t = (raytrace.normal * (collisiondata.otherobjects[i]->tempvel.Normalize() - tempvel.Normalize())) * raytrace.normal;
+			velocity = velocity - (raytrace.normal + t.multiply(kineticfrictionconstant)).multiply((impulse / mass));
+			angularvelocity = angularvelocity - (rb * ((raytrace.normal + t.multiply(kineticfrictionconstant)).multiply(impulse))).divide(MOI);
+			/*netforce += collisiondata.forces[i + 1];
+			nettorque += (rb.crossProduct(collisiondata.forces[i + 1]));*/
+		}
+		else {
+			std::cout << "Something's probably broken." << std::endl;
+		}
+	}
+	/*netforce += acceleration.multiply(mass + 10.0f);
+	acceleration += netforce.divide(momentiamass * elasticity + mass)
+	angularacceleration += nettorque.divide(MOI);*/
 }
 void Boundingsphere::Integrate() {
 	if (collided == true) {
@@ -47,55 +99,19 @@ void Boundingsphere::Integrate() {
 
 	collidertransform.position = collidertransform.position.add(velocity.multiply(deltatime)).add(newacceleration.multiply((deltatime * deltatime) / 0.5f));
 	/*collidertransform.rotation = collidertransform.rotation.Add(newangularvelocity.Multiply(collidertransform.rotation));
-	boundingsphere.collidertransform.Rotate(boundingsphere.angularvelocity.multiply(deltatime).add(boundingsphere.angularacceleration.multiply((deltatime * deltatime) / 0.5f)));
-	boundingsphere.collidertransform.rotation = boundingsphere.collidertransform.rotation.Add(angularvelocity.Multiply(boundingsphere.collidertransform.rotation).Multiply(deltatime / 0.5f));*/
+	boundingsphere.collidertransform.Rotate(boundingsphere.angularvelocity.multiply(deltatime).add(boundingsphere.angularacceleration.multiply((deltatime * deltatime) / 0.5f)));*/
+	collidertransform.rotation = collidertransform.rotation.Add(newangularvelocity.Multiply(collidertransform.rotation).Multiply(deltatime / 0.5f));
 }
-void Boundingsphere::handleCollision() {
-	float momentiamass = 0;
-	vector3 momentums;
-	vector3 netforce = collisiondata.forces[0];
-	vector3 nettorque;
-	float angularimpulse;
-	float impulse = 0;
-	Raytrace raytrace;
-	for (int i = 0; i < collisiondata.otherobjects.size(); i++) {
-		momentums = momentums.add(collisiondata.momentia[i].second.multiply(collisiondata.momentia[i].first)); //impulse
-		momentiamass += collisiondata.momentia[i].first;
-
-		netforce += collisiondata.forces[i + 1];    //acceleration
-
-		vector3 dir = tempoldpos - collisiondata.otherobjects[i]->tempoldpos;
-		if (raytrace.Trace(collisiondata.otherobjects[i]->tempoldpos, dir, tempoldpos, radius)) {  //angle
-			impulse = -(1.0f + elasticity);
-			impulse *= (collisiondata.otherobjects[i]->tempvel - velocity).dotProduct(raytrace.normal);
-
-			vector3 rb = raytrace.intersectionpoint - tempoldpos;
-			vector3 ra = raytrace.intersectionpoint - collisiondata.otherobjects[i]->tempoldpos;
-			vector3 angimpa = (ra.crossProduct(raytrace.normal).divide(collisiondata.otherobjects[i]->MOI)).crossProduct(ra);
-			vector3 angimpb = (rb.crossProduct(raytrace.normal).divide(MOI)).crossProduct(rb);
-			angularimpulse = (angimpa + angimpb).dotProduct(raytrace.normal);
-
-			impulse /= (((1.0f / collisiondata.otherobjects[i]->mass) + (1.0f / mass))/* + angularimpulse*/);
-
-			velocity = velocity - raytrace.normal.multiply((impulse / mass));
-			/*netforce += raytrace.normal.multiply((impulse / boundingsphere.mass)).divide(deltatime).negateVector();*/
-			angularvelocity = angularvelocity - (rb.crossProduct(raytrace.normal.multiply(angularimpulse))).divide(MOI);
-			nettorque += (rb.crossProduct(collisiondata.forces[i + 1]));
-		}
-		else {
-			std::cout << "Something's probably broken." << std::endl;
-		}
+bool Boundingsphere::intersectionTest(float _radius, vector3 _position) {
+	float radiusdistance = radius + _radius;
+	float centerdistance = (_position.Subtract(collidertransform.position)).Magnitude();
+	float collisiondistance = centerdistance - radiusdistance;
+	if (centerdistance < radiusdistance) {
+		return true;
 	}
-	/*momentums = momentums.add(boundingsphere.velocity.multiply(boundingsphere.mass));
-	/*momentiamass += boundingsphere.mass;
-	vector3 newv = momentums.divide(momentiamass);
-	/*boundingsphere.acceleration = momentums.divide(deltatime);
-	netforce += boundingsphere.acceleration.multiply(boundingsphere.mass + 10.0f);
-	boundingsphere.acceleration += netforce.divide(momentiamass * boundingsphere.elasticity + boundingsphere.mass);*/
-
-	/*angularimpulse = nettorque.multiply(deltatime);
-	boundingsphere.angularvelocity = angularimpulse.divide(boundingsphere.MOI);*/
-	angularacceleration += nettorque.divide(MOI);
+	else {
+		return false;
+	}
 }
 void Boundingsphere::handleConstraints()
 {
@@ -120,15 +136,7 @@ void Boundingsphere::handleConstraints()
 		}
 	}
 }
-
-void Boundingsphere::setMOI(float _MOI) {
-	MOI = _MOI;
-}
-float Boundingsphere::getMOI()
-{
-	return MOI;
-}
-void Boundingsphere::calculateMOI() {
+void Boundingsphere::recalculateMOI() {
 	MOI = (2.0f / 5.0f) * mass * radius * radius;
 }
 float Boundingsphere::getRadius()
@@ -138,8 +146,8 @@ float Boundingsphere::getRadius()
 Boundingsphere::Boundingsphere()
 {
 	radius = 20.0f;
-	collided = false;
 	MOI = (2.0f / 5.0f) * mass * radius * radius;
+	shape = 0;
 }
 
 

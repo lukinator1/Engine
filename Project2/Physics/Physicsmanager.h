@@ -7,10 +7,8 @@ class Physicsmanager
 {
 public:
 	std::vector <Physicsobject *> physicsobjects;
-	std::vector <Boundingsphere *> spheres;
 	void Update(Scene &currentscene);
-	void Collision();
 	Physicsmanager();
 	~Physicsmanager();
 };
-extern std::vector<Boundingsphere *> spherecolliders; //add back to here when scene swaps
+extern std::vector<Physicsobject *> colliders; //add back to here when scene swaps
