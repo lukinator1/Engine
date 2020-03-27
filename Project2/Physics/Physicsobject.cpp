@@ -27,10 +27,27 @@ vector3 Physicsobject::getMinextents() {
 vector3 Physicsobject::getMaxextents() {
 	return vector3(0, 0, 0);
 }
+vector3 Physicsobject::getPosition()
+{
+	return collidertransform.getPosition();
+}
+Quaternion Physicsobject::getRotation()
+{
+	return collidertransform.getRotation();
+}
+Transforming Physicsobject::getColliderTransform()
+{
+	return collidertransform;
+}
+void Physicsobject::setColliderTransform(Transforming & t)
+{
+	setPosition(t.position);
+	setRotation(t.rotation);
+}
 void Physicsobject::setPosition(vector3 pos) {
 	collidertransform.position = pos;
 }
-void Physicsobject::setRotation(vector3 rot) {
+void Physicsobject::setRotation(Quaternion rot) {
 	collidertransform.rotation = rot;
 }
 void Physicsobject::handleConstraints()

@@ -26,7 +26,7 @@ bool Boundingsphere::Simulate(Physicsobject &physicsobject)
 	switch (physicsobject.shape) {
 	case 0:													//sphere
 		radiusdistance = radius + physicsobject.getRadius();
-		centerdistance = (physicsobject.collidertransform.position.Subtract(collidertransform.position)).Magnitude();
+		centerdistance = (physicsobject.getPosition().Subtract(getPosition())).Magnitude();
 		collisiondistance = centerdistance - radiusdistance;
 		if (centerdistance < radiusdistance) {
 			collided = true;
@@ -91,20 +91,20 @@ void Boundingsphere::Integrate() {
 		tempvel = velocity;
 		handleCollision();  //resolve forces/collisions
 	}
-	oldpos = collidertransform.position;
+	oldpos = getPosition();
 	vector3 newacceleration(acceleration.x, acceleration.y - gravity, acceleration.z);
 	Quaternion newangularvelocity(angularvelocity.x, angularvelocity.y, angularvelocity.z, 0);
 	velocity = velocity.add(acceleration.multiply(deltatime));
 	angularvelocity = angularvelocity.add(angularacceleration.multiply(deltatime));
 
-	collidertransform.position = collidertransform.position.add(velocity.multiply(deltatime)).add(newacceleration.multiply((deltatime * deltatime) / 0.5f));
+	setPosition( getPosition() + (velocity.multiply(deltatime)).add(newacceleration.multiply((deltatime * deltatime) / 0.5f)));
 	/*collidertransform.rotation = collidertransform.rotation.Add(newangularvelocity.Multiply(collidertransform.rotation));
 	boundingsphere.collidertransform.Rotate(boundingsphere.angularvelocity.multiply(deltatime).add(boundingsphere.angularacceleration.multiply((deltatime * deltatime) / 0.5f)));*/
-	collidertransform.rotation = collidertransform.rotation.Add(newangularvelocity.Multiply(collidertransform.rotation).Multiply(deltatime / 0.5f));
+	setRotation(getRotation() + (newangularvelocity.Multiply(getRotation()).Multiply(deltatime / 0.5f)));
 }
 bool Boundingsphere::intersectionTest(float _radius, vector3 _position) {
 	float radiusdistance = radius + _radius;
-	float centerdistance = (_position.Subtract(collidertransform.position)).Magnitude();
+	float centerdistance = (_position.Subtract(getPosition())).Magnitude();
 	float collisiondistance = centerdistance - radiusdistance;
 	if (centerdistance < radiusdistance) {
 		return true;
@@ -122,10 +122,10 @@ void Boundingsphere::handleConstraints()
 	while (!done || sleep == 15) {
 		done = true;
 		for (int i = 0; i < collisiondata.otherobjects.size(); i++) {
-			neg = collisiondata.otherobjects[i]->collidertransform.position.negateVector();
+			neg = collisiondata.otherobjects[i]->getPosition().negateVector();
 			neg = neg.Normalize();
-			while (intersectionTest(collisiondata.otherobjects[i]->getRadius(), collisiondata.otherobjects[i]->collidertransform.position)) {
-				collidertransform.position += neg.multiply(collisiondata.collisiondistance);
+			while (intersectionTest(collisiondata.otherobjects[i]->getRadius(), collisiondata.otherobjects[i]->getPosition())) {
+				setPosition(getPosition() + neg.multiply(collisiondata.collisiondistance));
 				count++;
 				if (count > 1) {
 

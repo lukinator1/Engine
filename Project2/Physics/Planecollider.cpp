@@ -2,7 +2,7 @@
 #include <string>
 
 float Planecollider::sphereCollision(Boundingsphere &sphere) {
-	float distancefromcenter = normal.dotProduct(sphere.collidertransform.position) + distance;
+	float distancefromcenter = normal.dotProduct(sphere.getPosition()) + distance;
 	if (distancefromcenter < 0) {  //absolute value
 		distancefromcenter = -distancefromcenter;
 	}

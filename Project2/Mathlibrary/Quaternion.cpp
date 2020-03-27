@@ -148,6 +148,10 @@ Quaternion &Quaternion::operator=(const Quaternion &inc)
 	w = inc.w;
 	return *this;
 }
+Quaternion Quaternion::operator+(Quaternion inc)
+{
+	return Add(inc);
+}
 Quaternion::~Quaternion()
 {
 }

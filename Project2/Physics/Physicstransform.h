@@ -5,26 +5,25 @@ class Physicstransform  //transform parent + matrix
 private:
 public:
 	vector3 position;
-	vector3 rotation;
+	Quaternion rotation;
 	Physicstransform() {
 		position.setVector(0.0f, 0.0f, 0.0f);
 		/*rotation.setVector(0.0f, 0.0f, 0.0f);*/
-		scaling.setVector(1.0f, 1.0f, 1.0f);
 		rotation.setQuaternion(0.0, 0.0, 0.0, 1.0f);
 	};
 	~Physicstransform();
 	vector3 getPosition() {
 		return position;
 	}
-	vector3 getRotation() {
+	Quaternion getRotation() {
 		return rotation;
 	}
 	void setPosition(vector3 newtranslationvector) {
 		position = newtranslationvector;
 	}
-	void setRotation(vector3 newrotationvector) {
-		rotation = newrotationvector;
-	}
+	/*void setRotation(Quaternion newrot) {
+		rotation = newrot;
+	}*/
 	void setPosition(float x, float y, float z) {
 		position.x = x;
 		position.y = y;
@@ -87,13 +86,14 @@ public:
 			vector3 newvec(rotation.x, rotation.y, rotation.z);
 			Rotate(vectorrotation.Subtract(newvec));
 		}*/
-	void setRotation(vector3 newrotation) {
+	void setRotation(Quaternion newrotation) {
 		rotation = newrotation;
 	}
-	void setRotation(float _x, float _y, float _z) {
+	void setRotation(float _x, float _y, float _z, float _w) {
 		rotation.x = _x;
 		rotation.y = _y;
 		rotation.z = _z;
+		rotation.w = _w;
 	}
 };
 

@@ -1,15 +1,12 @@
 #pragma once
 #include "../Mathlibrary/vector3.h"
 #include "Physicstransform.h"
+#include "../Rendering/Transforming.h"
 #include <vector>
 class Physicsobject //0 = sphere, 1 = AABB
 {
-	Physicstransform collidertransform;
+	Transforming collidertransform;
 public:
-	enum Shape {
-		Sphere,
-		Box
-	};
 	struct Collisiondata {
 		float collisiondistance;
 		/*Collisiondata(float distance, Physicsobject* other, vector3 force) {
@@ -43,10 +40,14 @@ public:
 	virtual void handleCollision();
 	virtual void recalculateMOI();
 	virtual float getRadius();
+	vector3 getPosition();
+	Quaternion getRotation();
+	Transforming getColliderTransform();
+	virtual void setColliderTransform(Transforming &t);
+	virtual void setPosition(vector3 pos);
+	virtual void setRotation(Quaternion rot);
 	virtual vector3 getMinextents();
 	virtual vector3 getMaxextents();
-	void setPosition(vector3 pos);
-	void setRotation(vector3 rot);
 	virtual void handleConstraints();
 	void setMass(float _mass);
 	float getMass();

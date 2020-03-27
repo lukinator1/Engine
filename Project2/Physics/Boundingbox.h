@@ -11,7 +11,6 @@ class Boundingbox : public Physicsobject
 	float height;
 public:
 	float maxdistance = 0;
-	float boundingBoxCollision(Boundingbox & otherbox);
 	bool Simulate(Physicsobject &otherobject);
 	void Integrate();
 	void handleCollision();
@@ -22,6 +21,11 @@ public:
 	float getLength();
 	float getWidth();
 	float getHeight();
+	void setColliderTransform(Transforming &t);
+	void setPosition(vector3 pos);
+	void setRotation(Quaternion rot);
+	vector3 getMinextents();
+	vector3 getMaxextents();
 	Boundingbox();
 	~Boundingbox();
 };

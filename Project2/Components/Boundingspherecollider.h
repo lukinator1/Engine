@@ -9,8 +9,8 @@ public:
 	bool settotransform;
 	void componentPhysics(Transforming &t) {
 		if (settotransform) {
-			t.position = boundingsphere.collidertransform.position;
-			t.rotation = boundingsphere.collidertransform.rotation;
+			t.position = boundingsphere.getPosition();
+			t.rotation = boundingsphere.getRotation();
 		}
 		boundingsphere.collisiondata.otherobjects.clear();
 		boundingsphere.collisiondata.momentia.clear();

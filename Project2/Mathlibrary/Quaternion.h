@@ -23,6 +23,7 @@ public:
 	vector3 getLeft();
 	/*Quaternion & operator*(const Quaternion & inc);*/
 	Quaternion & operator=(const Quaternion &inc);
+	Quaternion operator+(Quaternion inc);
 	Quaternion();
 	Quaternion(float x, float y, float z, float w);
 	void setQuaternion(float _x, float _y, float _z, float _w);

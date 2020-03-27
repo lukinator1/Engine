@@ -326,7 +326,7 @@ int main(int argc, char* argv[]) {
 	Cloud.transform.setScale(vector3(2.05f, 2.0f, 2.0f));
 	Meshrenderer cloudcomponent(SS.getMesh("Cloud"), SS.getMaterials("mats2"));
 	Boundingspherecollider bspherecloud(SS.getBoundingSphere("bsphere1"));
-	bspherecloud.boundingsphere.collidertransform = Cloud.transform;
+	bspherecloud.boundingsphere.setColliderTransform(Cloud.transform);
 	bspherecloud.boundingsphere.radius = 2.0f;
 	bspherecloud.boundingsphere.mass = 20.0f;
 	bspherecloud.boundingsphere.recalculateMOI();
@@ -362,7 +362,8 @@ int main(int argc, char* argv[]) {
 	Meshrenderer spheremesh(SS.getMesh("Sphere"), SS.getMaterials("mats2"));
 	sphereone.addComponent(&spheremesh);
 	Boundingspherecollider sphereonecollider(SS.getBoundingSphere("bsphere1"));
-	sphereonecollider.boundingsphere.collidertransform = sphereone.transform;
+	sphereonecollider.boundingsphere.setPosition(sphereone.transform.getPosition());
+	sphereonecollider.boundingsphere.setRotation(sphereone.transform.getRotation());
 	sphereonecollider.boundingsphere.radius = 2.0f;
 	sphereonecollider.boundingsphere.mass /=  1.0f;
 	sphereone.addComponent(&sphereonecollider);
@@ -373,7 +374,7 @@ int main(int argc, char* argv[]) {
 	spheretwo.transform.setScale(vector3(2.0f, 2.0f, 2.0f));
 	spheretwo.addComponent(&otherspheremesh);
 	Boundingspherecollider spheretwocollider(SS.getBoundingSphere("bsphere2"));
-	spheretwocollider.boundingsphere.collidertransform = spheretwo.transform;
+	spheretwocollider.boundingsphere.setColliderTransform(spheretwo.transform);
 	spheretwocollider.boundingsphere.radius = 2.0f;
 /*	spheretwocollider.boundingsphere.velocity = vector3(0, 0, 0.4f);
 	spheretwocollider.boundingsphere.angularvelocity = vector3(0, 90.0f, 0);*/
@@ -566,14 +567,14 @@ int main(int argc, char* argv[]) {
 		if (Inputs.keyboardstate[Input::M].first == true) {
 			bspherecloud.boundingsphere.acceleration = vector3(0, 0, 0);
 			bspherecloud.boundingsphere.velocity = vector3(0, 0, 0);
-			bspherecloud.boundingsphere.collidertransform.position = Camera.cameraposition;
+			bspherecloud.boundingsphere.setPosition(Camera.cameraposition);
 		}
 		if (Inputs.getScrolldistance().y != 0) {
 			Camera.Zoom(Inputs.getScrolldistance().y);
 		}
 		if (Inputs.getMouseMovementDistance().x != 0 || Inputs.getMouseMovementDistance().y != 0) {
 			Camera.rotateCamera(Inputs.getXMouseMovementDistance(), Inputs.getYMouseMovementDistance());
-			bspherecloud.boundingsphere.collidertransform.position = Camera.cameraposition.add(Camera.camerarotation.getForward().multiply(7.0f)); bspherecloud.boundingsphere.collidertransform.position = Camera.cameraposition.add(Camera.camerarotation.getForward().multiply(7.0f));
+			bspherecloud.boundingsphere.setPosition(Camera.cameraposition.add(Camera.camerarotation.getForward().multiply(7.0f))); 
 			/*bspherecloud.boundingsphere.collidertransform.position = Camera.cameraposition.add(Camera.camerarotation.getForward().multiply(13.0f));
 			bspherecloud.boundingsphere.velocity.x = Inputs.getXMouseMovementDistance() * 20.0f;
 			bspherecloud.boundingsphere.velocity.y = Inputs.getYMouseMovementDistance() * 20.0f;*/
