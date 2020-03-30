@@ -27,9 +27,16 @@ bool Boundingsphere::Simulate(Physicsobject &physicsobject)
 	case 0:													//sphere
 		radiusdistance = radius + physicsobject.getRadius();
 		centerdistance = (physicsobject.getPosition().Subtract(getPosition())).Magnitude();
-		collisiondistance = centerdistance - radiusdistance;
+		collisiondistance = -(centerdistance - radiusdistance);
 		if (centerdistance < radiusdistance) {
 			collided = true;
+			tempoldpos = oldpos;
+			tempvel = velocity;
+			Raytrace ray;
+			vector3 dir = tempoldpos - physicsobject.tempoldpos;
+			ray.Trace(physicsobject.tempoldpos, dir, tempoldpos, radius);
+			collisiondata.intersectionpoints.push_back(ray.intersectionpoint);
+			collisiondata.intersectionnormals.push_back(ray.normal);
 			collisiondata.collisiondistance = collisiondistance;
 			collisiondata.otherobjects.push_back(&physicsobject);
 			std::pair <float, vector3> momentum = { physicsobject.mass, physicsobject.velocity };
@@ -60,8 +67,8 @@ void Boundingsphere::handleCollision() {
 		momentiamass += collisiondata.momentia[i].first;
 		netforce += collisiondata.forces[i + 1];    //acceleration*/
 
-		vector3 dir = tempoldpos - collisiondata.otherobjects[i]->tempoldpos;
-		if (raytrace.Trace(collisiondata.otherobjects[i]->tempoldpos, dir, tempoldpos, radius)) {  //angle
+		/*vector3 dir = tempoldpos - collisiondata.otherobjects[i]->tempoldpos;
+		if (raytrace.Trace(collisiondata.otherobjects[i]->tempoldpos, dir, tempoldpos, radius)) {  //angle*/
 			impulse = -(1.0f + elasticity);
 			impulse *= (collisiondata.otherobjects[i]->tempvel - tempvel).dotProduct(raytrace.normal);
 			vector3 rb = raytrace.intersectionpoint - tempoldpos;
@@ -77,9 +84,9 @@ void Boundingsphere::handleCollision() {
 			/*netforce += collisiondata.forces[i + 1];
 			nettorque += (rb.crossProduct(collisiondata.forces[i + 1]));*/
 		}
-		else {
+		/*else {
 			std::cout << "Something's probably broken." << std::endl;
-		}
+		}*/
 	}
 	/*netforce += acceleration.multiply(mass + 10.0f);
 	acceleration += netforce.divide(momentiamass * elasticity + mass)
@@ -87,8 +94,8 @@ void Boundingsphere::handleCollision() {
 }
 void Boundingsphere::Integrate() {
 	if (collided == true) {
-		tempoldpos = oldpos;
-		tempvel = velocity;
+		/*tempoldpos = oldpos;
+		tempvel = velocity;*/
 		handleCollision();  //resolve forces/collisions
 	}
 	oldpos = getPosition();
@@ -102,10 +109,10 @@ void Boundingsphere::Integrate() {
 	boundingsphere.collidertransform.Rotate(boundingsphere.angularvelocity.multiply(deltatime).add(boundingsphere.angularacceleration.multiply((deltatime * deltatime) / 0.5f)));*/
 	setRotation(getRotation() + (newangularvelocity.Multiply(getRotation()).Multiply(deltatime / 0.5f)));
 }
-bool Boundingsphere::intersectionTest(float _radius, vector3 _position) {
+bool Boundingsphere::intersectionTest(float _radius, vector3 _position, float &cdistance) {
 	float radiusdistance = radius + _radius;
 	float centerdistance = (_position.Subtract(getPosition())).Magnitude();
-	float collisiondistance = centerdistance - radiusdistance;
+	cdistance = centerdistance - radiusdistance;
 	if (centerdistance < radiusdistance) {
 		return true;
 	}
@@ -113,28 +120,124 @@ bool Boundingsphere::intersectionTest(float _radius, vector3 _position) {
 		return false;
 	}
 }
+float Boundingsphere::calcCollisionDistance(float _radius, vector3 _position) {
+	float radiusdistance = radius + _radius;
+	float centerdistance = (_position.Subtract(getPosition())).Magnitude();
+	float collisiondistance = -(centerdistance - radiusdistance);
+	return collisiondistance;
+}
 void Boundingsphere::handleConstraints()
 {
 	vector3 neg(1.0f, 1.0f, 1.0f);
 	int sleep = 0;
 	int count = 0;
 	bool done = false;
-	while (!done || sleep == 15) {
+	float collisiondistance = 0;
+	vector3 term2;
+	vector3 dir;
+	Raytrace ray;
+	/*while (!done && sleep != 7) {
 		done = true;
 		for (int i = 0; i < collisiondata.otherobjects.size(); i++) {
-			neg = collisiondata.otherobjects[i]->getPosition().negateVector();
-			neg = neg.Normalize();
-			while (intersectionTest(collisiondata.otherobjects[i]->getRadius(), collisiondata.otherobjects[i]->getPosition())) {
+			collisiondistance = calcCollisionDistance(collisiondata.otherobjects[i]->getRadius(), collisiondata.otherobjects[i]->getPosition());
+			if (collisiondistance > 0) {
+			dir = collisiondata.otherobjects[i]->getPosition() - collisiondata.otherobjects[i]->oldpos;
+			ray.Trace(collisiondata.otherobjects[i]->getPosition(), dir, collisiondata.otherobjects[i]->oldpos, collisiondata.otherobjects[i]->getRadius());
+			erm2 = velocity + angularvelocity.multiply(collisiondata[i])
+		}
+	}*/
+	/*while (!done && sleep != 7) {
+		done = true;
+		for (int i = 0; i < collisiondata.otherobjects.size(); i++) {
+			count = 0;
+			dir = collisiondata.otherobjects[i]->getPosition() - getPosition();
+			if (!ray.Trace(getPosition(), dir, collisiondata.otherobjects[i])) {
+				std::cout << "Ray didn't trace.";
+			}
+			neg = (ray.normal).Normalize();
+			while (intersectionTest(collisiondata.otherobjects[i]->getRadius(), collisiondata.otherobjects[i]->getPosition()) && count < 100) {
 				setPosition(getPosition() + neg.multiply(collisiondata.collisiondistance));
 				count++;
-				if (count > 1) {
-
+				if (count == 100) {
+					std::cout << "Constraint is taking too long, object may still be colliding.";
 				}
 				done = false;
 			}
 			sleep++;
+			if (sleep == 7) {
+				std::cout << "Constraint went through max iterations";
+			}
 		}
+	}*/
+		while (!done && sleep != 7) {
+			done = true;
+			for (int i = 0; i < collisiondata.otherobjects.size(); i++) {
+				if (this == colliders[i]) {
+					continue;
+				}
+				collisiondistance = calcCollisionDistance(collisiondata.otherobjects[i]->getRadius(), collisiondata.otherobjects[i]->getPosition());
+				if (collisiondistance > 0) {
+					done = false;
+				}
+				else {
+					continue;
+				}
+
+				count = 0;
+				dir = collisiondata.otherobjects[i]->getPosition() - getPosition();
+				if (!ray.Trace(getPosition(), dir, collisiondata.otherobjects[i])) {
+					std::cout << "Ray didn't trace.";
+				}
+				neg = collisiondata.intersectionnormals[i];
+				setPosition(getPosition() + neg.multiply(collisiondistance));
+				collisiondistance = calcCollisionDistance(collisiondata.otherobjects[i]->getRadius(), collisiondata.otherobjects[i]->getPosition());
+				if (collisiondistance > 0) {
+					done = false;
+				}
+				while ((collisiondistance > 0.0f) && count < 100) {
+					setPosition(getPosition() + neg.multiply(collisiondistance));
+					count++;
+					if (count == 100) {
+						std::cout << "Constraint is taking too long, object may still be colliding.";
+					}
+					collisiondistance = calcCollisionDistance(collisiondata.otherobjects[i]->getRadius(), collisiondata.otherobjects[i]->getPosition());
+				}
+			}
+			sleep++;
+			if (sleep == 7) {
+				std::cout << "Constraints handling went through max iterations";
+			}
 	}
+	/*while (!done || sleep == 7) {
+		done = true;
+		for (int i = 0; i < colliders.size(); i++) {
+			if (this != colliders[i]) {
+				continue;
+			}
+			count = 0;
+			dir = colliders[i]->getPosition() - getPosition();
+			if (!ray.Trace(getPosition(), dir, colliders[i])) {
+				/*std::cout << "Ray didn't trace.";
+			}
+			neg = (ray.normal).Normalize();
+
+			collisiondistance = intersectionTest(colliders[i]->getRadius(), colliders[i]->getPosition());
+			if (collisiondistance < 0) {
+				done = false;
+			}
+			while ((collisiondistance < 0) && count < 100) {
+				setPosition(getPosition() + neg.multiply(collisiondistance));
+				count++;
+				if (count == 100) {
+					std::cout << "Constraint is taking too long, object may still be colliding.";
+				}
+			}
+		}
+		sleep++;
+		if (sleep == 7) {
+			std::cout << "Constraint went through max iterations";
+		}
+	}*/
 }
 void Boundingsphere::recalculateMOI() {
 	MOI = (2.0f / 5.0f) * mass * radius * radius;

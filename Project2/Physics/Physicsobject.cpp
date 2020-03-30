@@ -37,7 +37,10 @@ Quaternion Physicsobject::getRotation()
 }
 Transforming Physicsobject::getColliderTransform()
 {
-	return collidertransform;
+	Transforming t;
+	t.setPosition(collidertransform.getPosition());
+	t.setRotation(collidertransform.getRotation());
+	return t;
 }
 void Physicsobject::setColliderTransform(Transforming & t)
 {

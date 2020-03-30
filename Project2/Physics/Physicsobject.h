@@ -5,7 +5,7 @@
 #include <vector>
 class Physicsobject //0 = sphere, 1 = AABB
 {
-	Transforming collidertransform;
+	Physicstransform collidertransform;
 public:
 	struct Collisiondata {
 		float collisiondistance;
@@ -13,6 +13,8 @@ public:
 			collisiondistance = distance;
 			 otherobjects.push_back(other);
 		}*/
+		std::vector<vector3> intersectionpoints;
+		std::vector<vector3> intersectionnormals;
 		std::vector<Physicsobject *> otherobjects;
 		std::vector<vector3> forces;
 		std::vector <std::pair<float, vector3>> momentia;

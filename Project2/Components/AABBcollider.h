@@ -4,15 +4,39 @@
 class AABBcollider
 {
 public:
-	bool Simulate(Physicsobject & othersphere/*, float &collisiondistance*/);
-	bool intersectionTest(float _radius, vector3 _position);
-	void Simulate(Physicsobject physicsobject);
-	void Integrate();
-	void handleCollision();
-	void handleConstraints();
-	void setMOI(float _MOI);
-	float getMOI();
-	void calculateMOI();
+	Boundingbox boundingbox;
+	bool settotransform;
+
+	void componentPhysics(Transforming &t) {
+		if (settotransform) {
+			t.position = boundingbox.getPosition();
+			t.rotation = boundingbox.getRotation();
+		}
+		boundingbox.collisiondata.otherobjects.clear();
+		boundingbox.collisiondata.momentia.clear();
+		if (boundingbox.collisiondata.forces.size() != 1) {
+			boundingbox.collisiondata.forces.erase(boundingbox.collisiondata.forces.begin() + 1, boundingbox.collisiondata.forces.end());
+		}
+		if (boundingbox.collided != true) {
+			boundingbox.tempvel = boundingbox.velocity;
+			boundingbox.tempoldpos = boundingbox.oldpos;
+		}
+		if (boundingbox.collided) {
+			boundingbox.collided = false;
+		}
+	}
+	void initializeComponent() {
+		colliders.push_back(&boundingbox);
+	}
+	void setToTransform(bool trans) {
+		settotransform = trans;
+	}
+	AABBcollider(Boundingbox bbox) {
+		boundingbox = bbox;
+		settotransform = true;
+		/*boundingsphere.position = physicstransform.position;
+		physicstransform = t;*/
+	}
 	AABBcollider();
 	~AABBcollider();
 };

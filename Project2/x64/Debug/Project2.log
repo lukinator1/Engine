@@ -3,15 +3,14 @@
   Physicsobject.cpp
   Physicsmanager.cpp
   Boundingbox.cpp
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\physics\boundingbox.cpp(74): warning C4305: 'initializing': truncation from 'double' to 'float'
   Boundingsphere.cpp
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\physics\boundingsphere.cpp(54): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\physics\boundingsphere.cpp(61): warning C4305: 'initializing': truncation from 'double' to 'float'
   Planecollider.cpp
   Raytrace.cpp
   main.cpp
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(599): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(600): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(618): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(633): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(634): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(652): warning C4305: 'argument': truncation from 'double' to 'float'
 c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(88): warning C4101: 'loggerchannels': unreferenced local variable
   Resourcemanager.cpp
   Generating Code...

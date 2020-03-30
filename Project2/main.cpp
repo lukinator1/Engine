@@ -306,6 +306,8 @@ int main(int argc, char* argv[]) {
 	SS.addMesh("Scout", Mesh("scout.obj"));
 	SS.addMesh("Cube", Mesh("cube.obj"));
 	SS.addMesh("Sphere", Mesh("sphere.obj"));
+	SS.addMesh("Lovebox", Mesh("Peachs Castle 1f.obj"));
+	SS.addMesh("cardboardbox", Mesh("CardBoardBox.obj"));
 
 	//physics
 	SS.addBoundingSphere("bsphere1", Boundingsphere());
@@ -381,6 +383,31 @@ int main(int argc, char* argv[]) {
 	spheretwo.addComponent(&spheretwocollider);
 	sphereone.addSubEntity(&spheretwo);
 
+	/*Entity lovebox;
+	Meshrenderer loveboxmesh(SS.getMesh("Lovebox"), SS.getMaterials("mats2"));
+	lovebox.transform.setPosition(0, 3.0f, 17.0f);
+	lovebox.transform.setScale(vector3(5.0f, 5.0f, 5.0f));
+	lovebox.addComponent(&loveboxmesh);
+	sphereone.addSubEntity(&lovebox);
+	AABBcollider loveboxbox;
+	loveboxbox.boundingbox.setColliderTransform(lovebox.transform);
+	loveboxbox.boundingbox.setHeight(0.1f);
+	loveboxbox.boundingbox.setLength(10.0f);
+	loveboxbox.boundingbox.setWidth(10.0f);
+	loveboxbox.boundingbox.velocity.y = -3.0f;*/
+
+	Entity box;
+	Meshrenderer boxmesh(SS.getMesh("Cube"), SS.getMaterials("mats2"));
+	box.transform.setPosition(0, 3.0f, 17.0f);
+	box.transform.setScale(vector3(5.0f, 3.0f, 3.0f));
+	box.addComponent(&boxmesh);
+	sphereone.addSubEntity(&box);
+	/*AABBcollider boxbox;
+	boxbox.boundingbox.setColliderTransform(box.transform);
+	loveboxbox.boundingbox.setHeight(0.1f);
+	loveboxbox.boundingbox.setLength(10.0f);
+	loveboxbox.boundingbox.setWidth(10.0f);*/
+
 	Entity field;
 	Vertex vertices[] = { Vertex(vector3(-fieldWidth, 0.0f, -fieldDepth), vector2(0.0f, 0.0f)),
 						Vertex(vector3(-fieldWidth, 0.0f, fieldDepth * 3), vector2(0.0f, 1.0f)),
@@ -408,6 +435,13 @@ int main(int argc, char* argv[]) {
 	Meshrenderer fieldcomponent(meshme, fieldmaterials);
 	field.transform.setPosition(vector3(0.0f, -1.0f, 5.0f));
 	field.addComponent(&fieldcomponent);
+	AABBcollider fieldbox;
+	fieldbox.boundingbox.setColliderTransform(field.transform);
+	fieldbox.boundingbox.setHeight(0.1f);
+	fieldbox.boundingbox.setLength(10.0f);
+	fieldbox.boundingbox.setWidth(10.0f);
+	fieldbox.boundingbox.setMass(80.0f);
+	fieldbox.boundingbox.recalculateMOI();
 	Cloud.addSubEntity(&field);
 
 	sceneone.setRoot(Quote);

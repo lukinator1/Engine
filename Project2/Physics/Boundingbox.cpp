@@ -71,7 +71,7 @@ void Boundingbox::handleCollision() {
 	vector3 momentums;
 	vector3 netforce = collisiondata.forces[0];
 	vector3 nettorque;
-	float angularimpulse = 0.1;
+	float angularimpulse = 0.0;
 	float impulse = 0;
 	vector3 t;
 	Raytrace raytrace;
@@ -106,7 +106,8 @@ void Boundingbox::handleCollision() {
 	angularacceleration += nettorque.divide(MOI);*/
 }
 void Boundingbox::recalculateMOI() {
-	/*MOI = (2.0f / 5.0f) * mass * radius * radius;*/
+	float s = (length * width * height) / 3.0f;
+	MOI = (mass * s * s) / 6.0f;
 }
 void Boundingbox::setLength(float _length)
 {
@@ -170,7 +171,8 @@ Boundingbox::Boundingbox()
 	setLength(20.0f);
 	setWidth(20.0f);
 	setHeight(20.0f);
-	/*MOI = mass / 12.0f();*/
+	float s = (length * width * height) / 3.0f;
+	MOI = (mass * s * s)/6.0f;
 }
 Boundingbox::~Boundingbox()
 {
