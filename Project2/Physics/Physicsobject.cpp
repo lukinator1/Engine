@@ -71,7 +71,7 @@ Physicsobject::Physicsobject()
 	mass = 10.0f;
 	collided = false;
 	collisiondata.forces.push_back(vector3(0, gravity, 0));
-	elasticity = 0.0f;
+	elasticity = 0.45f;
 	oldpos = collidertransform.position;
 	tempvel = velocity;
 	kineticfrictionconstant = 0.4f;
