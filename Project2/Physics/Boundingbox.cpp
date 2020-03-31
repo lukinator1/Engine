@@ -75,15 +75,20 @@ void Boundingbox::handleCollision() {
 	float impulse = 0;
 	vector3 t;
 	Raytrace raytrace;
+	float sleep = 0;
+	float relvelnormal = 0;
 	for (int i = 0; i < collisiondata.otherobjects.size(); i++) {
 		/*momentums = momentums.add(collisiondata.momentia[i].second.multiply(collisiondata.momentia[i].first)); //impulse
 		momentiamass += collisiondata.momentia[i].first;
 		netforce += collisiondata.forces[i + 1];    //acceleration*/
-
+		sleep = 0;
 		vector3 dir = tempoldpos - collisiondata.otherobjects[i]->tempoldpos;
 		if (raytrace.Trace(collisiondata.otherobjects[i]->tempoldpos, dir)) {  //angle
-			impulse = -(1.0f + elasticity);
-			impulse *= (collisiondata.otherobjects[i]->tempvel - tempvel).dotProduct(raytrace.normal);
+			relvelnormal = (collisiondata.otherobjects[i]->tempvel - tempvel).dotProduct(raytrace.normal);
+			if (relvelnormal <= 0.01f) {
+				sleep = elasticity;
+			}
+			impulse = -(1.0f + elasticity - sleep) * relvelnormal;
 			vector3 rb = raytrace.intersectionpoint - tempoldpos;
 			vector3 ra = raytrace.intersectionpoint - collisiondata.otherobjects[i]->tempoldpos;
 			vector3 angimpa = (ra * raytrace.normal).divide(collisiondata.otherobjects[i]->MOI) * (ra);
