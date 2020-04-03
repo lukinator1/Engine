@@ -110,6 +110,11 @@ public:
 		specularintensity = 2.0f;
 		specularexponent = 32.0f;
 	}
+	void loadMTL(std::string filename) {
+		std::ifstream fileopener;
+		fileopener.open("Rendering/Materials/" + filename);
+		
+	}
 	~Materials();
 };
 

@@ -196,28 +196,48 @@ void Mesh::loadMeshObj(std::string file) //max size of vector?
 							getline(streamer, buffer, ' ');
 							textureindices.push_back(stoi(buffer) - 1);
 						}
-					else if (texturecoordinates.size() > 0 && normals.size() > 0) {
-					getline(streamer, buffer, '/');				//x1
-					positionindices.push_back(stoi(buffer) - 1);
-					getline(streamer, buffer, '/');
-					textureindices.push_back(stoi(buffer) - 1);
-					getline(streamer, buffer, ' ');
-					normalindices.push_back(stoi(buffer) - 1);
+						else if (texturecoordinates.size() == 0 && normals.size() > 0) {
+							getline(streamer, buffer, '/');				//x1
+							positionindices.push_back(stoi(buffer) - 1);
+							getline(streamer, buffer, '/');
+							getline(streamer, buffer, ' ');
+							normalindices.push_back(stoi(buffer) - 1);
 
-					getline(streamer, buffer, '/');
-					positionindices.push_back(stoi(buffer) - 1);
-					getline(streamer, buffer, '/');
-					textureindices.push_back(stoi(buffer) - 1);
-					getline(streamer, buffer, ' ');
-					normalindices.push_back(stoi(buffer) - 1);
+							getline(streamer, buffer, '/');
+							positionindices.push_back(stoi(buffer) - 1);
+							getline(streamer, buffer, '/');
+							getline(streamer, buffer, ' ');
+							normalindices.push_back(stoi(buffer) - 1);
 
 
-					getline(streamer, buffer, '/');			//x3
-					positionindices.push_back(stoi(buffer) - 1);
-					getline(streamer, buffer, '/');
-					textureindices.push_back(stoi(buffer) - 1);
-					getline(streamer, buffer, ' ');
-					normalindices.push_back(stoi(buffer) - 1);
+							getline(streamer, buffer, '/');			//x3
+							positionindices.push_back(stoi(buffer) - 1);
+							getline(streamer, buffer, '/');
+							getline(streamer, buffer, ' ');
+							normalindices.push_back(stoi(buffer) - 1);
+						}
+						else if (texturecoordinates.size() > 0 && normals.size() > 0) {
+						getline(streamer, buffer, '/');				//x1
+						positionindices.push_back(stoi(buffer) - 1);
+						getline(streamer, buffer, '/');
+						textureindices.push_back(stoi(buffer) - 1);
+						getline(streamer, buffer, ' ');
+						normalindices.push_back(stoi(buffer) - 1);
+
+						getline(streamer, buffer, '/');
+						positionindices.push_back(stoi(buffer) - 1);
+						getline(streamer, buffer, '/');
+						textureindices.push_back(stoi(buffer) - 1);
+						getline(streamer, buffer, ' ');
+						normalindices.push_back(stoi(buffer) - 1);
+
+
+						getline(streamer, buffer, '/');			//x3
+						positionindices.push_back(stoi(buffer) - 1);
+						getline(streamer, buffer, '/');
+						textureindices.push_back(stoi(buffer) - 1);
+						getline(streamer, buffer, ' ');
+						normalindices.push_back(stoi(buffer) - 1);
 						}
 					}
 					}

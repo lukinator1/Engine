@@ -1,12 +1,12 @@
 #pragma once
 #include <map>
-#include "Rendering/Materials.h"
-#include "Rendering/Mesh.h"
+#include "Rendering/Model.h"
 #include "Rendering/Lighting/Lighting.h" 
 #include "Physics/Boundingsphere.h"
 #include "Entity.h"
 class Resourcemanager //todo: error when can't find in map
 {
+	std::map<std::string, Model> models;
 	std::map<std::string, Mesh> meshes;
 	std::map<std::string, Materials> materials;
 	std::map<std::string, Light> lights;
@@ -26,6 +26,19 @@ public:
 	}
 	Entity getEntity(std::string id) {
 		return entities.at(id);
+	}
+	void addModel(std::string id, Model model) {
+		models.emplace(id, model);
+	}
+	void addModel(std::string id, std::string Modelfile) {
+		models.emplace(id, Model(Modelfile));
+	}
+	Model &getModel(std::string id) {
+		return models.at(id);
+	}
+	void deleteModel(std::string id) {
+		models.at(id).freeModel();
+		models.erase(id);
 	}
 	void addMesh(std::string id, Mesh mesh) {
 		meshes.emplace(id, mesh);

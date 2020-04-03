@@ -9,6 +9,7 @@ class Meshrenderer : public Component
 public:
 	Mesh *mesh;
 	Materials *materials;
+
 	Meshrenderer(Mesh &mesh, Materials &materials) {
 		this->mesh = &mesh;
 		this->materials = &materials;

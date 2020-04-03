@@ -14,6 +14,7 @@ public:
 	bool Simulate(Physicsobject &otherobject);
 	void Integrate();
 	void handleCollision();
+	/*void handleConstraints();*/
 	void recalculateMOI();
 	void setLength(float _length);
 	void setWidth(float _width);

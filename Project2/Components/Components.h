@@ -3,3 +3,4 @@
 #include "Meshrenderer.h"
 #include "Boundingspherecollider.h"
 #include "AABBcollider.h"
+#include "Modelrenderer.h"

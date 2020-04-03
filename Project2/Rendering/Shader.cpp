@@ -23,7 +23,7 @@ Shader::Shader() : directionallight(vector3(1.0f, 1.0f, 1.0f), vector3(1.0f, 1.0
 }
 Shader::Shader(std::string shadertype) : directionallight(vector3(1.0f, 1.0f, 1.0f), vector3(1.0f, 1.0f, 1.0f))
 {
-	if (shadertype == "Phong" || shadertype == "phong") {
+	/*if (shadertype == "Phong" || shadertype == "phong") {
 		type = "phong";
 		ambientlight = vector3(1.0f, 1.0f, 1.0f);
 		program = glCreateProgram();
@@ -43,9 +43,9 @@ Shader::Shader(std::string shadertype) : directionallight(vector3(1.0f, 1.0f, 1.
 		addUniform("directionallight");
 		addUniform("pointlights");
 		addUniform("spotlights");
-	}
-	else if (shadertype == "Skybox" || shadertype == "skybox") {
-	type = "skybox";
+	}*/
+	if (shadertype == "Skybox" || shadertype == "skybox") {
+	type = 5;
 	ambientlight = vector3(1.0f, 1.0f, 1.0f);
 	program = glCreateProgram();
 	if (program == 0) {
@@ -57,7 +57,7 @@ Shader::Shader(std::string shadertype) : directionallight(vector3(1.0f, 1.0f, 1.
 		addUniform("skyboxmatrix");
 	}
 	else if (shadertype == "Textshader" || shadertype == "textshader"){
-		type = "text";
+		type = 4;
 		ambientlight = vector3(1.0f, 1.0f, 1.0f);
 		program = glCreateProgram();
 		if (program == 0) {
@@ -70,7 +70,7 @@ Shader::Shader(std::string shadertype) : directionallight(vector3(1.0f, 1.0f, 1.
 		addUniform("textcolor");
 	}
 	else if (shadertype == "Forwardambient" || shadertype == "forwardambient") {
-		type = "forwardambient";
+		type = 0;
 		ambientlight = vector3(0.30f, 0.30f, 0.30f);
 		program = glCreateProgram();
 		if (program == 0) {
@@ -83,7 +83,7 @@ Shader::Shader(std::string shadertype) : directionallight(vector3(1.0f, 1.0f, 1.
 		addUniform("ambientintensity");
 	}
 	else if (shadertype == "Forwarddirectional" || shadertype == "forwarddirectional") {
-		type = "forwarddirectional";
+		type = 1;
 		directionallight.setIntensity(0.1f);
 		program = glCreateProgram();
 		if (program == 0) {
@@ -101,7 +101,7 @@ Shader::Shader(std::string shadertype) : directionallight(vector3(1.0f, 1.0f, 1.
 		addUniform("directionallight");
 	}
 	else if (shadertype == "Forwardpoint" || shadertype == "forwardpoint") {
-		type = "forwardpoint";
+		type = 2;
 		program = glCreateProgram();
 		if (program == 0) {
 			engineLog(__FILE__, __LINE__, "Warning: Shader program failed to create.", 1, 2, true);
@@ -118,7 +118,7 @@ Shader::Shader(std::string shadertype) : directionallight(vector3(1.0f, 1.0f, 1.
 		addUniform("specularexponent");
 	}
 	else if (shadertype == "Forwardspot" || shadertype == "forwardspot") {
-		type = "forwardspot";
+		type = 3;
 		program = glCreateProgram();
 		if (program == 0) {
 			engineLog(__FILE__, __LINE__, "Warning: Shader program failed to create.", 1, 2, true);
@@ -147,7 +147,7 @@ Shader::~Shader()
 	}
 }
 void Shader::setShader(std::string shadertype) {
-if (shadertype == "Phong" || shadertype == "phong") {
+/*if (shadertype == "Phong" || shadertype == "phong") {
 	type = "phong";
 	ambientlight = vector3(1.0f, 1.0f, 1.0f);
 	program = glCreateProgram();
@@ -167,9 +167,9 @@ if (shadertype == "Phong" || shadertype == "phong") {
 	addUniform("directionallight");
 	addUniform("pointlights");
 	addUniform("spotlights");
-}
-else if (shadertype == "Skybox" || shadertype == "skybox") {
-	type = "skybox";
+}*/
+if (shadertype == "Skybox" || shadertype == "skybox") {
+	type = 5;
 	ambientlight = vector3(1.0f, 1.0f, 1.0f);
 	program = glCreateProgram();
 	if (program == 0) {
@@ -181,7 +181,7 @@ else if (shadertype == "Skybox" || shadertype == "skybox") {
 	addUniform("skyboxmatrix");
 }
 else if (shadertype == "Textshader" || shadertype == "textshader") {
-	type = "text";
+	type = 4;
 	ambientlight = vector3(1.0f, 1.0f, 1.0f);
 	program = glCreateProgram();
 	if (program == 0) {
@@ -194,7 +194,7 @@ else if (shadertype == "Textshader" || shadertype == "textshader") {
 	addUniform("textcolor");
 }
 else if (shadertype == "Forwardambient" || shadertype == "forwardambient") {
-	type = "forwardambient";
+	type = 0;
 	ambientlight = vector3(0.2f, 0.2f, 0.2f);
 	program = glCreateProgram();
 	if (program == 0) {
@@ -207,7 +207,7 @@ else if (shadertype == "Forwardambient" || shadertype == "forwardambient") {
 	addUniform("ambientintensity");
 }
 else if (shadertype == "Forwarddirectional" || shadertype == "forwarddirectional") {
-	type = "forwarddirectional";
+	type = 1;
 	directionallight.setIntensity(0.1f);
 	program = glCreateProgram();
 	if (program == 0) {
@@ -225,7 +225,7 @@ else if (shadertype == "Forwarddirectional" || shadertype == "forwarddirectional
 	addUniform("directionallight");
 }
 else if (shadertype == "Forwardpoint" || shadertype == "forwardpoint") {
-	type = "forwardpoint";
+	type = 2;
 	program = glCreateProgram();
 	if (program == 0) {
 		engineLog(__FILE__, __LINE__, "Warning: Shader program failed to create.", 1, 2, true);
@@ -240,6 +240,23 @@ else if (shadertype == "Forwardpoint" || shadertype == "forwardpoint") {
 	addUniform("specularintensity");
 	addUniform("pointlight");
 	addUniform("specularexponent");
+}
+else if (shadertype == "Forwardspot" || shadertype == "forwardspot") {
+	type = 3;
+	program = glCreateProgram();
+	if (program == 0) {
+		engineLog(__FILE__, __LINE__, "Warning: Shader program failed to create.", 1, 2, true);
+	}
+	addVertexShader(loadShader("Spotforwardvertexshader.vs"));
+	addFragmentShader(loadShader("Spotforwardfragmentshader.fs"));
+	compileShader();
+	addUniform("cameraposition");
+	addUniform("color");
+	addUniform("transform");
+	addUniform("projectedtransform");
+	addUniform("specularintensity");
+	addUniform("specularexponent");
+	addUniform("spotlight");
 }
 else {
 	engineLog(__FILE__, __LINE__, "Warning: Shader failed to create, a valid filename wasn't passed in.", 1, 2, true);
@@ -428,7 +445,7 @@ void Shader::setUniform(std::string newuniform, Spotlight alight) {  //spotlight
 	setUniform(newuniform + ".cutoff", alight.cutoff);
 }
 void Shader::updateUniforms(matrix4f worldmatrix, matrix4f projectedmatrix, vector3 position, Materials &material) { 
-	if (type == "phong") {
+	/*(type == "phong") {
 		setUniform("transform", worldmatrix);
 		setUniform("projectedtransform", projectedmatrix);
 		setUniform("color", material.getColor());
@@ -446,13 +463,13 @@ void Shader::updateUniforms(matrix4f worldmatrix, matrix4f projectedmatrix, vect
 		setUniform("specularexponent", material.specularexponent);
 		setUniform("cameraposition", position);
 		material.texture.useTexture();
-	}
-	else if (type == "forwardambient") {
+	}*/
+	if (type == 0) {
 		setUniform("transform", projectedmatrix);
 		setUniform("ambientintensity", ambientlight);
 		material.texture.useTexture();
 	}
-	else if (type == "forwarddirectional") {
+	else if (type == 1) {
 		setUniform("transform", worldmatrix);
 		setUniform("projectedtransform", projectedmatrix);
 		setUniform("color", material.getColor());
@@ -462,24 +479,24 @@ void Shader::updateUniforms(matrix4f worldmatrix, matrix4f projectedmatrix, vect
 		setUniform("cameraposition", position);
 		material.texture.useTexture();
 	}
-	else if (type == "forwardpoint") {
-		setUniform("transform", worldmatrix);
-		setUniform("projectedtransform", projectedmatrix);
+	else if (type == 2) {
+		/*setUniform("transform", worldmatrix);
+		setUniform("projectedtransform", projectedmatrix);*/
 		setUniform("color", material.getColor());
 		setUniform("pointlight", pointlight);
 		setUniform("specularintensity", material.specularintensity);
 		setUniform("specularexponent", material.specularexponent);
-		setUniform("cameraposition", position);
+		/*setUniform("cameraposition", position);*/
 		material.texture.useTexture();
 	}
-	else if (type == "forwardspot") {
-		setUniform("transform", worldmatrix);
-		setUniform("projectedtransform", projectedmatrix);
+	else if (type == 3) {
+		/*setUniform("transform", worldmatrix);
+		setUniform("projectedtransform", projectedmatrix);*/
 		setUniform("color", material.getColor());
 		setUniform("spotlight", spotlight);
 		setUniform("specularintensity", material.specularintensity);
 		setUniform("specularexponent", material.specularexponent);
-		setUniform("cameraposition", position);
+		/*setUniform("cameraposition", position);*/
 		material.texture.useTexture();
 	}
 }

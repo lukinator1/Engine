@@ -135,6 +135,8 @@
     <ClInclude Include="Components\AABBcollider.h" />
     <ClInclude Include="Components\Boundingspherecollider.h" />
     <ClInclude Include="Components\Components.h" />
+    <ClInclude Include="Components\Modelrenderer.h" />
+    <ClInclude Include="Rendering\Model.h" />
     <ClInclude Include="Physics\Physicstransform.h" />
     <ClInclude Include="Physics\Physicsobject.h" />
     <ClInclude Include="Physics\Physics.h" />
@@ -189,6 +191,8 @@
   <ItemGroup>
     <ClCompile Include="Components\AABBcollider.cpp" />
     <ClCompile Include="Components\Boundingspherecollider.cpp" />
+    <ClCompile Include="Components\Modelrenderer.cpp" />
+    <ClCompile Include="Rendering\Model.cpp" />
     <ClCompile Include="Physics\Physicstransform.cpp" />
     <ClCompile Include="Physics\Physicsobject.cpp" />
     <ClCompile Include="Physics\Physicsmanager.cpp" />

@@ -303,11 +303,14 @@ int main(int argc, char* argv[]) {
 	SS.addMesh("Quote", Mesh("quote.obj"));
 	SS.addMesh("Cloud", Mesh("Cloud.obj"));
 	SS.addMesh("Snake", Mesh("snake.obj"));
-	SS.addMesh("Scout", Mesh("scout.obj"));
+	SS.addMesh("Scout", Mesh("mario.obj"));
 	SS.addMesh("Cube", Mesh("cube.obj"));
 	SS.addMesh("Sphere", Mesh("sphere.obj"));
 	SS.addMesh("Lovebox", Mesh("Peachs Castle 1f.obj"));
 	SS.addMesh("cardboardbox", Mesh("CardBoardBox.obj"));
+	SS.addModel("Castle", Model("Peachs Castle 1F.obj"));
+	SS.addMesh("Castle", Mesh("Peachs Castle 1F.obj"));
+
 
 	//physics
 	SS.addBoundingSphere("bsphere1", Boundingsphere());
@@ -403,11 +406,20 @@ int main(int argc, char* argv[]) {
 	box.transform.setScale(vector3(5.0f, 3.0f, 3.0f));
 	box.addComponent(&boxmesh);
 	sphereone.addSubEntity(&box);
-	/*AABBcollider boxbox;
+	AABBcollider boxbox;
 	boxbox.boundingbox.setColliderTransform(box.transform);
-	loveboxbox.boundingbox.setHeight(0.1f);
-	loveboxbox.boundingbox.setLength(10.0f);
-	loveboxbox.boundingbox.setWidth(10.0f);*/
+	boxbox.boundingbox.setHeight(0.1f);
+	boxbox.boundingbox.setLength(10.0f);
+	boxbox.boundingbox.setWidth(10.0f);
+
+	Entity Castle;
+	Modelrenderer castlemodel(SS.getModel("Castle"));
+	/*Meshrenderer castlemesh(SS.getMesh("Castle"), SS.getMaterials("mats2"));*/
+	Castle.transform.setPosition(-15.0f, 3.0f, 6.0f);
+	Castle.transform.setScale(vector3(40.0f, 40.0f, 40.0f));
+	Castle.addComponent(&castlemodel);
+	/*Castle.addComponent(&castlemesh);*/
+	Scout.addSubEntity(&Castle);
 
 	Entity field;
 	Vertex vertices[] = { Vertex(vector3(-fieldWidth, 0.0f, -fieldDepth), vector2(0.0f, 0.0f)),
@@ -449,9 +461,9 @@ int main(int argc, char* argv[]) {
 	sceneone.initScene();
 	
 	//shaders
-	Shader shaderit("phong");
+	/*Shader shaderit("phong");
 	shaderit.setAmbientLight(vector3(0.5f, 0.5f, 0.5f));
-	shaderit.directionallight = Directionallight(vector3(1.0f, 1.0f, 1.0f), vector3(1.0f, 1.0f, 1.0f), 0.1f);
+	shaderit.directionallight = Directionallight(vector3(1.0f, 1.0f, 1.0f), vector3(1.0f, 1.0f, 1.0f), 0.1f);*/
 
 	//lights
 	Spotlight flashlight(vector3(0.0f, 1.0f, 1.0f), vector3(0.0f, 0.0f, 0.0f), vector3(0.0f, 0.0f, 0.0f), 30.0f, 0.7f, 0.8f, 0.0f, 0.1f);

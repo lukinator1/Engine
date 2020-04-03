@@ -79,9 +79,7 @@ void Boundingsphere::handleCollision() {
 			if (testrelvel < 0.01f) {
 				sleep = elasticity;
 			}
-			else {
-				int x = 0;
-			}
+
 			impulse = -(1.0f + elasticity - sleep) * relvelnormal;
 			vector3 rb = collisiondata.intersectionpoints[i] - tempoldpos;
 			vector3 ra = collisiondata.intersectionpoints[i] - collisiondata.otherobjects[i]->tempoldpos;
@@ -106,8 +104,6 @@ void Boundingsphere::handleCollision() {
 }
 void Boundingsphere::Integrate() {
 	if (collided == true) {
-		/*tempoldpos = oldpos;
-		tempvel = velocity;*/
 		handleCollision();  //resolve forces/collisions
 		collided = false;
 		collisiondata.intersectionpoints.clear();
