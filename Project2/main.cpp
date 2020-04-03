@@ -367,7 +367,8 @@ int main(int argc, char* argv[]) {
 	sphereonecollider.boundingsphere.setPosition(sphereone.transform.getPosition());
 	sphereonecollider.boundingsphere.setRotation(sphereone.transform.getRotation());
 	sphereonecollider.boundingsphere.radius = 2.0f;
-	sphereonecollider.boundingsphere.mass /=  1.0f;
+	sphereonecollider.boundingsphere.mass = 7.0f;
+	/*sphereonecollider.boundingsphere.recalculateMOI();*/
 	sphereone.addComponent(&sphereonecollider);
 	Rintezuka.addSubEntity(&sphereone);
 
@@ -378,8 +379,8 @@ int main(int argc, char* argv[]) {
 	Boundingspherecollider spheretwocollider(SS.getBoundingSphere("bsphere2"));
 	spheretwocollider.boundingsphere.setColliderTransform(spheretwo.transform);
 	spheretwocollider.boundingsphere.radius = 2.0f;
-/*	spheretwocollider.boundingsphere.velocity = vector3(0, 0, 0.4f);
-	spheretwocollider.boundingsphere.angularvelocity = vector3(0, 90.0f, 0);*/
+	sphereonecollider.boundingsphere.mass = 36.0f;
+	/*sphereonecollider.boundingsphere.recalculateMOI();*/
 	spheretwo.addComponent(&spheretwocollider);
 	sphereone.addSubEntity(&spheretwo);
 
@@ -484,6 +485,7 @@ int main(int argc, char* argv[]) {
 	Camera.setMouseLook(true);
 	bool flashlighton = true;
 	float unitest = 0.0f;
+	bool held = false;
 
 	//loop
 	while (gameisrunning) {
@@ -528,40 +530,36 @@ int main(int argc, char* argv[]) {
 		bspherecloud.boundingsphere.velocity = vector3(0, 0, 0);
 			if (Inputs.keyboardstate[Input::W].first == 1) {
 			Camera.moveCamera(Camera.camerarotation.getForward(), deltatime * 20);	
-			bspherecloud.boundingsphere.velocity = (Camera.camerarotation.getForward().multiply(50.0f));
 			/*bspherecloud.boundingsphere.acceleration += (Camera.camerarotation.getForward().divide(650.0f));*/
 			/*bspherecloud.boundingsphere.collidertransform.position.z = Camera.cameraposition.z + 7.5;
 			bspherecloud.boundingsphere.collidertransform.position.y = Camera.cameraposition.y - 5.5;*/
 			}
 		if (Inputs.keyboardstate[Input::A].first == 1) {
 			Camera.moveCamera(Camera.camerarotation.getLeft(), deltatime * 20);
-			bspherecloud.boundingsphere.velocity = (Camera.camerarotation.getLeft().multiply(13.0f));
 			/*bspherecloud.boundingsphere.acceleration += (Camera.camerarotation.getLeft().divide(650.0f));
 			bspherecloud.boundingsphere.collidertransform.position.x -= deltatime * 20;*/
 		}
 		if (Inputs.keyboardstate[Input::S].first == 1) {
 			Camera.moveCamera(Camera.camerarotation.getBack(), (deltatime * 20));
-			bspherecloud.boundingsphere.velocity = (Camera.camerarotation.getBack().multiply(13.0f));
 			/*bspherecloud.boundingsphere.acceleration += (Camera.camerarotation.getBack().divide(650.0f));
 			bspherecloud.boundingsphere.collidertransform.position.z -= deltatime * 20;*/
 		}
 		if (Inputs.keyboardstate[Input::D].first == 1) {
 			Camera.moveCamera(Camera.camerarotation.getRight(), (deltatime * 20));
-			bspherecloud.boundingsphere.velocity += (Camera.camerarotation.getRight().multiply(13.0f));
 			/*bspherecloud.boundingsphere.acceleration += (Camera.camerarotation.getRight().divide(650.0f));
 			bspherecloud.boundingsphere.collidertransform.position.x += deltatime * 20;*/
 		}
 		if (Inputs.keyboardstate[Input::Keyup].first == 1) {
-			Camera.rotateCamera(0.0f, 2.0f);
+			bspherecloud.boundingsphere.velocity = (Camera.camerarotation.getForward().multiply(50.0f));
 		}
 		if (Inputs.keyboardstate[Input::Keyleft].first == 1) {
-			Camera.rotateCamera(-2.0f, 0.0f);
+			bspherecloud.boundingsphere.velocity = (Camera.camerarotation.getLeft().multiply(13.0f));
 		}
 		if (Inputs.keyboardstate[Input::Keydown].first == 1) {
-			Camera.rotateCamera(0.0f, -2.0f);
+			bspherecloud.boundingsphere.velocity = (Camera.camerarotation.getBack().multiply(13.0f));
 		}
 		if (Inputs.keyboardstate[Input::Keyright].first == 1) {
-			Camera.rotateCamera(2.0f, 0.0f);
+			bspherecloud.boundingsphere.velocity += (Camera.camerarotation.getRight().multiply(13.0f));
 		}
 		if (Inputs.keyboardstate[Input::L].first == 1 && Inputs.keyboardstate[Input::L].second == 0) {  //flashlight 
 				/*if (flashlighton == true) {
@@ -598,17 +596,30 @@ int main(int argc, char* argv[]) {
 			}
 			spheretwocollider.boundingsphere.acceleration += up;
 		}
-		if (Inputs.keyboardstate[Input::M].first == true) {
-			bspherecloud.boundingsphere.acceleration = vector3(0, 0, 0);
+		if (Inputs.leftmouse.first == true) {
+			if (held) {
+				held = false;
+			}
+			else {
+				held = true;
+			}
+			/*bspherecloud.boundingsphere.acceleration = vector3(0, 0, 0);
+			bspherecloud.boundingsphere.angularvelocity = vector3(0, 0, 0);
 			bspherecloud.boundingsphere.velocity = vector3(0, 0, 0);
-			bspherecloud.boundingsphere.setPosition(Camera.cameraposition);
+			bspherecloud.boundingsphere.setPosition(Camera.cameraposition);*/
+		}
+		if (held) {
+			bspherecloud.boundingsphere.acceleration = vector3(0, 0, 0);
+			bspherecloud.boundingsphere.angularvelocity = vector3(0, 0, 0);
+			bspherecloud.boundingsphere.velocity = vector3(0, 0, 0);
+			bspherecloud.boundingsphere.setPosition(Camera.cameraposition.add(Camera.camerarotation.getForward().multiply(7.0f)));
 		}
 		if (Inputs.getScrolldistance().y != 0) {
 			Camera.Zoom(Inputs.getScrolldistance().y);
 		}
 		if (Inputs.getMouseMovementDistance().x != 0 || Inputs.getMouseMovementDistance().y != 0) {
 			Camera.rotateCamera(Inputs.getXMouseMovementDistance(), Inputs.getYMouseMovementDistance());
-			bspherecloud.boundingsphere.setPosition(Camera.cameraposition.add(Camera.camerarotation.getForward().multiply(7.0f))); 
+			/*bspherecloud.boundingsphere.setPosition(Camera.cameraposition.add(Camera.camerarotation.getForward().multiply(7.0f))); 
 			/*bspherecloud.boundingsphere.collidertransform.position = Camera.cameraposition.add(Camera.camerarotation.getForward().multiply(13.0f));
 			bspherecloud.boundingsphere.velocity.x = Inputs.getXMouseMovementDistance() * 20.0f;
 			bspherecloud.boundingsphere.velocity.y = Inputs.getYMouseMovementDistance() * 20.0f;*/

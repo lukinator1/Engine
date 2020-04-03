@@ -52,6 +52,7 @@ void Physicsobject::setPosition(vector3 pos) {
 }
 void Physicsobject::setRotation(Quaternion rot) {
 	collidertransform.rotation = rot;
+	collidertransform.rotation = collidertransform.rotation.Normalize();
 }
 void Physicsobject::handleConstraints()
 {

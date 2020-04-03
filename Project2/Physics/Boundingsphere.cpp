@@ -56,6 +56,7 @@ bool Boundingsphere::Simulate(Physicsobject &physicsobject)
 void Boundingsphere::handleCollision() {
 	float momentiamass = 0;
 	vector3 momentums;
+	collisiondata.forces[0] = vector3(0, 0, gravity);
 	vector3 netforce = collisiondata.forces[0];
 	vector3 nettorque;
 	float angularimpulse = 0.1;
@@ -89,9 +90,9 @@ void Boundingsphere::handleCollision() {
 			angularimpulse = (angimpa + angimpb).dotProduct(collisiondata.intersectionnormals[i]);
 			impulse /= ( (1.0f / collisiondata.otherobjects[i]->mass) + (1.0f / mass) + angularimpulse);
 
-			t = (collisiondata.intersectionnormals[i] * (collisiondata.otherobjects[i]->tempvel.Normalize() - tempvel.Normalize())) * collisiondata.intersectionnormals[i];
+			t = ((collisiondata.intersectionnormals[i] * (collisiondata.otherobjects[i]->tempvel - tempvel)) * collisiondata.intersectionnormals[i]).Normalize();
 			velocity = velocity - (collisiondata.intersectionnormals[i] + t.multiply(kineticfrictionconstant)).multiply((impulse / mass));
-			angularvelocity = angularvelocity - (rb * ((collisiondata.intersectionnormals[i] + t.multiply(kineticfrictionconstant)).multiply(impulse))).divide(MOI);
+			angularvelocity = angularvelocity - (rb.crossProduct(((collisiondata.intersectionnormals[i] + t.multiply(kineticfrictionconstant)).multiply(impulse)))).divide(MOI);
 			/*netforce += collisiondata.forces[i + 1];
 			nettorque += (rb.crossProduct(collisiondata.forces[i + 1]));*/
 		/*}
@@ -108,6 +109,13 @@ void Boundingsphere::Integrate() {
 		/*tempoldpos = oldpos;
 		tempvel = velocity;*/
 		handleCollision();  //resolve forces/collisions
+		collided = false;
+		collisiondata.intersectionpoints.clear();
+		collisiondata.intersectionnormals.clear();
+		collisiondata.collisiondistance = 0;
+		collisiondata.otherobjects.clear();
+		collisiondata.momentia.clear();
+		collisiondata.forces.erase(collisiondata.forces.begin() + 1, collisiondata.forces.end());
 	}
 	oldpos = getPosition();
 	vector3 newacceleration(acceleration.x, acceleration.y - gravity, acceleration.z);
@@ -206,15 +214,15 @@ void Boundingsphere::handleConstraints()
 
 					if (count == 10) {
 						std::cout << "Constraint went to factor 2" << std::endl;
-						factor = 2;
+						factor = 2.75;
 					}
 					else if (count == 20) {
 						std::cout << "Constraint went to factor 3" << std::endl;
-						factor = 3;
+						factor = 3.85;
 					}
 					else if (count == 40) {
 						std::cout << "Constraint went to factor 4" << std::endl;
-						factor = 4;
+						factor = 4.5;
 					}
 					collisiondistance = calcCollisionDistance(collisiondata.otherobjects[i]->getRadius(), collisiondata.otherobjects[i]->getPosition());
 				}
