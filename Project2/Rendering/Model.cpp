@@ -2,12 +2,6 @@
 #include "Shader.h"
 void Model::freeModel()
 {
-	for (int i = 0; i < meshes.size(); i++) {
-		meshes[i].freeMesh();
-	}
-	for (int i = 0; i < materials.size(); i++) {
-		materials[i].freeMaterial();
-	}
 	meshes.clear();
 	materials.clear();
 }
@@ -37,6 +31,7 @@ void Model::loadModelObj(std::string file) //max size of vector?
 	std::vector<unsigned int>indices;
 	bool meshdone = true;
 	int i = 0;
+	std::string matname;
 
 	int texturecounter = 0;
 	if (fileopener.is_open()) {
@@ -56,6 +51,13 @@ void Model::loadModelObj(std::string file) //max size of vector?
 							continue;
 						}
 
+						else if (buffer[0] == 'm') { //todo: multiple libraries
+							if (buffer == "mtllib") {
+								getline(streamer, buffer);
+								loadMaterials(buffer);
+							}
+						}
+
 						else if (buffer[0] == 'v' && buffer.size() == 1) {   //vertices
 							if (meshdone && positionindices.size() != 0) {
 								for (int i = 0; i < positionindices.size(); i++) {	//mesh ready to load
@@ -64,8 +66,9 @@ void Model::loadModelObj(std::string file) //max size of vector?
 									importedvertices.back().normal = normals[normalindices[i]];
 									indices.push_back(i);
 								}
-								meshes.push_back(Mesh());
-								meshes[i].makeMesh(&importedvertices[0], &indices[0], importedvertices.size(), indices.size());
+								Mesh mesh(&importedvertices[0], &indices[0], importedvertices.size(), indices.size());
+								meshes.push_back(std::pair<Mesh, std::string>(mesh, matname));
+								matname = "";
 								importedvertices.clear();
 								indices.clear();
 								meshdone = false;
@@ -127,6 +130,14 @@ void Model::loadModelObj(std::string file) //max size of vector?
 							}
 						}
 
+						else if (buffer[0] == 'u' && buffer.size() == 6)
+						{
+							if (buffer.substr(0, 6) == "usemtl") {
+								getline(streamer, buffer);
+								matname = buffer;
+							}
+						}
+						
 						else if (buffer[0] == 'f' && buffer.size() == 1) {   //indices
 							meshdone = true;
 							if (texturecoordinates.size() == 0 && normals.size() == 0) {
@@ -227,6 +238,66 @@ void Model::loadModelObj(std::string file) //max size of vector?
 		for (unsigned int i = 0; i < importedvertices.size(); i++) {
 			indices.push_back(i);
 		}*/
+}
+void Model::loadMaterials(std::string filename) {
+	std::ifstream fileopener;
+	std::string matname;
+	fileopener.open("Rendering/Materials/" + filename);
+
+	if (fileopener.is_open()) {
+		std::string bigbuffer;
+		std::string buffer;
+		while (getline(fileopener, bigbuffer)) {
+			if (fileopener.bad()) {
+				engineLog(__FILE__, __LINE__, "Warning: Material failed to import. An default error material was returned instead.", 2, 2, true);
+				return; //make an error model
+			}
+
+			if (!bigbuffer.empty()) {
+				std::stringstream streamer(bigbuffer);
+				while (getline(streamer, buffer, ' ')) {
+					if (!buffer.empty()) {
+						if (buffer[0] == '#') {
+							continue;
+						}
+
+						else if (buffer[0] == 'n') {
+							if (buffer == "newmtl") {
+								getline(streamer, buffer);
+								matname = buffer;
+								materials.emplace(matname, Materials());
+							}
+						}
+
+						else if (buffer[0] == 'K') {
+							/*if (buffer == "Kd") {
+								vector3 diffusecolor;
+								getline(streamer, buffer, ' ');
+								diffusecolor.x = stof(buffer);
+								getline(streamer, buffer, ' ');
+								diffusecolor.y = stof(buffer);
+								getline(streamer, buffer, ' ');
+								diffusecolor.z = stof(buffer);
+							}*/
+							if (buffer == "Ks") {
+								getline(streamer, buffer, ' ');
+								materials.at(matname).specularexponent = stof(buffer);
+							}
+							/*else if (buffer == "Ke") {
+							}*/
+						}
+
+						else if (buffer[0] == 'm') {
+							if (buffer == "map_Kd") {
+								getline(streamer, buffer, ' ');
+								/*materials.at(matname).setTexture(Texture(buffer));*/
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 

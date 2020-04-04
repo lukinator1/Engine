@@ -3,13 +3,13 @@
 #include "stb_image.h"
 void Texture::loadTexture(std::string filename)
 {
-	filename = "Rendering/Textures/" + filename;
+	filename = "Rendering/Materials/Textures/" + filename;
 	int width, height, components;
 	unsigned char* data = stbi_load((filename).c_str(), &width, &height, &components, 4);
 
 	if (data == NULL) {
 		engineLog(__FILE__, __LINE__, "Warning: Texture failed to load. Returned an error texture instead.", 1, 2, true);
-		data = stbi_load("Rendering/Textures/errortexture.png", &width, &height, &components, 4);
+		data = stbi_load("Rendering/Materials/Textures/errortexture.png", &width, &height, &components, 4);
 		return;
 	}
 	glBindTexture(GL_TEXTURE_2D, textureid);
@@ -27,7 +27,7 @@ void Texture::loadTexture(std::string filename)
 void Texture::loadErrorCubeMap(){
 	int width, height, components;
 	glBindTexture(GL_TEXTURE_CUBE_MAP, textureid); //todo: check if power of 2
-	unsigned char* data = stbi_load("Rendering/Textures/errortexture.png", &width, &height, &components, 4);
+	unsigned char* data = stbi_load("Rendering/Materials/Textures/errortexture.png", &width, &height, &components, 4);
 	if (data != NULL) {
 		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 		glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
@@ -48,12 +48,12 @@ void Texture::loadErrorCubeMap(){
 }
 int Texture::loadCubeMap(std::string right, std::string left, std::string top, std::string bottom, std::string front, std::string back)
 {
-	std::string r = "Rendering/Textures/Cubemaps/" + right;
-	std::string l = "Rendering/Textures/Cubemaps/" + left;
-	std::string t = "Rendering/Textures/Cubemaps/" + top;
-	std::string b = "Rendering/Textures/Cubemaps/" + bottom;
-	std::string f = "Rendering/Textures/Cubemaps/" + front;
-	std::string bck = "Rendering/Textures/Cubemaps/" + back;
+	std::string r = "Rendering/Materials/Textures/Cubemaps/" + right;
+	std::string l = "Rendering/Materials/Textures/Cubemaps/" + left;
+	std::string t = "Rendering/Materials/Textures/Cubemaps/" + top;
+	std::string b = "Rendering/Materials/Textures/Cubemaps/" + bottom;
+	std::string f = "Rendering/Materials/Textures/Cubemaps/" + front;
+	std::string bck = "Rendering/Materials/Textures/Cubemaps/" + back;
 	int width, height, components;
 	glBindTexture(GL_TEXTURE_CUBE_MAP, textureid);
 

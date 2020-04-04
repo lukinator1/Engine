@@ -7,8 +7,8 @@
 class Model : public Logger
 {
 public:
-	std::vector <Mesh> meshes;
-	std::vector <Materials> materials;
+	std::vector <std::pair<Mesh, std::string>> meshes;
+	std::map <std::string, Materials> materials;
 	void normalizeNormalVertices(Vertex * vertices, int numvertices);
 	void freeModel();
 	void calculateNormals(Vertex* vertices, unsigned int* indices, unsigned int numvertices, unsigned int numindices);
@@ -18,6 +18,7 @@ public:
 	void drawModel(Shader& s);
 	/*void drawNoIndicesMesh();*/
 	void loadModelObj(std::string file);
+	void loadMaterials(std::string filename);
 	void makeErrorModel();
 	Model();
 	~Model();

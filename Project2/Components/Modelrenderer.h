@@ -18,8 +18,8 @@ public:
 	void renderComponent(Transforming &transform, Shader * &shader) {
 		shader->useShader();
 		for (int i = 0; i < model->meshes.size(); i++) {
-			shader->updateUniforms(transform.newUnprojectedMatrix(), transform.newTransformationMatrix(), transform.position, model->materials[i]);
-			model->meshes[i].drawMesh();
+			shader->updateUniforms(transform.newUnprojectedMatrix(), transform.newTransformationMatrix(), transform.position, model->materials.at(model->meshes[i].second));
+			model->meshes[i].first.drawMesh();
 		}
 	}
 };

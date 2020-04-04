@@ -72,7 +72,7 @@ public:
 		specularintensity = newspecintensity;
 		specularexponent = newspecexponent;
 	}
-	void setTexture(Texture newtexture) {
+	void setTexture(Texture &newtexture) {
 		texture = newtexture;
 	}
 	void setColor(vector3 newcolor) {
@@ -110,11 +110,10 @@ public:
 		specularintensity = 2.0f;
 		specularexponent = 32.0f;
 	}
-	void loadMTL(std::string filename) {
+	/*void loadMTL(std::string filename) {
 		std::ifstream fileopener;
 		fileopener.open("Rendering/Materials/" + filename);
-		
-	}
+	}*/
 	~Materials();
 };
 

@@ -33,7 +33,10 @@ public:
 	void addModel(std::string id, std::string Modelfile) {
 		models.emplace(id, Model(Modelfile));
 	}
-	Model &getModel(std::string id) {
+	/*void setModel(std::string id) {
+		return models.at(id);
+	}*/
+	Model & getModel(std::string id) {
 		return models.at(id);
 	}
 	void deleteModel(std::string id) {
