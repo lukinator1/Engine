@@ -480,23 +480,23 @@ void Shader::updateUniforms(matrix4f worldmatrix, matrix4f projectedmatrix, vect
 		material.texture.useTexture();
 	}
 	else if (type == 2) {
-		/*setUniform("transform", worldmatrix);
-		setUniform("projectedtransform", projectedmatrix);*/
+		setUniform("transform", worldmatrix);
+		setUniform("projectedtransform", projectedmatrix);
 		setUniform("color", material.getColor());
 		setUniform("pointlight", pointlight);
 		setUniform("specularintensity", material.specularintensity);
 		setUniform("specularexponent", material.specularexponent);
-		/*setUniform("cameraposition", position);*/
+		setUniform("cameraposition", position);
 		material.texture.useTexture();
 	}
 	else if (type == 3) {
-		/*setUniform("transform", worldmatrix);
-		setUniform("projectedtransform", projectedmatrix);*/
+		setUniform("transform", worldmatrix);
+		setUniform("projectedtransform", projectedmatrix);
 		setUniform("color", material.getColor());
 		setUniform("spotlight", spotlight);
 		setUniform("specularintensity", material.specularintensity);
 		setUniform("specularexponent", material.specularexponent);
-		/*setUniform("cameraposition", position);*/
+		setUniform("cameraposition", position);
 		material.texture.useTexture();
 	}
 }

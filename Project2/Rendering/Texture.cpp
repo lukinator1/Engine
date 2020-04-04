@@ -153,7 +153,9 @@ void Texture::useCubeMapTexture() {
 	glBindTexture(GL_TEXTURE_CUBE_MAP, textureid);
 }
 void Texture::freeTexture() {
-	glDeleteTextures(1, &textureid);
+	if (textureid != -1) {
+		glDeleteTextures(1, &textureid);
+	}
 }
 /*void Texture::setTexture(Texture &text) {
 	*this = text;

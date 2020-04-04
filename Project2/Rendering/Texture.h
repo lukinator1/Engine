@@ -7,7 +7,7 @@ class Texture : public Logger
 {
 private:
 public:
-	GLuint textureid;
+	GLuint textureid = -1;
 	void loadTexture(std::string filename);
 	void loadErrorCubeMap();
 	int loadCubeMap(std::string right, std::string left, std::string top, std::string bottom, std::string front, std::string back);

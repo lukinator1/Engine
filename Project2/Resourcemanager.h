@@ -19,12 +19,12 @@ public:
 	void addEntity(Entity &entity, std::string id) {
 		entities.emplace(id, entity);
 	}
-	void deleteEntities (std::string id) {
+	void deleteEntities (std::string id) { //todo
 		for (int i = 0; i < entities.at(id).children.size(); i++) {
 			
 		}
 	}
-	Entity getEntity(std::string id) {
+	Entity &getEntity(std::string id) {
 		return entities.at(id);
 	}
 	void addModel(std::string id, Model model) {

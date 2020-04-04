@@ -2,7 +2,7 @@
 #include "Texture.h"
 #include "../Mathlibrary/vector3.h"
 #include <string>
-class Materials : public Texture //todo: alphas, change into map
+class Materials //todo: alphas, change into map
 {
 public:
 	Texture texture;
@@ -72,7 +72,7 @@ public:
 		specularintensity = newspecintensity;
 		specularexponent = newspecexponent;
 	}
-	void setTexture(Texture &newtexture) {
+	void setTexture(Texture newtexture) {
 		texture = newtexture;
 	}
 	void setColor(vector3 newcolor) {

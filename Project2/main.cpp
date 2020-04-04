@@ -308,7 +308,7 @@ int main(int argc, char* argv[]) {
 	SS.addMesh("Sphere", Mesh("sphere.obj"));
 	SS.addMesh("Lovebox", Mesh("Peachs Castle 1f.obj"));
 	SS.addMesh("cardboardbox", Mesh("CardBoardBox.obj"));
-	/*SS.addModel("Castle", Model("Peachs Castle 1f.obj"));*/
+	SS.addModel("Castle", Model("Peachs Castle 1f.obj"));
 	SS.addMesh("Castle", Mesh("Peachs Castle 1F.obj"));
 
 
@@ -413,11 +413,11 @@ int main(int argc, char* argv[]) {
 	boxbox.boundingbox.setWidth(10.0f);
 
 	Entity Castle;
-	/*Modelrenderer castlemodel(SS.getModel("Castle"));*/
+	Modelrenderer castlemodel(SS.getModel("Castle"));
 	/*Meshrenderer castlemesh(SS.getMesh("Castle"), SS.getMaterials("mats2"));*/
 	Castle.transform.setPosition(-15.0f, 3.0f, 6.0f);
 	Castle.transform.setScale(vector3(40.0f, 40.0f, 40.0f));
-	/*Castle.addComponent(&castlemodel);
+	Castle.addComponent(&castlemodel);
 	/*Castle.addComponent(&castlemesh);*/
 	Scout.addSubEntity(&Castle);
 

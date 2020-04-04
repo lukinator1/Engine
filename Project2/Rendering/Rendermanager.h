@@ -35,8 +35,8 @@ public:
 	Directionallight dlighttwo;
 	std::vector<Pointlight> pointlights;
 	Pointlight plight;
-	Spotlight slight;*/
-	Shader phongshader;
+	Spotlight slight;
+	Shader phongshader;*/
 	Shader forwardambientshader;
 	Shader forwarddirectionalshader;
 	Shader forwardpointshader;

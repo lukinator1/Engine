@@ -2,11 +2,18 @@
 #include "Shader.h"
 void Model::freeModel()
 {
+	for (int i = 0; i < meshes.size(); i++) {
+		meshes[i].first.freeMesh();
+	}
+	for (auto i = materials.begin(); i != materials.end(); i++) { 
+	i->second.freeMaterial();
+	}
 	meshes.clear();
 	materials.clear();
 }
 Model::Model(std::string file)
 {
+	materials.emplace("", Materials());
 	loadModelObj(file);
 }
 /*void Model::drawModel(Shader &s)
@@ -30,8 +37,7 @@ void Model::loadModelObj(std::string file) //max size of vector?
 	std::vector<unsigned int>normalindices;
 	std::vector<unsigned int>indices;
 	bool meshdone = true;
-	int i = 0;
-	std::string matname;
+	std::string matname = "";
 
 	int texturecounter = 0;
 	if (fileopener.is_open()) {
@@ -39,7 +45,7 @@ void Model::loadModelObj(std::string file) //max size of vector?
 		std::string buffer;
 		while (getline(fileopener, bigbuffer)) {
 			if (fileopener.bad()) {
-				engineLog(__FILE__, __LINE__, "Warning: Model failed to import. An error model was returned instead.", 2, 2, true);
+				engineLog(__FILE__, __LINE__, "Warning: Model did not fully import.", 2, 2, true);
 				return; //make an error model
 			}
 
@@ -62,17 +68,39 @@ void Model::loadModelObj(std::string file) //max size of vector?
 							if (meshdone && positionindices.size() != 0) {
 								for (int i = 0; i < positionindices.size(); i++) {	//mesh ready to load
 									importedvertices.push_back(Vertex(vector3(positioncoordinates[positionindices[i]])));
-									importedvertices.back().texture = texturecoordinates[textureindices[i]];
-									importedvertices.back().normal = normals[normalindices[i]];
+									if (texturecoordinates.size() != 0) {
+										importedvertices.back().texture = texturecoordinates[textureindices[i]];
+									}
+									if (normals.size() != 0) {
+										importedvertices.back().normal = normals[normalindices[i]].Normalize();
+									}
 									indices.push_back(i);
 								}
+								if (normals.size() == 0) {
+									calculateNormals(&importedvertices[0], &indices[0], importedvertices.size(), indices.size());
+								}
+								/*std::vector<vector3> oldnormals;
+								for (int i = 0; i < importedvertices.size(); i++) {
+									oldnormals.push_back(importedvertices[i].normal);
+								}
+								calculateNormals(&importedvertices[0], &indices[0], importedvertices.size(), indices.size());
+								for (int i = 0; i < importedvertices.size(); i++) {
+									if (oldnormals[i] != importedvertices[i].normal) {
+										std::cout << "hello";
+									}
+								}*/
 								Mesh mesh(&importedvertices[0], &indices[0], importedvertices.size(), indices.size());
 								meshes.push_back(std::pair<Mesh, std::string>(mesh, matname));
 								matname = "";
+								/*positioncoordinates.clear();
+								texturecoordinates.clear();
+								normals.clear();*/
+								positionindices.clear();
+								textureindices.clear();
+								normalindices.clear();
 								importedvertices.clear();
 								indices.clear();
 								meshdone = false;
-								i++;
 							}
 							getline(streamer, buffer, ' ');			//x
 							while (buffer == "") {				//eliminate whitespaces
@@ -217,20 +245,17 @@ void Model::loadModelObj(std::string file) //max size of vector?
 	else
 	{
 		engineLog(__FILE__, __LINE__, "Warning: Model failed to import. Returned an error model.", 2, 2, true);
+		meshes.push_back(std::pair<Mesh, std::string>(Mesh(), ""));
 		return; //todo: error model
 	}
 
-	if (positioncoordinates.size() == 0 || positionindices.size() == 0) {
+	if (meshes.size() == 0 || positionindices.size() == 0) {
 		engineLog(__FILE__, __LINE__, "Warning: Model failed to import. Returned an error model.", 2, 2, true);
+		meshes.push_back(std::pair<Mesh, std::string>(Mesh(), ""));
 		return;
 	}
 
-	for (int i = 0; i < positionindices.size(); i++) {
-		importedvertices.push_back(Vertex(vector3(positioncoordinates[positionindices[i]])));
-		importedvertices.back().texture = texturecoordinates[textureindices[i]];
-		importedvertices.back().normal = normals[normalindices[i]];
-		indices.push_back(i);
-	}
+
 
 	/*	auto optimize = std::unique(importedvertices.begin(), importedvertices.end()); //todo: optimize
 		importedvertices.erase(optimize, importedvertices.end());
@@ -243,6 +268,7 @@ void Model::loadMaterials(std::string filename) {
 	std::ifstream fileopener;
 	std::string matname;
 	fileopener.open("Rendering/Materials/" + filename);
+	materials.emplace("", Materials());
 
 	if (fileopener.is_open()) {
 		std::string bigbuffer;
@@ -279,10 +305,10 @@ void Model::loadMaterials(std::string filename) {
 								getline(streamer, buffer, ' ');
 								diffusecolor.z = stof(buffer);
 							}*/
-							if (buffer == "Ks") {
+							/*if (buffer == "Ks") {
 								getline(streamer, buffer, ' ');
 								materials.at(matname).specularexponent = stof(buffer);
-							}
+							}*/
 							/*else if (buffer == "Ke") {
 							}*/
 						}
@@ -290,7 +316,7 @@ void Model::loadMaterials(std::string filename) {
 						else if (buffer[0] == 'm') {
 							if (buffer == "map_Kd") {
 								getline(streamer, buffer, ' ');
-								/*materials.at(matname).setTexture(Texture(buffer));*/
+								materials.at(matname).setTexture(Texture(buffer));
 							}
 						}
 					}
@@ -299,7 +325,26 @@ void Model::loadMaterials(std::string filename) {
 		}
 	}
 }
+void Model::calculateNormals(Vertex* vertices, unsigned int* indices, unsigned int numvertices, unsigned int numindices) {
+	for (unsigned int i = 0; i < numindices; i += 3) {
+		unsigned int i0 = indices[i];
+		unsigned int i1 = indices[i + 1];
+		unsigned int i2 = indices[i + 2];
+		vector3 edge1 = vertices[i1].position.Subtract(vertices[i0].position);
+		vector3 edge2 = vertices[i2].position.Subtract(vertices[i0].position);
+		vector3 normal = (edge1.crossProduct(edge2)).Normalize();
 
+		vertices[i0].normal = vertices[i0].normal.add(normal);
+		vertices[i1].normal = vertices[i1].normal.add(normal);
+		vertices[i2].normal = vertices[i2].normal.add(normal);
+	}
+	normalizeNormalVertices(vertices, numvertices);
+}
+void Model::normalizeNormalVertices(Vertex *vertices, int numvertices) {
+	for (int i = 0; i < numvertices; i++) {
+		vertices[i].normal = (vertices[i].normal).Normalize();
+	}
+}
 
 Model::Model()
 {
