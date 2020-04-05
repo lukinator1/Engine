@@ -3,12 +3,12 @@
 #include "Materials.h"
 #include "Shader.h"
 #include <vector>
-#include <map>
+#include <unordered_map>
 class Model : public Logger
 {
 public:
 	std::vector <std::pair<Mesh, std::string>> meshes;
-	std::map <std::string, Materials> materials;
+	std::unordered_map <std::string, Materials> materials;
 	void normalizeNormalVertices(Vertex * vertices, int numvertices);
 	void freeModel();
 	void calculateNormals(Vertex* vertices, unsigned int* indices, unsigned int numvertices, unsigned int numindices);

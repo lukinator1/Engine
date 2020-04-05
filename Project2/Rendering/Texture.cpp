@@ -1,15 +1,18 @@
 #include "Texture.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
-void Texture::loadTexture(std::string filename)
+int Texture::loadTexture(std::string filename)
 {
 	filename = "Rendering/Materials/Textures/" + filename;
 	int width, height, components;
+	int returner = 0;
 	unsigned char* data = stbi_load((filename).c_str(), &width, &height, &components, 4);
 
 	if (data == NULL) {
-		engineLog(__FILE__, __LINE__, "Warning: Texture failed to load. Returned an error texture instead.", 1, 2, true);
+		engineLog(__FILE__, __LINE__, "Warning: Texture failed to load. May've returned an error texture instead.", 1, 2, true);
+		std::cout << filename;
 		data = stbi_load("Rendering/Materials/Textures/errortexture.png", &width, &height, &components, 4);
+		returner = -1;
 	}
 	glBindTexture(GL_TEXTURE_2D, textureid);
 
@@ -22,6 +25,7 @@ void Texture::loadTexture(std::string filename)
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 	stbi_image_free(data);
+	return returner;
 }
 void Texture::loadErrorCubeMap(){
 	int width, height, components;
@@ -148,6 +152,10 @@ void Texture::useTexture()
 {
 	glBindTexture(GL_TEXTURE_2D, textureid);
 }
+void Texture::unbindTexture()
+{
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
 void Texture::useCubeMapTexture() {
 	glBindTexture(GL_TEXTURE_CUBE_MAP, textureid);
 }
@@ -155,6 +163,9 @@ void Texture::freeTexture() {
 	if (textureid != -1) {
 		glDeleteTextures(1, &textureid);
 	}
+}
+void Texture::loadErrorTexture() {
+	loadTexture("errortexture.png");
 }
 /*void Texture::setTexture(Texture &text) {
 	*this = text;
@@ -185,7 +196,6 @@ void Texture::setTexture(std::string filename) {
 Texture::Texture()
 {
 	glGenTextures(1, &textureid);
-	loadTexture("errortexture.png");
 }
 Texture::Texture(std::string filename)
 {

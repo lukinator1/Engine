@@ -201,7 +201,7 @@ void Boundingsphere::handleConstraints()
 				/*setPosition(collisiondata.intersectionpoints[i] + neg.multiply(radius));*/
 
 				count = 0; //if still didn't aren't separated
-				factor = 1;
+				factor = 1.65f;
 				collisiondistance = calcCollisionDistance(collisiondata.otherobjects[i]->getRadius(), collisiondata.otherobjects[i]->getPosition());
 				while ((collisiondistance >0) && count < 100) {
 					/*velocity = velocity - (collisiondata.intersectionnormals[i]).multiply((50.0f / mass));*/
@@ -210,15 +210,15 @@ void Boundingsphere::handleConstraints()
 
 					if (count == 10) {
 						std::cout << "Constraint went to factor 2" << std::endl;
-						factor = 2.75;
+						factor = 2.75f;
 					}
 					else if (count == 20) {
 						std::cout << "Constraint went to factor 3" << std::endl;
-						factor = 3.85;
+						factor = 3.85f;
 					}
 					else if (count == 40) {
 						std::cout << "Constraint went to factor 4" << std::endl;
-						factor = 4.5;
+						factor = 4.5f;
 					}
 					collisiondistance = calcCollisionDistance(collisiondata.otherobjects[i]->getRadius(), collisiondata.otherobjects[i]->getPosition());
 				}

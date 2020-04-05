@@ -26,6 +26,7 @@ void Rendering::renderEntities(Entity &gameobject, Shader * &shade) {
 }
 void Rendering::renderScene(Scene &currentscene)
 {
+
 	forwardambientshader.ambientlight = currentscene.ambientlight;  //todo: optimize with pointers
 	currentscene.root.renderEntities(&forwardambientshader);
 
@@ -33,6 +34,7 @@ void Rendering::renderScene(Scene &currentscene)
 	glBlendFunc(GL_ONE, GL_ONE);
 	glDepthMask(false);
 	glDepthFunc(GL_EQUAL);
+
 	for (int i = 0; i < currentscene.directionallights.size(); i++) {
 		forwarddirectionalshader.setDirectionalLight(*currentscene.directionallights[i]);
 		currentscene.root.renderEntities(&forwarddirectionalshader);

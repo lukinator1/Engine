@@ -23,7 +23,7 @@ public:
 		specularexponent = 32;
 	}
 	Materials(std::string filetexturename) {
-		texture = filetexturename;
+		texture.loadTexture(filetexturename);
 		color = vector3(1.0f, 1.0f, 1.0f);
 		specularintensity = 2;
 		specularexponent = 32;

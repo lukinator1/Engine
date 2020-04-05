@@ -283,7 +283,7 @@ int main(int argc, char* argv[]) {
 
 	//lights
 	sceneone.setAmbientLight(vector3(0.3f, 0.3f, 0.3f));
-	SS.addDirectionalLight("dlight1", Directionallight(vector3(0, 0, 1.0f), vector3(1.0f, 1.0f, 1.0f), 0.4f));
+	SS.addDirectionalLight("dlight1", Directionallight(vector3(1.0f, 1.0f, 1.0f), vector3(1.0f, 1.0f, 1.0f), 0.5f));
 	SS.addDirectionalLight("dlight2", Directionallight(vector3(1.0f, 0, 0), vector3(-1.0f, 1.0f, -1.0f), 0.4f));
 	SS.addPointLight("plight1", Pointlight(vector3(0.0f, 0.5f, 1.0f), vector3(2.0f, 0.0f, 7.0f), 4.0f, 2.0f, 0.0f, 1.0f));
 	SS.addSpotLight("slight1", Spotlight(vector3(0.0f, 1.0f, 1.0f), vector3(5.0f, 0.0f, 5.0f), vector3(1.0f, -1.0f, 1.0f), 80.0f, 0.7f, 3.0f, 0.0f, 0.1f));
@@ -291,7 +291,7 @@ int main(int argc, char* argv[]) {
 	SS.addPointLight("blueplight", Pointlight(vector3(0.0f, 0.5f, 1.0f), vector3(2.0f, 0.0f, 7.0f), 4.0f, 2.0f, 0.0f, 1.0f));
 
 	sceneone.addDirectionalLight(SS.getDirectionalLight("dlight1"));
-	sceneone.addDirectionalLight(SS.getDirectionalLight("dlight2"));
+	/*sceneone.addDirectionalLight(SS.getDirectionalLight("dlight2"));*/
 	sceneone.addPointLight(SS.getPointLight("plight1"));
 	sceneone.addSpotLight(SS.getSpotLight("slight1"));
 	sceneone.addPointLight(SS.getPointLight("orangeplight"));
@@ -306,10 +306,11 @@ int main(int argc, char* argv[]) {
 	SS.addModel("Mario", Model("mario.obj"));
 	SS.addMesh("Cube", Mesh("cube.obj"));
 	SS.addMesh("Sphere", Mesh("sphere.obj"));
-	SS.addMesh("Lovebox", Mesh("Peachs Castle 1f.obj"));
+	SS.addModel("Gumi", Model("gumi.obj"));
+	SS.addModel("2B", Model("cube.obj"));
+	SS.addModel("Altar", Model("cube.obj"));
 	SS.addModel("cardboardbox", Model("CardBoardBox.obj"));
 	SS.addModel("Castle", Model("Peachs Castle 1f.obj"));
-	SS.addMesh("Castle", Mesh("Peachs Castle 1F.obj"));
 
 
 	//physics
@@ -328,9 +329,7 @@ int main(int argc, char* argv[]) {
 	Meshrenderer otherspheremesh(SS.getMesh("Sphere"), SS.getMaterials("mats1"));
 	Entity Cloud;
 	Cloud.transform.setPosition(vector3(5.0f, 0.0f, 10.0f));
-	/*Cloud.transform.setScale(vector3(0.05f, 0.05f, 0.05f));*/
 	Cloud.transform.setScale(vector3(0.10f, .10f, .10f));
-	/*Meshrenderer cloudcomponent(SS.getMesh("Cloud"), SS.getMaterials("mats2"));*/
 	Modelrenderer cloudmodel(SS.getModel("Cloud"));
 	Boundingspherecollider bspherecloud(SS.getBoundingSphere("bsphere1"));
 	bspherecloud.boundingsphere.setColliderTransform(Cloud.transform);
@@ -348,7 +347,7 @@ int main(int argc, char* argv[]) {
 	/*Meshrenderer snakecomponent(SS.getMesh("Snake"), SS.getMaterials("mats1"));*/
 	Modelrenderer snakecomponent(SS.getModel("Snake"));
 	Snake.addComponent(&snakecomponent);
-	Cloud.addSubEntity(&Snake);
+	/*Cloud.addSubEntity(&Snake);*/
 
 	Entity Scout;
 	Scout.transform.setPosition(vector3(30.0f, 0.0f, 15.0f));
@@ -363,7 +362,7 @@ int main(int argc, char* argv[]) {
 	Rintezuka.transform.setScale(vector3(0.07f, 0.07f, 0.07f));
 	Meshrenderer rincomponent(SS.getMesh("Cube"), SS.getMaterials("mats1"));
 	Rintezuka.addComponent(&rincomponent);
-	Scout.addSubEntity(&Rintezuka);
+	/*Scout.addSubEntity(&Rintezuka);*/
 
 	Entity sphereone;
 	sphereone.transform.setPosition(7.5f, 40.0f, -14.0f);
@@ -377,7 +376,7 @@ int main(int argc, char* argv[]) {
 	sphereonecollider.boundingsphere.mass = 7.0f;
 	/*sphereonecollider.boundingsphere.recalculateMOI();*/
 	sphereone.addComponent(&sphereonecollider);
-	Rintezuka.addSubEntity(&sphereone);
+	Quote.addSubEntity(&sphereone);
 
 	Entity spheretwo;
 	spheretwo.transform.setPosition(7.5f, 40.0f, -21.0f);
@@ -391,18 +390,26 @@ int main(int argc, char* argv[]) {
 	spheretwo.addComponent(&spheretwocollider);
 	sphereone.addSubEntity(&spheretwo);
 
-	/*Entity lovebox;
-	Meshrenderer loveboxmesh(SS.getMesh("Lovebox"), SS.getMaterials("mats2"));
-	lovebox.transform.setPosition(0, 3.0f, 17.0f);
-	lovebox.transform.setScale(vector3(5.0f, 5.0f, 5.0f));
-	lovebox.addComponent(&loveboxmesh);
-	sphereone.addSubEntity(&lovebox);
-	AABBcollider loveboxbox;
-	loveboxbox.boundingbox.setColliderTransform(lovebox.transform);
-	loveboxbox.boundingbox.setHeight(0.1f);
-	loveboxbox.boundingbox.setLength(10.0f);
-	loveboxbox.boundingbox.setWidth(10.0f);
-	loveboxbox.boundingbox.velocity.y = -3.0f;*/
+	Entity Gumi;
+	Modelrenderer gumimodel(SS.getModel("Gumi"));
+	Gumi.transform.setPosition(-15.0f, 3.0f, 15.0f);
+	Gumi.transform.setScale(vector3(0.75f, 0.75f, 0.75f));
+	Gumi.addComponent(&gumimodel);
+	Quote.addSubEntity(&Gumi);
+
+	Entity twoB;
+	Modelrenderer twoBmodel(SS.getModel("2B"));
+	twoB.transform.setPosition(20.0f, 3.0f, 6.0f);
+	twoB.transform.setScale(vector3(1.0f, 1.0f, 1.0f));
+	twoB.addComponent(&twoBmodel);
+	Quote.addSubEntity(&twoB);
+
+	Entity Altar;
+	Modelrenderer altarmodel(SS.getModel("Altar"));
+	twoB.transform.setPosition(-15.0f, 3.0f, -7.0f);
+	twoB.transform.setScale(vector3(1.0f, 1.0f, 1.0f));
+	twoB.addComponent(&altarmodel);
+	Quote.addSubEntity(&Altar);
 
 	Entity box;
 	Meshrenderer boxmesh(SS.getMesh("Cube"), SS.getMaterials("mats2"));
@@ -663,7 +670,8 @@ int main(int argc, char* argv[]) {
 		flashlight.setPosition(Camera.getCameraposition());
 		flashlight.setDirection(Camera.camerarotation.getForward());
 		/*shaderit.useShader();
-		shaderit.updateUniforms(transform.newUnprojectedMatrix(), transform.newTransformationMatrix(), transform.position, fieldmaterials);
+		shaderit.
+		(transform.newUnprojectedMatrix(), transform.newTransformationMatrix(), transform.position, fieldmaterials);
 		meshme.drawMesh();*/
 		Physics.Update(*currentscene);
 		Renderer.renderScene(*currentscene);

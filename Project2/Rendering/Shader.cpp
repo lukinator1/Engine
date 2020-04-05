@@ -79,6 +79,7 @@ Shader::Shader(std::string shadertype) : directionallight(vector3(1.0f, 1.0f, 1.
 		addVertexShader(loadShader("Ambientforwardvertexshader.vs"));
 		addFragmentShader(loadShader("Ambientforwardfragmentshader.fs"));
 		compileShader();
+		addUniform("color");
 		addUniform("transform");
 		addUniform("ambientintensity");
 	}
@@ -204,6 +205,7 @@ else if (shadertype == "Forwardambient" || shadertype == "forwardambient") {
 	addFragmentShader(loadShader("Ambientforwardfragmentshader.fs"));
 	compileShader();
 	addUniform("transform");
+	addUniform("color");
 	addUniform("ambientintensity");
 }
 else if (shadertype == "Forwarddirectional" || shadertype == "forwarddirectional") {
@@ -467,7 +469,13 @@ void Shader::updateUniforms(matrix4f worldmatrix, matrix4f projectedmatrix, vect
 	if (type == 0) {
 		setUniform("transform", projectedmatrix);
 		setUniform("ambientintensity", ambientlight);
-		material.texture.useTexture();
+		setUniform("color", material.getColor());
+		if (material.texture.textureid != -1) {
+			material.texture.useTexture();
+		}
+		else {
+			material.texture.unbindTexture();
+		}
 	}
 	else if (type == 1) {
 		setUniform("transform", worldmatrix);
@@ -477,7 +485,12 @@ void Shader::updateUniforms(matrix4f worldmatrix, matrix4f projectedmatrix, vect
 		setUniform("specularintensity", material.specularintensity);
 		setUniform("specularexponent", material.specularexponent);
 		setUniform("cameraposition", position);
-		material.texture.useTexture();
+		if (material.texture.textureid != -1) {
+			material.texture.useTexture();
+		}
+		else {
+			material.texture.unbindTexture();
+		}
 	}
 	else if (type == 2) {
 		setUniform("transform", worldmatrix);
@@ -487,7 +500,12 @@ void Shader::updateUniforms(matrix4f worldmatrix, matrix4f projectedmatrix, vect
 		setUniform("specularintensity", material.specularintensity);
 		setUniform("specularexponent", material.specularexponent);
 		setUniform("cameraposition", position);
-		material.texture.useTexture();
+		if (material.texture.textureid != -1) {
+			material.texture.useTexture();
+		}
+		else {
+			material.texture.unbindTexture();
+		}
 	}
 	else if (type == 3) {
 		setUniform("transform", worldmatrix);
@@ -497,7 +515,12 @@ void Shader::updateUniforms(matrix4f worldmatrix, matrix4f projectedmatrix, vect
 		setUniform("specularintensity", material.specularintensity);
 		setUniform("specularexponent", material.specularexponent);
 		setUniform("cameraposition", position);
-		material.texture.useTexture();
+		if (material.texture.textureid != -1) {
+			material.texture.useTexture();
+		}
+		else {
+			material.texture.unbindTexture();
+		}
 	}
 }
 void Shader::setAmbientLight(vector3 newambientlight) { //todo
