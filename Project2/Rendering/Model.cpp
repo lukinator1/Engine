@@ -248,27 +248,41 @@ void Model::loadModelObj(std::string file) //max size of vector?
 		meshes.push_back(std::pair<Mesh, std::string>(Mesh(), ""));
 		return; //todo: error model
 	}
-
-	if (meshes.size() == 0 || positionindices.size() == 0) {
-		engineLog(__FILE__, __LINE__, "Warning: Model failed to import. Returned an error model.", 2, 2, true);
-		meshes.push_back(std::pair<Mesh, std::string>(Mesh(), ""));
-		return;
-	}
-
-
-
-	/*	auto optimize = std::unique(importedvertices.begin(), importedvertices.end()); //todo: optimize
-		importedvertices.erase(optimize, importedvertices.end());
-
-		for (unsigned int i = 0; i < importedvertices.size(); i++) {
+	if (meshdone && positionindices.size() != 0) {
+		for (int i = 0; i < positionindices.size(); i++) {	//mesh ready to load
+			importedvertices.push_back(Vertex(vector3(positioncoordinates[positionindices[i]])));
+			if (texturecoordinates.size() != 0) {
+				importedvertices.back().texture = texturecoordinates[textureindices[i]];
+			}
+			if (normals.size() != 0) {
+				importedvertices.back().normal = normals[normalindices[i]].Normalize();
+			}
 			indices.push_back(i);
-		}*/
+		}
+		if (normals.size() == 0) {
+			calculateNormals(&importedvertices[0], &indices[0], importedvertices.size(), indices.size());
+		}
+		Mesh mesh(&importedvertices[0], &indices[0], importedvertices.size(), indices.size());
+		meshes.push_back(std::pair<Mesh, std::string>(mesh, matname));
+		matname = "";
+	}
+	bool there = false;
+	for (int i = 0; i < meshes.size(); i++) {	//check to see if material loaded successfulyl
+		there = false;
+		for (auto u = materials.begin(); u != materials.end(); u++) {
+			if (meshes[i].second == u->first) {
+				there = true;
+			}
+		}
+		if (there == false) {
+			meshes[i].second = "";
+		}
+	}
 }
 void Model::loadMaterials(std::string filename) {
 	std::ifstream fileopener;
 	std::string matname;
 	fileopener.open("Rendering/Materials/" + filename);
-	materials.emplace("", Materials());
 
 	if (fileopener.is_open()) {
 		std::string bigbuffer;
@@ -308,8 +322,6 @@ void Model::loadMaterials(std::string filename) {
 							/*if (buffer == "Ks") {
 								getline(streamer, buffer, ' ');
 								materials.at(matname).specularexponent = stof(buffer);
-							}*/
-							/*else if (buffer == "Ke") {
 							}*/
 						}
 

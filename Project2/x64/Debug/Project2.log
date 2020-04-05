@@ -1,4 +1,6 @@
 ﻿  Model.cpp
 c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\rendering\model.cpp(80): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
 c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\rendering\model.cpp(92): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\rendering\model.cpp(263): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\rendering\model.cpp(265): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
   Project2.vcxproj -> C:\Users\lukinator1\Desktop\engine\The Super Suspension System\Project2\x64\Debug\Project2.exe

@@ -300,14 +300,14 @@ int main(int argc, char* argv[]) {
 	//meshes
 	SS.addMaterials("mats1", Materials("test.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f));
 	SS.addMaterials("mats2", Materials("container.jpg", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f));
-	SS.addMesh("Quote", Mesh("quote.obj"));
-	SS.addMesh("Cloud", Mesh("Cloud.obj"));
-	SS.addMesh("Snake", Mesh("snake.obj"));
-	SS.addMesh("Scout", Mesh("mario.obj"));
+	SS.addModel("Quote", Model("quote.obj"));
+	SS.addModel("Cloud", Model("Cloud.obj"));
+	SS.addModel("Snake", Model("snake.obj"));
+	SS.addModel("Mario", Model("mario.obj"));
 	SS.addMesh("Cube", Mesh("cube.obj"));
 	SS.addMesh("Sphere", Mesh("sphere.obj"));
 	SS.addMesh("Lovebox", Mesh("Peachs Castle 1f.obj"));
-	SS.addMesh("cardboardbox", Mesh("CardBoardBox.obj"));
+	SS.addModel("cardboardbox", Model("CardBoardBox.obj"));
 	SS.addModel("Castle", Model("Peachs Castle 1f.obj"));
 	SS.addMesh("Castle", Mesh("Peachs Castle 1F.obj"));
 
@@ -319,38 +319,42 @@ int main(int argc, char* argv[]) {
 	//entites
 	Entity Quote; 
 	Quote.transform.setPosition(vector3(10.0f, 17.5f, 12.0f));
-	Meshrenderer component(SS.getMesh("Quote"), SS.getMaterials("mats1"));
+	/*Meshrenderer component(SS.getMesh("Quote"), SS.getMaterials("mats1"));*/
+	Modelrenderer quotemodel(SS.getModel("Quote"));
 	Quote.transform.Rotate(0.0f, 0.0f, 50.0f);
 	Quote.transform.setRotation(0.0f, 0.0f, 0.0f, 0.0f);
-	Quote.addComponent(&component);
+	Quote.addComponent(&quotemodel);
 
 	Meshrenderer otherspheremesh(SS.getMesh("Sphere"), SS.getMaterials("mats1"));
 	Entity Cloud;
 	Cloud.transform.setPosition(vector3(5.0f, 0.0f, 10.0f));
 	/*Cloud.transform.setScale(vector3(0.05f, 0.05f, 0.05f));*/
-	Cloud.transform.setScale(vector3(2.05f, 2.0f, 2.0f));
-	Meshrenderer cloudcomponent(SS.getMesh("Cloud"), SS.getMaterials("mats2"));
+	Cloud.transform.setScale(vector3(0.10f, .10f, .10f));
+	/*Meshrenderer cloudcomponent(SS.getMesh("Cloud"), SS.getMaterials("mats2"));*/
+	Modelrenderer cloudmodel(SS.getModel("Cloud"));
 	Boundingspherecollider bspherecloud(SS.getBoundingSphere("bsphere1"));
 	bspherecloud.boundingsphere.setColliderTransform(Cloud.transform);
 	bspherecloud.boundingsphere.radius = 2.0f;
 	bspherecloud.boundingsphere.mass = 20.0f;
 	bspherecloud.boundingsphere.recalculateMOI();
-	/*Cloud.addComponent(&cloudcomponent);*/
-	Cloud.addComponent(&otherspheremesh);
+	Cloud.addComponent(&cloudmodel);
+	/*Cloud.addComponent(&otherspheremesh);*/
 	Cloud.addComponent(&bspherecloud);
 	Quote.addSubEntity(&Cloud);
 
 	Entity Snake;
 	Snake.transform.setPosition(vector3(10.0f, -3.0f, 20.0f));
 	Snake.transform.setScale(vector3(0.08f, 0.08f, 0.08f));
-	Meshrenderer snakecomponent(SS.getMesh("Snake"), SS.getMaterials("mats1"));
+	/*Meshrenderer snakecomponent(SS.getMesh("Snake"), SS.getMaterials("mats1"));*/
+	Modelrenderer snakecomponent(SS.getModel("Snake"));
 	Snake.addComponent(&snakecomponent);
 	Cloud.addSubEntity(&Snake);
 
 	Entity Scout;
 	Scout.transform.setPosition(vector3(30.0f, 0.0f, 15.0f));
 	Scout.transform.setScale(vector3(0.07f, 0.07f, 0.07f));
-	Meshrenderer scoutcomponent(SS.getMesh("Scout"),SS.getMaterials("mats2"));
+	/*Meshrenderer scoutcomponent(SS.getMesh("Mario"),SS.getMaterials("mats2"));*/
+	Modelrenderer scoutcomponent(SS.getModel("Mario"));
 	Scout.addComponent(&scoutcomponent);
 	Snake.addSubEntity(&Scout);
 
