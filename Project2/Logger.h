@@ -5,7 +5,7 @@
 #include <time.h>
 class Logger
 {
-public: //todo: truncate filename, put function name in log, logging colors
+public: //todo: truncate filename, put function name in log, audio channel
 	/*enum Channels {
 		Memorymanager,
 		Rendering,
@@ -14,7 +14,7 @@ public: //todo: truncate filename, put function name in log, logging colors
 	static std::ofstream EngineLogFile; //configuration file?
 	static unsigned int engineverbosity;
 	/*static unsigned int enginechannel;*/
-	static unsigned int enginechannels[3];  //0 = all, 1 = memorymanager, // 2 = rendering, 3 = other/miscellaneous */
+	static unsigned int enginechannels[4];  //0 = all, 1 = memorymanager, // 2 = rendering, 3 = other/miscellaneous, 4 = audio
 	static bool showwarnings;
 	static bool clear;
 	static bool haltlogs;

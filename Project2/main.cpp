@@ -5,6 +5,7 @@
 #include "Window.h"
 #include "Input.h"
 #include "Rendering/Rendering.h"
+#include "Audio/Audiomanager.h"
 #include "Mathlibrary/Mathlibrary.h"
 #include "CustomMemoryAllocation/Memorymanager.h"
 #include "Resourcemanager.h"
@@ -260,6 +261,8 @@ int main(int argc, char* argv[]) {
 	Physicsmanager Physics;
 	Rendering Renderer;
 	Renderer.renderingStartup(Window);
+	Audiomanager Audio;
+	Audio.audioStartup();
 	Resourcemanager SS;
 	Camera Camera;
 	Camera.cameraStartup(fov, maxviewdistance, minviewdistance, arwidth, arheight);
@@ -316,6 +319,12 @@ int main(int argc, char* argv[]) {
 	//physics
 	SS.addBoundingSphere("bsphere1", Boundingsphere());
 	SS.addBoundingSphere("bsphere2", Boundingsphere());
+
+	//audio
+	Audioclip testclip;
+	testclip.loadAudio("testClip.wav");
+	testclip.playAudio();
+
 
 	//entites
 	Entity Quote; 

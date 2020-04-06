@@ -2,6 +2,7 @@
 Window::Window(int width = 800, int height = 600, std::string title = "Untitled", std::string icon = "Defaulticon.png", bool fullscreen = false, bool desktopfullscreen = true, bool borderless = false, bool vsync = false)
 {
 	SDL_Init(SDL_INIT_VIDEO);
+	SDL_Init(SDL_INIT_AUDIO);
 	SDL_Init(SDL_INIT_EVENTS);
 	windowwidth = width;
 	windowheight = height;
@@ -11,7 +12,7 @@ Window::Window(int width = 800, int height = 600, std::string title = "Untitled"
 	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE, 32); //bit data for 1 pixel
-	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
 	if (fullscreen == true) {

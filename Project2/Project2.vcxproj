@@ -132,6 +132,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Test\Game.h" />
+    <ClInclude Include="Audio\Audioclip.h" />
+    <ClInclude Include="Audio\Audiomanager.h" />
+    <ClInclude Include="Audio\Audio.h" />
     <ClInclude Include="Components\AABBcollider.h" />
     <ClInclude Include="Components\Boundingspherecollider.h" />
     <ClInclude Include="Components\Components.h" />
@@ -189,6 +192,8 @@
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Audio\Audioclip.cpp" />
+    <ClCompile Include="Audio\Audiomanager.cpp" />
     <ClCompile Include="Components\AABBcollider.cpp" />
     <ClCompile Include="Components\Boundingspherecollider.cpp" />
     <ClCompile Include="Components\Modelrenderer.cpp" />

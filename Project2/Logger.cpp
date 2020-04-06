@@ -81,6 +81,6 @@ void Logger::engineLog(std::string file, unsigned int line, std::string errormes
 std::ofstream Logger::EngineLogFile;
 unsigned int Logger::engineverbosity = 3;
 /*unsigned int Logger::enginechannel = 0;*/  //0 = all, 1 = memorymanager
-unsigned int Logger::enginechannels[3] = { 1, 1, 1 };
+unsigned int Logger::enginechannels[4] = { 1, 1, 1, 1 };
 bool Logger::showwarnings = true;
 bool Logger::clear = false;
