@@ -21,27 +21,11 @@ public:
 		matrix4f unprojected;
 		matrix4f camerarotationmatrix;
 		matrix4f cameratranslation;
-		/*matrix4f translationmatrix;
-		matrix4f rotationmatrix;
-		matrix4f quatrotationmatrix;
-		matrix4f scalematrix;*/
-		/*translationmatrix.makeTranslation(translation);
-		/*rotationmatrix.makeRotation(rotation);
-		quatrotationmatrix.makeQuatRotation(quatrotation.getForward(), quatrotation.getUp(), quatrotation.getRight());
-		scalematrix.makeScaling(scaling);
-		matrix4f transformationmatrix = translationmatrix * ( /*rotationamtrix quatrotationmatrix * scalematrix);*/
 		unprojected = newUnprojectedMatrix();
 		camerarotationmatrix.makeQuatRotation(camerarotation);
-		cameratranslation.makeTranslation(-(cameraposition.x), -(cameraposition.y), -(cameraposition.z));
+		cameratranslation.makeTranslation(cameraposition.negateVector());
 		projectionmatrix.makeProjection(fov, aspectratiowidth, aspectratioheight, minviewdistance, maxviewdistance);
-		/*	if (orthographicprojection == false) { */
-
 		return projectionmatrix * (camerarotationmatrix * (cameratranslation * unprojected));
-
-		/*	}
-			else {
-				return camerarotation * (cameratranslation * transformationmatrix);
-			}*/
 	}
 	matrix4f newUnprojectedMatrix() {
 		matrix4f translationmatrix;
@@ -49,7 +33,6 @@ public:
 		matrix4f quatrotationmatrix;
 		matrix4f scalematrix;
 		translationmatrix.makeTranslation(position);
-		/*rotationmatrix.makeRotation(rotation);*/
 		quatrotationmatrix.makeQuatRotation(rotation);
 		scalematrix.makeScaling(scaling);
 		return translationmatrix * (quatrotationmatrix * scalematrix);

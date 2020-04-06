@@ -61,8 +61,8 @@ Window::Window(int width = 800, int height = 600, std::string title = "Untitled"
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
 	/*glEnable(GL_FRAMEBUFFER_SRGB);*/
-	glEnable(GL_DEPTH_CLAMP);
-	/*glEnable(GL_BLEND);
+	/*glEnable(GL_DEPTH_CLAMP);
+	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);*/
 
 	glClearColor(0.0, 0.0, 0.0, 0.0);

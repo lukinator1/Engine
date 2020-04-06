@@ -259,7 +259,7 @@ void Model::loadModelObj(std::string file) //max size of vector?
 	{
 		engineLog(__FILE__, __LINE__, "Warning: Model failed to import. Returned an error model.", 2, 2, true);
 		meshes.push_back(std::pair<Mesh, std::string>(Mesh(), ""));
-		return; //todo: error model
+		return; //todo: error model, comments
 	}
 	if (meshdone && positionindices.size() != 0) {
 		for (int i = 0; i < positionindices.size(); i++) {	//mesh ready to load
@@ -377,11 +377,11 @@ void Model::calculateNormals(Vertex* vertices, unsigned int* indices, unsigned i
 		unsigned int i2 = indices[i + 2];
 		vector3 edge1 = vertices[i1].position.Subtract(vertices[i0].position);
 		vector3 edge2 = vertices[i2].position.Subtract(vertices[i0].position);
-		vector3 normal = (edge1.crossProduct(edge2)).Normalize();
+		vector3 normal = edge1.crossProduct(edge2);
 
-		vertices[i0].normal = vertices[i0].normal.add(normal);
-		vertices[i1].normal = vertices[i1].normal.add(normal);
-		vertices[i2].normal = vertices[i2].normal.add(normal);
+		vertices[i0].normal = normal;
+		vertices[i1].normal = normal;
+		vertices[i2].normal = normal;
 	}
 	normalizeNormalVertices(vertices, numvertices);
 }

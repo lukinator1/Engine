@@ -24,9 +24,7 @@ void Rendering::renderEntity(Entity &gameobject, Shader * &shade) {
 void Rendering::renderEntities(Entity &gameobject, Shader * &shade) {
 	gameobject.renderEntities(shade);
 }
-void Rendering::renderScene(Scene &currentscene)
-{
-
+void Rendering::renderScene(Scene &currentscene){
 	forwardambientshader.ambientlight = currentscene.ambientlight;  //todo: optimize with pointers
 	currentscene.root.renderEntities(&forwardambientshader);
 
@@ -39,35 +37,17 @@ void Rendering::renderScene(Scene &currentscene)
 		forwarddirectionalshader.setDirectionalLight(*currentscene.directionallights[i]);
 		currentscene.root.renderEntities(&forwarddirectionalshader);
 	}
-	/*forwarddirectionalshader.setDirectionalLight(dlight);
-	currentscene.root.renderEntity(&forwarddirectionalshader);
-	Directionallight temp = dlight;
-	dlight = dlighttwo;
-	dlighttwo = temp;
-	forwarddirectionalshader.setDirectionalLight(dlight);
-	currentscene.root.renderEntity(&forwarddirectionalshader);
-	temp = dlight;
-	dlight = dlighttwo;
-	dlighttwo = temp;*/
 
 	for (int i = 0; i < currentscene.pointlights.size(); i++) {
 		forwardpointshader.pointlight = (*currentscene.pointlights[i]);
 		currentscene.root.renderEntities(&forwardpointshader);
 	}
 
-	/*for (int i = 0; i < 1; i++) {
-		if (pointlights[i].intensity != 0.0f) {
-			forwardpointshader.pointlight = pointlights[i];
-			currentscene.root.renderEntity(&forwardpointshader);
-		}
-	}*/
 
 	for (int i = 0; i < currentscene.spotlights.size(); i++) {
 		forwardspotshader.spotlight = (*currentscene.spotlights[i]);
 		currentscene.root.renderEntities(&forwardspotshader);
 	}
-	/*forwardspotshader.spotlight = slight;
-	currentscene.root.renderEntity(&forwardspotshader);*/
 
 	glDepthFunc(GL_LESS);
 	glDepthMask(true);

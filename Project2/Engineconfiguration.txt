@@ -20,8 +20,8 @@ vsync = off
 
 Camera:
 fov = 70
-max viewdistance = 1000
-min viewdistance = 0.1
+max viewdistance = 300.0
+min viewdistance = 4.0
 
 Logger:
 channels = 0, 1, 1

@@ -101,11 +101,10 @@ public:
 		m[3][0] = 0;			 m[3][1] = 0;			m[3][2] = 0;			m[3][3] = 1;
 	}
 	void makeCamera(vector3 forward, vector3 up) { 
-		vector3 f = forward;	//normalize?
-		vector3 u = up;
+		vector3 f = forward.Normalize();	//normalize?
+		vector3 u = up.Normalize();
 		u = u.crossProduct(f);	//right vector
-		vector3 r = f.crossProduct(u);
-
+		vector3 r = (f.crossProduct(u)).Normalize();
 		
 		m[0][0] = u.x;			m[0][1] = u.y;			m[0][2] = u.z;			m[0][3] = 0;
 		m[1][0] = r.x;			m[1][1] = r.y;			m[1][2] = r.z;			m[1][3] = 0;
