@@ -171,9 +171,6 @@
     <ClInclude Include="Components\Boundingspherecollider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Shperecollider.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Components\AABBcollider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -318,9 +315,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Raytrace.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Shperecollider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Components\AABBcollider.cpp">

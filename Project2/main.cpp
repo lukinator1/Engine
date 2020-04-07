@@ -323,7 +323,8 @@ int main(int argc, char* argv[]) {
 	//audio
 	Audioclip testclip;
 	testclip.loadAudio("testClip.wav");
-	testclip.playAudio();
+	Audioclip testcliptwo;
+	testcliptwo.loadAudio("sample.wav");
 
 
 	//entites
@@ -334,6 +335,8 @@ int main(int argc, char* argv[]) {
 	Quote.transform.Rotate(0.0f, 0.0f, 50.0f);
 	Quote.transform.setRotation(0.0f, 0.0f, 0.0f, 0.0f);
 	Quote.addComponent(&quotemodel);
+
+
 
 	Meshrenderer otherspheremesh(SS.getMesh("Sphere"), SS.getMaterials("mats1"));
 	Entity Cloud;
@@ -581,6 +584,18 @@ int main(int argc, char* argv[]) {
 			/*bspherecloud.boundingsphere.acceleration += (Camera.camerarotation.getRight().divide(650.0f));
 			bspherecloud.boundingsphere.collidertransform.position.x += deltatime * 20;*/
 		}
+		if (Inputs.keyboardstate[Input::M].first == 1 && Inputs.keyboardstate[Input::M].second == 0) { 
+			testclip.playAudio();
+			}
+		if (Inputs.keyboardstate[Input::B].first == 1 && Inputs.keyboardstate[Input::L].second == 0) {
+			testclip.pauseAudio();
+		}
+		if (Inputs.keyboardstate[Input::N].first == 1 && Inputs.keyboardstate[Input::N].second == 0) {
+			testcliptwo.playAudio();
+		}
+		if (Inputs.keyboardstate[Input::V].first == 1 && Inputs.keyboardstate[Input::N].second == 0) {
+			testcliptwo.pauseAudio();
+		}
 		if (Inputs.keyboardstate[Input::Keyup].first == 1) {
 			bspherecloud.boundingsphere.velocity = (Camera.camerarotation.getForward().multiply(50.0f));
 		}
@@ -594,14 +609,6 @@ int main(int argc, char* argv[]) {
 			bspherecloud.boundingsphere.velocity += (Camera.camerarotation.getRight().multiply(13.0f));
 		}
 		if (Inputs.keyboardstate[Input::L].first == 1 && Inputs.keyboardstate[Input::L].second == 0) {  //flashlight 
-				/*if (flashlighton == true) {
-					flashlight.setIntensity(0.0f);
-					flashlighton = false;
-				}
-				else if (flashlighton == false) {
-					flashlight.setIntensity(3.0f);
-					flashlighton = true;
-				}*/
 			vector3 right(0, 0, 10.0f);
 			if (Inputs.keyboardstate[Input::Rightshift].first) {
 				if (right.z > 0) {

@@ -6,7 +6,7 @@ void audioCallback(void* userdata, Uint8*  stream, int len) {
 		return;
 	}
 	Uint32 length = (Uint32)len;
-	if (length >= aud->length) {
+	if (length > aud->length) {
 		length = aud->length;
 	}
 	
@@ -14,6 +14,18 @@ void audioCallback(void* userdata, Uint8*  stream, int len) {
 
 	aud->pos += length;
 	aud->length -= length;
+	if (aud->length == 0) {
+		aud->pos = aud->startpos;
+		aud->length = aud->totallength;
+	}
+}
+bool Audioclip::generateSamples(float * stream, Audiodata audiodata)
+{
+	return false;
+}
+void Audioclip::setPos(double pos)
+{
+	position = pos;
 }
 void Audioclip::loadAudio(std::string file) {
 	std::string audiofile = "Audio/Clips/" + file;
@@ -22,7 +34,9 @@ void Audioclip::loadAudio(std::string file) {
 		std::cout << "Audio file failed to load.";
 	}
 	audiodata.pos = wavstart;
+	audiodata.startpos = wavstart;
 	audiodata.length = wavlength;
+	audiodata.totallength = wavlength; 
 	wavspec.callback = audioCallback;
 	wavspec.userdata = &audiodata;
 	setDevice("");
@@ -46,26 +60,56 @@ void Audioclip::setDevice(std::string devicename) {
 		std::cout << "Device failed to load.";
 	}
 }
+void Audioclip::setAudioPosition() {
+
+}
+void Audioclip::setVolume() {
+
+}
+void Audioclip::setPitch() {
+
+}
+void Audioclip::loopAudio() {
+
+}
+void Audioclip::Pan() {
+
+}
 void Audioclip::freeAudio() {
 	SDL_CloseAudioDevice(deviceid);
 	SDL_FreeWAV(wavstart);
 }
 void Audioclip::playAudio() {
+	playing = true;
 	SDL_PauseAudioDevice(deviceid, 0);
-	while (audiodata.length > 0) {
-		SDL_Delay(100);
-	}
-	SDL_CloseAudioDevice(deviceid);
-	SDL_FreeWAV(wavstart);
+	/*SDL_CloseAudioDevice(deviceid);
+	SDL_FreeWAV(wavstart);*/
 }
-
+void Audioclip::pauseAudio() {
+	playing = false;
+	SDL_PauseAudioDevice(deviceid, 1);
+}
+void Audioclip::endAudio() {
+	
+}
 Audioclip::Audioclip(std::string audiofile)
 {
+	falloffmin = 18.0f;
+	SDL_zero(wavspec);
+	wavspec.freq = 44100;
+	wavspec.format = AUDIO_S16SYS;
+	wavspec.channels = 2;
+	wavspec.samples = 2048;
 	loadAudio(audiofile);
 }
-
 Audioclip::Audioclip()
 {
+	falloffmax = 60.0f;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+	SDL_zero(wavspec);
+	wavspec.freq = 44100;
+	wavspec.format = AUDIO_S16SYS;
+	wavspec.channels = 2;
+	wavspec.samples = 2048;
 }
 
 

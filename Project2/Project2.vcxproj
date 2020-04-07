@@ -93,7 +93,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>C:\Users\lukinator1\Desktop\engine\The Super Suspension System\Project2\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32.lib;glew32s.lib;SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2test.lib;freetype.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;glew32s.lib;SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2test.lib;freetype.lib;OpenGL32.lib;EFX-Util.lib;OpenAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -127,7 +127,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>C:\Users\lukinator1\Desktop\engine\The Super Suspension System\Project2\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32.lib;glew32s.lib;SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2test.lib;freetype.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;glew32s.lib;SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2test.lib;freetype.lib;OpenGL32.lib;EFX-Util.lib;OpenAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -174,7 +174,6 @@
     <ClInclude Include="Rendering\stb_image.h" />
     <ClInclude Include="Rendering\Texture.h" />
     <ClInclude Include="Rendering\Skybox.h" />
-    <ClInclude Include="Shperecollider.h" />
     <ClInclude Include="Textrenderer.h" />
     <ClInclude Include="Thegame.h" />
     <ClInclude Include="Mathlibrary\vector2.h" />
@@ -224,7 +223,6 @@
     <ClCompile Include="Rendering\Lighting\Spotlight.cpp" />
     <ClCompile Include="Rendering\Texture.cpp" />
     <ClCompile Include="Rendering\Skybox.cpp" />
-    <ClCompile Include="Shperecollider.cpp" />
     <ClCompile Include="Textrenderer.cpp" />
     <ClCompile Include="Thegame.cpp" />
     <ClCompile Include="Mathlibrary\vector2.cpp" />
