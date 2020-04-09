@@ -470,7 +470,7 @@ void Shader::updateUniforms(matrix4f worldmatrix, matrix4f projectedmatrix, vect
 		setUniform("transform", projectedmatrix);
 		setUniform("ambientintensity", ambientlight);
 		setUniform("color", material.getColor());
-		if (material.texture.textureid != -1) {
+		if (material.texture.textureactive) {
 			material.texture.useTexture();
 		}
 		else {
@@ -485,7 +485,7 @@ void Shader::updateUniforms(matrix4f worldmatrix, matrix4f projectedmatrix, vect
 		setUniform("specularintensity", material.specularintensity);
 		setUniform("specularexponent", material.specularexponent);
 		setUniform("cameraposition", position);
-		if (material.texture.textureid != -1) {
+		if (material.texture.textureactive) {
 			material.texture.useTexture();
 		}
 		else {
@@ -500,7 +500,7 @@ void Shader::updateUniforms(matrix4f worldmatrix, matrix4f projectedmatrix, vect
 		setUniform("specularintensity", material.specularintensity);
 		setUniform("specularexponent", material.specularexponent);
 		setUniform("cameraposition", position);
-		if (material.texture.textureid != -1) {
+		if (material.texture.textureactive) {
 			material.texture.useTexture();
 		}
 		else {
@@ -515,7 +515,7 @@ void Shader::updateUniforms(matrix4f worldmatrix, matrix4f projectedmatrix, vect
 		setUniform("specularintensity", material.specularintensity);
 		setUniform("specularexponent", material.specularexponent);
 		setUniform("cameraposition", position);
-		if (material.texture.textureid != -1) {
+		if (material.texture.textureactive) {
 			material.texture.useTexture();
 		}
 		else {

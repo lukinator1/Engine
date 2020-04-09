@@ -301,7 +301,7 @@ int main(int argc, char* argv[]) {
 
 	//meshes
 	SS.addMaterials("mats1", Materials("test.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f));
-	SS.addMaterials("mats2", Materials("container.jpg", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f));
+	SS.addMaterials("mats2", Materials("container.jpg", vector3(1.0f, 1.0f, 0.0f), 1.0f, 8.0f));
 
 	//castle
 	SS.addModel("Quote", Model("quote.obj"));
@@ -322,7 +322,7 @@ int main(int argc, char* argv[]) {
 	SS.addModel("Altar", Model("Altar.obj"));
 
 	//temple
-	SS.addModel("Anubistemple", Model("Anubis temple.obj"));
+	SS.addModel("Anubistemple", Model("floatingisland.obj"));
 	SS.addModel("Kirby", Model("Kirby.obj"));
 	SS.addModel("Scout", Model("Scout2.obj"));
 	/*SS.addModel("Bellecour", Model("bellecour.obj"));*/
@@ -460,8 +460,8 @@ int main(int argc, char* argv[]) {
 
 	Entity Ashebringer;
 	Modelrenderer ashebringermodel(SS.getModel("Ashebringer"));
-	Ashebringer.transform.setPosition(0.0f, 7.5f, 0.0f);
-	Altar.transform.setScale(vector3(1.0f, 1.0f, 1.0f));
+	Ashebringer.transform.setPosition(0.0f, 15.0f, 8.0f);
+	Altar.transform.setScale(vector3(0.5f, 0.5f, 0.5f));
 	Altar.addComponent(&altarmodel);
 	Altar.addSubEntity(&Ashebringer);
 
@@ -473,7 +473,7 @@ int main(int argc, char* argv[]) {
 	
 	Entity Kirby;
 	Modelrenderer kirbymodel(SS.getModel("Kirby"));
-	Kirby.transform.setPosition(vector3(0, 50.0f, 0));
+	Kirby.transform.setPosition(vector3(-12.0f, 40.0f, 3.0f));
 	Kirby.addComponent(&kirbymodel);
 	Anubistemple.addSubEntity(&Kirby);
 

@@ -160,9 +160,7 @@ void Texture::useCubeMapTexture() {
 	glBindTexture(GL_TEXTURE_CUBE_MAP, textureid);
 }
 void Texture::freeTexture() {
-	if (textureid != -1) {
 		glDeleteTextures(1, &textureid);
-	}
 }
 void Texture::loadErrorTexture() {
 	loadTexture("errortexture.png");

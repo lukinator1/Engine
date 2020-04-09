@@ -65,38 +65,65 @@ void Model::loadModelObj(std::string file) //max size of vector?
 							meshdone = true;
 							if (texturecoordinates.size() == 0 && normals.size() == 0) {
 								getline(streamer, buffer, ' ');				//x1
+								while (buffer == "" || buffer == "/t") {
+									getline(streamer, buffer, ' ');
+								}
 								positionindices.push_back(stoi(buffer) - 1);
 								getline(streamer, buffer, ' ');				//x2
+								while (buffer == "" || buffer == "/t") {
+									getline(streamer, buffer, ' ');
+								}
 								positionindices.push_back(stoi(buffer) - 1);
 								getline(streamer, buffer, ' ');				//x3
+								while (buffer == "" || buffer == "/t") {
+									getline(streamer, buffer, ' ');
+								}
 								positionindices.push_back(stoi(buffer) - 1);
 
 								if (getline(streamer, buffer, ' ')) {
-									while (buffer[0] == ' ' || buffer[0] == '/t') {
-										buffer.erase(buffer.begin());
+									while (buffer == "" || buffer == "/t") {
+										getline(streamer, buffer, ' ');
 									}
 									if (buffer.size() >= 1) {
 										positionindices.push_back(positionindices[positionindices.size() - 3]);
-										positionindices.push_back(positionindices[positionindices.size() - 3]);
+										positionindices.push_back(positionindices[positionindices.size() - 2]);
 										positionindices.push_back(stoi(buffer) - 1);
 									}
 								}
 							}
 							else if (texturecoordinates.size() > 0 && normals.size() == 0) {
 								getline(streamer, buffer, '/');				//x1
+								while (buffer == "" || buffer == "/t") {
+									getline(streamer, buffer, ' ');
+								}
 								positionindices.push_back(stoi(buffer) - 1);
 								getline(streamer, buffer, ' ');
+								while (buffer == "" || buffer == "/t") {
+									getline(streamer, buffer, ' ');
+								}
 								textureindices.push_back(stoi(buffer) - 1);
 
 								getline(streamer, buffer, '/');
+								while (buffer == "" || buffer == "/t") {
+									getline(streamer, buffer, ' ');
+								}
 								positionindices.push_back(stoi(buffer) - 1);
 								getline(streamer, buffer, ' ');
+								while (buffer == "" || buffer == "/t") {
+									getline(streamer, buffer, ' ');
+								}
 								textureindices.push_back(stoi(buffer) - 1);
 
 
 								getline(streamer, buffer, '/');			//x3
+								while (buffer == "" || buffer == "/t") {
+									getline(streamer, buffer, ' ');
+								}
 								positionindices.push_back(stoi(buffer) - 1);
 								getline(streamer, buffer, ' ');
+								while (buffer == "" || buffer == "/t") {
+									getline(streamer, buffer, ' ');
+								}
 								textureindices.push_back(stoi(buffer) - 1);
 
 								if (getline(streamer, buffer, '/')){
@@ -105,34 +132,55 @@ void Model::loadModelObj(std::string file) //max size of vector?
 									}
 									if (buffer.size() >= 1) {
 										positionindices.push_back(positionindices[positionindices.size() - 3]);
-										positionindices.push_back(positionindices[positionindices.size() - 3]);
+										positionindices.push_back(positionindices[positionindices.size() - 2]);
 										positionindices.push_back(stoi(buffer) - 1);
 
 										getline(streamer, buffer, ' ');
+										while (buffer == "" || buffer == "/t") {
+											getline(streamer, buffer, ' ');
+										}
 										textureindices.push_back(textureindices[textureindices.size() - 3]);
-										textureindices.push_back(textureindices[textureindices.size() - 3]);
+										textureindices.push_back(textureindices[textureindices.size() - 2]);
 										textureindices.push_back(stoi(buffer) - 1);
 									}
 								}
 							}
 							else if (texturecoordinates.size() == 0 && normals.size() > 0) {
 								getline(streamer, buffer, '/');				//x1
+								while (buffer == "" || buffer == "/t") {
+									getline(streamer, buffer, ' ');
+								}
 								positionindices.push_back(stoi(buffer) - 1);
 								getline(streamer, buffer, '/'); 
 								getline(streamer, buffer, ' ');
+								while (buffer == "" || buffer == "/t") {
+									getline(streamer, buffer, ' ');
+								}
 								normalindices.push_back(stoi(buffer) - 1);
 
 								getline(streamer, buffer, '/');
+								while (buffer == "" || buffer == "/t") {
+									getline(streamer, buffer, ' ');
+								}
 								positionindices.push_back(stoi(buffer) - 1);
 								getline(streamer, buffer, '/');
 								getline(streamer, buffer, ' ');
+								while (buffer == "" || buffer == "/t") {
+									getline(streamer, buffer, ' ');
+								}
 								normalindices.push_back(stoi(buffer) - 1);
 
 
 								getline(streamer, buffer, '/');			//x3
+								while (buffer == "" || buffer == "/t") {
+									getline(streamer, buffer, ' ');
+								}
 								positionindices.push_back(stoi(buffer) - 1);
 								getline(streamer, buffer, '/');
 								getline(streamer, buffer, ' ');
+								while (buffer == "" || buffer == "/t") {
+									getline(streamer, buffer, ' ');
+								}
 								normalindices.push_back(stoi(buffer) - 1);
 
 								if (getline(streamer, buffer, '/')) {
@@ -141,38 +189,68 @@ void Model::loadModelObj(std::string file) //max size of vector?
 									}
 									if (buffer.size() >= 1) {
 										positionindices.push_back(positionindices[positionindices.size() - 3]);
-										positionindices.push_back(positionindices[positionindices.size() - 3]);
+										positionindices.push_back(positionindices[positionindices.size() - 2]);
 										positionindices.push_back(stoi(buffer) - 1);
 
 										getline(streamer, buffer, '/');
 										getline(streamer, buffer, ' ');
+										while (buffer == "" || buffer == "/t") {
+											getline(streamer, buffer, ' ');
+										}
 										normalindices.push_back(normalindices[normalindices.size() - 3]);
-										normalindices.push_back(normalindices[normalindices.size() - 3]);
+										normalindices.push_back(normalindices[normalindices.size() - 2]);
 										normalindices.push_back(stoi(buffer) - 1);
 									}
 								}
 							}
 							else if (texturecoordinates.size() > 0 && normals.size() > 0) {
 								getline(streamer, buffer, '/');				//x1
+								while (buffer == "" || buffer == "/t") {
+									getline(streamer, buffer, ' ');
+								}
 								positionindices.push_back(stoi(buffer) - 1);
 								getline(streamer, buffer, '/');
+								while (buffer == "" || buffer == "/t") {
+									getline(streamer, buffer, ' ');
+								}
 								textureindices.push_back(stoi(buffer) - 1);
 								getline(streamer, buffer, ' ');
+								while (buffer == "" || buffer == "/t") {
+									getline(streamer, buffer, ' ');
+								}
 								normalindices.push_back(stoi(buffer) - 1);
 
 								getline(streamer, buffer, '/');
+								while (buffer == "" || buffer == "/t") {
+									getline(streamer, buffer, ' ');
+								}
 								positionindices.push_back(stoi(buffer) - 1);
 								getline(streamer, buffer, '/');
+								while (buffer == "" || buffer == "/t") {
+									getline(streamer, buffer, ' ');
+								}
 								textureindices.push_back(stoi(buffer) - 1);
 								getline(streamer, buffer, ' ');
+								while (buffer == "" || buffer == "/t") {
+									getline(streamer, buffer, ' ');
+								}
 								normalindices.push_back(stoi(buffer) - 1);
 
 
 								getline(streamer, buffer, '/');			//x3
+								while (buffer == "" || buffer == "/t") {
+									getline(streamer, buffer, ' ');
+								}
 								positionindices.push_back(stoi(buffer) - 1);
 								getline(streamer, buffer, '/');
+								while (buffer == "" || buffer == "/t") {
+									getline(streamer, buffer, ' ');
+								}
 								textureindices.push_back(stoi(buffer) - 1);
 								getline(streamer, buffer, ' ');
+								while (buffer == "" || buffer == "/t") {
+									getline(streamer, buffer, ' ');
+								}
 								normalindices.push_back(stoi(buffer) - 1);
 
 								if (getline(streamer, buffer, '/')) {
@@ -181,17 +259,20 @@ void Model::loadModelObj(std::string file) //max size of vector?
 									}
 									if (buffer.size() >= 1) {
 										positionindices.push_back(positionindices[positionindices.size() - 3]);
-										positionindices.push_back(positionindices[positionindices.size() - 3]);
+										positionindices.push_back(positionindices[positionindices.size() - 2]);
 										positionindices.push_back(stoi(buffer) - 1);
 
 										getline(streamer, buffer, '/');
 										textureindices.push_back(textureindices[textureindices.size() - 3]);
-										textureindices.push_back(textureindices[textureindices.size() - 3]);
+										textureindices.push_back(textureindices[textureindices.size() - 2]);
 										textureindices.push_back(stoi(buffer) - 1);
 
 										getline(streamer, buffer, ' ');
+										while (buffer == "" || buffer == "/t") {
+											getline(streamer, buffer, ' ');
+										}
 										normalindices.push_back(normalindices[normalindices.size() - 3]);
-										normalindices.push_back(normalindices[normalindices.size() - 3]);
+										normalindices.push_back(normalindices[normalindices.size() - 2]);
 										normalindices.push_back(stoi(buffer) - 1);
 									}
 								}
@@ -259,22 +340,29 @@ void Model::loadModelObj(std::string file) //max size of vector?
 							}
 						}
 
+						if (buffer[0] == 'm') { //todo: multiple libraries
+							if (buffer == "mtllib") {
+								getline(streamer, buffer);
+								loadMaterials(buffer);
+							}
+						}
+
 						else if (buffer[0] == 'v' && buffer.size() == 1) {   //vertices
 							getline(streamer, buffer, ' ');			//x
-							while (buffer == "") {				//eliminate whitespaces
+							while (buffer == "" || buffer == "/t") {				//eliminate whitespaces
 								getline(streamer, buffer, ' ');
 							}
 							positioncoordinates.push_back(vector3(stof(buffer), 0.0f, 0.0f));
 
 							getline(streamer, buffer, ' ');			//y
-							while (buffer == "") {
+							while (buffer == "" || buffer == "/t") {
 								getline(streamer, buffer, ' ');
 							}
 							positioncoordinates.back().y = stof(buffer);
 
 
 							getline(streamer, buffer, ' ');			//z
-							while (buffer == "") {
+							while (buffer == "" || buffer == "/t") {
 								getline(streamer, buffer, ' ');
 							}
 							positioncoordinates.back().z = stof(buffer);
@@ -283,33 +371,33 @@ void Model::loadModelObj(std::string file) //max size of vector?
 						else if (buffer[0] == 'v' && buffer.size() == 2) {   //texture coordinates
 							if (buffer[1] == 't') {
 								getline(streamer, buffer, ' ');			//u
-								while (buffer == "") {				//eliminate whitespaces
+								while (buffer == "" || buffer == "/t") {				//eliminate whitespaces
 									getline(streamer, buffer, ' ');
 								}
 								texturecoordinates.push_back(vector2(stof(buffer), 0.0f));
 
 								getline(streamer, buffer, ' ');			//v
-								while (buffer == "") {
+								while (buffer == "" || buffer == "/t") {
 									getline(streamer, buffer, ' ');
 								}
 								texturecoordinates.back().y = -stof(buffer);
 							}
 							if (buffer[1] == 'n') {
 								getline(streamer, buffer, ' ');			//x
-								while (buffer == "") {				//eliminate whitespaces
+								while (buffer == "" || buffer == "/t") {				//eliminate whitespaces
 									getline(streamer, buffer, ' ');
 								}
 								normals.push_back(vector3(stof(buffer), 0.0f, 0.0f));
 
 								getline(streamer, buffer, ' ');			//y
-								while (buffer == "") {
+								while (buffer == "" || buffer == "/t") {
 									getline(streamer, buffer, ' ');
 								}
 								normals.back().y = stof(buffer);
 
 
 								getline(streamer, buffer, ' ');			//z
-								while (buffer == "") {
+								while (buffer == "" || buffer == "/t") {
 									getline(streamer, buffer, ' ');
 								}
 								normals.back().z = stof(buffer);
@@ -412,8 +500,7 @@ void Model::loadMaterials(std::string filename) {
 								getline(streamer, buffer);
 								matname = buffer;
 								materials.emplace(matname, Materials());
-								materials.at(matname).freeMaterial();
-								materials.at(matname).texture.textureid = -1;
+								materials.at(matname).texture.textureactive = false;
 							}
 						}
 
