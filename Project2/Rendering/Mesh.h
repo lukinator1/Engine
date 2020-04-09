@@ -14,13 +14,13 @@ public:
 	GLuint vao;
 	void normalizeNormalVertices(Vertex * vertices, int numvertices);
 	void freeMesh();
-	void calculateNormals(Vertex* vertices, unsigned int* indices, unsigned int numvertices, unsigned int numindices);
-	Mesh(Vertex* vertices, unsigned int * indices, unsigned int numvertices, unsigned int numindices);
+	void calculateNormals(Vertex* vertices, int* indices, int numvertices, int numindices);
+	Mesh(Vertex* vertices, int * indices, int numvertices, int numindices);
 	Mesh();
 	Mesh(std::string file);
 	~Mesh();
-	void makeMesh(Vertex* vertices, unsigned int *indices, unsigned int numvertices, unsigned int numindices);
-	void makeSkyboxMesh(float* vertices, unsigned int numvertices);
+	void makeMesh(Vertex* vertices, int *indices, int numvertices, int numindices);
+	void makeSkyboxMesh(float* vertices, int numvertices);
 	void drawMesh();
 	void drawNoIndicesMesh();
 	void loadMeshObj(std::string file);

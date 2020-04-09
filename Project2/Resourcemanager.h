@@ -4,6 +4,7 @@
 #include "Rendering/Lighting/Lighting.h" 
 #include "Physics/Boundingsphere.h"
 #include "Entity.h"
+#include "Audio/Audioclip.h"
 class Resourcemanager //todo: error when can't find in map
 {
 	std::map<std::string, Model> models;
@@ -14,6 +15,7 @@ class Resourcemanager //todo: error when can't find in map
 	std::map<std::string, Pointlight> pointlights;
 	std::map<std::string, Spotlight> spotlights;
 	std::map<std::string, Boundingsphere> boundingspheres;
+	std::map<std::string, Audioclip> audioclips;
 	std::map<std::string, Entity> entities;
 public:
 	void addEntity(Entity &entity, std::string id) {

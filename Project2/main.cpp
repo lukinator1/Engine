@@ -31,11 +31,15 @@ bool stepframe = false;
 bool framekeyheld = false;
 int stepframekey = 225;
 int exitframekey = 41;
+Scene *currentscene;
 std::vector<Physicsobject *> colliders;
-
 float fieldDepth = 10.0f;
 float fieldWidth = 10.0f;
-
+void swapScene(Scene &scene) {
+	currentscene->closeScene();
+	currentscene = &scene;
+	currentscene->initScene();
+}
 void endGame() {
 	gameisrunning = false;
 }
@@ -272,17 +276,12 @@ int main(int argc, char* argv[]) {
 	Console Console;
 	Console.consoleStartup(log, MemoryManager, Window, Inputs, Renderer, Camera);
 
-	/*Materials material("test.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f);		// from basicshader change to render manager startup?
-	Materials othermat("container.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f);
-	Mesh quotemodel("quote.obj");
-	Mesh cloudmodel("Cloud.obj");
-	Mesh snakemodel("snake.obj");
-	Mesh scoutmodel("scout.obj");
-	Mesh rinmodel("cube.obj");*/
-
 	//test scene
 	Scene sceneone;		
 	sceneone.setSkybox("right.jpg", "left.jpg", "top.jpg", "bottom.jpg", "front.jpg", "back.jpg");
+	Scene scenetwo;
+	Scene scenethree;
+
 
 	//lights
 	sceneone.setAmbientLight(vector3(0.3f, 0.3f, 0.3f));
@@ -303,6 +302,8 @@ int main(int argc, char* argv[]) {
 	//meshes
 	SS.addMaterials("mats1", Materials("test.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f));
 	SS.addMaterials("mats2", Materials("container.jpg", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f));
+
+	//castle
 	SS.addModel("Quote", Model("quote.obj"));
 	SS.addModel("Cloud", Model("Cloud.obj"));
 	SS.addModel("Snake", Model("snake.obj"));
@@ -310,11 +311,21 @@ int main(int argc, char* argv[]) {
 	SS.addMesh("Cube", Mesh("cube.obj"));
 	SS.addMesh("Sphere", Mesh("sphere.obj"));
 	SS.addModel("Gumi", Model("gumi.obj"));
-	SS.addModel("2B", Model("cube.obj"));
-	SS.addModel("Altar", Model("cube.obj"));
+	SS.addModel("Cube", Model("cube.obj"));
 	SS.addModel("cardboardbox", Model("CardBoardBox.obj"));
 	SS.addModel("Castle", Model("Peachs Castle 1f.obj"));
+	
+	//valley
+	SS.addModel("Valleyoftrials", Model("Valleyoftrials.obj"));
+	SS.addModel("2B", Model("Nier2b.obj"));
+	SS.addModel("Ashebringer", Model("Ashebringer.obj"));
+	SS.addModel("Altar", Model("Altar.obj"));
 
+	//temple
+	SS.addModel("Anubistemple", Model("Anubis temple.obj"));
+	SS.addModel("Kirby", Model("Kirby.obj"));
+	SS.addModel("Scout", Model("Scout2.obj"));
+	/*SS.addModel("Bellecour", Model("bellecour.obj"));*/
 
 	//physics
 	SS.addBoundingSphere("bsphere1", Boundingsphere());
@@ -325,9 +336,20 @@ int main(int argc, char* argv[]) {
 	testclip.loadAudio("testClip.wav");
 	Audioclip testcliptwo;
 	testcliptwo.loadAudio("sample.wav");
+	Audioclip castlewalls;
+	castlewalls.loadAudio("Inside The Castle Walls by Smart Gaming _ Free Listening on SoundCloud - Google Chrome 2020-04-07 16-48-44_Trim.wav");
+	Audioclip yoshis;
+	yoshis.loadAudio("Yoshi's Athletic Theme.wav");
+	Audioclip wii;
+	wii.loadAudio("Wii Shop Channel.wav");
 
+	sceneone.setCurrentSong(castlewalls);
+	scenetwo.setCurrentSong(yoshis);
+	scenethree.setCurrentSong(wii);
 
 	//entites
+
+	//sceneone
 	Entity Quote; 
 	Quote.transform.setPosition(vector3(10.0f, 17.5f, 12.0f));
 	/*Meshrenderer component(SS.getMesh("Quote"), SS.getMaterials("mats1"));*/
@@ -336,7 +358,12 @@ int main(int argc, char* argv[]) {
 	Quote.transform.setRotation(0.0f, 0.0f, 0.0f, 0.0f);
 	Quote.addComponent(&quotemodel);
 
-
+	Entity Castle;
+	Modelrenderer castlemodel(SS.getModel("Castle"));
+	Castle.transform.setPosition(-15.0f, 3.0f, 6.0f);
+	Castle.transform.setScale(vector3(40.0f, 40.0f, 40.0f));
+	Castle.addComponent(&castlemodel);
+	Quote.addSubEntity(&Castle);
 
 	Meshrenderer otherspheremesh(SS.getMesh("Sphere"), SS.getMaterials("mats1"));
 	Entity Cloud;
@@ -351,32 +378,30 @@ int main(int argc, char* argv[]) {
 	Cloud.addComponent(&cloudmodel);
 	/*Cloud.addComponent(&otherspheremesh);*/
 	Cloud.addComponent(&bspherecloud);
-	Quote.addSubEntity(&Cloud);
+	/*Quote.addSubEntity(&Cloud);*/
 
-	Entity Snake;
+	/*Entity Snake;
 	Snake.transform.setPosition(vector3(10.0f, -3.0f, 20.0f));
 	Snake.transform.setScale(vector3(0.08f, 0.08f, 0.08f));
-	/*Meshrenderer snakecomponent(SS.getMesh("Snake"), SS.getMaterials("mats1"));*/
 	Modelrenderer snakecomponent(SS.getModel("Snake"));
 	Snake.addComponent(&snakecomponent);
-	/*Cloud.addSubEntity(&Snake);*/
+	Cloud.addSubEntity(&Snake);*/
 
-	Entity Scout;
-	Scout.transform.setPosition(vector3(30.0f, 0.0f, 15.0f));
-	Scout.transform.setScale(vector3(0.07f, 0.07f, 0.07f));
-	/*Meshrenderer scoutcomponent(SS.getMesh("Mario"),SS.getMaterials("mats2"));*/
+	Entity Mario;
+	Mario.transform.setPosition(vector3(30.0f, 0.0f, 15.0f));
+	Mario.transform.setScale(vector3(0.07f, 0.07f, 0.07f));
 	Modelrenderer scoutcomponent(SS.getModel("Mario"));
-	Scout.addComponent(&scoutcomponent);
-	Snake.addSubEntity(&Scout);
+	Mario.addComponent(&scoutcomponent);
+	/*Castle.addSubEntity(&Mario);*/
 
-	Entity Rintezuka;
-	Rintezuka.transform.setPosition(vector3(15.0f, 0.0f, 15.0f));
-	Rintezuka.transform.setScale(vector3(0.07f, 0.07f, 0.07f));
-	Meshrenderer rincomponent(SS.getMesh("Cube"), SS.getMaterials("mats1"));
-	Rintezuka.addComponent(&rincomponent);
-	/*Scout.addSubEntity(&Rintezuka);*/
+	Entity Gumi;
+	Modelrenderer gumimodel(SS.getModel("Gumi"));
+	Gumi.transform.setPosition(-15.0f, 3.0f, 15.0f);
+	Gumi.transform.setScale(vector3(0.75f, 0.75f, 0.75f));
+	Gumi.addComponent(&gumimodel);
+	Quote.addSubEntity(&Gumi);
 
-	Entity sphereone;
+	Entity sphereone;  //physics tests
 	sphereone.transform.setPosition(7.5f, 40.0f, -14.0f);
 	sphereone.transform.setScale(vector3(2.0f, 2.0f, 2.0f));
 	Meshrenderer spheremesh(SS.getMesh("Sphere"), SS.getMaterials("mats2"));
@@ -386,7 +411,6 @@ int main(int argc, char* argv[]) {
 	sphereonecollider.boundingsphere.setRotation(sphereone.transform.getRotation());
 	sphereonecollider.boundingsphere.radius = 2.0f;
 	sphereonecollider.boundingsphere.mass = 7.0f;
-	/*sphereonecollider.boundingsphere.recalculateMOI();*/
 	sphereone.addComponent(&sphereonecollider);
 	Quote.addSubEntity(&sphereone);
 
@@ -402,27 +426,6 @@ int main(int argc, char* argv[]) {
 	spheretwo.addComponent(&spheretwocollider);
 	sphereone.addSubEntity(&spheretwo);
 
-	Entity Gumi;
-	Modelrenderer gumimodel(SS.getModel("Gumi"));
-	Gumi.transform.setPosition(-15.0f, 3.0f, 15.0f);
-	Gumi.transform.setScale(vector3(0.75f, 0.75f, 0.75f));
-	Gumi.addComponent(&gumimodel);
-	Quote.addSubEntity(&Gumi);
-
-	Entity twoB;
-	Modelrenderer twoBmodel(SS.getModel("2B"));
-	twoB.transform.setPosition(20.0f, 3.0f, 6.0f);
-	twoB.transform.setScale(vector3(1.0f, 1.0f, 1.0f));
-	twoB.addComponent(&twoBmodel);
-	Quote.addSubEntity(&twoB);
-
-	Entity Altar;
-	Modelrenderer altarmodel(SS.getModel("Altar"));
-	twoB.transform.setPosition(-15.0f, 3.0f, -7.0f);
-	twoB.transform.setScale(vector3(1.0f, 1.0f, 1.0f));
-	twoB.addComponent(&altarmodel);
-	Quote.addSubEntity(&Altar);
-
 	Entity box;
 	Meshrenderer boxmesh(SS.getMesh("Cube"), SS.getMaterials("mats2"));
 	box.transform.setPosition(0, 3.0f, 17.0f);
@@ -435,26 +438,68 @@ int main(int argc, char* argv[]) {
 	boxbox.boundingbox.setLength(10.0f);
 	boxbox.boundingbox.setWidth(10.0f);
 
-	Entity Castle;
-	Modelrenderer castlemodel(SS.getModel("Castle"));
-	/*Meshrenderer castlemesh(SS.getMesh("Castle"), SS.getMaterials("mats2"));*/
-	Castle.transform.setPosition(-15.0f, 3.0f, 6.0f);
-	Castle.transform.setScale(vector3(40.0f, 40.0f, 40.0f));
-	Castle.addComponent(&castlemodel);
-	/*Castle.addComponent(&castlemesh);*/
-	Scout.addSubEntity(&Castle);
+
+	//scene two
+	Entity valley;
+	Modelrenderer valleymodel(SS.getModel("Valleyoftrials"));
+	valley.addComponent(&valleymodel);
+
+	Entity twoB;
+	Modelrenderer twoBmodel(SS.getModel("2B"));
+	twoB.transform.setPosition(20.0f, 3.0f, 6.0f);
+	twoB.transform.setScale(vector3(1.0f, 1.0f, 1.0f));
+	twoB.addComponent(&twoBmodel);
+	valley.addSubEntity(&twoB);
+
+	Entity Altar;
+	Modelrenderer altarmodel(SS.getModel("Altar"));
+	Altar.transform.setPosition(-15.0f, 3.0f, -7.0f);
+	Altar.transform.setScale(vector3(1.0f, 1.0f, 1.0f));
+	Altar.addComponent(&altarmodel);
+	valley.addSubEntity(&Altar);
+
+	Entity Ashebringer;
+	Modelrenderer ashebringermodel(SS.getModel("Ashebringer"));
+	Ashebringer.transform.setPosition(0.0f, 7.5f, 0.0f);
+	Altar.transform.setScale(vector3(1.0f, 1.0f, 1.0f));
+	Altar.addComponent(&altarmodel);
+	Altar.addSubEntity(&Ashebringer);
+
+	
+	//scene three
+	Entity Anubistemple;
+	Modelrenderer anubistemplemodel(SS.getModel("Anubistemple"));
+	Anubistemple.addComponent(&anubistemplemodel);
+	
+	Entity Kirby;
+	Modelrenderer kirbymodel(SS.getModel("Kirby"));
+	Kirby.transform.setPosition(vector3(0, 50.0f, 0));
+	Kirby.addComponent(&kirbymodel);
+	Anubistemple.addSubEntity(&Kirby);
+
+	Entity Scout;
+	Modelrenderer scoutmodel(SS.getModel("Scout"));
+	Scout.transform.setPosition(vector3(-12.0f, 40, 0));
+	Scout.addComponent(&scoutmodel);
+	Kirby.addSubEntity(&Scout);
+
+	/*Entity bellecour;
+	Modelrenderer bellecourmodel(SS.getModel("Bellecour"));
+	bellecour.transform.setPosition(vector3(9.0f, 40.0f, 0));
+	bellecour.addComponent(&bellecourmodel);
+	Scout.addSubEntity(&bellecour);*/
 
 	Entity field;
 	Vertex vertices[] = { Vertex(vector3(-fieldWidth, 0.0f, -fieldDepth), vector2(0.0f, 0.0f)),
 						Vertex(vector3(-fieldWidth, 0.0f, fieldDepth * 3), vector2(0.0f, 1.0f)),
 						Vertex(vector3(fieldWidth * 3, 0.0f, -fieldDepth), vector2(1.0f, 0.0f)),
 						Vertex(vector3(fieldWidth * 3, 0.0f, fieldDepth * 3), vector2(1.0f, 1.0f)) };
-	unsigned int indices[] = { 0, 1, 2,
+	int indices[] = { 0, 1, 2,
 					  2, 1, 3 };
-	for (unsigned int i = 0; i < (sizeof(indices) / sizeof(indices[0])); i += 3) {
-		unsigned int i0 = indices[i];
-		unsigned int i1 = indices[i + 1];
-		unsigned int i2 = indices[i + 2];
+	for (int i = 0; i < (sizeof(indices) / sizeof(indices[0])); i += 3) {
+		int i0 = indices[i];
+		int i1 = indices[i + 1];
+		int i2 = indices[i + 2];
 		vector3 edge1 = vertices[i1].position.Subtract(vertices[i0].position);
 		vector3 edge2 = vertices[i2].position.Subtract(vertices[i0].position);
 		vector3 normal = (edge1.crossProduct(edge2)).Normalize();
@@ -478,27 +523,24 @@ int main(int argc, char* argv[]) {
 	fieldbox.boundingbox.setWidth(10.0f);
 	fieldbox.boundingbox.setMass(80.0f);
 	fieldbox.boundingbox.recalculateMOI();
-	Cloud.addSubEntity(&field);
+	Quote.addSubEntity(&field);
 
 	sceneone.setRoot(Quote);
-	sceneone.initScene();
-	
-	//shaders
-	/*Shader shaderit("phong");
-	shaderit.setAmbientLight(vector3(0.5f, 0.5f, 0.5f));
-	shaderit.directionallight = Directionallight(vector3(1.0f, 1.0f, 1.0f), vector3(1.0f, 1.0f, 1.0f), 0.1f);*/
+	scenetwo.setRoot(valley);
+	scenethree.setRoot(Anubistemple);
 
-	//lights
-	Spotlight flashlight(vector3(0.0f, 1.0f, 1.0f), vector3(0.0f, 0.0f, 0.0f), vector3(0.0f, 0.0f, 0.0f), 30.0f, 0.7f, 0.8f, 0.0f, 0.1f);
+	currentscene = &sceneone;
+	sceneone.initScene();
+	/*Spotlight flashlight(vector3(0.0f, 1.0f, 1.0f), vector3(0.0f, 0.0f, 0.0f), vector3(0.0f, 0.0f, 0.0f), 30.0f, 0.7f, 0.8f, 0.0f, 0.1f);
 	Pointlight *plights = new Pointlight[6];
 	plights[0] = Pointlight(vector3(1.0f, 0.5f, 0.0f), vector3(-2.0f, 0.0f, 5.0f), 4.0f, 0.8f, 0.0f, 1.0f);
 	plights[1] = Pointlight(vector3(0.0f, 0.5f, 1.0f), vector3(2.0f, 0.0f, 7.0f), 4.0f, 2.0f, 0.0f, 1.0f);
-	/*shaderit.getPointLights()[0] = &plights[0];
+	shaderit.getPointLights()[0] = &plights[0];
 	shaderit.getPointLights()[1] = &plights[1];
 	shaderit.pointlight = plights[1];
 	Spotlight *slights = new Spotlight[1];
 	slights[0] = Spotlight(vector3(0.6f, 0.0f, 0.0f), vector3(-2.0f, 0.0f, 5.0f), vector3(1.0f, 1.0f, 1.0f), 30.0f, 0.7f, 0.8f, 0.0f, 0.1f);
-	/*shaderit.getSpotLights()[0] = &flashlight;*/
+	shaderit.getSpotLights()[0] = &flashlight;*/
 
 	//time calculation
 	int prevtimecounter = 0;
@@ -509,8 +551,6 @@ int main(int argc, char* argv[]) {
 	std::chrono::duration<float> chronodelta = std::chrono::duration<float>(deltatime);
 	
 	//engine tools
-	Scene *currentscene; 
-	currentscene = &sceneone;
 	int frames = 0;
 	double framecounter = 0;
 	int fps = -1;
@@ -565,37 +605,34 @@ int main(int argc, char* argv[]) {
 		bspherecloud.boundingsphere.velocity = vector3(0, 0, 0);
 			if (Inputs.keyboardstate[Input::W].first == 1) {
 			Camera.moveCamera(Camera.camerarotation.getForward(), deltatime * 20);	
-			/*bspherecloud.boundingsphere.acceleration += (Camera.camerarotation.getForward().divide(650.0f));*/
-			/*bspherecloud.boundingsphere.collidertransform.position.z = Camera.cameraposition.z + 7.5;
-			bspherecloud.boundingsphere.collidertransform.position.y = Camera.cameraposition.y - 5.5;*/
 			}
 		if (Inputs.keyboardstate[Input::A].first == 1) {
 			Camera.moveCamera(Camera.camerarotation.getLeft(), deltatime * 20);
-			/*bspherecloud.boundingsphere.acceleration += (Camera.camerarotation.getLeft().divide(650.0f));
-			bspherecloud.boundingsphere.collidertransform.position.x -= deltatime * 20;*/
 		}
 		if (Inputs.keyboardstate[Input::S].first == 1) {
 			Camera.moveCamera(Camera.camerarotation.getBack(), (deltatime * 20));
-			/*bspherecloud.boundingsphere.acceleration += (Camera.camerarotation.getBack().divide(650.0f));
-			bspherecloud.boundingsphere.collidertransform.position.z -= deltatime * 20;*/
 		}
 		if (Inputs.keyboardstate[Input::D].first == 1) {
 			Camera.moveCamera(Camera.camerarotation.getRight(), (deltatime * 20));
-			/*bspherecloud.boundingsphere.acceleration += (Camera.camerarotation.getRight().divide(650.0f));
-			bspherecloud.boundingsphere.collidertransform.position.x += deltatime * 20;*/
 		}
 		if (Inputs.keyboardstate[Input::M].first == 1 && Inputs.keyboardstate[Input::M].second == 0) { 
 			testclip.playAudio();
 			}
-		if (Inputs.keyboardstate[Input::B].first == 1 && Inputs.keyboardstate[Input::L].second == 0) {
-			testclip.pauseAudio();
+		if (Inputs.keyboardstate[Input::B].first == 1 && Inputs.keyboardstate[Input::B].second == 0) {
+			testclip.endAudio();
 		}
 		if (Inputs.keyboardstate[Input::N].first == 1 && Inputs.keyboardstate[Input::N].second == 0) {
 			testcliptwo.playAudio();
 		}
-		if (Inputs.keyboardstate[Input::V].first == 1 && Inputs.keyboardstate[Input::N].second == 0) {
+		if (Inputs.keyboardstate[Input::V].first == 1 && Inputs.keyboardstate[Input::V].second == 0) {
 			testcliptwo.pauseAudio();
 		}
+		/*if (Inputs.keyboardstate[Input::C].first == 1 && Inputs.keyboardstate[Input::C].second == 0) {
+			sceneone.currentsong.endAudio();
+		}
+		if (Inputs.keyboardstate[Input::X].first == 1 && Inputs.keyboardstate[Input::X].second == 0) {
+			scenetwo.currentsong.endAudio();
+		}*/
 		if (Inputs.keyboardstate[Input::Keyup].first == 1) {
 			bspherecloud.boundingsphere.velocity = (Camera.camerarotation.getForward().multiply(50.0f));
 		}
@@ -672,6 +709,15 @@ int main(int argc, char* argv[]) {
 				Console.leaveConsole();
 			}
 		}
+		if (Inputs.keyboardstate[Input::One].first == 1 && Inputs.keyboardstate[Input::One].second == 0) {
+			swapScene(sceneone);
+		}
+		if (Inputs.keyboardstate[Input::Two].first == 1 && Inputs.keyboardstate[Input::Two].second == 0) {
+			swapScene(scenetwo);
+		}
+		if (Inputs.keyboardstate[Input::Three].first == 1 && Inputs.keyboardstate[Input::Three].second == 0) {
+			swapScene(scenethree);
+		}
 		if (Window.closeRequested() == true) {
 			endGame();
 		}
@@ -683,14 +729,15 @@ int main(int argc, char* argv[]) {
 		SS.getPointLight("orangeplight").setPosition(vector3(3.0f, 0.0f, 8.0 * (float)(sin(unitest) + 1.0f / 2.0f) + 10.0f));
 		SS.getPointLight("blueplight").setPosition(vector3(7.0f, 0.0f, 8.0 * (float)(cos(unitest) + 1.0f / 2.0f) + 10.0f));
 		unitest += deltatime;
-		flashlight.setPosition(Camera.getCameraposition());
+		/*flashlight.setPosition(Camera.getCameraposition());
 		flashlight.setDirection(Camera.camerarotation.getForward());
-		/*shaderit.useShader();
+		shaderit.useShader();
 		shaderit.
 		(transform.newUnprojectedMatrix(), transform.newTransformationMatrix(), transform.position, fieldmaterials);
 		meshme.drawMesh();*/
 		Physics.Update(*currentscene);
 		Renderer.renderScene(*currentscene);
+		Audio.audioUpdate(*currentscene);
 		/*text.renderComponent(transform, shaderit);*/     //interesting effect
 		Console.consoleUpdate(*currentscene, gameisrunning, framebyframe, stepframekey, exitframekey, framelock, fpscounter, deltatime, dtime, deltatimeweight);
 		frames++;

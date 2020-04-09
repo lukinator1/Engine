@@ -11,7 +11,7 @@ public:
 	std::unordered_map <std::string, Materials> materials;
 	void normalizeNormalVertices(Vertex * vertices, int numvertices);
 	void freeModel();
-	void calculateNormals(Vertex* vertices, unsigned int* indices, unsigned int numvertices, unsigned int numindices);
+	void calculateNormals(Vertex* vertices, int* indices, int numvertices, int numindices);
 	/*Mesh(Vertex* vertices, unsigned int * indices, unsigned int numvertices, unsigned int numindices);*/
 	Model(std::string file);
 	/*void makeMesh(Vertex* vertices, unsigned int *indices, unsigned int numvertices, unsigned int numindices);*/

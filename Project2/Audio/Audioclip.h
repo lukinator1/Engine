@@ -4,15 +4,18 @@
 #include "openAL/al.h"
 #include "openAL/alc.h"
 #include <string>
+class Audioclip;
 struct Audiodata {
 	Uint8* pos;
 	Uint8* startpos;
 	Uint32 length;
 	Uint32 totallength;
+	Audioclip *parentclip;
 };
 class Audioclip : public Logger
 {
 public:
+
 	Audiodata audiodata;
 	SDL_AudioSpec wavspec;
 	SDL_AudioDeviceID deviceid;
@@ -22,6 +25,7 @@ public:
 	float falloffmin;
 	float falloffmax;
 
+	bool loopaudio = true;
 
 	//sample info
 	double volume;

@@ -9,7 +9,7 @@ void audioCallback(void* userdata, Uint8*  stream, int len) {
 	if (length > aud->length) {
 		length = aud->length;
 	}
-	
+
 	SDL_memcpy(stream, aud->pos, length);
 
 	aud->pos += length;
@@ -17,6 +17,9 @@ void audioCallback(void* userdata, Uint8*  stream, int len) {
 	if (aud->length == 0) {
 		aud->pos = aud->startpos;
 		aud->length = aud->totallength;
+		if (aud->parentclip->loopaudio == false) {
+			aud->parentclip->pauseAudio();
+		}
 	}
 }
 bool Audioclip::generateSamples(float * stream, Audiodata audiodata)
@@ -81,7 +84,9 @@ void Audioclip::freeAudio() {
 }
 void Audioclip::playAudio() {
 	playing = true;
+	SDL_LockAudioDevice(deviceid);
 	SDL_PauseAudioDevice(deviceid, 0);
+	SDL_UnlockAudioDevice(deviceid);
 	/*SDL_CloseAudioDevice(deviceid);
 	SDL_FreeWAV(wavstart);*/
 }
@@ -90,7 +95,12 @@ void Audioclip::pauseAudio() {
 	SDL_PauseAudioDevice(deviceid, 1);
 }
 void Audioclip::endAudio() {
-	
+	playing = false;
+	SDL_LockAudioDevice(deviceid);
+	audiodata.length = audiodata.totallength;
+	audiodata.pos = audiodata.startpos;
+	SDL_UnlockAudioDevice(deviceid);
+	SDL_PauseAudioDevice(deviceid, 1);
 }
 Audioclip::Audioclip(std::string audiofile)
 {
@@ -100,6 +110,7 @@ Audioclip::Audioclip(std::string audiofile)
 	wavspec.format = AUDIO_S16SYS;
 	wavspec.channels = 2;
 	wavspec.samples = 2048;
+	audiodata.parentclip = this;
 	loadAudio(audiofile);
 }
 Audioclip::Audioclip()
@@ -110,6 +121,7 @@ Audioclip::Audioclip()
 	wavspec.format = AUDIO_S16SYS;
 	wavspec.channels = 2;
 	wavspec.samples = 2048;
+	audiodata.parentclip = this;
 }
 
 

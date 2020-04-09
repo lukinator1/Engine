@@ -2,6 +2,7 @@
 #include "Entity.h"
 #include "Rendering/Skybox.h"
 #include "Rendering/Lighting/Lighting.h"
+#include "Audio/Audioclip.h"
 #include <fstream>
 #include <vector>
 #include <map>
@@ -14,6 +15,7 @@ public:
 	std::vector<Directionallight *> directionallights; 
 	std::vector<Pointlight *> pointlights;
 	std::vector<Spotlight *> spotlights;
+	Audioclip *currentsong;
 	/*std::map<std::string, Directionallight>directionallights;
 	std::map<std::string, Pointlight> pointlights;
 	std::map<std::string, Spotlight>spotlights;*/
@@ -22,7 +24,9 @@ public:
 	void setRoot(Entity &e);
 	void saveScene();
 	void initScene();
+	void closeScene();
 	void inputScene();
+	void setCurrentSong(Audioclip &song);
 	void setAmbientLight(vector3 alight);
 	void renderScene();
 	void updateScene();

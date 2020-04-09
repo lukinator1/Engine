@@ -1,4 +1,4 @@
-Current date + time: Tue Apr  7 03:02:02 2020
+Current date + time: Thu Apr  9 05:08:12 2020
 
 c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\rendering\texture.cpp
  Line: 12
@@ -6,3 +6,6 @@ Engine warning!: Warning: Texture failed to load. May've returned an error textu
 c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\rendering\texture.cpp
  Line: 12
 Engine warning!: Warning: Texture failed to load. May've returned an error texture instead.
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\rendering\model.cpp
+ Line: 343
+Engine warning!: Warning: Model failed to import. Returned an error model.

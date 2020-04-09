@@ -58,7 +58,7 @@ Window::Window(int width = 800, int height = 600, std::string title = "Untitled"
 	glFrontFace(GL_CW);
 	glCullFace(GL_BACK);
 	glViewport(0, 0, windowwidth, windowheight);
-	glEnable(GL_CULL_FACE);
+	/*glEnable(GL_CULL_FACE);*/
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
 	/*glEnable(GL_FRAMEBUFFER_SRGB);*/

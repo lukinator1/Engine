@@ -32,10 +32,10 @@ void Model::loadModelObj(std::string file) //max size of vector?
 	std::vector<vector3>positioncoordinates;
 	std::vector<vector2>texturecoordinates;
 	std::vector<vector3>normals;
-	std::vector<unsigned int>positionindices;
-	std::vector<unsigned int>textureindices;
-	std::vector<unsigned int>normalindices;
-	std::vector<unsigned int>indices;
+	std::vector<int>positionindices;
+	std::vector<int>textureindices;
+	std::vector<int>normalindices;
+	std::vector<int>indices;
 	bool meshdone = true;
 	bool comment = false;
 	std::string matname = "";
@@ -70,6 +70,17 @@ void Model::loadModelObj(std::string file) //max size of vector?
 								positionindices.push_back(stoi(buffer) - 1);
 								getline(streamer, buffer, ' ');				//x3
 								positionindices.push_back(stoi(buffer) - 1);
+
+								if (getline(streamer, buffer, ' ')) {
+									while (buffer[0] == ' ' || buffer[0] == '/t') {
+										buffer.erase(buffer.begin());
+									}
+									if (buffer.size() >= 1) {
+										positionindices.push_back(positionindices[positionindices.size() - 3]);
+										positionindices.push_back(positionindices[positionindices.size() - 3]);
+										positionindices.push_back(stoi(buffer) - 1);
+									}
+								}
 							}
 							else if (texturecoordinates.size() > 0 && normals.size() == 0) {
 								getline(streamer, buffer, '/');				//x1
@@ -87,11 +98,27 @@ void Model::loadModelObj(std::string file) //max size of vector?
 								positionindices.push_back(stoi(buffer) - 1);
 								getline(streamer, buffer, ' ');
 								textureindices.push_back(stoi(buffer) - 1);
+
+								if (getline(streamer, buffer, '/')){
+									while (buffer[0] == ' ' || buffer[0] == '/t') {
+										buffer.erase(buffer.begin());
+									}
+									if (buffer.size() >= 1) {
+										positionindices.push_back(positionindices[positionindices.size() - 3]);
+										positionindices.push_back(positionindices[positionindices.size() - 3]);
+										positionindices.push_back(stoi(buffer) - 1);
+
+										getline(streamer, buffer, ' ');
+										textureindices.push_back(textureindices[textureindices.size() - 3]);
+										textureindices.push_back(textureindices[textureindices.size() - 3]);
+										textureindices.push_back(stoi(buffer) - 1);
+									}
+								}
 							}
 							else if (texturecoordinates.size() == 0 && normals.size() > 0) {
 								getline(streamer, buffer, '/');				//x1
 								positionindices.push_back(stoi(buffer) - 1);
-								getline(streamer, buffer, '/');
+								getline(streamer, buffer, '/'); 
 								getline(streamer, buffer, ' ');
 								normalindices.push_back(stoi(buffer) - 1);
 
@@ -107,6 +134,23 @@ void Model::loadModelObj(std::string file) //max size of vector?
 								getline(streamer, buffer, '/');
 								getline(streamer, buffer, ' ');
 								normalindices.push_back(stoi(buffer) - 1);
+
+								if (getline(streamer, buffer, '/')) {
+									while (buffer[0] == ' ' || buffer[0] == '/t') {
+										buffer.erase(buffer.begin());
+									}
+									if (buffer.size() >= 1) {
+										positionindices.push_back(positionindices[positionindices.size() - 3]);
+										positionindices.push_back(positionindices[positionindices.size() - 3]);
+										positionindices.push_back(stoi(buffer) - 1);
+
+										getline(streamer, buffer, '/');
+										getline(streamer, buffer, ' ');
+										normalindices.push_back(normalindices[normalindices.size() - 3]);
+										normalindices.push_back(normalindices[normalindices.size() - 3]);
+										normalindices.push_back(stoi(buffer) - 1);
+									}
+								}
 							}
 							else if (texturecoordinates.size() > 0 && normals.size() > 0) {
 								getline(streamer, buffer, '/');				//x1
@@ -130,11 +174,50 @@ void Model::loadModelObj(std::string file) //max size of vector?
 								textureindices.push_back(stoi(buffer) - 1);
 								getline(streamer, buffer, ' ');
 								normalindices.push_back(stoi(buffer) - 1);
+
+								if (getline(streamer, buffer, '/')) {
+									while (buffer[0] == ' ' || buffer[0] == '/t') {
+										buffer.erase(buffer.begin());
+									}
+									if (buffer.size() >= 1) {
+										positionindices.push_back(positionindices[positionindices.size() - 3]);
+										positionindices.push_back(positionindices[positionindices.size() - 3]);
+										positionindices.push_back(stoi(buffer) - 1);
+
+										getline(streamer, buffer, '/');
+										textureindices.push_back(textureindices[textureindices.size() - 3]);
+										textureindices.push_back(textureindices[textureindices.size() - 3]);
+										textureindices.push_back(stoi(buffer) - 1);
+
+										getline(streamer, buffer, ' ');
+										normalindices.push_back(normalindices[normalindices.size() - 3]);
+										normalindices.push_back(normalindices[normalindices.size() - 3]);
+										normalindices.push_back(stoi(buffer) - 1);
+									}
+								}
 							}
 							continue;
 						}
 
 						if (meshdone && positionindices.size() != 0) {
+							for (int i = 0; i < positionindices.size(); i++) {
+								if (positionindices[i] < 0) {
+									positionindices[i] = -positionindices[i];
+								}
+							}
+
+							for (int i = 0; i < textureindices.size(); i++) {
+								if (textureindices[i] < 0) {
+									textureindices[i] = -textureindices[i];
+								}
+							}
+
+							for (int i = 0; i < normalindices.size(); i++) {
+								if (normalindices[i] < 0) {
+									normalindices[i] = -normalindices[i];
+								}
+							}
+
 							for (int i = 0; i < positionindices.size(); i++) {	//mesh ready to load
 								importedvertices.push_back(Vertex(vector3(positioncoordinates[positionindices[i]])));
 								if (texturecoordinates.size() != 0) {
@@ -338,10 +421,19 @@ void Model::loadMaterials(std::string filename) {
 							if (buffer == "Kd") {
 								vector3 diffusecolor;
 								getline(streamer, buffer, ' ');
+								while (buffer == "") {
+									getline(streamer, buffer, ' ');
+								}
 								diffusecolor.x = stof(buffer);
 								getline(streamer, buffer, ' ');
+								while (buffer == "") {
+									getline(streamer, buffer, ' ');
+								}
 								diffusecolor.y = stof(buffer);
 								getline(streamer, buffer, ' ');
+								while (buffer == "") {
+									getline(streamer, buffer, ' ');
+								}
 								diffusecolor.z = stof(buffer);
 								materials.at(matname).color = diffusecolor;
 							}
@@ -370,11 +462,11 @@ void Model::loadMaterials(std::string filename) {
 		}
 	}
 }
-void Model::calculateNormals(Vertex* vertices, unsigned int* indices, unsigned int numvertices, unsigned int numindices) {
-	for (unsigned int i = 0; i < numindices; i += 3) {
-		unsigned int i0 = indices[i];
-		unsigned int i1 = indices[i + 1];
-		unsigned int i2 = indices[i + 2];
+void Model::calculateNormals(Vertex* vertices, int* indices, int numvertices, int numindices) {
+	for (int i = 0; i < numindices; i += 3) {
+		int i0 = indices[i];
+		int i1 = indices[i + 1];
+		int i2 = indices[i + 2];
 		vector3 edge1 = vertices[i1].position.Subtract(vertices[i0].position);
 		vector3 edge2 = vertices[i2].position.Subtract(vertices[i0].position);
 		vector3 normal = edge1.crossProduct(edge2);

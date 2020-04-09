@@ -13,7 +13,7 @@ Mesh::Mesh(std::string file) { //
 	glGenBuffers(1, &ibo);
 	loadMeshObj(file);
 }
-Mesh::Mesh(Vertex* vertices, unsigned int *indices, unsigned int numvertices, unsigned int numindices)
+Mesh::Mesh(Vertex* vertices, int *indices, int numvertices, int numindices)
 {
 	makeMesh(vertices, indices, numvertices, numindices);
 }
@@ -21,7 +21,7 @@ Mesh::~Mesh()
 {
 	/*freeMesh();*/
 }
-void Mesh::makeMesh(Vertex* vertices, unsigned int *indices, unsigned int numvertices, unsigned int numindices) //error message can go here
+void Mesh::makeMesh(Vertex* vertices, int *indices, int numvertices, int numindices) //error message can go here
 {
 	size = numindices;
 	/*calculateNormals(vertices, indices, numvertices, numindices);*/
@@ -42,11 +42,11 @@ void Mesh::makeMesh(Vertex* vertices, unsigned int *indices, unsigned int numver
 	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex::texture) * numvertices, vertices, GL_STATIC_DRAW);*/
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * numindices, indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int) * numindices, indices, GL_STATIC_DRAW);
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
-void Mesh::makeSkyboxMesh(float* vertices, unsigned int numvertices) //error message can go here
+void Mesh::makeSkyboxMesh(float* vertices, int numvertices) //error message can go here
 {
 	size = numvertices;
 	glGenVertexArrays(1, &vao);
@@ -80,10 +80,10 @@ void Mesh::loadMeshObj(std::string file) //max size of vector?
 	std::vector<vector3>positioncoordinates;
 	std::vector<vector2>texturecoordinates;
 	std::vector<vector3>normals;
-	std::vector<unsigned int>positionindices;
-	std::vector<unsigned int>textureindices;
-	std::vector<unsigned int>normalindices;
-	std::vector<unsigned int>indices;
+	std::vector<int>positionindices;
+	std::vector<int>textureindices;
+	std::vector<int>normalindices;
+	std::vector<int>indices;
 
 	int texturecounter = 0;
 	if (fileopener.is_open()) {
@@ -271,14 +271,14 @@ void Mesh::loadMeshObj(std::string file) //max size of vector?
 	}*/
 
 	Vertex* vertexarray = &importedvertices[0];
-	unsigned int* indexarray = &indices[0];
+	int* indexarray = &indices[0];
 
 	this->makeMesh(vertexarray, indexarray, importedvertices.size(), indices.size());
 }
 void Mesh::makeErrorMesh() //todo
 {
 }
-void Mesh::calculateNormals(Vertex* vertices, unsigned int* indices, unsigned int numvertices, unsigned int numindices){
+void Mesh::calculateNormals(Vertex* vertices, int* indices, int numvertices, int numindices){
 	for (unsigned int i = 0; i < numindices; i += 3) {
 		unsigned int i0 = indices[i];
 		unsigned int i1 = indices[i + 1];

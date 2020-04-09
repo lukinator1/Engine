@@ -139,6 +139,7 @@
     <ClInclude Include="Components\Boundingspherecollider.h" />
     <ClInclude Include="Components\Components.h" />
     <ClInclude Include="Components\Modelrenderer.h" />
+    <ClInclude Include="Audio\Music.h" />
     <ClInclude Include="Rendering\Model.h" />
     <ClInclude Include="Physics\Physicstransform.h" />
     <ClInclude Include="Physics\Physicsobject.h" />
@@ -196,6 +197,7 @@
     <ClCompile Include="Components\AABBcollider.cpp" />
     <ClCompile Include="Components\Boundingspherecollider.cpp" />
     <ClCompile Include="Components\Modelrenderer.cpp" />
+    <ClCompile Include="Audio\Music.cpp" />
     <ClCompile Include="Rendering\Model.cpp" />
     <ClCompile Include="Physics\Physicstransform.cpp" />
     <ClCompile Include="Physics\Physicsobject.cpp" />

@@ -3,8 +3,9 @@ void Audiomanager::audioStartup() {
 
 }
 
-void Audiomanager::audioUpdate() {
-
+void Audiomanager::audioUpdate(Scene & currentscene) {
+	/*currentscene.currentsong.playAudio();*/
+	/*currentscene.root.updateAudio();*/
 }
 
 void Audiomanager::audioShutDown() {
