@@ -1,8 +1,5 @@
-Current date + time: Thu Apr  9 06:47:22 2020
+Current date + time: Fri Apr 10 09:52:06 2020
 
 c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\rendering\texture.cpp
  Line: 12
-Engine warning!: Warning: Texture failed to load. May've returned an error texture instead.
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\rendering\texture.cpp
- Line: 12
-Engine warning!: Warning: Texture failed to load. May've returned an error texture instead.
+Engine warning!: Warning: Texture Rendering/Materials/Textures/C:\\Users\\lukinator1\\Downloads\\source\\Documents\\Mudbox\\2018-x64\\data\\textura.tif failed to load. May've returned an error texture instead.

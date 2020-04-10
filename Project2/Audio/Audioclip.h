@@ -22,6 +22,7 @@ public:
 	Uint8 *wavstart;
 	Uint32 wavlength;
 	bool playing;
+	float pitch = 2.0f;
 	float falloffmin;
 	float falloffmax;
 

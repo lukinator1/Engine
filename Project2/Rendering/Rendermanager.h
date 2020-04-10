@@ -26,6 +26,9 @@ public:
 	void renderEntity(Entity &gameobject, Shader * &shade);
 	void renderEntities(Entity & gameobject, Shader *& shade);
 	void renderScene(Scene & currentscene);
+	vector3 getAmbientLight();
+	void setAmbientLight(vector3 _ambientlight);
+	void setAmbientLight(float x, float y, float z);
 /*	vector3 getAmbientLight();
 	void setAmbientLight(vector3 _ambientlight);
 	void setAmbientLight(float x, float y, float z);

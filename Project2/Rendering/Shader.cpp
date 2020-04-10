@@ -82,6 +82,7 @@ Shader::Shader(std::string shadertype) : directionallight(vector3(1.0f, 1.0f, 1.
 		addUniform("color");
 		addUniform("transform");
 		addUniform("ambientintensity");
+		addUniform("textured");
 	}
 	else if (shadertype == "Forwarddirectional" || shadertype == "forwarddirectional") {
 		type = 1;
@@ -207,6 +208,7 @@ else if (shadertype == "Forwardambient" || shadertype == "forwardambient") {
 	addUniform("transform");
 	addUniform("color");
 	addUniform("ambientintensity");
+	addUniform("textured");
 }
 else if (shadertype == "Forwarddirectional" || shadertype == "forwarddirectional") {
 	type = 1;
@@ -446,7 +448,7 @@ void Shader::setUniform(std::string newuniform, Spotlight alight) {  //spotlight
 	setUniform(newuniform + ".direction", alight.direction);
 	setUniform(newuniform + ".cutoff", alight.cutoff);
 }
-void Shader::updateUniforms(matrix4f worldmatrix, matrix4f projectedmatrix, vector3 position, Materials &material) { 
+void Shader::updateUniforms(const matrix4f &worldmatrix, const matrix4f &projectedmatrix, const vector3 &position, Materials &material) { 
 	/*(type == "phong") {
 		setUniform("transform", worldmatrix);
 		setUniform("projectedtransform", projectedmatrix);
@@ -471,9 +473,12 @@ void Shader::updateUniforms(matrix4f worldmatrix, matrix4f projectedmatrix, vect
 		setUniform("ambientintensity", ambientlight);
 		setUniform("color", material.getColor());
 		if (material.texture.textureactive) {
+			setUniform("textured", 1);
 			material.texture.useTexture();
 		}
-		else {
+		else
+		 {
+			setUniform("textured", 0);
 			material.texture.unbindTexture();
 		}
 	}

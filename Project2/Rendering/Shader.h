@@ -36,7 +36,7 @@ public:
 	void setUniform(std::string newuniform, Directionallight alight);
 	void setUniform(std::string newuniform, Pointlight alight);
 	void setUniform(std::string newuniform, Spotlight alight);
-	void updateUniforms(matrix4f worldmatrix, matrix4f projectedmatrix, vector3 position, Materials &material);
+	void updateUniforms(const matrix4f &worldmatrix, const matrix4f &projectedmatrix, const vector3 &position, Materials &material);
 	vector3 getAmbientLight();
 	Directionallight getDirectionalLight();
 	Pointlight** getPointLights();

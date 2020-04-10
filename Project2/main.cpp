@@ -314,18 +314,38 @@ int main(int argc, char* argv[]) {
 	SS.addModel("Cube", Model("cube.obj"));
 	SS.addModel("cardboardbox", Model("CardBoardBox.obj"));
 	SS.addModel("Castle", Model("Peachs Castle 1f.obj"));
+
+	/*SS.addModel("Quote", Model(""));
+	SS.addModel("Cloud", Model(""));
+	SS.addModel("Snake", Model(""));
+	SS.addModel("Mario", Model(""));
+	SS.addMesh("Cube", Mesh(""));
+	SS.addMesh("Sphere", Mesh(""));
+	SS.addModel("Gumi", Model(""));
+	SS.addModel("Cube", Model(""));
+	SS.addModel("cardboardbox", Model(""));
+	SS.addModel("Castle", Model(""));*/
 	
 	//valley
 	SS.addModel("Valleyoftrials", Model("Valleyoftrials.obj"));
 	SS.addModel("2B", Model("Nier2b.obj"));
 	SS.addModel("Ashebringer", Model("Ashebringer.obj"));
 	SS.addModel("Altar", Model("Altar.obj"));
+	/*SS.addModel("Valleyoftrials", Model(""));
+	SS.addModel("2B", Model(""));
+	SS.addModel("Ashebringer", Model(""));
+	SS.addModel("Altar", Model(""));*/
 
 	//temple
 	SS.addModel("Anubistemple", Model("floatingisland.obj"));
 	SS.addModel("Kirby", Model("Kirby.obj"));
 	SS.addModel("Scout", Model("Scout2.obj"));
-	/*SS.addModel("Bellecour", Model("bellecour.obj"));*/
+	SS.addModel("Rin Tezuka", Model("rin tezuka"));
+	
+	/*SS.addModel("Anubistemple", Model(""));
+	SS.addModel("Kirby", Model(""));
+	SS.addModel("Scout", Model(""));
+	SS.addModel("Rin Tezuka", Model(""));*/
 
 	//physics
 	SS.addBoundingSphere("bsphere1", Boundingsphere());
@@ -378,28 +398,28 @@ int main(int argc, char* argv[]) {
 	Cloud.addComponent(&cloudmodel);
 	/*Cloud.addComponent(&otherspheremesh);*/
 	Cloud.addComponent(&bspherecloud);
-	/*Quote.addSubEntity(&Cloud);*/
+	Quote.addSubEntity(&Cloud);
 
-	/*Entity Snake;
+	Entity Snake;
 	Snake.transform.setPosition(vector3(10.0f, -3.0f, 20.0f));
 	Snake.transform.setScale(vector3(0.08f, 0.08f, 0.08f));
 	Modelrenderer snakecomponent(SS.getModel("Snake"));
 	Snake.addComponent(&snakecomponent);
-	Cloud.addSubEntity(&Snake);*/
+	Cloud.addSubEntity(&Snake);
 
 	Entity Mario;
 	Mario.transform.setPosition(vector3(30.0f, 0.0f, 15.0f));
 	Mario.transform.setScale(vector3(0.07f, 0.07f, 0.07f));
 	Modelrenderer scoutcomponent(SS.getModel("Mario"));
 	Mario.addComponent(&scoutcomponent);
-	/*Castle.addSubEntity(&Mario);*/
+	Quote.addSubEntity(&Mario);
 
 	Entity Gumi;
 	Modelrenderer gumimodel(SS.getModel("Gumi"));
 	Gumi.transform.setPosition(-15.0f, 3.0f, 15.0f);
 	Gumi.transform.setScale(vector3(0.75f, 0.75f, 0.75f));
 	Gumi.addComponent(&gumimodel);
-	Quote.addSubEntity(&Gumi);
+	/*Quote.addSubEntity(&Gumi);*/
 
 	Entity sphereone;  //physics tests
 	sphereone.transform.setPosition(7.5f, 40.0f, -14.0f);
@@ -460,9 +480,9 @@ int main(int argc, char* argv[]) {
 
 	Entity Ashebringer;
 	Modelrenderer ashebringermodel(SS.getModel("Ashebringer"));
-	Ashebringer.transform.setPosition(0.0f, 15.0f, 8.0f);
+	Ashebringer.transform.setPosition(0.0f, 6.0f, 8.0f);
 	Altar.transform.setScale(vector3(0.5f, 0.5f, 0.5f));
-	Altar.addComponent(&altarmodel);
+	Altar.addComponent(&ashebringermodel);
 	Altar.addSubEntity(&Ashebringer);
 
 	
@@ -482,6 +502,12 @@ int main(int argc, char* argv[]) {
 	Scout.transform.setPosition(vector3(-12.0f, 40, 0));
 	Scout.addComponent(&scoutmodel);
 	Kirby.addSubEntity(&Scout);
+
+	Entity Rintezuka;
+	Modelrenderer rinmodel(SS.getModel("Rin Tezuka"));
+	Rintezuka.transform.setPosition(vector3(-6.0f, 30.0f, 0));
+	Rintezuka.addComponent(&rinmodel);
+	Scout.addSubEntity(&Rintezuka);
 
 	/*Entity bellecour;
 	Modelrenderer bellecourmodel(SS.getModel("Bellecour"));

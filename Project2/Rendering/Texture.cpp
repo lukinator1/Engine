@@ -9,9 +9,12 @@ int Texture::loadTexture(std::string filename)
 	unsigned char* data = stbi_load((filename).c_str(), &width, &height, &components, 4);
 
 	if (data == NULL) {
-		engineLog(__FILE__, __LINE__, "Warning: Texture failed to load. May've returned an error texture instead.", 1, 2, true);
+		engineLog(__FILE__, __LINE__, "Warning: Texture " + filename + " failed to load. May've returned an error texture instead.", 1, 2, true);
 		std::cout << filename;
 		data = stbi_load("Rendering/Materials/Textures/errortexture.png", &width, &height, &components, 4);
+		if (data == NULL) {
+			textureactive = false;
+		}
 		returner = -1;
 	}
 	glBindTexture(GL_TEXTURE_2D, textureid);

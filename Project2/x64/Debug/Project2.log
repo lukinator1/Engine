@@ -1,6 +1,28 @@
-﻿  main.cpp
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(729): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(730): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(750): warning C4305: 'argument': truncation from 'double' to 'float'
+﻿  Audioclip.cpp
+  Audiomanager.cpp
+  Music.cpp
+  AABBcollider.cpp
+  Boundingspherecollider.cpp
+  Console.cpp
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\console.cpp(236): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\console.cpp(238): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\console.cpp(269): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\console.cpp(313): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\console.cpp(357): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  Messagesystem.cpp
+  Boundingbox.cpp
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\physics\boundingbox.cpp(128): warning C4305: 'initializing': truncation from 'double' to 'float'
+  Boundingsphere.cpp
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\physics\boundingsphere.cpp(62): warning C4305: 'initializing': truncation from 'double' to 'float'
+  Physicsmanager.cpp
+  Raytrace.cpp
+  Rendermanager.cpp
+  Resourcemanager.cpp
+  Scene.cpp
+  main.cpp
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(755): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(756): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(776): warning C4305: 'argument': truncation from 'double' to 'float'
 c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\main.cpp(93): warning C4101: 'loggerchannels': unreferenced local variable
+  Generating Code...
   Project2.vcxproj -> C:\Users\lukinator1\Desktop\engine\The Super Suspension System\Project2\x64\Debug\Project2.exe

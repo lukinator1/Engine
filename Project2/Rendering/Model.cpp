@@ -47,7 +47,7 @@ void Model::loadModelObj(std::string file) //max size of vector?
 		while (getline(fileopener, bigbuffer)) {
 			comment = false;
 			if (fileopener.bad()) {
-				engineLog(__FILE__, __LINE__, "Warning: Model did not fully import.", 2, 2, true);
+				engineLog(__FILE__, __LINE__, "Warning: Model " + file + " did not fully import.", 2, 2, true);
 				return; //make an error model
 			}
 
@@ -56,7 +56,7 @@ void Model::loadModelObj(std::string file) //max size of vector?
 				while (getline(streamer, buffer, ' ') && !comment) {
 					if (!buffer.empty()) {
 
-						if (buffer[0] == '#' || buffer[0] == 'o') {
+						if (buffer[0] == '#' || buffer[0] == 'o' || buffer[0] == 's') {
 							comment = true;
 							continue;
 						}
@@ -428,7 +428,7 @@ void Model::loadModelObj(std::string file) //max size of vector?
 	}
 	else
 	{
-		engineLog(__FILE__, __LINE__, "Warning: Model failed to import. Returned an error model.", 2, 2, true);
+		engineLog(__FILE__, __LINE__, "Warning: Model " + file + " failed to import. Returned an error model.", 2, 2, true);
 		meshes.push_back(std::pair<Mesh, std::string>(Mesh(), ""));
 		return; //todo: error model, comments
 	}
@@ -451,6 +451,7 @@ void Model::loadModelObj(std::string file) //max size of vector?
 		matname = "";
 	}
 	bool there = false;
+	bool err = false;
 	for (int i = 0; i < meshes.size(); i++) {	//check to see if material loaded successfully
 		there = false;
 		for (auto u = materials.begin(); u != materials.end(); u++) {
@@ -460,7 +461,11 @@ void Model::loadModelObj(std::string file) //max size of vector?
 		}
 		if (there == false) {
 			meshes[i].second = "";
+			err = true;
 		}
+	}
+	if (err) {
+		engineLog(__FILE__, __LINE__, "Warning: a material may be missing, error material(s) were used instead.", 2, 2, true);
 	}
 }
 void Model::loadMaterials(std::string filename) {
@@ -473,7 +478,7 @@ void Model::loadMaterials(std::string filename) {
 		std::string buffer;
 		while (getline(fileopener, bigbuffer)) {
 			if (fileopener.bad()) {
-				engineLog(__FILE__, __LINE__, "Warning: Material failed to import. A default error material was returned instead.", 2, 2, true);
+				engineLog(__FILE__, __LINE__, "Warning: Material " + filename + " failed to import. A default error material was returned instead.", 2, 2, true);
 				return; //make an error model
 			}
 
@@ -488,7 +493,6 @@ void Model::loadMaterials(std::string filename) {
 
 						if (buffer.empty()) {
 							continue;
-
 						}
 
 						if (buffer[0] == '#') {
@@ -539,6 +543,9 @@ void Model::loadMaterials(std::string filename) {
 									}
 								}
 								Texture text;
+								if (buffer == "Buttons.png") {
+									int x = 0;
+								}
 								text.loadTexture(buffer);
 								materials.at(matname).setTexture(text);
 							}

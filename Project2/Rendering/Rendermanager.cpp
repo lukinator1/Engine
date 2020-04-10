@@ -28,7 +28,7 @@ void Rendering::renderScene(Scene &currentscene){
 	forwardambientshader.ambientlight = currentscene.ambientlight;  //todo: optimize with pointers
 	currentscene.root.renderEntities(&forwardambientshader);
 
-	glEnable(GL_BLEND);
+	/*glEnable(GL_BLEND);
 	glBlendFunc(GL_ONE, GL_ONE);
 	glDepthMask(false);
 	glDepthFunc(GL_EQUAL);
@@ -52,13 +52,13 @@ void Rendering::renderScene(Scene &currentscene){
 	glDepthFunc(GL_LESS);
 	glDepthMask(true);
 	glDisable(GL_BLEND);
-	glBlendFunc(GL_ONE, GL_ZERO);
+	glBlendFunc(GL_ONE, GL_ZERO);*/
 
 	if (currentscene.skybox.skyboxbox.size != 0) {
 	currentscene.skybox.useSkybox();
 	}
 }
-/*vector3 Rendering::getAmbientLight() {
+vector3 Rendering::getAmbientLight() {
 	return forwardambientshader.ambientlight;
 }
 void Rendering::setAmbientLight(vector3 _ambientlight)
@@ -70,7 +70,7 @@ void Rendering::setAmbientLight(float x, float y, float z)
 	forwardambientshader.ambientlight.x = x;
 	forwardambientshader.ambientlight.y = y;
 	forwardambientshader.ambientlight.z = z;
-}*/
+}
 void Rendering::renderingShutdown()
 {
 	windowptr->closeWindow();

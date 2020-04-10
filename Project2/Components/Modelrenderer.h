@@ -16,8 +16,8 @@ public:
 		this->model = &model;
 	}
 	void renderComponent(Transforming &transform, Shader * &shader) {
-		shader->useShader();
 		for (int i = 0; i < model->meshes.size(); i++) {
+			shader->useShader();
 			shader->updateUniforms(transform.newUnprojectedMatrix(), transform.newTransformationMatrix(), transform.position, model->materials.at(model->meshes[i].second));
 			model->meshes[i].first.drawMesh();
 		}
