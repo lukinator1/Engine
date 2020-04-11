@@ -1,54 +1,79 @@
 #include "Boundingbox.h"
 #include "../Global.h"
 bool Boundingbox::Simulate(Physicsobject & otherobject) {
+	bool collision = false;
+	float collisiondistance = 0;
+	float x;
+	float y;
+	float z;
 	switch (otherobject.shape) {
 	case 0:						//sphere
-
-
+		x = std::max(minextents.x, std::min(otherobject.getPosition().x, maxextents.x));
+		y = std::max(minextents.y, std::min(otherobject.getPosition().y, maxextents.y));
+		z = std::max(minextents.z, std::min(otherobject.getPosition().z, maxextents.z));
+		collisiondistance = sqrt((x - otherobject.getPosition().x) * (x - otherobject.getPosition().x) + (y - otherobject.getPosition().y) * (y - otherobject.getPosition().y) + (z - otherobject.getPosition().z) * (z - otherobject.getPosition().z));
+		if (collisiondistance < otherobject.getRadius()) {
+			collision = true;
+		}
 	break;
 	case 1:						//box
 		vector3 difference = otherobject.getMinextents().Subtract(maxextents);
 		vector3 otherdifference = minextents.Subtract(otherobject.getMaxextents());
 		vector3 distance;
-		if (difference.x > otherdifference.x) {
+		if (difference.x >= otherdifference.x) {
 			distance.x = difference.x;
 		}
 		else {
 			distance.x = otherdifference.x;
 		}
-		if (difference.y > otherdifference.y) {
+		if (difference.y >= otherdifference.y) {
 			distance.y = difference.y;
 		}
 		else {
 			distance.y = otherdifference.y;
 		}
-		if (difference.z > otherdifference.z) {
+		if (difference.z >= otherdifference.z) {
 			distance.z = difference.z;
 		}
 		else {
 			distance.z = otherdifference.z;
 		}
-		maxdistance = distance.x;
-		if (distance.y > maxdistance) {
+		float maxdistance = distance.x;
+		collisiondistance = distance.x;
+		if (distance.y >= maxdistance) {
 			maxdistance = distance.y;
 		}
-		if (distance.z > maxdistance) {
+		else {
+			collisiondistance = distance.y;
+		}
+		if (distance.z >= maxdistance) {
 			maxdistance = distance.z;
 		}
-		if (maxdistance < 0) {
-			collided = true;
-			/*collisiondata.collisiondistance = collisiondistance;*/
-			collisiondata.otherobjects.push_back(&otherobject);
-			std::pair <float, vector3> momentum = { otherobject.mass, otherobject.velocity };
-			collisiondata.momentia.push_back(momentum);
-			collisiondata.forces.push_back(acceleration.multiply(mass));
+		if (distance.z < collisiondistance) {
+			collisiondistance = distance.z;
 		}
-		else {
-			return false;
+		if (maxdistance < 0) {
+			collision = true;;
 		}
 		break;
 	}
-	return false;
+
+	if (collision) {
+		tempoldpos = oldpos;
+		tempvel = velocity;
+		collided = true;
+		Raytrace ray;
+		vector3 dir = oldpos - otherobject.oldpos;
+		//ray.Trace(physicsobject.oldpos, dir, oldpos, radius);
+		collisiondata.intersectionpoints.push_back(ray.intersectionpoint);
+		collisiondata.intersectionnormals.push_back(ray.normal);
+		collisiondata.collisiondistance = collisiondistance;
+		collisiondata.otherobjects.push_back(&otherobject);
+		std::pair <float, vector3> momentum = { otherobject.mass, otherobject.velocity };
+		collisiondata.momentia.push_back(momentum);
+		collisiondata.forces.push_back(acceleration.multiply(mass));
+	}
+	return collision;
 }
 void Boundingbox::Integrate() {
 	if (collided == true) {
@@ -70,7 +95,7 @@ void Boundingbox::Integrate() {
 	setPosition(getPosition() + (velocity.multiply(deltatime)).add(newacceleration.multiply((deltatime * deltatime) / 0.5f)));
 	setRotation(getRotation() + (newangularvelocity.Multiply(getRotation()).Multiply(deltatime / 0.5f)));
 }
-/*void Boundingbox::handleConstraints()
+void Boundingbox::handleConstraints()
 {
 	vector3 neg(1.0f, 1.0f, 1.0f);
 	int sleep = 0;
@@ -85,32 +110,40 @@ void Boundingbox::Integrate() {
 	while (!done && sleep != 7) {
 		done = true;
 		for (int i = 0; i < collisiondata.otherobjects.size(); i++) {
-			collisiondistance = calcCollisionDistance(collisiondata.otherobjects[i]->getRadius(), collisiondata.otherobjects[i]->getPosition());//test if still colliding
+			//collisiondistance = calcCollisionDistance(collisiondata.otherobjects[i]->getRadius(), collisiondata.otherobjects[i]->getPosition());//test if still colliding
 			if (collisiondistance > 0) {
 				done = false;
 			}
+
+			/*dir = collisiondata.otherobjects[i]->getPosition() - getPosition();
+			if (!ray.Trace(getPosition(), dir, collisiondata.otherobjects[i])) {
+				std::cout << "Ray didn't trace.";
+			}*/
 			neg = collisiondata.intersectionnormals[i];	//set to proper position
 
+			/*setPosition(collisiondata.intersectionpoints[i] + neg.multiply(radius));*/
+
 			count = 0; //if still didn't aren't separated
-			factor = 1;
-			collisiondistance = calcCollisionDistance(collisiondata.otherobjects[i]->getRadius(), collisiondata.otherobjects[i]->getPosition());
+			factor = 1.65f;
+			//collisiondistance = calcCollisionDistance(collisiondata.otherobjects[i]->getRadius(), collisiondata.otherobjects[i]->getPosition());
 			while ((collisiondistance > 0) && count < 100) {
+				/*velocity = velocity - (collisiondata.intersectionnormals[i]).multiply((50.0f / mass));*/
 				setPosition(getPosition() - neg.multiply(collisiondistance * factor));
 				count++;
 
 				if (count == 10) {
 					std::cout << "Constraint went to factor 2" << std::endl;
-					factor = 2.75;
+					factor = 2.75f;
 				}
 				else if (count == 20) {
 					std::cout << "Constraint went to factor 3" << std::endl;
-					factor = 3.85;
+					factor = 3.85f;
 				}
 				else if (count == 40) {
 					std::cout << "Constraint went to factor 4" << std::endl;
-					factor = 4.5;
+					factor = 4.5f;
 				}
-				collisiondistance = calcCollisionDistance(collisiondata.otherobjects[i]->getRadius(), collisiondata.otherobjects[i]->getPosition());
+				//collisiondistance = calcCollisionDistance(collisiondata.otherobjects[i]->getRadius(), collisiondata.otherobjects[i]->getPosition());
 			}
 		}
 		sleep++;
@@ -118,7 +151,7 @@ void Boundingbox::Integrate() {
 			std::cout << "Constraints handling went through max iterations";
 		}
 	}
-}*/
+}
 void Boundingbox::handleCollision() {
 	float momentiamass = 0;
 	vector3 momentums;

@@ -20,6 +20,7 @@ public:
 		Textinput,
 		Textcommit,
 		Consoleoff,
+		Resize,
 		User
 	};
 

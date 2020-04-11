@@ -183,6 +183,7 @@ void Window::updateWindow()//monitor refresh rate
 	closerequested = false;
 	maximized = false;
 	minimized = false;
+	resized = false; 
 	SDL_GL_SwapWindow(window);
 	/*SDL_Event sdlevent;
 	while (SDL_PollEvent(&sdlevent)) {
@@ -212,17 +213,18 @@ void Window::handleMessage(Message &message)
 	if (!messagequeue.empty()) {
 		switch (message.messagetype) { //other window functions
 		case Message::Messagetypes::Closebuttonpressed:
-			std::cout << "Message: windowclose called." << std::endl;
-			std::cout << "messagequeue size: " << messagequeue.size() << std::endl;
 			closerequested = true;
 			break;
 		case Message::Messagetypes::Maximized:
-			std::cout << "Message: window maximized." << std::endl;
 			maximized = true;
 			break;
 		case Message::Messagetypes::Minimized:
-			std::cout << "Message: window minimized." << std::endl;
 			minimized = true;
+			break;
+		case Message::Messagetypes::Resize:
+			windowwidth = message.messagedataone;
+			windowheight = message.messagedatatwo;
+			resized = true;
 			break;
 		}
 		}

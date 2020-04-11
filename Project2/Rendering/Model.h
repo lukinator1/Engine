@@ -2,6 +2,7 @@
 #include "Mesh.h"
 #include "Materials.h"
 #include "Shader.h"
+#include "Transforming.h"
 #include <vector>
 #include <unordered_map>
 class Model : public Logger
@@ -15,7 +16,8 @@ public:
 	/*Mesh(Vertex* vertices, unsigned int * indices, unsigned int numvertices, unsigned int numindices);*/
 	Model(std::string file);
 	/*void makeMesh(Vertex* vertices, unsigned int *indices, unsigned int numvertices, unsigned int numindices);*/
-	void drawModel(Shader& s);
+	void drawModel(Shader& s, Transforming &t);
+	void setMaterial(Materials & mat);
 	/*void drawNoIndicesMesh();*/
 	void loadModelObj(std::string file);
 	void loadMaterials(std::string filename);

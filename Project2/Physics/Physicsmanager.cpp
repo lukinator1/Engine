@@ -17,14 +17,13 @@ void Physicsmanager::Update(Scene & currentscene)
 		}
 	}
 	for (int i = 0; i < colliders.size(); i++) {
-		colliders[i]->handleConstraints();
+		if (colliders[i]->collided) {
+			colliders[i]->handleConstraints();
+		}
 	}
 	for (int i = 0; i < colliders.size(); i++) {  //handle collisions, update new velocities/positions
 		colliders[i]->Integrate();
 	}
-	/*for (int i = 0; i <colliders.size(); i++) {
-		colliders[i]->handleConstraints();
-	}*/
 	currentscene.root.updatePhysics();
 
 	/*for (int i = 0; i < boxes.size(); i++) {

@@ -155,6 +155,7 @@ public:
 		aspectratioheight = newheight;
 		aspectratiowidth = newwidth;
 	}
+
 	void setMaxViewDistance(float newmaxviewdistance) {
 		maxviewdistance = newmaxviewdistance;
 	}

@@ -67,7 +67,7 @@ void Input::getInputs() {
 			}
 		}
 
-		if (sdlevent.type == SDL_KEYDOWN) {
+		else if (sdlevent.type == SDL_KEYDOWN) {
 			/*keyboardstate[SDL_GetScancodeFromKey(sdlevent.key.keysym.sym)].first = true;*/
 			if (sdlevent.key.repeat == 1) {
 				postMessage(Message::Messagetypes::Keydown, SDL_GetScancodeFromKey(sdlevent.key.keysym.sym), 1);
@@ -81,14 +81,14 @@ void Input::getInputs() {
 			/*std::cout << "Key: " << SDL_GetScancodeFromKey(sdlevent.key.keysym.sym) << "pressed" << std::endl;*/
 		}
 
-		if (sdlevent.type == SDL_MOUSEMOTION) { //mouse buttons down;
+		else if (sdlevent.type == SDL_MOUSEMOTION) { //mouse buttons down;
 			/*postMessage(Message::Messagetypes::Mousemoved, sdlevent.motion.x, sdlevent.motion.y, sdlevent.motion.xrel, -sdlevent.motion.yrel);*/
 			mousemovementdistance.x = sdlevent.motion.xrel;
 			mousemovementdistance.y = -sdlevent.motion.yrel;
 			moved = true;
 		}
 
-		if (sdlevent.type == SDL_MOUSEBUTTONUP) { //mouse buttons up
+		else if (sdlevent.type == SDL_MOUSEBUTTONUP) { //mouse buttons up
 			if (sdlevent.button.button == SDL_BUTTON_LEFT) {
 				/*postMessage(Message::Messagetypes::Leftmouseunpressed);*/
 				leftmouse.first = false;
@@ -106,13 +106,13 @@ void Input::getInputs() {
 			}
 		}
 
-		if (sdlevent.type == SDL_KEYUP) {
+		else if (sdlevent.type == SDL_KEYUP) {
 			/*postMessage(Message::Messagetypes::Keyup, SDL_GetScancodeFromKey(sdlevent.key.keysym.sym), 0);*/
 			keyboardstate[SDL_GetScancodeFromKey(sdlevent.key.keysym.sym)].first = false;
 			keyboardstate[SDL_GetScancodeFromKey(sdlevent.key.keysym.sym)].second = false;
 		}
 
-		if (sdlevent.type == SDL_MOUSEWHEEL) {
+		else if (sdlevent.type == SDL_MOUSEWHEEL) {
 			/*postMessage(Message::Messagetypes::Mousescrolled, sdlevent.wheel.x, sdlevent.wheel.y);
 			scrolled = true;*/
 			setScrolldistance(sdlevent.wheel.x, sdlevent.wheel.y);
@@ -128,7 +128,7 @@ void Input::getInputs() {
 			postMessage(Message::Messagetypes::Textinput, 0, 0, sdlevent.edit.text);
 			std::cout << "text input event" << std::endl;
 		}*/
-		if (sdlevent.type == SDL_TEXTINPUT) {
+		else if (sdlevent.type == SDL_TEXTINPUT) {
 			for (int i = 0; i < 230; i++) {
 				if (keyboardstate[i].first == true) {
 					keyboardstate[i].second = true;
@@ -144,16 +144,19 @@ void Input::getInputs() {
 				/*std::cout << "text commit event: " << sdlevent.text.text << std::endl;*/
 		}
 	
-		if (sdlevent.type == SDL_WINDOWEVENT) {
+		else if (sdlevent.type == SDL_WINDOWEVENT) {
 			if (sdlevent.window.event == SDL_WINDOWEVENT_MAXIMIZED) {
 				postMessage(Message::Messagetypes::Maximized);
 			}
 			else if (sdlevent.window.event == SDL_WINDOWEVENT_MINIMIZED) {
 				postMessage(Message::Messagetypes::Minimized);
 			}
+			else if (sdlevent.window.event == SDL_WINDOWEVENT_RESIZED) {
+				postMessage(Message::Messagetypes::Resize, sdlevent.window.data1, sdlevent.window.data2);
+			}
 		}
 
-		if (sdlevent.type == SDL_QUIT) {
+		else if (sdlevent.type == SDL_QUIT) {
 			postMessage(Message::Messagetypes::Closebuttonpressed);
 			/*Message message(Windowclose);
 			postMessage(Windowclose);*/

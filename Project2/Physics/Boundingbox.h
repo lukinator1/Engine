@@ -10,9 +10,9 @@ class Boundingbox : public Physicsobject
 	float width;
 	float height;
 public:
-	float maxdistance = 0;
 	bool Simulate(Physicsobject &otherobject);
 	void Integrate();
+	void handleConstraints();
 	void handleCollision();
 	/*void handleConstraints();*/
 	void recalculateMOI();

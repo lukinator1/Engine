@@ -16,14 +16,20 @@ Model::Model(std::string file)
 	materials.emplace("", Materials());
 	loadModelObj(file);
 }
-/*void Model::drawModel(Shader &s)
+void Model::drawModel(Shader &s, Transforming &transform)
 {
-	for (auto i = components.begin(); i != components.end; i++) {
-		shader->useShader();
-		shader->updateUniforms(transform.newUnprojectedMatrix(), transform.newTransformationMatrix(), transform.position, *materials);
-		meshes[i].drawMesh();
+	for (int i = 0; i < meshes.size(); i++) {
+		s.useShader();
+		s.updateUniforms(transform.newUnprojectedMatrix(), transform.newTransformationMatrix(), transform.position, materials.at(meshes[i].second));
+		meshes[i].first.drawMesh();
 	}
-}*/
+}
+void Model::setMaterial(Materials &mat) {
+	materials.at("") = mat;
+	for (int i = 0; i < meshes.size(); i++) {
+		meshes[i].second = "";
+	}
+}
 void Model::loadModelObj(std::string file) //max size of vector?
 {
 	std::ifstream fileopener;
@@ -543,9 +549,6 @@ void Model::loadMaterials(std::string filename) {
 									}
 								}
 								Texture text;
-								if (buffer == "Buttons.png") {
-									int x = 0;
-								}
 								text.loadTexture(buffer);
 								materials.at(matname).setTexture(text);
 							}

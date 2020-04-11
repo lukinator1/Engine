@@ -24,6 +24,7 @@ public:
 	SDL_Window* window;
 	bool maximized = false;
 	bool minimized = false;
+	bool resized = false;
 	Window(int width, int height);
 	Window(int width, int height, std::string title, std::string icon, bool fullscreen, bool desktopfullscreen, bool borderless, bool vsync);
 	int getWindowWidth();

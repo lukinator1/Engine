@@ -466,22 +466,25 @@ int main(int argc, char* argv[]) {
 
 	Entity twoB;
 	Modelrenderer twoBmodel(SS.getModel("2B"));
-	twoB.transform.setPosition(20.0f, 3.0f, 6.0f);
-	twoB.transform.setScale(vector3(1.0f, 1.0f, 1.0f));
+	SS.getModel("2B").setMaterial(SS.getMaterials("mats1"));
+	twoB.transform.setPosition(3.0f, 2.5f, 9.0f);
+	twoB.transform.setScale(vector3(.3f, .3f, .3f));
 	twoB.addComponent(&twoBmodel);
 	valley.addSubEntity(&twoB);
 
 	Entity Altar;
 	Modelrenderer altarmodel(SS.getModel("Altar"));
-	Altar.transform.setPosition(-15.0f, 3.0f, -7.0f);
+	SS.getModel("Altar").setMaterial(SS.getMaterials("mats2"));
+	Altar.transform.setPosition(-13.0f, 3.0f, 12.0f);
 	Altar.transform.setScale(vector3(1.0f, 1.0f, 1.0f));
 	Altar.addComponent(&altarmodel);
 	valley.addSubEntity(&Altar);
 
 	Entity Ashebringer;
 	Modelrenderer ashebringermodel(SS.getModel("Ashebringer"));
-	Ashebringer.transform.setPosition(0.0f, 6.0f, 8.0f);
-	Altar.transform.setScale(vector3(0.5f, 0.5f, 0.5f));
+	SS.getModel("Ashebringer").setMaterial(SS.getMaterials("mats1"));
+	Ashebringer.transform.setPosition(-13.0f, 6.0f, 0.0f);
+	Altar.transform.setScale(vector3(1.2f, 1.2f, 1.2f));
 	Altar.addComponent(&ashebringermodel);
 	Altar.addSubEntity(&Ashebringer);
 
@@ -679,6 +682,10 @@ int main(int argc, char* argv[]) {
 				}
 			}
 		spheretwocollider.boundingsphere.velocity += right;
+		}
+		if (Window.resized) {
+			Camera.aspectratioheight += 200;
+			Camera.aspectratiowidth += 300;
 		}
 		if (Inputs.keyboardstate[Input::I].first == true) {
 			vector3 forward(0.1f, 0, 0);

@@ -12,7 +12,7 @@ void audioCallback(void* userdata, Uint8*  stream, int len) {
 
 	SDL_memcpy(stream, aud->pos, length);
 
-	aud->pos += length * (int)aud->parentclip->pitch;
+	aud->pos += length;
 	aud->length -= length;
 	if (aud->length == 0) {
 		aud->pos = aud->startpos;
