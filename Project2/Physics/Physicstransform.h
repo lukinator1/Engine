@@ -1,6 +1,7 @@
 #pragma once
 #include "../Mathlibrary/Mathlibrary.h"
-class Physicstransform  //transform parent + matrix
+#include "../Camera.h"
+class Physicstransform : public Camera  //transform parent + matrix
 {
 private:
 public:
@@ -28,6 +29,27 @@ public:
 		position.x = x;
 		position.y = y;
 		position.z = z;
+	}
+	matrix4f newTransformationMatrix(vector3 scaling) {
+		matrix4f projectionmatrix;
+		matrix4f unprojected;
+		matrix4f camerarotationmatrix;
+		matrix4f cameratranslation;
+		unprojected = newUnprojectedMatrix(scaling);
+		camerarotationmatrix.makeQuatRotation(camerarotation);
+		cameratranslation.makeTranslation(cameraposition.negateVector());
+		projectionmatrix.makeProjection(fov, aspectratiowidth, aspectratioheight, minviewdistance, maxviewdistance);
+		return projectionmatrix * (camerarotationmatrix * (cameratranslation * unprojected));
+	}
+	matrix4f newUnprojectedMatrix(vector3 scaling) {
+		matrix4f translationmatrix;
+		matrix4f rotationmatrix;
+		matrix4f quatrotationmatrix;
+		matrix4f scalematrix;
+		translationmatrix.makeTranslation(position);
+		quatrotationmatrix.makeQuatRotation(rotation);
+		scalematrix.makeScaling(scaling);
+		return translationmatrix * (quatrotationmatrix * scalematrix);
 	}
 	/*void Rotate(vector3 vectorrotation) {
 		Quaternion newquat;

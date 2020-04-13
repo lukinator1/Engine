@@ -44,7 +44,20 @@ Shader::Shader(std::string shadertype) : directionallight(vector3(1.0f, 1.0f, 1.
 		addUniform("pointlights");
 		addUniform("spotlights");
 	}*/
-	if (shadertype == "Skybox" || shadertype == "skybox") {
+	if (shadertype == "Colliderdebug" || shadertype == "colliderdebug") {
+		type = 6;
+		program = glCreateProgram();
+		if (program == 0) {
+			engineLog(__FILE__, __LINE__, "Warning: Shader program failed to create.", 1, 2, true);
+		}
+		addVertexShader(loadShader("Colliderdebugshader.vs"));
+		addFragmentShader(loadShader("Colliderdebugshader.fs"));
+		compileShader();
+		addUniform("transform");
+		addUniform("color");
+		addUniform("textured");
+	}
+	else if (shadertype == "Skybox" || shadertype == "skybox") {
 	type = 5;
 	ambientlight = vector3(1.0f, 1.0f, 1.0f);
 	program = glCreateProgram();
@@ -524,6 +537,18 @@ void Shader::updateUniforms(const matrix4f &worldmatrix, const matrix4f &project
 			material.texture.useTexture();
 		}
 		else {
+			material.texture.unbindTexture();
+		}
+	}
+	else if (type == 6) {
+		setUniform("transform", projectedmatrix);
+		setUniform("color", material.getColor());
+		if (material.texture.textureactive) {
+			setUniform("textured", 1);
+			material.texture.useTexture();
+		}
+		else {
+			setUniform("textured", 0);
 			material.texture.unbindTexture();
 		}
 	}

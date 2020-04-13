@@ -56,7 +56,7 @@ bool Boundingsphere::Simulate(Physicsobject &physicsobject)
 void Boundingsphere::handleCollision() {
 	float momentiamass = 0;
 	vector3 momentums;
-	collisiondata.forces[0] = vector3(0, 0, gravity);
+	collisiondata.forces[0] = gravity;
 	vector3 netforce = collisiondata.forces[0];
 	vector3 nettorque;
 	float angularimpulse = 0.1;
@@ -105,7 +105,6 @@ void Boundingsphere::handleCollision() {
 void Boundingsphere::Integrate() {
 	if (collided == true) {
 		handleCollision();  //resolve forces/collisions
-		collided = false;
 		collisiondata.intersectionpoints.clear();
 		collisiondata.intersectionnormals.clear();
 		collisiondata.collisiondistance = 0;
@@ -114,7 +113,8 @@ void Boundingsphere::Integrate() {
 		collisiondata.forces.erase(collisiondata.forces.begin() + 1, collisiondata.forces.end());
 	}
 	oldpos = getPosition();
-	vector3 newacceleration(acceleration.x, acceleration.y - gravity, acceleration.z);
+	vector3 newacceleration(acceleration.x, acceleration.y, acceleration.z);
+	newacceleration = newacceleration.Subtract(gravity);
 	Quaternion newangularvelocity(angularvelocity.x, angularvelocity.y, angularvelocity.z, 0);
 	velocity = velocity.add(acceleration.multiply(deltatime));
 	angularvelocity = angularvelocity.add(angularacceleration.multiply(deltatime));

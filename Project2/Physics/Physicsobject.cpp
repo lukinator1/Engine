@@ -50,6 +50,10 @@ void Physicsobject::setColliderTransform(Transforming & t)
 void Physicsobject::setPosition(vector3 pos) {
 	collidertransform.position = pos;
 }
+void Physicsobject::setPosition(float x, float y, float z)
+{
+	collidertransform.setPosition(x, y, z);
+}
 void Physicsobject::setRotation(Quaternion rot) {
 	collidertransform.rotation = rot;
 	collidertransform.rotation = collidertransform.rotation.Normalize();
@@ -71,7 +75,7 @@ Physicsobject::Physicsobject()
 {
 	mass = 10.0f;
 	collided = false;
-	collisiondata.forces.push_back(vector3(0, gravity, 0));
+	collisiondata.forces.push_back(vector3(0, gravity.y, 0));
 	elasticity = 0.45f;
 	oldpos = collidertransform.position;
 	tempvel = velocity;
@@ -81,4 +85,4 @@ Physicsobject::Physicsobject()
 Physicsobject::~Physicsobject()
 {
 }
-float Physicsobject::gravity = 0;
+vector3 Physicsobject::gravity = vector3(0, 0, 0);

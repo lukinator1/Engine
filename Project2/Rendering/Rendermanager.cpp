@@ -26,7 +26,7 @@ void Rendering::renderEntities(Entity &gameobject, Shader * &shade) {
 }
 void Rendering::renderScene(Scene &currentscene){
 	forwardambientshader.ambientlight = currentscene.ambientlight;  //todo: optimize with pointers
-	currentscene.root.renderEntities(&forwardambientshader);
+	currentscene.root->renderEntities(&forwardambientshader);
 
 	/*glEnable(GL_BLEND);
 	glBlendFunc(GL_ONE, GL_ONE);

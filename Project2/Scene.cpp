@@ -12,13 +12,22 @@ int Scene::setSkybox(std::string right, std::string left, std::string top, std::
 		return 0;
 	}
 }
-Entity Scene::getRoot()
+Entity *Scene::getRoot()
 {
 	return root;
 }
-void Scene::setRoot(Entity &e)
+void Scene::setRoot(Entity *e)
 {
 	root = e;
+}
+Entity * Scene::findEntity(std::string id) {
+	if (root != nullptr) {
+		if (root->id == id) {
+			return root;
+		}
+		return root->searchEntity(id);
+	}
+	return nullptr;
 }
 /*void Scene::setSkybox(Skybox &_skybox) {
 	skybox.setSkybox(skybox);
@@ -28,7 +37,7 @@ void Scene::saveScene()
 }
 void Scene::initScene()
 {
-	root.initializeEntities();
+	root->initializeEntities();
 	currentsong->playAudio();
 }
 void Scene::closeScene() {
@@ -37,7 +46,7 @@ void Scene::closeScene() {
 }
 void Scene::inputScene()
 {
-	root.entitiesInput();
+	root->entitiesInput();
 }
 void Scene::setCurrentSong(Audioclip & song)
 {
@@ -71,7 +80,7 @@ void Scene::renderScene()
 
 void Scene::updateScene()
 {
-	root.updateEntity();
+	root->updateEntity();
 }
 Scene::~Scene()
 {

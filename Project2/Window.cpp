@@ -95,6 +95,7 @@ Window::Window(int width, int height)
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_ALPHA_TEST);
 	/*glEnable(GL_FRAMEBUFFER_SRGB);*/
 	glEnable(GL_DEPTH_CLAMP);
 	/*glEnable(GL_BLEND);

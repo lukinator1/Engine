@@ -8,9 +8,13 @@ class Entity //todo: set parent to transform, remove entity
 private:
 public:
 	Transforming transform;
+	std::string id;
 	std::vector <Entity *> children;
 	std::vector <Component *> components; //maybe make a map?
 	Entity();
+	Entity(std::string _id) {
+		id = _id;
+	}
 	Entity(Transforming t) {
 		transform = t;
 	}
@@ -94,6 +98,21 @@ public:
 			}
 			counter++;
 		}
+	}
+	Entity * searchEntity(std:: string _id) {
+		Entity *found;
+		for (int i = 0; i < children.size(); i++) {
+			if (children[i]->id == _id) {
+				return children[i];
+			}
+		}
+		for (int i = 0; i < children.size(); i++) {
+			found = children[i]->searchEntity(_id);
+			if (found != nullptr){
+				return found;
+			}
+		}
+		return nullptr;
 	}
 	void addSubEntity(Entity * subentity) {
 		children.push_back(subentity);

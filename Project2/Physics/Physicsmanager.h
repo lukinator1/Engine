@@ -6,7 +6,8 @@
 class Physicsmanager
 {
 public:
-	std::vector <Physicsobject *> physicsobjects;
+	bool noclip = false;
+	void Impulse(); //todo
 	void Update(Scene &currentscene);
 	Physicsmanager();
 	~Physicsmanager();

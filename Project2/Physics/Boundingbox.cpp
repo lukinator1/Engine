@@ -87,7 +87,8 @@ void Boundingbox::Integrate() {
 		collisiondata.forces.erase(collisiondata.forces.begin() + 1, collisiondata.forces.end());
 	}
 	oldpos = getPosition();
-	vector3 newacceleration(acceleration.x, acceleration.y - gravity, acceleration.z);
+	vector3 newacceleration(acceleration.x, acceleration.y, acceleration.z);
+	newacceleration = newacceleration.Subtract(gravity);
 	Quaternion newangularvelocity(angularvelocity.x, angularvelocity.y, angularvelocity.z, 0);
 	velocity = velocity.add(acceleration.multiply(deltatime));
 	angularvelocity = angularvelocity.add(angularacceleration.multiply(deltatime));
@@ -155,7 +156,7 @@ void Boundingbox::handleConstraints()
 void Boundingbox::handleCollision() {
 	float momentiamass = 0;
 	vector3 momentums;
-	collisiondata.forces[0] = vector3(0, 0, gravity);
+	collisiondata.forces[0] = gravity;
 	vector3 netforce = collisiondata.forces[0];
 	vector3 nettorque;
 	float angularimpulse = 0.1;
@@ -236,21 +237,27 @@ float Boundingbox::getHeight()
 }
 void Boundingbox::setColliderTransform(Transforming & t)
 {
-	Physicsobject::setColliderTransform(t);		//recalculate extents
+	collidertransform.position = t.position;
 	maxextents = vector3(getPosition().x + (width / 2.0f), getPosition().y + (length / 2.0f), getPosition().z + (length / 2.0f));
-	maxextents = vector3(getPosition().x + (width / 2.0f), getPosition().y + (length / 2.0f), getPosition().z + (length / 2.0f));
+	minextents = vector3(getPosition().x - (width / 2.0f), getPosition().y - (length / 2.0f), getPosition().z - (length / 2.0f));
 }
 void Boundingbox::setPosition(vector3 pos)
 {
 	Physicsobject::setPosition(pos);
 	maxextents = vector3(getPosition().x + (width / 2.0f), getPosition().y + (length / 2.0f), getPosition().z + (length / 2.0f));
+	minextents = vector3(getPosition().x - (width / 2.0f), getPosition().y - (length / 2.0f), getPosition().z - (length / 2.0f));
+}
+void Boundingbox::setPosition(float x, float y, float z)
+{
+	Physicsobject::setPosition(x, y, z);
 	maxextents = vector3(getPosition().x + (width / 2.0f), getPosition().y + (length / 2.0f), getPosition().z + (length / 2.0f));
+	minextents = vector3(getPosition().x - (width / 2.0f), getPosition().y - (length / 2.0f), getPosition().z - (length / 2.0f));
 }
 void Boundingbox::setRotation(Quaternion rot)
 {
-	Physicsobject::setRotation(rot);
+	/*Physicsobject::setRotation(rot);
 	maxextents = vector3(getPosition().x + (width / 2.0f), getPosition().y + (length / 2.0f), getPosition().z + (length / 2.0f));
-	maxextents = vector3(getPosition().x + (width / 2.0f), getPosition().y + (length / 2.0f), getPosition().z + (length / 2.0f));
+	maxextents = vector3(getPosition().x + (width / 2.0f), getPosition().y + (length / 2.0f), getPosition().z + (length / 2.0f));*/
 }
 vector3 Boundingbox::getMinextents()
 {

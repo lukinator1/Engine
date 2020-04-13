@@ -1,9 +1,12 @@
 #include "Console.h"
-void Console::consoleStartup(Logger &_log, Memorymanager &_memorymanager, Window &_window, Input &_Inputs, Rendering &_rendermanager, Camera & _thecamera) {
+#include "Global.h"
+void Console::consoleStartup(Logger &_log, Memorymanager &_memorymanager, Window &_window, Input &_Inputs, Rendering &_rendermanager, Physicsmanager &_physicsmanager, Camera & _thecamera, Resourcemanager & SS) {
 	logger = &_log;
 	memorymanager = &_memorymanager;
 	window = &_window;
 	rendermanager = &_rendermanager;
+	physicsmanager = &_physicsmanager;
+	resourcemanager = &SS;
 	inputs = &_Inputs;
 	thecamera = &_thecamera;
 	consoleposition = vector2(rendermanager->windowptr->getWindowWidth() * .40f, rendermanager->windowptr->getWindowHeight() * .55f);
@@ -43,7 +46,7 @@ void Console::interpretInput(Scene &_currentscene, bool &gameisrunning, bool &fr
 		std::cout << consoleinput << std::endl;
 	}
 	//logger
-	if (consoleinput.substr(0, 19) == "set logger channels") {
+	if (consoleinput.substr(0, 19) == "set logger channels" && cheatson) {
 		std::vector<int> channels;
 		if (consoleinput.length() >= 20) {
 			for (int i = 19; i < consoleinput.length(); i++) {
@@ -88,7 +91,7 @@ void Console::interpretInput(Scene &_currentscene, bool &gameisrunning, bool &fr
 			response = "Error, please enter channels between 1 and 3.";
 		}
 	}
-	else if (consoleinput.substr(0, 26) == "deactivate logger channels") {
+	else if (consoleinput.substr(0, 26) == "deactivate logger channels" && cheatson) {
 		std::vector<int> channels;
 		if (consoleinput.length() >= 28) {
 			for (int i = 26; i < consoleinput.length(); i++) {
@@ -133,7 +136,7 @@ void Console::interpretInput(Scene &_currentscene, bool &gameisrunning, bool &fr
 			response = "Error, please enter channels between 1 and 3.";
 		}
 	}
-	else if (consoleinput.substr(0, 20) == "set logger verbosity") {
+	else if (consoleinput.substr(0, 20) == "set logger verbosity" && cheatson) {
 		std::vector<int> verbosity;
 		if (consoleinput.length() >= 22) {
 			for (int i = 21; i < consoleinput.length(); i++) {
@@ -173,15 +176,15 @@ void Console::interpretInput(Scene &_currentscene, bool &gameisrunning, bool &fr
 			response = "Error, please enter a verbosity between 1 and 3.";
 		}
 	}
-	else if (consoleinput == "clear logs") {
+	else if (consoleinput == "clear logs" && cheatson) {
 		logger->clearLogs();
 		response = "Logs cleared.";
 	}	
-	else if (consoleinput == "show logger warnings") {
+	else if (consoleinput == "show logger warnings" && cheatson) {
 	logger->showwarnings = true;
 	response = "Logger warnings are on.";
 	}
-	else if (consoleinput == "hide logger warnings") {
+	else if (consoleinput == "hide logger warnings" && cheatson) {
 	logger-> showwarnings = false;
 	response = "Logger warnings are off";
 	}
@@ -247,13 +250,20 @@ void Console::interpretInput(Scene &_currentscene, bool &gameisrunning, bool &fr
 			response = "Please enter a valid fov.";
 		}
 	}
-	else if (consoleinput.substr(0, 19) == "set camera position") {
-	if (consoleinput.size() >= 26) {
+	else if (consoleinput.substr(0, 19) == "set camera position" && cheatson) {
+	if (consoleinput.size() >= 27) {
+		int commacount = 0;
 		for (int i = 20; i < consoleinput.size(); i++) {
 			if ((consoleinput[i] < '0' || consoleinput[i] > '9') && (consoleinput[i] != ' ' && consoleinput[i] != '.' && consoleinput[i] != ',' && consoleinput[i] != '-'/* && consoleinput[i] != ';'*/)) {
 				response = "Please enter a valid vector3 camera position.";
 				break;
 			}
+			if (consoleinput[i] == ',') {
+				commacount++;
+			}
+		}
+		if (commacount != 2) {
+			response = "Please enter a valid vector3 camera position.";
 		}
 		if (consoleinput[19] != ' '/* || consoleinput.find(';') == std::string::npos*/) {
 			response = "Please enter a valid vector3 camera position.";
@@ -291,13 +301,21 @@ void Console::interpretInput(Scene &_currentscene, bool &gameisrunning, bool &fr
 	}
 
 	}
-	else if (consoleinput.substr(0, 11) == "move camera") {
-	if (consoleinput.size() >= 18) {
-		for (int i = 11; i < consoleinput.size(); i++) {
+	else if (consoleinput.substr(0, 11) == "move camera" && cheatson) {
+	if (consoleinput.size() >= 19) {
+		int commacount = 0;
+		for (int i = 12; i < consoleinput.size(); i++) {
 			if ((consoleinput[i] < '0' || consoleinput[i] > '9') && (consoleinput[i] != ' ' && consoleinput[i] != '.' && consoleinput[i] != ',' && consoleinput[i] != '-'/* && consoleinput[i] != ';'*/)) {
 				response = "Please enter a valid vector3 camera distance.";
 				break;
 			}
+
+			if (consoleinput[i] == ',') {
+				commacount++;
+			}
+		}
+		if (commacount != 2) {
+			response = "Please enter a valid vector3 camera distance.";
 		}
 		if (consoleinput[11] != ' ' /*&& consoleinput.find(';') == std::string::npos*/) {
 			response = "Please enter a valid vector3 camera distance.";
@@ -374,11 +392,11 @@ void Console::interpretInput(Scene &_currentscene, bool &gameisrunning, bool &fr
 		response = "Please enter a valid aspect ratio.";
 	}
 	}
-	else if (consoleinput == "mouselook on") {
+	else if (consoleinput == "mouselook on" && cheatson) {
 		thecamera->setMouseLook(true);
 		response = "Mouselook has been set on.";
 	}
-	else if (consoleinput == "mouselook off") {
+	else if (consoleinput == "mouselook off" && cheatson) {
 		thecamera->setMouseLook(false);
 		response = "Mouselook has been set off.";
 	}
@@ -407,8 +425,8 @@ void Console::interpretInput(Scene &_currentscene, bool &gameisrunning, bool &fr
 	}
 	}*/
 
-	//rendering
-	else if (consoleinput.substr(0, 10) == "set skybox") {
+	//scene/rendering
+	else if (consoleinput.substr(0, 10) == "set skybox" && cheatson) {
 	/*for (int i = 16; i < consoleinput.size(); i++) {
 		if ((consoleinput[i] < '0' || consoleinput[i] > '9') && (consoleinput[i] != ' ' && consoleinput[i] != '.' && consoleinput[i] != ':')) {
 			response = "Please enter a valid aspect ratio.";
@@ -482,12 +500,267 @@ void Console::interpretInput(Scene &_currentscene, bool &gameisrunning, bool &fr
 		}
 	}
 	}
+	else if (consoleinput.substr(0, 10) == "set entity" && cheatson) {
+		if (consoleinput.substr(10, 10) == " position ") {
+			if (consoleinput.size() < 29) {  //check if meets minimum size requirements
+				response = "Not a valid input for entity position.";
+			}
+			else {
+				std::vector<int> spaces;
+				for (int i = 20; i < consoleinput.size(); i++) { //find last instance of space
+					if (consoleinput[i] == ' ') {
+						spaces.push_back(i);
+					}
+				}
+				if (spaces.size() < 3) {
+					response = "Not a valid input for entity position.";
+				}
+				else {
+					spaces.pop_back();
+					spaces.pop_back();
+					std::string entity = consoleinput.substr(20, (spaces.back()) - 20);
+					if (consoleinput.size() < (spaces.back() + 7)) {
+						response = "Not a valid input for entity position.";
+					}
+					for (int i = spaces.back() + 1; i < consoleinput.size(); i++) {
+						if ((consoleinput[i] < '0' || consoleinput[i] > '9') && (consoleinput[i] != ' ' && consoleinput[i] != '.' && consoleinput[i] != ',' && consoleinput[i] != '-'/* && consoleinput[i] != ';'*/)) {
+							response = "Not a valid input for entity position.";
+						}
+					}
+					std::stringstream newinput(consoleinput.substr(spaces.back() + 1, consoleinput.length()));
+					std::string buffer = "";
+					std::string newpos = "";
+					int count = 0;
+					float pos = 0;
+					Entity *e = _currentscene.findEntity(entity);
+					if (e == nullptr) {
+						response = "Not a valid input for entity position.";
+					}
+					if (response != "Not a valid input for entity position." && response != "Entity not found.") {
+						response = entity + " position set to ";
+						while (getline(newinput, buffer, ',') && count != 3) {
+							pos = std::stod(buffer);
+							switch (count) {
+							case 0:
+								e->transform.position.x = pos;
+								response += std::to_string(pos);
+								break;
+							case 1:
+								e->transform.position.y = pos;
+								response += ", " + std::to_string(pos);
+								break;
+							case 2:
+								e->transform.position.z = pos;
+								response += ", " + std::to_string(pos);
+								break;
+							}
+							count++;
+						}
+						response += ".";
+					}
+				}
+				}
+			}
+		else {
+			response = "Not a valid entity change input.";
+		}
+		}
+	else if (consoleinput.substr(0, 17) == "set ambient light" && cheatson) {
+	if (consoleinput.size() >= 25) {
+		int commacount = 0;
+		for (int i = 18; i < consoleinput.size(); i++) {
+			if ((consoleinput[i] < '0' || consoleinput[i] > '9') && (consoleinput[i] != ' ' && consoleinput[i] != '.' && consoleinput[i] != ',' && consoleinput[i] != '-'/* && consoleinput[i] != ';'*/)) {
+				response = "Please enter a valid vector3 ambient light.";
+				break;
+			}
+				if (consoleinput[i] == ',') {
+				commacount++;
+				}
+		}
+		if (commacount != 2) {
+			response = "Please enter a valid vector3 ambient light.";
+		}
+		if (consoleinput[17] != ' '/* || consoleinput.find(';') == std::string::npos*/) {
+			response = "Please enter a valid vector3 ambient light.";
+		}
+		std::stringstream newinput(consoleinput.substr(18, consoleinput.length()));
+		std::string buffer = "";
+		std::string newpos = "";
+		int count = 0;
+		float pos = 0;
+		if (response != "Please enter a valid vector3 ambient light.") {
+			response = "Ambient light set to ";
+			while (getline(newinput, buffer, ',') && count != 3) {
+				pos = std::stod(buffer);
+				switch (count) {
+				case 0:
+					_currentscene.ambientlight.x = pos;
+					response += std::to_string(pos);
+					break;
+				case 1:
+					_currentscene.ambientlight.y = pos;
+					response += ", " + std::to_string(pos);
+					break;
+				case 2:
+					_currentscene.ambientlight.z = pos;
+					response += ", " + std::to_string(pos);
+					break;
+				}
+				count++;
+			}
+			response += ".";
+		}
+	}
+	else {
+		response = "Please enter a valid vector3 ambient light.";
+	}
+	}
 
+	//audio
+	else if (consoleinput.substr(0, 10) == "set song" && cheatson) {
+	// _currentscene->currentsong
+	}
 
-
+	//physics
+	else if (consoleinput.substr(0, 6) == "noclip" && cheatson) {
+	if (physicsmanager->noclip) {
+		physicsmanager->noclip = false;
+		response = "Noclip deactivated.";
+	}
+	else {
+		physicsmanager->noclip = true;
+		response = "Noclip activated";
+	}
+	}
+	else if (consoleinput.substr(0, 11) == "set gravity" && cheatson) {
+		if (consoleinput.size() >= 19) {
+			int commacount = 0;
+			for (int i = 12; i < consoleinput.size(); i++) {
+				if ((consoleinput[i] < '0' || consoleinput[i] > '9') && (consoleinput[i] != ' ' && consoleinput[i] != '.' && consoleinput[i] != ',' && consoleinput[i] != '-'/* && consoleinput[i] != ';'*/)) {
+					response = "Please enter a valid vector3 gravity value.";
+					break;
+				}
+				if (consoleinput[i] == ',') {
+					commacount++;
+				}
+			}
+			if (commacount != 2) {
+				response = "Please enter a valid vector3 ambient light.";
+			}
+			if (consoleinput[11] != ' '/* || consoleinput.find(';') == std::string::npos*/) {
+				response = "Please enter a valid vector3 gravity value.";
+			}
+			std::stringstream newinput(consoleinput.substr(12, consoleinput.length()));
+			std::string buffer = "";
+			std::string newpos = "";
+			int count = 0;
+			float pos = 0;
+			if (response != "Please enter a valid vector3 gravity.") {
+				Physicsobject gravitysetter;
+				response = "Gravity set to ";
+				while (getline(newinput, buffer, ',') && count != 3) {
+					pos = std::stod(buffer);
+					switch (count) {
+					case 0:
+						gravitysetter.gravity.x = pos;
+						response += std::to_string(pos);
+						break;
+					case 1:
+						gravitysetter.gravity.y = pos;
+						response += ", " + std::to_string(pos);
+						break;
+					case 2:
+						gravitysetter.gravity.z = pos;
+						response += ", " + std::to_string(pos);
+						break;
+					}
+					count++;
+				}
+				response += ".";
+			}
+		}
+		else {
+			response = "Please enter a valid vector3 gravity value.";
+		}
+	}
+	else if (consoleinput.substr(0, 20) == "spawn boundingsphere" && cheatson) {
+		if (consoleinput.size() < 22) {
+			response = "Error, please enter a sphere name.";
+		}
+		else if (consoleinput[20] != ' ') {
+			response = "Error, please enter a sphere name.";
+		}
+		else {
+			std::string spherename = consoleinput.substr(21, consoleinput.length());
+			Boundingsphere bsphere;
+			bsphere.radius *= 4;
+			bsphere.setPosition(thecamera->cameraposition);
+			resourcemanager->addBoundingSphere(spherename, bsphere); //todo: already in resource manager
+			colliders.push_back(&(resourcemanager->getBoundingSphere(spherename)));
+			response = "Boundingsphere \"" + spherename + "\" has been added to the current position of the camera.";
+		}
+	}
+	else if (consoleinput.substr(0, 30) == "spawn axis-aligned boundingbox" && cheatson) {
+	if (consoleinput.size() < 32) {
+		response = "Error, please enter an AABB name.";
+	}
+	else if (consoleinput[30] != ' ') {
+		response = "Error, please enter an AABB name.";
+	}
+	else {
+		std::string boxname = consoleinput.substr(14, consoleinput.length());
+		Boundingbox aabbox;
+		aabbox.setPosition(thecamera->cameraposition);
+		resourcemanager->addAABB(boxname, aabbox); //todo: already in resource manager
+		colliders.push_back(&(resourcemanager->getBoundingSphere(boxname)));
+		response = "AABB \"" + boxname + "\" has been added to the current position of the camera.";
+		}
+	}
+	else if (consoleinput.substr(0, 10) == "spawn AABB" && cheatson) {
+	if (consoleinput.size() < 12) {
+		response = "Error, please enter an AABB name.";
+	}
+	else if (consoleinput[10] != ' ') {
+		response = "Error, please enter an AABB name.";
+	}
+	else {
+		std::string boxname = consoleinput.substr(11, consoleinput.length());
+		Boundingbox aabbox;
+		aabbox.setPosition(thecamera->cameraposition);
+		resourcemanager->addAABB(boxname, aabbox); //todo: already in resource manager
+		colliders.push_back(&(resourcemanager->getBoundingSphere(boxname)));
+		response = "AABB \"" + boxname + "\" has been added to the current position of the camera.";
+	}
+	}
+	/*else if (consoleinput.substr(0, 17) == "set physicsobject " && cheatson) {
+	if (consoleinput.size() < 22) {
+		response = "Error, please enter a sphere name.";
+	}
+	else if (consoleinput[20] != ' ') {
+		response = "Error, please enter a sphere name.";
+	}
+	else {
+		std::string spherename = consoleinput.substr(14, consoleinput.length());
+		Boundingsphere bsphere;
+		bsphere.setPosition(thecamera->cameraposition);
+		resourcemanager.addBoundingSphere(spherename, bsphere); //todo: already in resource manager
+		physicsmanager->physicsobjects.push_back(&(resourcemanager.getBoundingSphere(spherename)));
+		response = "Boundingsphere \"" + spherename + "\" has been added to the current position of the camera.";
+	}
+	}*/
 
 	//misc.
-	else if (consoleinput == "framebyframe") { 
+	else if (consoleinput == consolecheatspassword) {
+		if (cheatson) {
+			cheatson = false;
+			response = "Cheats off.";
+		}
+		else {
+			cheatson = true;
+			response = "Cheats on.";
+		}
+	}
+	else if (consoleinput == "framebyframe" && cheatson) {
 	framebyframe = true;
 	response = "Framebyframe mode is on. Press leftshift to framestep, esc to exit.";
 	}
@@ -499,7 +772,7 @@ void Console::interpretInput(Scene &_currentscene, bool &gameisrunning, bool &fr
 	fpscounter = false;
 	response = "Fps counter hidden.";
 	}
-	else if (consoleinput.substr(0, 14) == "lock framerate") { //todo: adding choice of framerate
+	else if (consoleinput.substr(0, 14) == "lock framerate" && cheatson) { //todo: adding choice of framerate
 		framelock = true;
 		deltatime = dtime; 
 		response = "Framerate attempted to be locked.";
@@ -525,11 +798,11 @@ void Console::interpretInput(Scene &_currentscene, bool &gameisrunning, bool &fr
 		}*/
 	
 	}
-	else if (consoleinput == "unlock framerate") {
+	else if (consoleinput == "unlock framerate" && cheatson) {
 	framelock = false;
 	response = "Framerate unlocked.";
 	}
-	else if (consoleinput.substr(0, 19) == "multiply delta time" || consoleinput.substr(0,19) == "multiply game speed") {
+	else if ((consoleinput.substr(0, 19) == "multiply delta time" || consoleinput.substr(0,19) == "multiply game speed") && cheatson) {
 	std::vector<int> delta;
 	if (consoleinput.length() >= 21) {
 		for (int i = 20; i < consoleinput.length(); i++) {
@@ -638,7 +911,7 @@ void Console::interpretInput(Scene &_currentscene, bool &gameisrunning, bool &fr
 			response = "Error pleaese enter a valid number.";
 		}*/
 	}
-	else if (consoleinput.substr(0, 17) == "divide delta time" || consoleinput.substr(0, 17) == "divide game speed") {
+	else if ((consoleinput.substr(0, 17) == "divide delta time" || consoleinput.substr(0, 17) == "divide game speed") && cheatson) {
 	std:: vector<int> delta;
 	if (consoleinput.length() >= 19) {
 	for (int i = 18; i < consoleinput.length(); i++) {
@@ -747,7 +1020,7 @@ else {
 		response = "Error pleaese enter a valid number.";
 	}*/
 	}
-	else if (consoleinput == "echo console") {
+	else if (consoleinput == "echo console"  && cheatson) {
 		if (consoleecho == true) {
 			consoleecho = false;
 			response = "Console echo is off.";
@@ -833,6 +1106,10 @@ void Console::setConsoleColor(float x, float y, float z) {
 }
 void Console::setConsoleSize(float newsize) {
 	consoletextsize = newsize;
+}
+void Console::setPassword(std::string password)
+{
+	consolecheatspassword = password;
 }
 vector2 Console::getConsolePosition() {
 	return consoleposition;

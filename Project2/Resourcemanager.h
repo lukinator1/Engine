@@ -3,6 +3,7 @@
 #include "Rendering/Model.h"
 #include "Rendering/Lighting/Lighting.h" 
 #include "Physics/Boundingsphere.h"
+#include "Physics/Boundingbox.h"
 #include "Entity.h"
 #include "Audio/Audioclip.h"
 class Resourcemanager //todo: error when can't find in map
@@ -15,10 +16,11 @@ class Resourcemanager //todo: error when can't find in map
 	std::map<std::string, Pointlight> pointlights;
 	std::map<std::string, Spotlight> spotlights;
 	std::map<std::string, Boundingsphere> boundingspheres;
+	std::map<std::string, Boundingbox> axisalignedboundingboxes;
 	std::map<std::string, Audioclip> audioclips;
 	std::map<std::string, Entity> entities;
 public:
-	void addEntity(Entity &entity, std::string id) {
+	bool addEntity(Entity &entity, std::string id) {
 		entities.emplace(id, entity);
 	}
 	void deleteEntities (std::string id) { //todo
@@ -35,13 +37,10 @@ public:
 	void addModel(std::string id, std::string Modelfile) {
 		models.emplace(id, Model(Modelfile));
 	}
-	/*void setModel(std::string id) {
-		return models.at(id);
-	}*/
 	Model & getModel(std::string id) {
 		return models.at(id);
 	}
-	void deleteModel(std::string id) {
+	bool deleteModel(std::string id) {
 		models.at(id).freeModel();
 		models.erase(id);
 	}
@@ -117,6 +116,26 @@ public:
 	void deleteBoundingSpheres(std::string id) {
 		/*lights.at(id).freeLight();*/
 		boundingspheres.erase(id);
+	}
+	void addAxisAlignedBoundingBox(std::string id, Boundingbox AABbox) {
+		axisalignedboundingboxes.emplace(id, AABbox);
+	}
+	void addAABB(std::string id, Boundingbox AABbox) {
+		axisalignedboundingboxes.emplace(id, AABbox);
+	}
+	Boundingbox &getAxisAlignedBoundingBox(std::string id) {
+		return axisalignedboundingboxes.at(id);
+	}
+	Boundingbox &getAABB(std::string id) {
+		return axisalignedboundingboxes.at(id);
+	}
+	void deleteAxisAlignedBoundingBox(std::string id) {
+		/*lights.at(id).freeLight();*/
+		axisalignedboundingboxes.erase(id);
+	}
+	void deleteAABB(std::string id) {
+		/*lights.at(id).freeLight();*/
+		axisalignedboundingboxes.erase(id);
 	}
 
 	Resourcemanager();

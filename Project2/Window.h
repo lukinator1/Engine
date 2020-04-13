@@ -9,6 +9,7 @@
 #include "Logger.h"
 #include "Messaging/Message.h"
 #include "Rendering/Texture.h"
+#include "Camera.h"
 //to do: desktop icon + resolution
 //momerykl monkeyr
 class Window : public Logger
@@ -22,6 +23,7 @@ private:
 	void clearWindow(float r, float g, float b, float a);
 public:
 	SDL_Window* window;
+	Camera* cameraptr;
 	bool maximized = false;
 	bool minimized = false;
 	bool resized = false;

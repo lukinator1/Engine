@@ -36,7 +36,7 @@ public:
 	bool collided;
 	vector3 resultingdirection;
 	Collisiondata collisiondata;
-	static float gravity;
+	static vector3 gravity;
 	virtual void Integrate();
 	virtual bool Simulate(Physicsobject &_physicsobject);
 	virtual void handleCollision();
@@ -47,6 +47,7 @@ public:
 	Transforming getColliderTransform();
 	virtual void setColliderTransform(Transforming &t);
 	virtual void setPosition(vector3 pos);
+	virtual void setPosition(float x, float y, float z);
 	virtual void setRotation(Quaternion rot);
 	virtual vector3 getMinextents();
 	virtual vector3 getMaxextents();

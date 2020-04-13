@@ -24,6 +24,7 @@ public:
 	float getHeight();
 	void setColliderTransform(Transforming &t);
 	void setPosition(vector3 pos);
+	void setPosition(float x, float y, float z);
 	void setRotation(Quaternion rot);
 	vector3 getMinextents();
 	vector3 getMaxextents();

@@ -10,18 +10,16 @@ class Scene
 {
 private:
 public:
-	Entity root;
+	Entity *root;
 	vector3 ambientlight;
 	std::vector<Directionallight *> directionallights; 
 	std::vector<Pointlight *> pointlights;
 	std::vector<Spotlight *> spotlights;
 	Audioclip *currentsong;
-	/*std::map<std::string, Directionallight>directionallights;
-	std::map<std::string, Pointlight> pointlights;
-	std::map<std::string, Spotlight>spotlights;*/
 	Skybox skybox;
-	Entity getRoot();
-	void setRoot(Entity &e);
+	Entity *getRoot();
+	void setRoot(Entity *e);
+	Entity * findEntity(std::string id);
 	void saveScene();
 	void initScene();
 	void closeScene();

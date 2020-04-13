@@ -3,11 +3,14 @@
 #include "SDL2/SDL.h"
 #include "Messaging/Message.h"
 #include "Rendering/Rendermanager.h"
+#include "Physics/Physicsmanager.h"
+#include "Audio/Audiomanager.h"
+#include "Resourcemanager.h"
 #include "CustomMemoryAllocation/Memorymanager.h"
 #include "Input.h"
 #include <vector>
 #include <string>
-class Console //todo: permissions
+class Console //todo: userinput
 {
 private:
 	vector2 consoleposition;
@@ -15,12 +18,14 @@ private:
 	float consoletextsize = 1.0f;
 	float consolewidth = 0;
 	Rendering* rendermanager;
+	Physicsmanager* physicsmanager;
 	Logger* logger;
 	Memorymanager* memorymanager;
+	Resourcemanager* resourcemanager;
 	Window* window;
 	Input* inputs;
 	Camera* thecamera;
-	Scene* currentscene;
+	bool cheatson = true; //todo: false by default
 	bool displayconsole = true;
 	bool consolefocused = false;
 	bool consoleon = false;
@@ -32,9 +37,10 @@ public:
 	void useConsole();
 	void leaveConsole();
 	bool consoleOn();
-	void consoleStartup(Logger &log, Memorymanager &memorymanager, Window &window, Input &Inputs, Rendering &rendermanager, Camera &camera);
+	void consoleStartup(Logger &log, Memorymanager &memorymanager, Window &window, Input &Inputs, Rendering &rendermanager, Physicsmanager &_physicsmanager, Camera &camera, Resourcemanager &SS);
 	std::string consoleinput = "";
 	std::string response = "";
+	std::string consolecheatspassword = "defaultpassword";
 	std::string composition = "> ";
 	std::vector<std::string> oldcomposition;
 	bool consoleFocused();
@@ -49,6 +55,7 @@ public:
 	void setConsoleColor(vector3 color);
 	void setConsoleColor(float x, float y, float z);
 	void setConsoleSize(float newsize);
+	void setPassword(std::string password);
 	vector2 getConsolePosition();
 	void setConsoleFont();
 

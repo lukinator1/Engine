@@ -244,18 +244,6 @@ int main(int argc, char* argv[]) {
 			}
 		}
 		configuration.close();
-	/*std::ofstream start;
-		if (Logger::clear) {
-			start.open("Enginelogs/EngineLog.txt", std::ofstream::out);
-		}
-		else 
-		{
-			start.open("Enginelogs/EngineLog.txt", std::ofstream::out || std::ofstream::app);
-		}
-		if (start.is_open()) {
-			start << "Current date + time: " << __TIMESTAMP__ << std::endl;
-		}
-		start.close();*/
 
 	Logger log;				//startup
 	log.startUp();
@@ -267,14 +255,14 @@ int main(int argc, char* argv[]) {
 	Renderer.renderingStartup(Window);
 	Audiomanager Audio;
 	Audio.audioStartup();
-	Resourcemanager SS;
 	Camera Camera;
 	Camera.cameraStartup(fov, maxviewdistance, minviewdistance, arwidth, arheight);
-	Transforming transform;
+	Window.cameraptr = &Camera;
+	Resourcemanager SS;
 	Input Inputs;
 	Inputs.inputStartup();
 	Console Console;
-	Console.consoleStartup(log, MemoryManager, Window, Inputs, Renderer, Camera);
+	Console.consoleStartup(log, MemoryManager, Window, Inputs, Renderer, Physics, Camera, SS);
 
 	//test scene
 	Scene sceneone;		
@@ -302,18 +290,19 @@ int main(int argc, char* argv[]) {
 	//meshes
 	SS.addMaterials("mats1", Materials("test.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f));
 	SS.addMaterials("mats2", Materials("container.jpg", vector3(1.0f, 1.0f, 0.0f), 1.0f, 8.0f));
+	SS.addMaterials("mats3", Materials("ashbringer_color_map.png", vector3(1.0f, 1.0f, 0.0f), 1.0f, 8.0f));
 
 	//castle
 	SS.addModel("Quote", Model("quote.obj"));
 	SS.addModel("Cloud", Model("Cloud.obj"));
-	SS.addModel("Snake", Model("snake.obj"));
+	SS.addModel("Snake", Model("snake1.obj"));
 	SS.addModel("Mario", Model("mario.obj"));
 	SS.addMesh("Cube", Mesh("cube.obj"));
 	SS.addMesh("Sphere", Mesh("sphere.obj"));
-	SS.addModel("Gumi", Model("gumi.obj"));
+	SS.addModel("Gumi", Model("gumi1.obj"));
 	SS.addModel("Cube", Model("cube.obj"));
 	SS.addModel("cardboardbox", Model("CardBoardBox.obj"));
-	SS.addModel("Castle", Model("Peachs Castle 1f.obj"));
+	SS.addModel("Castle", Model("Peachs1 Castle 1f.obj"));
 
 	/*SS.addModel("Quote", Model(""));
 	SS.addModel("Cloud", Model(""));
@@ -327,25 +316,25 @@ int main(int argc, char* argv[]) {
 	SS.addModel("Castle", Model(""));*/
 	
 	//valley
-	SS.addModel("Valleyoftrials", Model("Valleyoftrials.obj"));
+	/*SS.addModel("Valleyoftrials", Model("Valleyoftrials.obj"));
 	SS.addModel("2B", Model("Nier2b.obj"));
 	SS.addModel("Ashebringer", Model("Ashebringer.obj"));
-	SS.addModel("Altar", Model("Altar.obj"));
-	/*SS.addModel("Valleyoftrials", Model(""));
+	SS.addModel("Altar", Model("Altar.obj"));*/
+	SS.addModel("Valleyoftrials", Model(""));
 	SS.addModel("2B", Model(""));
 	SS.addModel("Ashebringer", Model(""));
-	SS.addModel("Altar", Model(""));*/
+	SS.addModel("Altar", Model(""));
 
 	//temple
-	SS.addModel("Anubistemple", Model("floatingisland.obj"));
+	/*SS.addModel("Floatingisland", Model("floatingisland.obj"));
 	SS.addModel("Kirby", Model("Kirby.obj"));
 	SS.addModel("Scout", Model("Scout2.obj"));
-	SS.addModel("Rin Tezuka", Model("rin tezuka"));
+	SS.addModel("Rin Tezuka", Model("rin tezuka"));*/
 	
-	/*SS.addModel("Anubistemple", Model(""));
+	SS.addModel("Floatingisland", Model(""));
 	SS.addModel("Kirby", Model(""));
 	SS.addModel("Scout", Model(""));
-	SS.addModel("Rin Tezuka", Model(""));*/
+	SS.addModel("Rin Tezuka", Model(""));
 
 	//physics
 	SS.addBoundingSphere("bsphere1", Boundingsphere());
@@ -370,7 +359,7 @@ int main(int argc, char* argv[]) {
 	//entites
 
 	//sceneone
-	Entity Quote; 
+	Entity Quote("Quote"); 
 	Quote.transform.setPosition(vector3(10.0f, 17.5f, 12.0f));
 	/*Meshrenderer component(SS.getMesh("Quote"), SS.getMaterials("mats1"));*/
 	Modelrenderer quotemodel(SS.getModel("Quote"));
@@ -378,7 +367,7 @@ int main(int argc, char* argv[]) {
 	Quote.transform.setRotation(0.0f, 0.0f, 0.0f, 0.0f);
 	Quote.addComponent(&quotemodel);
 
-	Entity Castle;
+	Entity Castle("Castle");
 	Modelrenderer castlemodel(SS.getModel("Castle"));
 	Castle.transform.setPosition(-15.0f, 3.0f, 6.0f);
 	Castle.transform.setScale(vector3(40.0f, 40.0f, 40.0f));
@@ -386,7 +375,7 @@ int main(int argc, char* argv[]) {
 	Quote.addSubEntity(&Castle);
 
 	Meshrenderer otherspheremesh(SS.getMesh("Sphere"), SS.getMaterials("mats1"));
-	Entity Cloud;
+	Entity Cloud("Cloud");
 	Cloud.transform.setPosition(vector3(5.0f, 0.0f, 10.0f));
 	Cloud.transform.setScale(vector3(0.10f, .10f, .10f));
 	Modelrenderer cloudmodel(SS.getModel("Cloud"));
@@ -400,28 +389,28 @@ int main(int argc, char* argv[]) {
 	Cloud.addComponent(&bspherecloud);
 	Quote.addSubEntity(&Cloud);
 
-	Entity Snake;
+	Entity Snake("Snake");
 	Snake.transform.setPosition(vector3(10.0f, -3.0f, 20.0f));
 	Snake.transform.setScale(vector3(0.08f, 0.08f, 0.08f));
 	Modelrenderer snakecomponent(SS.getModel("Snake"));
 	Snake.addComponent(&snakecomponent);
 	Cloud.addSubEntity(&Snake);
 
-	Entity Mario;
+	Entity Mario("Mario");
 	Mario.transform.setPosition(vector3(30.0f, 0.0f, 15.0f));
 	Mario.transform.setScale(vector3(0.07f, 0.07f, 0.07f));
 	Modelrenderer scoutcomponent(SS.getModel("Mario"));
 	Mario.addComponent(&scoutcomponent);
 	Quote.addSubEntity(&Mario);
 
-	Entity Gumi;
+	Entity Gumi("Gumi");
 	Modelrenderer gumimodel(SS.getModel("Gumi"));
 	Gumi.transform.setPosition(-15.0f, 3.0f, 15.0f);
 	Gumi.transform.setScale(vector3(0.75f, 0.75f, 0.75f));
 	Gumi.addComponent(&gumimodel);
 	/*Quote.addSubEntity(&Gumi);*/
 
-	Entity sphereone;  //physics tests
+	Entity sphereone("sphereone");  //physics tests
 	sphereone.transform.setPosition(7.5f, 40.0f, -14.0f);
 	sphereone.transform.setScale(vector3(2.0f, 2.0f, 2.0f));
 	Meshrenderer spheremesh(SS.getMesh("Sphere"), SS.getMaterials("mats2"));
@@ -434,7 +423,7 @@ int main(int argc, char* argv[]) {
 	sphereone.addComponent(&sphereonecollider);
 	Quote.addSubEntity(&sphereone);
 
-	Entity spheretwo;
+	Entity spheretwo("spheretwo");
 	spheretwo.transform.setPosition(7.5f, 40.0f, -21.0f);
 	spheretwo.transform.setScale(vector3(2.0f, 2.0f, 2.0f));
 	spheretwo.addComponent(&otherspheremesh);
@@ -446,7 +435,7 @@ int main(int argc, char* argv[]) {
 	spheretwo.addComponent(&spheretwocollider);
 	sphereone.addSubEntity(&spheretwo);
 
-	Entity box;
+	Entity box("box");
 	Meshrenderer boxmesh(SS.getMesh("Cube"), SS.getMaterials("mats2"));
 	box.transform.setPosition(0, 3.0f, 17.0f);
 	box.transform.setScale(vector3(5.0f, 3.0f, 3.0f));
@@ -460,11 +449,11 @@ int main(int argc, char* argv[]) {
 
 
 	//scene two
-	Entity valley;
+	Entity valley("Valley of Trials");
 	Modelrenderer valleymodel(SS.getModel("Valleyoftrials"));
 	valley.addComponent(&valleymodel);
 
-	Entity twoB;
+	Entity twoB("2B");
 	Modelrenderer twoBmodel(SS.getModel("2B"));
 	SS.getModel("2B").setMaterial(SS.getMaterials("mats1"));
 	twoB.transform.setPosition(3.0f, 2.5f, 9.0f);
@@ -472,7 +461,7 @@ int main(int argc, char* argv[]) {
 	twoB.addComponent(&twoBmodel);
 	valley.addSubEntity(&twoB);
 
-	Entity Altar;
+	Entity Altar("Altar");
 	Modelrenderer altarmodel(SS.getModel("Altar"));
 	SS.getModel("Altar").setMaterial(SS.getMaterials("mats2"));
 	Altar.transform.setPosition(-13.0f, 3.0f, 12.0f);
@@ -480,7 +469,7 @@ int main(int argc, char* argv[]) {
 	Altar.addComponent(&altarmodel);
 	valley.addSubEntity(&Altar);
 
-	Entity Ashebringer;
+	Entity Ashebringer("Ashebringer");
 	Modelrenderer ashebringermodel(SS.getModel("Ashebringer"));
 	SS.getModel("Ashebringer").setMaterial(SS.getMaterials("mats1"));
 	Ashebringer.transform.setPosition(-13.0f, 6.0f, 0.0f);
@@ -490,23 +479,25 @@ int main(int argc, char* argv[]) {
 
 	
 	//scene three
-	Entity Anubistemple;
-	Modelrenderer anubistemplemodel(SS.getModel("Anubistemple"));
-	Anubistemple.addComponent(&anubistemplemodel);
+	Entity floatingisland("Floating Island");
+	floatingisland.transform.setScale(25.0f, 25.0f, 25.0f);
+	Modelrenderer floatingislandmodel(SS.getModel("Floatingisland"));
+	floatingisland.addComponent(&floatingislandmodel);
 	
-	Entity Kirby;
+	/*Entity Kirby("Kirby");
 	Modelrenderer kirbymodel(SS.getModel("Kirby"));
 	Kirby.transform.setPosition(vector3(-12.0f, 40.0f, 3.0f));
+	Kirby.transform.setScale(0.08f, 0.08f, 0.08f);
 	Kirby.addComponent(&kirbymodel);
-	Anubistemple.addSubEntity(&Kirby);
+	floatingisland.addSubEntity(&Kirby);
 
-	Entity Scout;
+	Entity Scout("Scout");
 	Modelrenderer scoutmodel(SS.getModel("Scout"));
 	Scout.transform.setPosition(vector3(-12.0f, 40, 0));
 	Scout.addComponent(&scoutmodel);
 	Kirby.addSubEntity(&Scout);
 
-	Entity Rintezuka;
+	Entity Rintezuka("Rint Tezuka");
 	Modelrenderer rinmodel(SS.getModel("Rin Tezuka"));
 	Rintezuka.transform.setPosition(vector3(-6.0f, 30.0f, 0));
 	Rintezuka.addComponent(&rinmodel);
@@ -554,9 +545,9 @@ int main(int argc, char* argv[]) {
 	fieldbox.boundingbox.recalculateMOI();
 	Quote.addSubEntity(&field);
 
-	sceneone.setRoot(Quote);
-	scenetwo.setRoot(valley);
-	scenethree.setRoot(Anubistemple);
+	sceneone.setRoot(&Quote);
+	scenetwo.setRoot(&valley);
+	scenethree.setRoot(&floatingisland);
 
 	currentscene = &sceneone;
 	sceneone.initScene();
@@ -645,13 +636,13 @@ int main(int argc, char* argv[]) {
 			Camera.moveCamera(Camera.camerarotation.getRight(), (deltatime * 20));
 		}
 		if (Inputs.keyboardstate[Input::M].first == 1 && Inputs.keyboardstate[Input::M].second == 0) { 
-			testclip.playAudio();
+			//testclip.playAudio();
 			}
 		if (Inputs.keyboardstate[Input::B].first == 1 && Inputs.keyboardstate[Input::B].second == 0) {
 			testclip.endAudio();
 		}
 		if (Inputs.keyboardstate[Input::N].first == 1 && Inputs.keyboardstate[Input::N].second == 0) {
-			testcliptwo.playAudio();
+			//testcliptwo.playAudio();
 		}
 		if (Inputs.keyboardstate[Input::V].first == 1 && Inputs.keyboardstate[Input::V].second == 0) {
 			testcliptwo.pauseAudio();
@@ -684,8 +675,8 @@ int main(int argc, char* argv[]) {
 		spheretwocollider.boundingsphere.velocity += right;
 		}
 		if (Window.resized) {
-			Camera.aspectratioheight += 200;
-			Camera.aspectratiowidth += 300;
+			Camera.aspectratiowidth = Window.getWindowWidth();
+			Camera.aspectratioheight = Window.getWindowHeight();
 		}
 		if (Inputs.keyboardstate[Input::I].first == true) {
 			vector3 forward(0.1f, 0, 0);
