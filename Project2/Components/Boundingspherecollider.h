@@ -29,7 +29,7 @@ public:
 			if (boundingsphere.collided) {
 				debugcollidermaterials.texture.textureactive = true;
 				debugcollidermaterials.texture = collisiontexture;
-				impulsecolor.setVector(0.8f, 0.8f, 0.8f);
+				impulsecolor.setVector(0.7f, 0.7f, 0.7f);
 			}
 			else if (boundingsphere.velocity == vector3(0, 0, 0)) {
 				debugcollidermaterials.texture.textureactive = true;
@@ -42,81 +42,14 @@ public:
 			}
 
 			vector3 newscale(boundingsphere.radius, boundingsphere.radius, boundingsphere.radius);
-			debugcollidermaterials.color = impulsecolor;  // (vector3(.82f, 0.21, 0.04));
+			debugcollidermaterials.color = impulsecolor;
 			colliderdebugshader.useShader();
 			colliderdebugshader.updateUniforms(boundingsphere.collidertransform.newUnprojectedMatrix(newscale), boundingsphere.collidertransform.newTransformationMatrix(newscale), boundingsphere.collidertransform.position, debugcollidermaterials);
 			debugsphere.drawMesh();
 			debugcollidermaterials.texture.textureactive = false;
 		}
-
 		boundingsphere.collided = false;
-
 	}
-	/*void Integrate(Transforming &t) {
-		if (boundingsphere.collided == true) {
-			boundingsphere.tempoldpos = boundingsphere.oldpos;
-			boundingsphere.tempvel = boundingsphere.velocity;
-			handleCollision();  //resolve forces/collisions
-		}
-		boundingsphere.oldpos = boundingsphere.collidertransform.position;
-		vector3 acceleration(boundingsphere.acceleration.x, boundingsphere.acceleration.y - boundingsphere.gravity, boundingsphere.acceleration.z);
-		Quaternion angularvelocity(boundingsphere.angularvelocity.x, boundingsphere.angularvelocity.y, boundingsphere.angularvelocity.z, 0);
-		boundingsphere.velocity = boundingsphere.velocity.add(boundingsphere.acceleration.multiply(deltatime));
-		boundingsphere.angularvelocity = boundingsphere.angularvelocity.add(boundingsphere.angularacceleration.multiply(deltatime));
-
-		boundingsphere.collidertransform.position = boundingsphere.collidertransform.position.add(boundingsphere.velocity.multiply(deltatime)).add(acceleration.multiply((deltatime * deltatime) / 0.5f)); //physics calculations here
-		/*boundingsphere.collidertransform.rotation = boundingsphere.collidertransform.rotation.Add(angularvelocity.Multiply(boundingsphere.collidertransform.rotation);
-		torque = boundingsphere.angularvelocity.multiply(boundingsphere.MOI);
-		/*boundingsphere.collidertransform.Rotate(boundingsphere.angularvelocity.multiply(deltatime).add(boundingsphere.angularacceleration.multiply((deltatime * deltatime) / 0.5f)));
-		boundingsphere.collidertransform.rotation = boundingsphere.collidertransform.rotation.Add(angularvelocity.Multiply(boundingsphere.collidertransform.rotation).Multiply(deltatime / 0.5f));
-	}
-	/*void handleCollision() {
-		float momentiamass = 0;
-		vector3 momentums;
-		vector3 netforce = boundingsphere.collisiondata.forces[0];
-		vector3 nettorque;
-		float angularimpulse;
-		float impulse = 0;
-		Raytrace raytrace;
-		for (int i = 0; i < boundingsphere.collisiondata.otherobjects.size(); i++) {
-			momentums = momentums.add(boundingsphere.collisiondata.momentia[i].second.multiply(boundingsphere.collisiondata.momentia[i].first)); //impulse
-			momentiamass += boundingsphere.collisiondata.momentia[i].first;
-
-			netforce += boundingsphere.collisiondata.forces[i + 1];    //acceleration
-
-			vector3 dir = boundingsphere.tempoldpos - boundingsphere.collisiondata.otherobjects[i]->tempoldpos;
-			if (raytrace.Trace(boundingsphere.collisiondata.otherobjects[i]->tempoldpos, dir, boundingsphere.tempoldpos, boundingsphere.radius)) {  //angle
-				impulse = -(1.0f + boundingsphere.elasticity);
-				impulse *= (boundingsphere.collisiondata.otherobjects[i]->tempvel - boundingsphere.velocity).dotProduct(raytrace.normal);
-
-				vector3 rb = raytrace.intersectionpoint - boundingsphere.tempoldpos;
-				vector3 ra = raytrace.intersectionpoint - boundingsphere.collisiondata.otherobjects[i]->tempoldpos;
-				vector3 angimpa = (ra.crossProduct(raytrace.normal).divide(boundingsphere.collisiondata.otherobjects[i]->MOI)).crossProduct(ra);
-				vector3 angimpb = (rb.crossProduct(raytrace.normal).divide(boundingsphere.MOI)).crossProduct(rb);
-				angularimpulse = (angimpa + angimpb).dotProduct(raytrace.normal);
- 
-				impulse /= (((1.0f / boundingsphere.collisiondata.otherobjects[i]->mass) + (1.0f / boundingsphere.mass))/* + angularimpulse);
-
-				boundingsphere.velocity = boundingsphere.velocity - raytrace.normal.multiply((impulse / boundingsphere.mass));
-				/*netforce += raytrace.normal.multiply((impulse / boundingsphere.mass)).divide(deltatime).negateVector();
-				boundingsphere.angularvelocity = boundingsphere.angularvelocity - (rb.crossProduct(raytrace.normal.multiply(angularimpulse))).divide(boundingsphere.MOI);
-				nettorque += (rb.crossProduct(boundingsphere.collisiondata.forces[i + 1]));
-			}
-			else {
-				std::cout << "Something's probably broken." << std::endl;
-			}
-		}
-		/*momentums = momentums.add(boundingsphere.velocity.multiply(boundingsphere.mass));
-		/*momentiamass += boundingsphere.mass;
-		vector3 newv = momentums.divide(momentiamass);
-		/*boundingsphere.acceleration = momentums.divide(deltatime);
-		netforce += boundingsphere.acceleration.multiply(boundingsphere.mass + 10.0f);
-		boundingsphere.acceleration += netforce.divide(momentiamass * boundingsphere.elasticity + boundingsphere.mass);*/
-
-		/*angularimpulse = nettorque.multiply(deltatime);
-		boundingsphere.angularvelocity = angularimpulse.divide(boundingsphere.MOI);
-		boundingsphere.angularacceleration += nettorque.divide(boundingsphere.MOI);
-	}*/
 	void initializeComponent() {
 		colliders.push_back(&boundingsphere);
 	}
@@ -125,9 +58,17 @@ public:
 	}
 	Boundingspherecollider(Boundingsphere bsphere) : debugsphere("sphere.obj"), colliderdebugshader("Colliderdebug"), collisiontexture("Collisiondebug.png"), sleeptexture("Sleepingdebug.png") {
 		vector3 impulsecolor = (boundingsphere.velocity).multiply(boundingsphere.mass).divide(1000.0f);
-		debugcollidermaterials.color = impulsecolor;  // (vector3(.82f, 0.21, 0.04));
+		debugcollidermaterials.color = impulsecolor; 
 		debugcollidermaterials.texture.textureactive = false;
 		boundingsphere = bsphere;
+		settotransform = true;
+		/*boundingsphere.position = physicstransform.position;
+		physicstransform = t;*/
+	}
+	Boundingspherecollider() : debugsphere("sphere.obj"), colliderdebugshader("Colliderdebug"), collisiontexture("Collisiondebug.png"), sleeptexture("Sleepingdebug.png") {
+		vector3 impulsecolor = (boundingsphere.velocity).multiply(boundingsphere.mass).divide(1000.0f);
+		debugcollidermaterials.color = impulsecolor;
+		debugcollidermaterials.texture.textureactive = false;
 		settotransform = true;
 		/*boundingsphere.position = physicstransform.position;
 		physicstransform = t;*/

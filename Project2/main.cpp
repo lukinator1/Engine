@@ -33,8 +33,8 @@ int stepframekey = 225;
 int exitframekey = 41;
 Scene *currentscene;
 std::vector<Physicsobject *> colliders;
-float fieldDepth = 10.0f;
-float fieldWidth = 10.0f;
+float fieldDepth = 20.0f;
+float fieldWidth = 20.0f;
 void swapScene(Scene &scene) {
 	currentscene->closeScene();
 	currentscene = &scene;
@@ -419,35 +419,37 @@ int main(int argc, char* argv[]) {
 	sphereonecollider.boundingsphere.setPosition(sphereone.transform.getPosition());
 	sphereonecollider.boundingsphere.setRotation(sphereone.transform.getRotation());
 	sphereonecollider.boundingsphere.radius = 2.0f;
-	sphereonecollider.boundingsphere.mass = 7.0f;
+	sphereonecollider.boundingsphere.mass = 36.0f;
+	sphereonecollider.boundingsphere.recalculateMOI();
 	sphereone.addComponent(&sphereonecollider);
 	Quote.addSubEntity(&sphereone);
 
 	Entity spheretwo("spheretwo");
-	spheretwo.transform.setPosition(7.5f, 40.0f, -21.0f);
+	spheretwo.transform.setPosition(7.5f, 40.0f, -20.0f);
 	spheretwo.transform.setScale(vector3(2.0f, 2.0f, 2.0f));
 	spheretwo.addComponent(&otherspheremesh);
 	Boundingspherecollider spheretwocollider(SS.getBoundingSphere("bsphere2"));
 	spheretwocollider.boundingsphere.setColliderTransform(spheretwo.transform);
 	spheretwocollider.boundingsphere.radius = 2.0f;
-	sphereonecollider.boundingsphere.mass = 36.0f;
-	/*sphereonecollider.boundingsphere.recalculateMOI();*/
+	spheretwocollider.boundingsphere.recalculateMOI();
 	spheretwo.addComponent(&spheretwocollider);
 	sphereone.addSubEntity(&spheretwo);
 
 	Entity box("box");
 	Meshrenderer boxmesh(SS.getMesh("Cube"), SS.getMaterials("mats2"));
-	box.transform.setPosition(0, 3.0f, 17.0f);
-	box.transform.setScale(vector3(5.0f, 3.0f, 3.0f));
+	box.transform.setPosition(0, 0, 0);
+	box.transform.setScale(vector3(2.0f, 2.0f, 2.0f));
+	bspherecloud.boundingsphere.setColliderTransform(box.transform);
 	box.addComponent(&boxmesh);
 	sphereone.addSubEntity(&box);
 	AABBcollider boxbox;
-	boxbox.boundingbox.setColliderTransform(box.transform);
-	boxbox.boundingbox.setHeight(0.1f);
-	boxbox.boundingbox.setLength(10.0f);
-	boxbox.boundingbox.setWidth(10.0f);
+	boxbox.AABB.setColliderTransform(box.transform);
+	boxbox.AABB.setHeight(4.0f);
+	boxbox.AABB.setLength(4.0f);
+	boxbox.AABB.setWidth(4.0f);
+	box.addComponent(&boxbox);
 
-
+	float x = 6.0f / 0.0f;
 	//scene two
 	Entity valley("Valley of Trials");
 	Modelrenderer valleymodel(SS.getModel("Valleyoftrials"));
@@ -534,15 +536,16 @@ int main(int argc, char* argv[]) {
 	Materials fieldmaterials("test.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f);
 	Mesh meshme(vertices, indices, sizeof(vertices) / sizeof(vertices[0]), sizeof(indices) / sizeof(indices[0]));
 	Meshrenderer fieldcomponent(meshme, fieldmaterials);
-	field.transform.setPosition(vector3(0.0f, -1.0f, 5.0f));
+	field.transform.setPosition(vector3(0, 0, 0));
 	field.addComponent(&fieldcomponent);
 	AABBcollider fieldbox;
-	fieldbox.boundingbox.setColliderTransform(field.transform);
-	fieldbox.boundingbox.setHeight(0.1f);
-	fieldbox.boundingbox.setLength(10.0f);
-	fieldbox.boundingbox.setWidth(10.0f);
-	fieldbox.boundingbox.setMass(80.0f);
-	fieldbox.boundingbox.recalculateMOI();
+	fieldbox.AABB.setColliderTransform(field.transform);
+	fieldbox.AABB.setHeight(10.0f);
+	fieldbox.AABB.setLength(10.0f);
+	fieldbox.AABB.setWidth(10.0f);
+	fieldbox.AABB.setMass(80.0f);
+	fieldbox.AABB.recalculateMOI();
+	//field.addComponent(&fieldbox);
 	Quote.addSubEntity(&field);
 
 	sceneone.setRoot(&Quote);
@@ -623,16 +626,16 @@ int main(int argc, char* argv[]) {
 		/*Camera.setCameraPosition(vector3(Cloud.transform.position.x, Cloud.transform.position.y, Cloud.transform.position.z - 7.5));
 		Camera.cameraposition = vector3(bspherecloud.boundingsphere.collidertransform.position.x, bspherecloud.boundingsphere.collidertransform.position.y + 5.0f, bspherecloud.boundingsphere.collidertransform.position.z - 10.0f);*/
 		bspherecloud.boundingsphere.velocity = vector3(0, 0, 0);
-			if (Inputs.keyboardstate[Input::W].first == 1) {
+			if (Inputs.keyboardstate[Input::W].first == 1 && !Console.consoleOn()) {
 			Camera.moveCamera(Camera.camerarotation.getForward(), deltatime * 20);	
 			}
-		if (Inputs.keyboardstate[Input::A].first == 1) {
+		if (Inputs.keyboardstate[Input::A].first == 1 && !Console.consoleOn()) {
 			Camera.moveCamera(Camera.camerarotation.getLeft(), deltatime * 20);
 		}
-		if (Inputs.keyboardstate[Input::S].first == 1) {
+		if (Inputs.keyboardstate[Input::S].first == 1 && !Console.consoleOn()) {
 			Camera.moveCamera(Camera.camerarotation.getBack(), (deltatime * 20));
 		}
-		if (Inputs.keyboardstate[Input::D].first == 1) {
+		if (Inputs.keyboardstate[Input::D].first == 1 && !Console.consoleOn()) {
 			Camera.moveCamera(Camera.camerarotation.getRight(), (deltatime * 20));
 		}
 		if (Inputs.keyboardstate[Input::M].first == 1 && Inputs.keyboardstate[Input::M].second == 0) { 
@@ -665,7 +668,7 @@ int main(int argc, char* argv[]) {
 		if (Inputs.keyboardstate[Input::Keyright].first == 1) {
 			bspherecloud.boundingsphere.velocity += (Camera.camerarotation.getRight().multiply(13.0f));
 		}
-		if (Inputs.keyboardstate[Input::L].first == 1 && Inputs.keyboardstate[Input::L].second == 0) {  //flashlight 
+		if (Inputs.keyboardstate[Input::L].first == 1 && Inputs.keyboardstate[Input::L].second == 0 && !Console.consoleOn()) {  //flashlight 
 			vector3 right(0, 0, 10.0f);
 			if (Inputs.keyboardstate[Input::Rightshift].first) {
 				if (right.z > 0) {
@@ -712,6 +715,7 @@ int main(int argc, char* argv[]) {
 			bspherecloud.boundingsphere.acceleration = vector3(0, 0, 0);
 			bspherecloud.boundingsphere.angularvelocity = vector3(0, 0, 0);
 			bspherecloud.boundingsphere.velocity = vector3(0, 0, 0);
+			bspherecloud.boundingsphere.collidertransform.rotation = Quaternion(0, 0, 0, 1);
 			bspherecloud.boundingsphere.setPosition(Camera.cameraposition.add(Camera.camerarotation.getForward().multiply(7.0f)));
 		}
 		if (Inputs.getScrolldistance().y != 0) {

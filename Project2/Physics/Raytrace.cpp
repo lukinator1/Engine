@@ -12,7 +12,7 @@ bool Raytrace::Trace(vector3 start, vector3 end) { //end is actually direction
 	bool traced = false;
 	for (int i = 0; i < colliders.size(); i++) {
 		switch (colliders[i]->shape) {
-		case 0:
+		case 0: //sphere
 			l = start - colliders[i]->getPosition();
 			b = 2.0f * end.dotProduct(l);
 			c = l.dotProduct(l) - (colliders[i]->getRadius() * colliders[i]->getRadius());
@@ -26,6 +26,9 @@ bool Raytrace::Trace(vector3 start, vector3 end) { //end is actually direction
 					normal = normal.Normalize();
 				}
 			}
+		case 1: //box
+
+		break;
 		}
 	}
 
@@ -77,6 +80,8 @@ bool Raytrace::Trace(vector3 start, vector3 end, std::vector<Physicsobject *> ig
 					normal = normal.Normalize();
 				}
 			}
+		case 1: //box
+			break;
 		}
 	}
 	if (traced) {
@@ -89,34 +94,44 @@ bool Raytrace::Trace(vector3 start, vector3 end, std::vector<Physicsobject *> ig
 	return false;
 }
 bool Raytrace::Trace(vector3 start, vector3 end, Physicsobject * physicsebject) {
-	if (end.Magnitude() != 1) {
-		end = end.Normalize();
-	}
 	vector3 l;
-	float a = end.dotProduct(end);
+	float a;
 	float b;
 	float c;
 	float newt = 0;
-	/*vector3 bsqr = b * b; (start * start * end * end).multiply(4.0f);
-	vector3 discriminant;*/
-	/*discriminant = bsqr.Subtract(((start * start).Subtract(spherecolliders[i]->radius * spherecolliders[i]->radius) * a).multiply(4.0f));*/
-	l = start - physicsebject->getPosition();
-	b = 2.0f * end.dotProduct(l);
-	c = l.dotProduct(l) - (physicsebject->getRadius() * physicsebject->getRadius());
-	if (quadraticEquation(a, b, c, newt)) {
-		t = newt;
-		intersectionpoint = start + end.multiply(t);
-		tracedobject = physicsebject;
-		normal = intersectionpoint - physicsebject->getPosition();
-		normal = normal.Normalize();
-		return true;
+	if (end.Magnitude() != 1) {
+		end = end.Normalize();
+	}
+	switch (physicsebject->shape) {
+	case 0: //sphere
+		a = end.dotProduct(end);
+		/*vector3 bsqr = b * b; (start * start * end * end).multiply(4.0f);
+		vector3 discriminant;*/
+		/*discriminant = bsqr.Subtract(((start * start).Subtract(spherecolliders[i]->radius * spherecolliders[i]->radius) * a).multiply(4.0f));*/
+		l = start - physicsebject->getPosition();
+		b = 2.0f * end.dotProduct(l);
+		c = l.dotProduct(l) - (physicsebject->getRadius() * physicsebject->getRadius());
+		if (quadraticEquation(a, b, c, newt)) {
+			t = newt;
+			intersectionpoint = start + end.multiply(t);
+			tracedobject = physicsebject;
+			normal = intersectionpoint - physicsebject->getPosition();
+			normal = normal.Normalize();
+			return true;
 		}
-	else {
-		t = -1;
-		tracedobject = nullptr;
-		normal = vector3(0.0, 0.0, 0.0);
-		intersectionpoint = vector3(0.0, 0.0, 0.0);
-		return false;
+		else {
+			t = -1;
+			tracedobject = nullptr;
+			normal = vector3(0.0, 0.0, 0.0);
+			intersectionpoint = vector3(0.0, 0.0, 0.0);
+			return false;
+		}
+		break;
+	case 1: //box
+
+	break;
+	default:
+	return false;
 	}
 }
 bool Raytrace::Trace(vector3 start, vector3 end, vector3 position, float radius) {
@@ -195,8 +210,6 @@ bool Raytrace::quadraticEquation(float &a, float &b, float &c, float &t) {
 		else {
 			return false;
 		}
-
-		
 	}
 	else {  //collided with 1
 		float q = -0.5f * b / a;

@@ -5,7 +5,7 @@ class Boundingsphere : public Physicsobject
 public:
 	float radius;
 	bool intersectionTest(float _radius, vector3 _position, float &cdistance);
-	float calcCollisionDistance(float radius, vector3 position);
+	std::pair<float, bool> calcCollision(Physicsobject &phy);
 	bool Simulate(Physicsobject & physicsobject);
 	void Integrate();
 	void handleCollision();

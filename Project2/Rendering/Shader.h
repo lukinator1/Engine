@@ -11,7 +11,7 @@ class Shader : public Logger
 {
 private:
 	unsigned int program;
-	int type; //0 = ambient, 1 = directional, 2 = point, 3 = spot, 4 = text, 5 = skybox
+	int type; //0 = ambient, 1 = directional, 2 = point, 3 = spot, 4 = text, 5 = skybox, 6 = debug colliders
 	std::map<std::string, int> uniforms;
 public:
 	vector3 ambientlight;

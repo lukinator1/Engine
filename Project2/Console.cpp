@@ -710,9 +710,12 @@ void Console::interpretInput(Scene &_currentscene, bool &gameisrunning, bool &fr
 	else {
 		std::string boxname = consoleinput.substr(14, consoleinput.length());
 		Boundingbox aabbox;
+		aabbox.setHeight(50);
+		aabbox.setLength(50);
+		aabbox.setWidth(50);
 		aabbox.setPosition(thecamera->cameraposition);
 		resourcemanager->addAABB(boxname, aabbox); //todo: already in resource manager
-		colliders.push_back(&(resourcemanager->getBoundingSphere(boxname)));
+		colliders.push_back(&(resourcemanager->getAABB(boxname)));
 		response = "AABB \"" + boxname + "\" has been added to the current position of the camera.";
 		}
 	}
@@ -728,7 +731,7 @@ void Console::interpretInput(Scene &_currentscene, bool &gameisrunning, bool &fr
 		Boundingbox aabbox;
 		aabbox.setPosition(thecamera->cameraposition);
 		resourcemanager->addAABB(boxname, aabbox); //todo: already in resource manager
-		colliders.push_back(&(resourcemanager->getBoundingSphere(boxname)));
+		colliders.push_back(&(resourcemanager->getAABB(boxname)));
 		response = "AABB \"" + boxname + "\" has been added to the current position of the camera.";
 	}
 	}

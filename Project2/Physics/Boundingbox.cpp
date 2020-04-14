@@ -1,19 +1,36 @@
 #include "Boundingbox.h"
 #include "../Global.h"
 bool Boundingbox::Simulate(Physicsobject & otherobject) {
-	bool collision = false;
+	bool collision = false;  //test for collisions here
 	float collisiondistance = 0;
+	vector3 sphere;
+	float sqrdistance = 0;
 	float x;
 	float y;
 	float z;
 	switch (otherobject.shape) {
 	case 0:						//sphere
-		x = std::max(minextents.x, std::min(otherobject.getPosition().x, maxextents.x));
-		y = std::max(minextents.y, std::min(otherobject.getPosition().y, maxextents.y));
-		z = std::max(minextents.z, std::min(otherobject.getPosition().z, maxextents.z));
-		collisiondistance = sqrt((x - otherobject.getPosition().x) * (x - otherobject.getPosition().x) + (y - otherobject.getPosition().y) * (y - otherobject.getPosition().y) + (z - otherobject.getPosition().z) * (z - otherobject.getPosition().z));
-		if (collisiondistance < otherobject.getRadius()) {
-			collision = true;
+		sphere = otherobject.getPosition();
+		if (sphere.x < getMinextents().x) {
+			sqrdistance += (sphere.x - getMinextents().x) * (sphere.x - getMinextents().x);
+		}
+		else if (sphere.x > getMaxextents().x) {
+			sqrdistance += (sphere.x - getMaxextents().x) * (sphere.x - getMaxextents().x);
+		}
+		if (sphere.y < getMinextents().y) {
+			sqrdistance += (sphere.y - getMinextents().y) * (sphere.y - getMinextents().y);
+		}
+		else if (sphere.y > getMaxextents().y) {
+			sqrdistance += (sphere.y - getMaxextents().y) * (sphere.y - getMaxextents().y);
+		}
+		if (sphere.z < getMinextents().z) {
+			sqrdistance += (sphere.z - getMinextents().z) * (sphere.z - getMinextents().z);
+		}
+		else if (sphere.z > getMaxextents().z) {
+			sqrdistance += (sphere.z - getMaxextents().z) * (sphere.z - getMaxextents().z);
+		}
+			if (sqrdistance < (otherobject.getRadius() * otherobject.getRadius())) {  //test to see if collided, distance^2 < radius^2
+				collision = true;
 		}
 	break;
 	case 1:						//box
@@ -58,6 +75,7 @@ bool Boundingbox::Simulate(Physicsobject & otherobject) {
 		break;
 	}
 
+	//collision occurred
 	if (collision) {
 		tempoldpos = oldpos;
 		tempvel = velocity;
@@ -67,7 +85,7 @@ bool Boundingbox::Simulate(Physicsobject & otherobject) {
 		//ray.Trace(physicsobject.oldpos, dir, oldpos, radius);
 		collisiondata.intersectionpoints.push_back(ray.intersectionpoint);
 		collisiondata.intersectionnormals.push_back(ray.normal);
-		collisiondata.collisiondistance = collisiondistance;
+		//collisiondata.collisiondistance = collisiondistance;
 		collisiondata.otherobjects.push_back(&otherobject);
 		std::pair <float, vector3> momentum = { otherobject.mass, otherobject.velocity };
 		collisiondata.momentia.push_back(momentum);
@@ -78,7 +96,6 @@ bool Boundingbox::Simulate(Physicsobject & otherobject) {
 void Boundingbox::Integrate() {
 	if (collided == true) {
 		handleCollision();  //resolve forces/collisions
-		collided = false;
 		collisiondata.intersectionpoints.clear();
 		collisiondata.intersectionnormals.clear();
 		collisiondata.collisiondistance = 0;
@@ -103,53 +120,50 @@ void Boundingbox::handleConstraints()
 	int count = 0;
 	float factor = 1;
 	bool done = false;
-	float collisiondistance = 0;
+	std::pair<float, bool> collisiontester(0, false);
 	float impulse = 0;
 	vector3 term2;
 	vector3 dir;
 	Raytrace ray;
-	while (!done && sleep != 7) {
+	while (!done && sleep <= 5) {
 		done = true;
 		for (int i = 0; i < collisiondata.otherobjects.size(); i++) {
-			//collisiondistance = calcCollisionDistance(collisiondata.otherobjects[i]->getRadius(), collisiondata.otherobjects[i]->getPosition());//test if still colliding
-			if (collisiondistance > 0) {
-				done = false;
+			collisiontester = calcCollision(*collisiondata.otherobjects[i]);//test if still colliding
+			if (collisiontester.second == false) {
+				continue;
+			}
+			else {
+				done = false; 
 			}
 
-			/*dir = collisiondata.otherobjects[i]->getPosition() - getPosition();
-			if (!ray.Trace(getPosition(), dir, collisiondata.otherobjects[i])) {
-				std::cout << "Ray didn't trace.";
-			}*/
 			neg = collisiondata.intersectionnormals[i];	//set to proper position
-
-			/*setPosition(collisiondata.intersectionpoints[i] + neg.multiply(radius));*/
+			setPosition(getPosition() - neg.multiply(collisiontester.first));
 
 			count = 0; //if still didn't aren't separated
-			factor = 1.65f;
-			//collisiondistance = calcCollisionDistance(collisiondata.otherobjects[i]->getRadius(), collisiondata.otherobjects[i]->getPosition());
-			while ((collisiondistance > 0) && count < 100) {
-				/*velocity = velocity - (collisiondata.intersectionnormals[i]).multiply((50.0f / mass));*/
-				setPosition(getPosition() - neg.multiply(collisiondistance * factor));
+			factor = 1.0f;
+			collisiontester = calcCollision(*collisiondata.otherobjects[i]);
+			/*while ((collisiontester.second == true) && count < 60) {
+				setPosition(getPosition() - neg.multiply(collisiontester.first /* factor));
 				count++;
 
 				if (count == 10) {
-					std::cout << "Constraint went to factor 2" << std::endl;
-					factor = 2.75f;
+					//std::cout << "Constraint went to factor 2" << std::endl;
+					factor = 2.65f;
 				}
 				else if (count == 20) {
-					std::cout << "Constraint went to factor 3" << std::endl;
-					factor = 3.85f;
+					//std::cout << "Constraint went to factor 3" << std::endl;
+					factor = 5.85f;
 				}
 				else if (count == 40) {
-					std::cout << "Constraint went to factor 4" << std::endl;
-					factor = 4.5f;
+					//std::cout << "Constraint went to factor 4" << std::endl;
+					factor = 6.5f;
 				}
-				//collisiondistance = calcCollisionDistance(collisiondata.otherobjects[i]->getRadius(), collisiondata.otherobjects[i]->getPosition());
-			}
+				collisiontester = calcCollision(*collisiondata.otherobjects[i]);
+			}*/
 		}
 		sleep++;
-		if (sleep == 7) {
-			std::cout << "Constraints handling went through max iterations";
+		if (sleep == 5) {
+			//std::cout << "Constraints handling went through max iterations";
 		}
 	}
 }
@@ -179,6 +193,7 @@ void Boundingbox::handleCollision() {
 		if (testrelvel < 0.01f) {
 			sleep = elasticity;
 		}
+
 		impulse = -(1.0f + elasticity - sleep) * relvelnormal;
 		vector3 rb = collisiondata.intersectionpoints[i] - tempoldpos;
 		vector3 ra = collisiondata.intersectionpoints[i] - collisiondata.otherobjects[i]->tempoldpos;
@@ -192,17 +207,102 @@ void Boundingbox::handleCollision() {
 		angularvelocity = angularvelocity - (rb.crossProduct(((collisiondata.intersectionnormals[i] + t.multiply(kineticfrictionconstant)).multiply(impulse)))).divide(MOI);
 		/*netforce += collisiondata.forces[i + 1];
 		nettorque += (rb.crossProduct(collisiondata.forces[i + 1]));*/
-		/*}
-		else {
-			std::cout << "Something's probably broken." << std::endl;
-		}*/
 	}
 	/*netforce += acceleration.multiply(mass + 10.0f);
 	acceleration += netforce.divide(momentiamass * elasticity + mass)
 	angularacceleration += nettorque.divide(MOI);*/
 }
+std::pair<float, bool> Boundingbox::calcCollision(Physicsobject &phy) {  //returns collision distance and if it collided or not
+	vector3 sphere;
+	float distance = 0;
+
+	vector3 boxdistance;
+	vector3 difference;
+	vector3 otherdifference;
+	float maxdistance = 0;
+	float collisiondistance = 0;
+	std::pair<float, bool> returner(0, false);
+	switch (phy.shape) {
+		case 0: //sphere
+		sphere = phy.getPosition();
+			if (sphere.x < getMinextents().x) {
+				distance += (sphere.x - getMinextents().x) * (sphere.x - getMinextents().x);
+			}
+			else if (sphere.x > getMaxextents().x) {
+				distance += (sphere.x - getMaxextents().x) * (sphere.x - getMaxextents().x);
+			}
+			if (sphere.y < getMinextents().y) {
+				distance += (sphere.y - getMinextents().y) * (sphere.y - getMinextents().y);
+			}
+			else if (sphere.y > getMaxextents().y) {
+				distance += (sphere.y - getMaxextents().y) * (sphere.y - getMaxextents().y);
+			}
+			if (sphere.z < getMinextents().z) {
+				distance += (sphere.z - getMinextents().z) * (sphere.z - getMinextents().z);
+			}
+			else if (sphere.z > getMaxextents().z) {
+				distance += (sphere.z - getMaxextents().z) * (sphere.z - getMaxextents().z);
+			}
+			distance = sqrt(distance);
+			returner.first = distance;
+			if (distance < phy.getRadius()) {
+				returner.second = false;
+			}
+			else {
+				returner.second = true;
+			}
+			return returner;
+		break;
+		case 1: //AABB
+			difference = phy.getMinextents().Subtract(maxextents);
+			otherdifference = minextents.Subtract(phy.getMaxextents());
+			if (difference.x >= otherdifference.x) {
+				boxdistance.x = difference.x;
+			}
+			else {
+				boxdistance.x = otherdifference.x;
+			}
+			if (difference.y >= otherdifference.y) {
+				boxdistance.y = difference.y;
+			}
+			else {
+				boxdistance.y = otherdifference.y;
+			}
+			if (difference.z >= otherdifference.z) {
+				boxdistance.z = difference.z;
+			}
+			else {
+				boxdistance.z = otherdifference.z;
+			}
+			maxdistance = boxdistance.x;
+			collisiondistance = boxdistance.x;
+			if (boxdistance.y >= maxdistance) {
+				maxdistance = boxdistance.y;
+			}
+			else {
+				collisiondistance = boxdistance.y;
+			}
+			if (boxdistance.z >= maxdistance) {
+				maxdistance = boxdistance.z;
+			}
+			if (boxdistance.z < collisiondistance) {
+				collisiondistance = boxdistance.z;
+			}
+			returner.first = collisiondistance;
+			if (maxdistance < 0) {
+				returner.second = true;
+			}
+			else {
+				returner.second = false; 
+			}
+		break;
+		default:
+		return returner;
+	}
+	return returner;
+}
 void Boundingbox::recalculateMOI() {
-	float s = (length * width * height) / 3.0f;
+	float s = (length + width + height) / 3.0f;
 	MOI = (mass * s * s) / 6.0f;
 }
 void Boundingbox::setLength(float _length)
@@ -220,8 +320,8 @@ void Boundingbox::setWidth(float _width)
 void Boundingbox::setHeight(float _height)
 {
 	height = _height;
-	maxextents.y = getPosition().y + (length / 2.0f);
-	minextents.y = getPosition().y - (length / 2.0f);
+	maxextents.y = getPosition().y + (height / 2.0f);
+	minextents.y = getPosition().y - (height / 2.0f);
 }
 float Boundingbox::getLength()
 {
@@ -253,12 +353,12 @@ void Boundingbox::setPosition(float x, float y, float z)
 	maxextents = vector3(getPosition().x + (width / 2.0f), getPosition().y + (length / 2.0f), getPosition().z + (length / 2.0f));
 	minextents = vector3(getPosition().x - (width / 2.0f), getPosition().y - (length / 2.0f), getPosition().z - (length / 2.0f));
 }
-void Boundingbox::setRotation(Quaternion rot)
+/*void Boundingbox::setRotation(Quaternion rot)
 {
-	/*Physicsobject::setRotation(rot);
+	Physicsobject::setRotation(rot);
 	maxextents = vector3(getPosition().x + (width / 2.0f), getPosition().y + (length / 2.0f), getPosition().z + (length / 2.0f));
-	maxextents = vector3(getPosition().x + (width / 2.0f), getPosition().y + (length / 2.0f), getPosition().z + (length / 2.0f));*/
-}
+	maxextents = vector3(getPosition().x + (width / 2.0f), getPosition().y + (length / 2.0f), getPosition().z + (length / 2.0f));
+}*/
 vector3 Boundingbox::getMinextents()
 {
 	return minextents;
@@ -273,7 +373,7 @@ Boundingbox::Boundingbox()
 	setLength(20.0f);
 	setWidth(20.0f);
 	setHeight(20.0f);
-	float s = (length * width * height) / 3.0f;
+	float s = (length + width + height) / 3.0f;
 	MOI = (mass * s * s)/6.0f;
 }
 Boundingbox::~Boundingbox()

@@ -14,6 +14,7 @@ public:
 	void Integrate();
 	void handleConstraints();
 	void handleCollision();
+	std::pair<float, bool> calcCollision(Physicsobject &phy);
 	/*void handleConstraints();*/
 	void recalculateMOI();
 	void setLength(float _length);
@@ -25,7 +26,7 @@ public:
 	void setColliderTransform(Transforming &t);
 	void setPosition(vector3 pos);
 	void setPosition(float x, float y, float z);
-	void setRotation(Quaternion rot);
+	//void setRotation(Quaternion rot);
 	vector3 getMinextents();
 	vector3 getMaxextents();
 	Boundingbox();

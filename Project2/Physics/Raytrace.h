@@ -3,7 +3,7 @@
 #include <vector>
 #include "Physicsmanager.h"
 #include "Physicsobject.h"
-class Raytrace
+class Raytrace //todo: normalize t
 {
 private:
 	bool quadraticEquation(float & a, float & b, float & c, float &t);

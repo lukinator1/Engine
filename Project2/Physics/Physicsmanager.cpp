@@ -4,11 +4,6 @@
 
 void Physicsmanager::Update(Scene & currentscene)
 {
-	/*for (int i = 0; i < physicsobjects.size(); i++) {
-		for (int u = i + 1; i < physicsobjects.size(); i++) {
-			physicsobjects[i]->Simulate(*physicsobjects[u]);
-		}
-	}*/
 	if (noclip == false) {
 		for (int i = 0; i < colliders.size(); i++) {  //test collisions
 			for (int u = 0; u < colliders.size(); u++) {
@@ -27,12 +22,6 @@ void Physicsmanager::Update(Scene & currentscene)
 		colliders[i]->Integrate();
 	}
 	currentscene.root->updatePhysics();
-
-	/*for (int i = 0; i < boxes.size(); i++) {
-		for (int u = i + 1; i < boxes.size(); i++) {
-			boxes[i]->boundingSphereCollision(*boxes[u]);
-		}
-	}*/
 }
 
 Physicsmanager::Physicsmanager()
