@@ -17,9 +17,9 @@ void Physicsmanager::Update(Scene & currentscene)
 				colliders[i]->handleConstraints();
 			}
 		}
-	}
 	for (int i = 0; i < colliders.size(); i++) {  //handle collisions, update new velocities/positions
 		colliders[i]->Integrate();
+	}
 	}
 	currentscene.root->updatePhysics();
 }

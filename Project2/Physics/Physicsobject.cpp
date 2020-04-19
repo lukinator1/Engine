@@ -73,9 +73,9 @@ float Physicsobject::getMass()
 
 Physicsobject::Physicsobject()
 {
-	mass = 10.0f;
+	mass = 20.0f;
 	collided = false;
-	collisiondata.forces.push_back(vector3(0, gravity.y, 0));
+	collisiondata.forces.push_back(gravity);
 	elasticity = 0.45f;
 	oldpos = collidertransform.position;
 	tempvel = velocity;

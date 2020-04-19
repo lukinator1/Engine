@@ -1,7 +1,6 @@
 #include "Boundingbox.h"
 #include "../Global.h"
-bool Boundingbox::Simulate(Physicsobject & otherobject) {
-	bool collision = false;  //test for collisions here
+bool Boundingbox::Simulate(Physicsobject & otherobject) { //test for collissions here
 	float collisiondistance = 0;
 	vector3 sphere;
 	float sqrdistance = 0;
@@ -30,7 +29,18 @@ bool Boundingbox::Simulate(Physicsobject & otherobject) {
 			sqrdistance += (sphere.z - getMaxextents().z) * (sphere.z - getMaxextents().z);
 		}
 			if (sqrdistance < (otherobject.getRadius() * otherobject.getRadius())) {  //test to see if collided, distance^2 < radius^2
-				collision = true;
+				collided = true;
+				tempoldpos = oldpos;
+				tempvel = velocity;
+				Raytrace ray;
+				vector3 dir = oldpos - otherobject.oldpos;
+				ray.Trace(otherobject.oldpos, dir, oldpos, maxextents, minextents);
+				collisiondata.intersectionpoints.push_back(ray.intersectionpoint);
+				collisiondata.intersectionnormals.push_back(ray.normal);
+				collisiondata.otherobjects.push_back(&otherobject);
+				std::pair <float, vector3> momentum = { otherobject.mass, otherobject.velocity };
+				collisiondata.momentia.push_back(momentum);
+				collisiondata.forces.push_back(acceleration.multiply(mass));
 		}
 	break;
 	case 1:						//box
@@ -70,28 +80,24 @@ bool Boundingbox::Simulate(Physicsobject & otherobject) {
 			collisiondistance = distance.z;
 		}
 		if (maxdistance < 0) {
-			collision = true;;
+			collided = true;
+			tempoldpos = oldpos;
+			tempvel = velocity;
+			Raytrace ray;
+			vector3 dir = oldpos - otherobject.oldpos;
+			ray.Trace(otherobject.oldpos, dir, oldpos, maxextents, minextents);
+			collisiondata.intersectionpoints.push_back(ray.intersectionpoint);
+			collisiondata.intersectionnormals.push_back(ray.normal);
+			collisiondata.otherobjects.push_back(&otherobject);
+			std::pair <float, vector3> momentum = { otherobject.mass, otherobject.velocity };
+			collisiondata.momentia.push_back(momentum);
+			collisiondata.forces.push_back(acceleration.multiply(mass));
 		}
 		break;
 	}
 
 	//collision occurred
-	if (collision) {
-		tempoldpos = oldpos;
-		tempvel = velocity;
-		collided = true;
-		Raytrace ray;
-		vector3 dir = oldpos - otherobject.oldpos;
-		//ray.Trace(physicsobject.oldpos, dir, oldpos, radius);
-		collisiondata.intersectionpoints.push_back(ray.intersectionpoint);
-		collisiondata.intersectionnormals.push_back(ray.normal);
-		//collisiondata.collisiondistance = collisiondistance;
-		collisiondata.otherobjects.push_back(&otherobject);
-		std::pair <float, vector3> momentum = { otherobject.mass, otherobject.velocity };
-		collisiondata.momentia.push_back(momentum);
-		collisiondata.forces.push_back(acceleration.multiply(mass));
-	}
-	return collision;
+	return collided;
 }
 void Boundingbox::Integrate() {
 	if (collided == true) {
@@ -124,8 +130,7 @@ void Boundingbox::handleConstraints()
 	float impulse = 0;
 	vector3 term2;
 	vector3 dir;
-	Raytrace ray;
-	while (!done && sleep <= 5) {
+	while (!done && sleep <= 5) { //problem is in constraints
 		done = true;
 		for (int i = 0; i < collisiondata.otherobjects.size(); i++) {
 			collisiontester = calcCollision(*collisiondata.otherobjects[i]);//test if still colliding
@@ -142,8 +147,8 @@ void Boundingbox::handleConstraints()
 			count = 0; //if still didn't aren't separated
 			factor = 1.0f;
 			collisiontester = calcCollision(*collisiondata.otherobjects[i]);
-			/*while ((collisiontester.second == true) && count < 60) {
-				setPosition(getPosition() - neg.multiply(collisiontester.first /* factor));
+			while ((collisiontester.second == true) && count < 60) {
+				setPosition(getPosition() - neg.multiply(collisiontester.first * factor));
 				count++;
 
 				if (count == 10) {
@@ -159,11 +164,11 @@ void Boundingbox::handleConstraints()
 					factor = 6.5f;
 				}
 				collisiontester = calcCollision(*collisiondata.otherobjects[i]);
-			}*/
+			}
 		}
 		sleep++;
 		if (sleep == 5) {
-			//std::cout << "Constraints handling went through max iterations";
+			std::cout << "Constraints handling went through max iterations";
 		}
 	}
 }
@@ -370,9 +375,9 @@ vector3 Boundingbox::getMaxextents()
 Boundingbox::Boundingbox()
 {
 	shape = 1;
-	setLength(20.0f);
-	setWidth(20.0f);
-	setHeight(20.0f);
+	setLength(10.0f);
+	setWidth(10.0f);
+	setHeight(10.0f);
 	float s = (length + width + height) / 3.0f;
 	MOI = (mass * s * s)/6.0f;
 }

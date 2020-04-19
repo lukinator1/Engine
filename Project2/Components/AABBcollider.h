@@ -14,7 +14,7 @@ public:
 	Materials debugcollidermaterials;
 	Texture collisiontexture;
 	Texture sleeptexture;
-	bool debugcollidermesh = true;
+	bool debugcollidermesh = false;
 	bool settotransform;
 	void (*collisioncallback)(int);
 

@@ -11,7 +11,7 @@ public:
 	Materials debugcollidermaterials;
 	Texture collisiontexture;
 	Texture sleeptexture;
-	bool debugcollidermesh = true;
+	bool debugcollidermesh = false;
 	bool settotransform;
 	void componentPhysics(Transforming &t) {
 		if (settotransform) {

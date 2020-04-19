@@ -1,23 +1,35 @@
-Current date + time: Tue Apr 14 07:03:59 2020
+Current date + time: Sun Apr 19 09:04:49 2020
 
 c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\rendering\texture.cpp
  Line: 12
 Engine warning!: Warning: Texture Rendering/Materials/Textures/C:\\Users\\lukinator1\\Downloads\\source\\Documents\\Mudbox\\2018-x64\\data\\textura.tif failed to load. May've returned an error texture instead.
 c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\rendering\model.cpp
  Line: 437
-Engine warning!: Warning: Model snake1.obj failed to import. Returned an error model.
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\rendering\model.cpp
- Line: 474
-Engine warning!: Warning: a material may be missing, error material(s) were used instead.
+Engine warning!: Warning: Model  failed to import. Returned an error model.
 c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\rendering\model.cpp
  Line: 437
-Engine warning!: Warning: Model gumi1.obj failed to import. Returned an error model.
-c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\rendering\model.cpp
- Line: 474
-Engine warning!: Warning: a material may be missing, error material(s) were used instead.
+Engine warning!: Warning: Model  failed to import. Returned an error model.
 c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\rendering\model.cpp
  Line: 437
-Engine warning!: Warning: Model Peachs1 Castle 1f.obj failed to import. Returned an error model.
+Engine warning!: Warning: Model  failed to import. Returned an error model.
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\rendering\mesh.cpp
+ Line: 250
+Engine warning!: Warning: Model failed to import. Returned an error model.
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\rendering\mesh.cpp
+ Line: 250
+Engine warning!: Warning: Model failed to import. Returned an error model.
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\rendering\model.cpp
+ Line: 437
+Engine warning!: Warning: Model  failed to import. Returned an error model.
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\rendering\model.cpp
+ Line: 437
+Engine warning!: Warning: Model  failed to import. Returned an error model.
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\rendering\model.cpp
+ Line: 437
+Engine warning!: Warning: Model  failed to import. Returned an error model.
+c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\rendering\model.cpp
+ Line: 437
+Engine warning!: Warning: Model  failed to import. Returned an error model.
 c:\users\lukinator1\desktop\engine\the super suspension system\project2\project2\rendering\model.cpp
  Line: 437
 Engine warning!: Warning: Model  failed to import. Returned an error model.

@@ -1,7 +1,7 @@
 #pragma once
 #include "../Mathlibrary/vector3.h"
 #include <vector>
-#include "Physicsmanager.h"
+#include "Physicsmanager.h" 
 #include "Physicsobject.h"
 class Raytrace //todo: normalize t
 {
@@ -13,10 +13,12 @@ public:
 	//std::vector<Physicsobject *>tracedobjects;
 	Physicsobject* tracedobject;
 	vector3 normal;
-	bool Trace(vector3 start, vector3 direction);
-	bool Trace(vector3 start, vector3 end, std::vector<Physicsobject *> ignore);
-	bool Trace(vector3 start, vector3 direction, Physicsobject *ignore);
+	std::vector<Raytrace> Trace(vector3 start, vector3 direction);
+	std::vector<Raytrace> Trace(vector3 start, vector3 end, std::vector<Physicsobject *> ignore);
+	bool Trace(vector3 start, vector3 direction, Physicsobject *object);
 	bool Trace(vector3 start, vector3 end, vector3 position, float radius);
+	bool Trace(vector3 start, vector3 end, vector3 position, float length, float width, float height);
+	bool Trace(vector3 start, vector3 end, vector3 position, vector3 maxextents, vector3 minextents);
 	Raytrace();
 	~Raytrace();
 };

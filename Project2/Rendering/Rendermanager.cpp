@@ -28,31 +28,31 @@ void Rendering::renderScene(Scene &currentscene){
 	forwardambientshader.ambientlight = currentscene.ambientlight;  //todo: optimize with pointers
 	currentscene.root->renderEntities(&forwardambientshader);
 
-	/*glEnable(GL_BLEND);
+	glEnable(GL_BLEND);
 	glBlendFunc(GL_ONE, GL_ONE);
 	glDepthMask(false);
 	glDepthFunc(GL_EQUAL);
 
 	for (int i = 0; i < currentscene.directionallights.size(); i++) {
 		forwarddirectionalshader.setDirectionalLight(*currentscene.directionallights[i]);
-		currentscene.root.renderEntities(&forwarddirectionalshader);
+		currentscene.root->renderEntities(&forwarddirectionalshader);
 	}
 
-	for (int i = 0; i < currentscene.pointlights.size(); i++) {
+	for (int i = 0; i < 1; i++) {
 		forwardpointshader.pointlight = (*currentscene.pointlights[i]);
-		currentscene.root.renderEntities(&forwardpointshader);
+		currentscene.root->renderEntities(&forwardpointshader);
 	}
 
 
-	for (int i = 0; i < currentscene.spotlights.size(); i++) {
+	/*for (int i = 0; i < currentscene.spotlights.size(); i++) {
 		forwardspotshader.spotlight = (*currentscene.spotlights[i]);
-		currentscene.root.renderEntities(&forwardspotshader);
-	}
+		currentscene.root->renderEntities(&forwardspotshader);
+	}*/
 
 	glDepthFunc(GL_LESS);
 	glDepthMask(true);
 	glDisable(GL_BLEND);
-	glBlendFunc(GL_ONE, GL_ZERO);*/
+	glBlendFunc(GL_ONE, GL_ZERO);
 
 	if (currentscene.skybox.skyboxbox.size != 0) {
 	currentscene.skybox.useSkybox();

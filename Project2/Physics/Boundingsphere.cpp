@@ -23,13 +23,23 @@ bool Boundingsphere::Simulate(Physicsobject &physicsobject)
 	float radiusdistance;
 	float centerdistance;
 	//float collisiondistance = 0;
-	bool collision = false;
 	switch (physicsobject.shape) {			//test collisions
 	case 0:													//sphere
 		radiusdistance = radius + physicsobject.getRadius();
 		centerdistance = (physicsobject.getPosition().Subtract(getPosition())).Magnitude();
 		if (centerdistance < radiusdistance) {
-			collision = true;
+			collided = true;
+			tempoldpos = oldpos;
+			tempvel = velocity;
+			Raytrace ray;
+			vector3 dir = oldpos - physicsobject.oldpos;
+			ray.Trace(physicsobject.oldpos, dir, oldpos, radius);
+			collisiondata.intersectionpoints.push_back(ray.intersectionpoint);
+			collisiondata.intersectionnormals.push_back(ray.normal);
+			collisiondata.otherobjects.push_back(&physicsobject);
+			std::pair <float, vector3> momentum = { physicsobject.mass, physicsobject.velocity };
+			collisiondata.momentia.push_back(momentum);
+			collisiondata.forces.push_back(acceleration.multiply(mass));
 		}
 		break;
 	case 1:			//box
@@ -55,28 +65,23 @@ bool Boundingsphere::Simulate(Physicsobject &physicsobject)
 		}
 
 		if ((sqrtdistance) < (getRadius() * getRadius())) {
-			collision = true;
-		}
-		break;
-	}
-
-	//collision succesful
-	if (collision) {
+			collided = true;
 			tempoldpos = oldpos;
 			tempvel = velocity;
-			collided = true;
 			Raytrace ray;
 			vector3 dir = oldpos - physicsobject.oldpos;
 			ray.Trace(physicsobject.oldpos, dir, oldpos, radius);
 			collisiondata.intersectionpoints.push_back(ray.intersectionpoint);
 			collisiondata.intersectionnormals.push_back(ray.normal);
-			//collisiondata.collisiondistance = collisiondistance;
 			collisiondata.otherobjects.push_back(&physicsobject);
 			std::pair <float, vector3> momentum = { physicsobject.mass, physicsobject.velocity };
 			collisiondata.momentia.push_back(momentum);
 			collisiondata.forces.push_back(acceleration.multiply(mass));
+		}
+		break;
 	}
-	return collision;
+
+	return collided;
 }
 void Boundingsphere::handleCollision() {
 	float momentiamass = 0;
@@ -95,7 +100,7 @@ void Boundingsphere::handleCollision() {
 		/*momentums = momentums.add(collisiondata.momentia[i].second.multiply(collisiondata.momentia[i].first)); //impulse
 		momentiamass += collisiondata.momentia[i].first;
 		netforce += collisiondata.forces[i + 1];    //acceleration*/
-		/*vector3 dir = tempoldpos - collisiondata.otherobjects[i]->tempoldpos;
+		/*vector3 dir = tempoldpos - collisiondata.otherobjects[i]->tempoldpos;                  
 		if (raytrace.Trace(collisiondata.otherobjects[i]->tempoldpos, dir, tempoldpos, radius)) {  //angle*/
 			relvelnormal = (collisiondata.otherobjects[i]->tempvel - tempvel).dotProduct(collisiondata.intersectionnormals[i]);
 			if (relvelnormal < 0) {
@@ -168,7 +173,6 @@ void Boundingsphere::handleConstraints()
 	float impulse = 0;
 	vector3 term2;
 	vector3 dir;
-	Raytrace ray;
 		while (!done && sleep != 5) {
 			done = true;
 			for (int i = 0; i < collisiondata.otherobjects.size(); i++) {

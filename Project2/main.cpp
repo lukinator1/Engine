@@ -287,6 +287,9 @@ int main(int argc, char* argv[]) {
 	sceneone.addPointLight(SS.getPointLight("orangeplight"));
 	sceneone.addPointLight(SS.getPointLight("blueplight"));
 
+	//SS.addPointLight("plight3", Pointlight(vector3(1.0f, 0.2f, 0.0f), vector3(2.0f, 0.0f, 7.0f), 16.0f, 2.0f, 0.0f, 1.0f));
+	//scenetwo.addPointLight(SS.getPointLight("plight3"));
+
 	//meshes
 	SS.addMaterials("mats1", Materials("test.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f));
 	SS.addMaterials("mats2", Materials("container.jpg", vector3(1.0f, 1.0f, 0.0f), 1.0f, 8.0f));
@@ -294,7 +297,7 @@ int main(int argc, char* argv[]) {
 
 	//castle
 	SS.addModel("Quote", Model("quote.obj"));
-	SS.addModel("Cloud", Model("Cloud.obj"));
+	/*SS.addModel("Cloud", Model("Cloud.obj"));
 	SS.addModel("Snake", Model("snake1.obj"));
 	SS.addModel("Mario", Model("mario.obj"));
 	SS.addMesh("Cube", Mesh("cube.obj"));
@@ -302,9 +305,9 @@ int main(int argc, char* argv[]) {
 	SS.addModel("Gumi", Model("gumi1.obj"));
 	SS.addModel("Cube", Model("cube.obj"));
 	SS.addModel("cardboardbox", Model("CardBoardBox.obj"));
-	SS.addModel("Castle", Model("Peachs1 Castle 1f.obj"));
+	SS.addModel("Castle", Model("Peachs1 Castle 1f.obj"));*/
 
-	/*SS.addModel("Quote", Model(""));
+	//SS.addModel("Quote", Model(""));
 	SS.addModel("Cloud", Model(""));
 	SS.addModel("Snake", Model(""));
 	SS.addModel("Mario", Model(""));
@@ -313,10 +316,10 @@ int main(int argc, char* argv[]) {
 	SS.addModel("Gumi", Model(""));
 	SS.addModel("Cube", Model(""));
 	SS.addModel("cardboardbox", Model(""));
-	SS.addModel("Castle", Model(""));*/
+	SS.addModel("Castle", Model(""));
 	
 	//valley
-	/*SS.addModel("Valleyoftrials", Model("Valleyoftrials.obj"));
+	/*(SS.addModel("Valleyoftrials", Model("Valleyoftrials.obj"));
 	SS.addModel("2B", Model("Nier2b.obj"));
 	SS.addModel("Ashebringer", Model("Ashebringer.obj"));
 	SS.addModel("Altar", Model("Altar.obj"));*/
@@ -339,6 +342,8 @@ int main(int argc, char* argv[]) {
 	//physics
 	SS.addBoundingSphere("bsphere1", Boundingsphere());
 	SS.addBoundingSphere("bsphere2", Boundingsphere());
+	SS.addAABB("AABB1", Boundingbox());
+	SS.addAABB("AABB2", Boundingbox());
 
 	//audio
 	Audioclip testclip;
@@ -374,7 +379,6 @@ int main(int argc, char* argv[]) {
 	Castle.addComponent(&castlemodel);
 	Quote.addSubEntity(&Castle);
 
-	Meshrenderer otherspheremesh(SS.getMesh("Sphere"), SS.getMaterials("mats1"));
 	Entity Cloud("Cloud");
 	Cloud.transform.setPosition(vector3(5.0f, 0.0f, 10.0f));
 	Cloud.transform.setScale(vector3(0.10f, .10f, .10f));
@@ -385,7 +389,6 @@ int main(int argc, char* argv[]) {
 	bspherecloud.boundingsphere.mass = 20.0f;
 	bspherecloud.boundingsphere.recalculateMOI();
 	Cloud.addComponent(&cloudmodel);
-	/*Cloud.addComponent(&otherspheremesh);*/
 	Cloud.addComponent(&bspherecloud);
 	Quote.addSubEntity(&Cloud);
 
@@ -399,8 +402,16 @@ int main(int argc, char* argv[]) {
 	Entity Mario("Mario");
 	Mario.transform.setPosition(vector3(30.0f, 0.0f, 15.0f));
 	Mario.transform.setScale(vector3(0.07f, 0.07f, 0.07f));
-	Modelrenderer scoutcomponent(SS.getModel("Mario"));
-	Mario.addComponent(&scoutcomponent);
+	Modelrenderer mariomodel(SS.getModel("Mario"));
+	Mario.addComponent(&mariomodel);
+	AABBcollider AABBmario(SS.getAABB("AABB1"));
+	AABBmario.AABB.setPosition(Mario.transform.getPosition());
+	AABBmario.AABB.mass = 40.0f;
+	AABBmario.AABB.setWidth(2.0f);
+	AABBmario.AABB.setHeight(2.0f);
+	AABBmario.AABB.setLength(2.0f);
+	AABBmario.AABB.recalculateMOI();
+	Mario.addComponent(&AABBmario);
 	Quote.addSubEntity(&Mario);
 
 	Entity Gumi("Gumi");
@@ -410,8 +421,8 @@ int main(int argc, char* argv[]) {
 	Gumi.addComponent(&gumimodel);
 	/*Quote.addSubEntity(&Gumi);*/
 
-	Entity sphereone("sphereone");  //physics tests
-	sphereone.transform.setPosition(7.5f, 40.0f, -14.0f);
+	Entity sphereone("sphereone");  //physics tests, one getting hit
+	sphereone.transform.setPosition(16.0f, 40.0f, -14.0f);
 	sphereone.transform.setScale(vector3(2.0f, 2.0f, 2.0f));
 	Meshrenderer spheremesh(SS.getMesh("Sphere"), SS.getMaterials("mats2"));
 	sphereone.addComponent(&spheremesh);
@@ -424,9 +435,38 @@ int main(int argc, char* argv[]) {
 	sphereone.addComponent(&sphereonecollider);
 	Quote.addSubEntity(&sphereone);
 
-	Entity spheretwo("spheretwo");
-	spheretwo.transform.setPosition(7.5f, 40.0f, -20.0f);
+	Entity box1("AABBgettinghit");
+	box1.transform.setPosition(7.5f, 40.0f, -14.0f);
+	box1.transform.setScale(vector3(2.0f, 2.0f, 2.0f));
+	Meshrenderer boxmesh1(SS.getMesh("Cube"), SS.getMaterials("mats2"));
+	box1.addComponent(&boxmesh1);
+	AABBcollider boxcollider1(SS.getAABB("AABB1"));
+	boxcollider1.AABB.setPosition(box1.transform.getPosition());
+	boxcollider1.AABB.setLength(4.0f);
+	boxcollider1.AABB.setWidth(4.0f);
+	boxcollider1.AABB.setHeight(4.0f);
+	boxcollider1.AABB.recalculateMOI();
+	box1.addComponent(&boxcollider1);
+	Quote.addSubEntity(&box1);
+
+	Entity box2("AABBdoinghitting"); //one doing hitting
+	box2.transform.setPosition(7.5f, 40.0f, -26.0f);
+	box2.transform.setScale(vector3(2.0f, 2.0f, 2.0f));
+	Meshrenderer boxmesh2(SS.getMesh("Cube"), SS.getMaterials("mats1"));
+	box2.addComponent(&boxmesh2);
+	AABBcollider boxcollider2(SS.getAABB("AABB2"));
+	boxcollider2.AABB.setPosition(box2.transform.getPosition());
+	boxcollider2.AABB.setLength(4.0f);
+	boxcollider2.AABB.setWidth(4.0f);
+	boxcollider2.AABB.setHeight(4.0f);
+	boxcollider2.AABB.recalculateMOI();
+	box2.addComponent(&boxcollider2);
+	Quote.addSubEntity(&box2);
+
+	Entity spheretwo("spheretwo"); 
+	spheretwo.transform.setPosition(16.0f, 40.0f, -26.0f);
 	spheretwo.transform.setScale(vector3(2.0f, 2.0f, 2.0f));
+	Meshrenderer otherspheremesh(SS.getMesh("Sphere"), SS.getMaterials("mats1"));
 	spheretwo.addComponent(&otherspheremesh);
 	Boundingspherecollider spheretwocollider(SS.getBoundingSphere("bsphere2"));
 	spheretwocollider.boundingsphere.setColliderTransform(spheretwo.transform);
@@ -437,19 +477,17 @@ int main(int argc, char* argv[]) {
 
 	Entity box("box");
 	Meshrenderer boxmesh(SS.getMesh("Cube"), SS.getMaterials("mats2"));
-	box.transform.setPosition(0, 0, 0);
+	box.transform.setPosition(3, 6, 15);
 	box.transform.setScale(vector3(2.0f, 2.0f, 2.0f));
-	bspherecloud.boundingsphere.setColliderTransform(box.transform);
 	box.addComponent(&boxmesh);
-	sphereone.addSubEntity(&box);
 	AABBcollider boxbox;
 	boxbox.AABB.setColliderTransform(box.transform);
 	boxbox.AABB.setHeight(4.0f);
 	boxbox.AABB.setLength(4.0f);
 	boxbox.AABB.setWidth(4.0f);
 	box.addComponent(&boxbox);
+	Quote.addSubEntity(&box);
 
-	float x = 6.0f / 0.0f;
 	//scene two
 	Entity valley("Valley of Trials");
 	Modelrenderer valleymodel(SS.getModel("Valleyoftrials"));
@@ -548,7 +586,7 @@ int main(int argc, char* argv[]) {
 	//field.addComponent(&fieldbox);
 	Quote.addSubEntity(&field);
 
-	sceneone.setRoot(&Quote);
+	sceneone.setRoot(&field);
 	scenetwo.setRoot(&valley);
 	scenethree.setRoot(&floatingisland);
 
@@ -583,6 +621,7 @@ int main(int argc, char* argv[]) {
 	Camera.setMouseLook(true);
 	bool flashlighton = true;
 	float unitest = 0.0f;
+	void * currenttestphyobject[2] = { &bspherecloud, &AABBmario };
 	bool held = false;
 
 	//loop
@@ -668,6 +707,15 @@ int main(int argc, char* argv[]) {
 		if (Inputs.keyboardstate[Input::Keyright].first == 1) {
 			bspherecloud.boundingsphere.velocity += (Camera.camerarotation.getRight().multiply(13.0f));
 		}
+		if (Inputs.keyboardstate[Input::P].first == 1 && Inputs.keyboardstate[Input::P].second == 0 && !Console.consoleOn()) {  //flashlight 
+			vector3 right(0, 0, 10.0f);
+			if (Inputs.keyboardstate[Input::Rightshift].first) {
+				if (right.z > 0) {
+					right.z = -right.z;
+				}
+			}
+			spheretwocollider.boundingsphere.velocity += right;
+		}
 		if (Inputs.keyboardstate[Input::L].first == 1 && Inputs.keyboardstate[Input::L].second == 0 && !Console.consoleOn()) {  //flashlight 
 			vector3 right(0, 0, 10.0f);
 			if (Inputs.keyboardstate[Input::Rightshift].first) {
@@ -675,7 +723,7 @@ int main(int argc, char* argv[]) {
 					right.z = -right.z;
 				}
 			}
-		spheretwocollider.boundingsphere.velocity += right;
+			boxcollider2.AABB.velocity += right;
 		}
 		if (Window.resized) {
 			Camera.aspectratiowidth = Window.getWindowWidth();
@@ -688,7 +736,7 @@ int main(int argc, char* argv[]) {
 					forward.x = -forward.x;
 				}
 			}
-			spheretwocollider.boundingsphere.acceleration += forward;
+			boxcollider2.AABB.acceleration += forward;
 		}
 		if (Inputs.keyboardstate[Input::J].first == true) {
 			vector3 up(0, 0.1f, 0);
@@ -697,7 +745,7 @@ int main(int argc, char* argv[]) {
 					up.y = -up.y;
 			}
 			}
-			spheretwocollider.boundingsphere.acceleration += up;
+			boxcollider2.AABB.acceleration += up;
 		}
 		if (Inputs.leftmouse.first == true) {
 			if (held) {
@@ -765,6 +813,7 @@ int main(int argc, char* argv[]) {
 		meshme.drawMesh();*/
 		Physics.Update(*currentscene);
 		Renderer.renderScene(*currentscene);
+		Window.updateWindow();
 		Audio.audioUpdate(*currentscene);
 		/*text.renderComponent(transform, shaderit);*/     //interesting effect
 		Console.consoleUpdate(*currentscene, gameisrunning, framebyframe, stepframekey, exitframekey, framelock, fpscounter, deltatime, dtime, deltatimeweight);
@@ -797,7 +846,7 @@ int main(int argc, char* argv[]) {
 		}
 		/*Renderer.Textrenderer.renderText("texter", 510.0f,  300.0f, vector3(1.0f, 1.0f, 1.0f), .4f);
 		Renderer.Textrenderer.renderText("> The quick brown fox jumped over the lazy dog. 1234567890", 0.0f, 300.0f, vector3(0.4, 0.3, 0.8), .7f);*/
-		Window.updateWindow();
+		//Window.updateWindow();
 		Messages.messageSystemUpdate(Inputs, Window, Camera, Console);
 
 
