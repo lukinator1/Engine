@@ -6,16 +6,17 @@ class Boundingspherecollider : public Component
 {
 public:
 	Boundingsphere boundingsphere;
+	vector3 ontransformposition;
 	Shader colliderdebugshader;
 	Mesh debugsphere;
 	Materials debugcollidermaterials;
 	Texture collisiontexture;
 	Texture sleeptexture;
-	bool debugcollidermesh = false;
+	bool debugcollidermesh = true;
 	bool settotransform;
 	void componentPhysics(Transforming &t) {
 		if (settotransform) {
-			t.position = boundingsphere.getPosition();
+			t.position = boundingsphere.getPosition() + ontransformposition;
 			t.rotation = boundingsphere.getRotation();
 		}
 		boundingsphere.collisiondata.otherobjects.clear();
@@ -55,6 +56,9 @@ public:
 	}
 	void setToTransform(bool trans) {
 		settotransform = trans;
+	}
+	void setOnTransformPosition(vector3 ontranpos) {
+		ontransformposition = ontranpos;
 	}
 	Boundingspherecollider(Boundingsphere bsphere) : debugsphere("sphere.obj"), colliderdebugshader("Colliderdebug"), collisiontexture("Collisiondebug.png"), sleeptexture("Sleepingdebug.png") {
 		vector3 impulsecolor = (boundingsphere.velocity).multiply(boundingsphere.mass).divide(1000.0f);

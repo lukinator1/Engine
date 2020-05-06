@@ -195,6 +195,9 @@
     <ClInclude Include="Audio\Music.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Components\ThreeDaudio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Window.cpp">
@@ -311,16 +314,10 @@
     <ClCompile Include="Physics\Physicsmanager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Components\Boundingspherecollider.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Physics\Physicsobject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Raytrace.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Components\AABBcollider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Physicstransform.cpp">
@@ -339,6 +336,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Audio\Music.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\ThreeDaudio.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

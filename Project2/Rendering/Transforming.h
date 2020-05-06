@@ -78,7 +78,7 @@ public:
 	}
 	matrix4f newTextMatrix() {
 		matrix4f textmatrix;
-		textmatrix.makeOrthographic(0.0f, 800.0f, 0.0f, 600.0f, -1.0f, 1.0); //needs to be changed to window width
+		textmatrix.makeOrthographic(0.0f, 800, 0.0f, 600.0f, -1.0f, 1.0); //todo: needs to be changed to window width
 		return textmatrix;
 	}
 

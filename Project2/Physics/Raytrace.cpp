@@ -164,11 +164,11 @@ std::vector<Raytrace> Raytrace::Trace(vector3 start, vector3 end, std::vector<Ph
 			}
 			break;
 		case 1: //box
-			float tfinal;
-			float tmin;
-			float tmax;
-			float tymin;
-			float tymax;
+			float tfinal = 0;
+			float tmin = 0;
+			float tmax = 0;
+			float tymin = 0;
+			float tymax = 0;
 			if (end.x > 0) {
 				tmin = (colliders[i]->getMinextents().x - start.x) / end.x;
 				tmax = (colliders[i]->getMaxextents().x - start.x) / end.x;
@@ -426,11 +426,11 @@ bool Raytrace::Trace(vector3 start, vector3 end, vector3 position, float length,
 	if (end.Magnitude() != 1) {
 		end = end.Normalize();
 	}
-		float tfinal;
-		float tmin;
-		float tmax;
-		float tymin;
-		float tymax;
+		float tfinal = 0;
+		float tmin = 0;
+		float tmax = 0;
+		float tymin = 0;
+		float tymax = 0;
 		if (end.x > 0) {
 			tmin = (minextents.x - start.x) / end.x;
 			tmax = (maxextents.x - start.x) / end.x;
@@ -515,11 +515,11 @@ bool Raytrace::Trace(vector3 start, vector3 end, vector3 position, vector3 maxex
 		end = end.Normalize();
 	}
 	vector3 invdirec(1.0f / end.x, 1.0f / end.y, 1.0f / end.z);
-	float tfinal;
-	float tmin;
-	float tmax;
-	float tymin;
-	float tymax;
+	float tfinal = 0 ;
+	float tmin = 0 ;
+	float tmax = 0;
+	float tymin = 0;
+	float tymax = 0;
 	if (invdirec.x >= 0) {
 		tmin = (minextents.x - start.x) * invdirec.x;
 		tmax = (maxextents.x - start.x)  * invdirec.x;

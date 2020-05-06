@@ -91,7 +91,8 @@ void Mesh::loadMeshObj(std::string file) //max size of vector?
 		std::string buffer;
 		while (getline(fileopener, bigbuffer)) {
 			if (fileopener.bad()) {
-				engineLog(__FILE__, __LINE__, "Warning: Model failed to import. An error model was returned instead.", 2, 2, true);
+				engineLog(__FILE__, __LINE__, "Warning: Model failed to import. An error mesh was returned instead.", 2, 2, true);
+				loadMeshObj("Cube.obj");
 				return; //make an error model
 			}
 
@@ -247,12 +248,14 @@ void Mesh::loadMeshObj(std::string file) //max size of vector?
 	}
 	else
 	{
-		engineLog(__FILE__, __LINE__, "Warning: Model failed to import. Returned an error model.", 2, 2, true);
+		engineLog(__FILE__, __LINE__, "Warning: Mesh failed to import. Returned an error mesh.", 2, 2, true);
+		loadMeshObj("Cube.obj");
 		return; //todo: error model
 	}
 	
 	if (positioncoordinates.size() == 0 || positionindices.size() == 0) {
-		engineLog(__FILE__, __LINE__, "Warning: Model failed to import. Returned an error model.", 2, 2, true);
+		loadMeshObj("Cube.obj");
+		engineLog(__FILE__, __LINE__, "Warning: Model failed to import. Returned an error mesh.", 2, 2, true);
 		return;
 	}
 

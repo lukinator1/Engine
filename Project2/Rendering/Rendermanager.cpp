@@ -32,22 +32,22 @@ void Rendering::renderScene(Scene &currentscene){
 	glBlendFunc(GL_ONE, GL_ONE);
 	glDepthMask(false);
 	glDepthFunc(GL_EQUAL);
-
+	
 	for (int i = 0; i < currentscene.directionallights.size(); i++) {
 		forwarddirectionalshader.setDirectionalLight(*currentscene.directionallights[i]);
 		currentscene.root->renderEntities(&forwarddirectionalshader);
 	}
 
-	for (int i = 0; i < 1; i++) {
+	for (int i = 0; i < currentscene.pointlights.size(); i++) {
 		forwardpointshader.pointlight = (*currentscene.pointlights[i]);
 		currentscene.root->renderEntities(&forwardpointshader);
 	}
 
 
-	/*for (int i = 0; i < currentscene.spotlights.size(); i++) {
+	for (int i = 0; i < currentscene.spotlights.size(); i++) {
 		forwardspotshader.spotlight = (*currentscene.spotlights[i]);
 		currentscene.root->renderEntities(&forwardspotshader);
-	}*/
+	}
 
 	glDepthFunc(GL_LESS);
 	glDepthMask(true);

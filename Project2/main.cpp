@@ -33,8 +33,8 @@ int stepframekey = 225;
 int exitframekey = 41;
 Scene *currentscene;
 std::vector<Physicsobject *> colliders;
-float fieldDepth = 20.0f;
-float fieldWidth = 20.0f;
+float fieldDepth = 400.0f;
+float fieldWidth = 400.0f;
 void swapScene(Scene &scene) {
 	currentscene->closeScene();
 	currentscene = &scene;
@@ -265,27 +265,35 @@ int main(int argc, char* argv[]) {
 	Console.consoleStartup(log, MemoryManager, Window, Inputs, Renderer, Physics, Camera, SS);
 
 	//test scene
-	Scene sceneone;		
+	Scene sceneone;	
 	sceneone.setSkybox("right.jpg", "left.jpg", "top.jpg", "bottom.jpg", "front.jpg", "back.jpg");
+	//sceneone.setSkybox("scene1side.jpg", "scene1side.jpg", "scene1top.jpg", "scene1top.jpg", "scene1side.jpg", "scene1side.jpg");
 	Scene scenetwo;
+	scenetwo.setSkybox("scene2side.jpg", "scene2side.jpg", "scene2top.jpg", "scene2top.jpg", "scene2side.jpg", "scene2side.jpg");
 	Scene scenethree;
+	scenethree.setSkybox("right.jpg", "left.jpg", "top.jpg", "bottom.jpg", "front.jpg", "back.jpg");
 
 
 	//lights
-	sceneone.setAmbientLight(vector3(0.3f, 0.3f, 0.3f));
-	SS.addDirectionalLight("dlight1", Directionallight(vector3(1.0f, 1.0f, 1.0f), vector3(1.0f, 1.0f, 1.0f), 0.5f));
+	sceneone.setAmbientLight(vector3(0.4f, 0.4f, 0.4f));
+	SS.addDirectionalLight("dlight1", Directionallight(vector3(0.0f, 0.0f, 0.85f), vector3(1.0f, 1.0f, 1.0f), 0.45f));
 	SS.addDirectionalLight("dlight2", Directionallight(vector3(1.0f, 0, 0), vector3(-1.0f, 1.0f, -1.0f), 0.4f));
-	SS.addPointLight("plight1", Pointlight(vector3(0.0f, 0.5f, 1.0f), vector3(2.0f, 0.0f, 7.0f), 4.0f, 2.0f, 0.0f, 1.0f));
-	SS.addSpotLight("slight1", Spotlight(vector3(0.0f, 1.0f, 1.0f), vector3(5.0f, 0.0f, 5.0f), vector3(1.0f, -1.0f, 1.0f), 80.0f, 0.7f, 3.0f, 0.0f, 0.1f));
-	SS.addPointLight("orangeplight", Pointlight(vector3(1.0f, 0.5f, 0.0f), vector3(-2.0f, 0.0f, 5.0f), 4.0f, 0.8f, 0.0f, 1.0f));
-	SS.addPointLight("blueplight", Pointlight(vector3(0.0f, 0.5f, 1.0f), vector3(2.0f, 0.0f, 7.0f), 4.0f, 2.0f, 0.0f, 1.0f));
+	SS.addDirectionalLight("scenetwodlight3", Directionallight(vector3(0.8f, .08f, 0.0f), vector3(0, 0.5, 1.0), .2));
+	SS.addDirectionalLight("scenetwodlight4", Directionallight(vector3(1.0f, 1.0f, 1.0f), vector3(0, 0.5, 1.0), .4));
+	SS.addPointLight("plight1", Pointlight(vector3(0.0f, 0.5f, 1.0f), vector3(2.0f, 1.0f, 7.0f), 4.0f, 2.0f, 0.0f, 1.0f));
+	SS.addSpotLight("slight1", Spotlight(vector3(1.0f, 1.0f, 1.0f), vector3(5.0f, .5f, 5.0f), vector3(0.0f, 0.65f, -1.0f), 80.0f, 0.7f, 8.0f, 0.0f, 0.1f));
+	SS.addPointLight("orangeplight", Pointlight(vector3(1.0f, 0.5f, 0.0f), vector3(-2.0f, 0.0f, 5.0f), 7.5f, 7.0f, 0.0f, 1.0f));
+	SS.addPointLight("blueplight", Pointlight(vector3(0.0f, 0.5f, 1.0f), vector3(2.0f, 0.0f, 7.0f), 20.0f, 11.0f));
+	// 4.0f, 0.8f, 0.0f, 1.0f
 
-	sceneone.addDirectionalLight(SS.getDirectionalLight("dlight1"));
-	/*sceneone.addDirectionalLight(SS.getDirectionalLight("dlight2"));*/
-	sceneone.addPointLight(SS.getPointLight("plight1"));
-	sceneone.addSpotLight(SS.getSpotLight("slight1"));
-	sceneone.addPointLight(SS.getPointLight("orangeplight"));
-	sceneone.addPointLight(SS.getPointLight("blueplight"));
+	//sceneone.addDirectionalLight(SS.getDirectionalLight("dlight1"));
+	scenetwo.addDirectionalLight(SS.getDirectionalLight("scenetwodlight3"));
+	scenethree.addDirectionalLight(SS.getDirectionalLight("scenetwodlight4"));
+	//sceneone.addDirectionalLight(SS.getDirectionalLight("dlight2"));
+	//sceneone.addPointLight(SS.getPointLight("plight1"));
+	//sceneone.addSpotLight(SS.getSpotLight("slight1"));
+	//sceneone.addPointLight(SS.getPointLight("orangeplight"));
+	//sceneone.addPointLight(SS.getPointLight("blueplight"));
 
 	//SS.addPointLight("plight3", Pointlight(vector3(1.0f, 0.2f, 0.0f), vector3(2.0f, 0.0f, 7.0f), 16.0f, 2.0f, 0.0f, 1.0f));
 	//scenetwo.addPointLight(SS.getPointLight("plight3"));
@@ -295,19 +303,19 @@ int main(int argc, char* argv[]) {
 	SS.addMaterials("mats2", Materials("container.jpg", vector3(1.0f, 1.0f, 0.0f), 1.0f, 8.0f));
 	SS.addMaterials("mats3", Materials("ashbringer_color_map.png", vector3(1.0f, 1.0f, 0.0f), 1.0f, 8.0f));
 
-	//castle
+	
 	SS.addModel("Quote", Model("quote.obj"));
-	/*SS.addModel("Cloud", Model("Cloud.obj"));
-	SS.addModel("Snake", Model("snake1.obj"));
+	SS.addModel("Cloud", Model("Cloud.obj"));
+	SS.addModel("Snake", Model("snake.obj"));
 	SS.addModel("Mario", Model("mario.obj"));
 	SS.addMesh("Cube", Mesh("cube.obj"));
 	SS.addMesh("Sphere", Mesh("sphere.obj"));
-	SS.addModel("Gumi", Model("gumi1.obj"));
+	SS.addModel("Gumi", Model("gumi.obj"));
 	SS.addModel("Cube", Model("cube.obj"));
-	SS.addModel("cardboardbox", Model("CardBoardBox.obj"));
-	SS.addModel("Castle", Model("Peachs1 Castle 1f.obj"));*/
+	//SS.addModel("cardboardbox", Model("CardBoardBox.obj"));
+	SS.addModel("Castle", Model("Peachs Castle 1f.obj"));
 
-	//SS.addModel("Quote", Model(""));
+	/*SS.addModel("Quote", Model(""));
 	SS.addModel("Cloud", Model(""));
 	SS.addModel("Snake", Model(""));
 	SS.addModel("Mario", Model(""));
@@ -316,27 +324,27 @@ int main(int argc, char* argv[]) {
 	SS.addModel("Gumi", Model(""));
 	SS.addModel("Cube", Model(""));
 	SS.addModel("cardboardbox", Model(""));
-	SS.addModel("Castle", Model(""));
+	SS.addModel("Castle", Model(""));*/
 	
 	//valley
-	/*(SS.addModel("Valleyoftrials", Model("Valleyoftrials.obj"));
+	SS.addModel("Valleyoftrials", Model("Valleyoftrials.obj"));
 	SS.addModel("2B", Model("Nier2b.obj"));
 	SS.addModel("Ashebringer", Model("Ashebringer.obj"));
-	SS.addModel("Altar", Model("Altar.obj"));*/
-	SS.addModel("Valleyoftrials", Model(""));
+	SS.addModel("Altar", Model("Altar.obj"));
+	/*SS.addModel("Valleyoftrials", Model(""));
 	SS.addModel("2B", Model(""));
 	SS.addModel("Ashebringer", Model(""));
-	SS.addModel("Altar", Model(""));
-
+	SS.addModel("Altar", Model(""));*/
+	
 	//temple
-	/*SS.addModel("Floatingisland", Model("floatingisland.obj"));
+	SS.addModel("Floatingisland", Model("floatingisland.obj"));
 	SS.addModel("Kirby", Model("Kirby.obj"));
 	SS.addModel("Scout", Model("Scout2.obj"));
-	SS.addModel("Rin Tezuka", Model("rin tezuka"));*/
+	//SS.addModel("Rin Tezuka", Model("rin tezuka"));
 	
-	SS.addModel("Floatingisland", Model(""));
+    /*SS.addModel("Floatingisland", Model(""));
 	SS.addModel("Kirby", Model(""));
-	SS.addModel("Scout", Model(""));
+	SS.addModel("Scout", Model(""));*/
 	SS.addModel("Rin Tezuka", Model(""));
 
 	//physics
@@ -344,6 +352,7 @@ int main(int argc, char* argv[]) {
 	SS.addBoundingSphere("bsphere2", Boundingsphere());
 	SS.addAABB("AABB1", Boundingbox());
 	SS.addAABB("AABB2", Boundingbox());
+	SS.addAABB("AABB3", Boundingbox());
 
 	//audio
 	Audioclip testclip;
@@ -375,12 +384,22 @@ int main(int argc, char* argv[]) {
 	Entity Castle("Castle");
 	Modelrenderer castlemodel(SS.getModel("Castle"));
 	Castle.transform.setPosition(-15.0f, 3.0f, 6.0f);
-	Castle.transform.setScale(vector3(40.0f, 40.0f, 40.0f));
+	Castle.transform.setScale(vector3(50.0f, 50.0f, 50.0f));
 	Castle.addComponent(&castlemodel);
+	AABBcollider castleAABB(SS.getAABB("AABB3"));
+	castleAABB.settotransform = false; 
+	castleAABB.AABB.setPosition(-85.0f, -28.0f, 6.0f);
+	castleAABB.AABB.setWidth(60.0f);
+	castleAABB.AABB.setHeight(60.0f);
+	castleAABB.AABB.setLength(60.0f);
+	castleAABB.AABB.mass = 5000.0f;
+	castleAABB.AABB.terrain = true;
+	castleAABB.AABB.recalculateMOI();
+	Castle.addComponent(&castleAABB);
 	Quote.addSubEntity(&Castle);
 
 	Entity Cloud("Cloud");
-	Cloud.transform.setPosition(vector3(5.0f, 0.0f, 10.0f));
+	Cloud.transform.setPosition(vector3(4.0f, 1.0f, 10.0f));
 	Cloud.transform.setScale(vector3(0.10f, .10f, .10f));
 	Modelrenderer cloudmodel(SS.getModel("Cloud"));
 	Boundingspherecollider bspherecloud(SS.getBoundingSphere("bsphere1"));
@@ -393,55 +412,50 @@ int main(int argc, char* argv[]) {
 	Quote.addSubEntity(&Cloud);
 
 	Entity Snake("Snake");
-	Snake.transform.setPosition(vector3(10.0f, -3.0f, 20.0f));
-	Snake.transform.setScale(vector3(0.08f, 0.08f, 0.08f));
+	Snake.transform.setPosition(vector3(40.0f, 0.0f, 50.0f));
+	Snake.transform.setRotation(Quaternion(0, -180.0f, 0, 1));
+	Snake.transform.setScale(vector3(1.5f, 1.5f, 1.5f));
 	Modelrenderer snakecomponent(SS.getModel("Snake"));
 	Snake.addComponent(&snakecomponent);
 	Cloud.addSubEntity(&Snake);
 
 	Entity Mario("Mario");
-	Mario.transform.setPosition(vector3(30.0f, 0.0f, 15.0f));
+	Mario.transform.setPosition(vector3(36.0f, 10.0f, 7.0f));
 	Mario.transform.setScale(vector3(0.07f, 0.07f, 0.07f));
 	Modelrenderer mariomodel(SS.getModel("Mario"));
 	Mario.addComponent(&mariomodel);
-	AABBcollider AABBmario(SS.getAABB("AABB1"));
+	Boundingspherecollider bspheremario(SS.getBoundingSphere("bsphere1"));
+	bspheremario.boundingsphere.setPosition(Mario.transform.getPosition());
+	bspheremario.setOnTransformPosition(vector3(0, -6.5f, 0));
+	bspheremario.boundingsphere.radius = 6.4;
+	bspheremario.boundingsphere.recalculateMOI();
+	//Mario.addComponent(&bspheremario);
+	/*AABBcollider AABBmario(SS.getAABB("AABB1"));
 	AABBmario.AABB.setPosition(Mario.transform.getPosition());
 	AABBmario.AABB.mass = 40.0f;
 	AABBmario.AABB.setWidth(2.0f);
 	AABBmario.AABB.setHeight(2.0f);
 	AABBmario.AABB.setLength(2.0f);
 	AABBmario.AABB.recalculateMOI();
-	Mario.addComponent(&AABBmario);
+	Mario.addComponent(&AABBmario);*/
 	Quote.addSubEntity(&Mario);
 
 	Entity Gumi("Gumi");
 	Modelrenderer gumimodel(SS.getModel("Gumi"));
-	Gumi.transform.setPosition(-15.0f, 3.0f, 15.0f);
+	Gumi.transform.setPosition(18.0f, -3.0f, -20.0f);
+	Gumi.transform.setRotation(Quaternion(0, -180.0f, 0, 1));
 	Gumi.transform.setScale(vector3(0.75f, 0.75f, 0.75f));
 	Gumi.addComponent(&gumimodel);
-	/*Quote.addSubEntity(&Gumi);*/
-
-	Entity sphereone("sphereone");  //physics tests, one getting hit
-	sphereone.transform.setPosition(16.0f, 40.0f, -14.0f);
-	sphereone.transform.setScale(vector3(2.0f, 2.0f, 2.0f));
-	Meshrenderer spheremesh(SS.getMesh("Sphere"), SS.getMaterials("mats2"));
-	sphereone.addComponent(&spheremesh);
-	Boundingspherecollider sphereonecollider(SS.getBoundingSphere("bsphere1"));
-	sphereonecollider.boundingsphere.setPosition(sphereone.transform.getPosition());
-	sphereonecollider.boundingsphere.setRotation(sphereone.transform.getRotation());
-	sphereonecollider.boundingsphere.radius = 2.0f;
-	sphereonecollider.boundingsphere.mass = 36.0f;
-	sphereonecollider.boundingsphere.recalculateMOI();
-	sphereone.addComponent(&sphereonecollider);
-	Quote.addSubEntity(&sphereone);
+	Quote.addSubEntity(&Gumi);
 
 	Entity box1("AABBgettinghit");
 	box1.transform.setPosition(7.5f, 40.0f, -14.0f);
-	box1.transform.setScale(vector3(2.0f, 2.0f, 2.0f));
+	box1.transform.setScale(vector3(4.0f, 4.0f, 4.0f));
 	Meshrenderer boxmesh1(SS.getMesh("Cube"), SS.getMaterials("mats2"));
 	box1.addComponent(&boxmesh1);
 	AABBcollider boxcollider1(SS.getAABB("AABB1"));
 	boxcollider1.AABB.setPosition(box1.transform.getPosition());
+
 	boxcollider1.AABB.setLength(4.0f);
 	boxcollider1.AABB.setWidth(4.0f);
 	boxcollider1.AABB.setHeight(4.0f);
@@ -463,6 +477,20 @@ int main(int argc, char* argv[]) {
 	box2.addComponent(&boxcollider2);
 	Quote.addSubEntity(&box2);
 
+	Entity sphereone("sphereone");  //physics tests, one getting hit
+	sphereone.transform.setPosition(16.0f, 40.0f, -14.0f);
+	sphereone.transform.setScale(vector3(2.0f, 2.0f, 2.0f));
+	Meshrenderer spheremesh(SS.getMesh("Sphere"), SS.getMaterials("mats2"));
+	sphereone.addComponent(&spheremesh);
+	Boundingspherecollider sphereonecollider(SS.getBoundingSphere("bsphere1"));
+	sphereonecollider.boundingsphere.setPosition(sphereone.transform.getPosition());
+	sphereonecollider.boundingsphere.setRotation(sphereone.transform.getRotation());
+	sphereonecollider.boundingsphere.radius = 2.0f;
+	sphereonecollider.boundingsphere.mass = 36.0f;
+	sphereonecollider.boundingsphere.recalculateMOI();
+	sphereone.addComponent(&sphereonecollider);
+	Quote.addSubEntity(&sphereone);
+
 	Entity spheretwo("spheretwo"); 
 	spheretwo.transform.setPosition(16.0f, 40.0f, -26.0f);
 	spheretwo.transform.setScale(vector3(2.0f, 2.0f, 2.0f));
@@ -475,7 +503,7 @@ int main(int argc, char* argv[]) {
 	spheretwo.addComponent(&spheretwocollider);
 	sphereone.addSubEntity(&spheretwo);
 
-	Entity box("box");
+	/*Entity box("box");
 	Meshrenderer boxmesh(SS.getMesh("Cube"), SS.getMaterials("mats2"));
 	box.transform.setPosition(3, 6, 15);
 	box.transform.setScale(vector3(2.0f, 2.0f, 2.0f));
@@ -485,8 +513,8 @@ int main(int argc, char* argv[]) {
 	boxbox.AABB.setHeight(4.0f);
 	boxbox.AABB.setLength(4.0f);
 	boxbox.AABB.setWidth(4.0f);
-	box.addComponent(&boxbox);
-	Quote.addSubEntity(&box);
+	box.addComponent(&boxbox);*/
+	//Quote.addSubEntity(&box);
 
 	//scene two
 	Entity valley("Valley of Trials");
@@ -504,8 +532,8 @@ int main(int argc, char* argv[]) {
 	Entity Altar("Altar");
 	Modelrenderer altarmodel(SS.getModel("Altar"));
 	SS.getModel("Altar").setMaterial(SS.getMaterials("mats2"));
-	Altar.transform.setPosition(-13.0f, 3.0f, 12.0f);
-	Altar.transform.setScale(vector3(1.0f, 1.0f, 1.0f));
+	Altar.transform.setPosition(-25.0f, 3.0f, 11.0f);
+	Altar.transform.setScale(vector3(.25f, 0.25f, 0.25f));
 	Altar.addComponent(&altarmodel);
 	valley.addSubEntity(&Altar);
 
@@ -524,7 +552,7 @@ int main(int argc, char* argv[]) {
 	Modelrenderer floatingislandmodel(SS.getModel("Floatingisland"));
 	floatingisland.addComponent(&floatingislandmodel);
 	
-	/*Entity Kirby("Kirby");
+	Entity Kirby("Kirby");
 	Modelrenderer kirbymodel(SS.getModel("Kirby"));
 	Kirby.transform.setPosition(vector3(-12.0f, 40.0f, 3.0f));
 	Kirby.transform.setScale(0.08f, 0.08f, 0.08f);
@@ -537,7 +565,7 @@ int main(int argc, char* argv[]) {
 	Scout.addComponent(&scoutmodel);
 	Kirby.addSubEntity(&Scout);
 
-	Entity Rintezuka("Rint Tezuka");
+	/*Entity Rintezuka("Rint Tezuka");
 	Modelrenderer rinmodel(SS.getModel("Rin Tezuka"));
 	Rintezuka.transform.setPosition(vector3(-6.0f, 30.0f, 0));
 	Rintezuka.addComponent(&rinmodel);
@@ -550,6 +578,8 @@ int main(int argc, char* argv[]) {
 	Scout.addSubEntity(&bellecour);*/
 
 	Entity field;
+	field.transform.setPosition(0.0f, 0.0f, 0.0f);
+	field.transform.setPosition(0.0f, -6.0f, 5.0f);
 	Vertex vertices[] = { Vertex(vector3(-fieldWidth, 0.0f, -fieldDepth), vector2(0.0f, 0.0f)),
 						Vertex(vector3(-fieldWidth, 0.0f, fieldDepth * 3), vector2(0.0f, 1.0f)),
 						Vertex(vector3(fieldWidth * 3, 0.0f, -fieldDepth), vector2(1.0f, 0.0f)),
@@ -574,7 +604,6 @@ int main(int argc, char* argv[]) {
 	Materials fieldmaterials("test.png", vector3(1.0f, 1.0f, 1.0f), 1.0f, 8.0f);
 	Mesh meshme(vertices, indices, sizeof(vertices) / sizeof(vertices[0]), sizeof(indices) / sizeof(indices[0]));
 	Meshrenderer fieldcomponent(meshme, fieldmaterials);
-	field.transform.setPosition(vector3(0, 0, 0));
 	field.addComponent(&fieldcomponent);
 	AABBcollider fieldbox;
 	fieldbox.AABB.setColliderTransform(field.transform);
@@ -586,22 +615,24 @@ int main(int argc, char* argv[]) {
 	//field.addComponent(&fieldbox);
 	Quote.addSubEntity(&field);
 
-	sceneone.setRoot(&field);
+	sceneone.setRoot(&Quote);
 	scenetwo.setRoot(&valley);
 	scenethree.setRoot(&floatingisland);
 
 	currentscene = &sceneone;
 	sceneone.initScene();
-	/*Spotlight flashlight(vector3(0.0f, 1.0f, 1.0f), vector3(0.0f, 0.0f, 0.0f), vector3(0.0f, 0.0f, 0.0f), 30.0f, 0.7f, 0.8f, 0.0f, 0.1f);
+	Shader shaderit("Forwardpoint");
+	Spotlight flashlight(vector3(0.0f, 1.0f, 1.0f), vector3(0.0f, 0.0f, 0.0f), vector3(0.0f, 0.0f, 0.0f), 30.0f, 0.7f, 0.8f, 0.0f, 0.1f);
 	Pointlight *plights = new Pointlight[6];
 	plights[0] = Pointlight(vector3(1.0f, 0.5f, 0.0f), vector3(-2.0f, 0.0f, 5.0f), 4.0f, 0.8f, 0.0f, 1.0f);
 	plights[1] = Pointlight(vector3(0.0f, 0.5f, 1.0f), vector3(2.0f, 0.0f, 7.0f), 4.0f, 2.0f, 0.0f, 1.0f);
-	shaderit.getPointLights()[0] = &plights[0];
-	shaderit.getPointLights()[1] = &plights[1];
-	shaderit.pointlight = plights[1];
-	Spotlight *slights = new Spotlight[1];
-	slights[0] = Spotlight(vector3(0.6f, 0.0f, 0.0f), vector3(-2.0f, 0.0f, 5.0f), vector3(1.0f, 1.0f, 1.0f), 30.0f, 0.7f, 0.8f, 0.0f, 0.1f);
-	shaderit.getSpotLights()[0] = &flashlight;*/
+	//shaderit.getPointLights()[0] = &plights[0];
+	//shaderit.getPointLights()[1] = &plights[1];
+	shaderit.pointlight = SS.getPointLight("blueplight");
+	Transforming transform;
+	//Spotlight *slights = new Spotlight[1];
+	//slights[0] = Spotlight(vector3(0.6f, 0.0f, 0.0f vector3(-2.0f, 0.0f, 5.0f), vector3(1.0f, 1.0f, 1.0f), 30.0f, 0.7f, 0.8f, 0.0f, 0.1f);
+	//shaderit.getSpotLights()[0] = &flashlight;
 
 	//time calculation
 	int prevtimecounter = 0;
@@ -621,8 +652,9 @@ int main(int argc, char* argv[]) {
 	Camera.setMouseLook(true);
 	bool flashlighton = true;
 	float unitest = 0.0f;
-	void * currenttestphyobject[2] = { &bspherecloud, &AABBmario };
+	Physicsobject * currenttestphyobject = &bspherecloud.boundingsphere;
 	bool held = false;
+	std::vector<bool> toggles(5);
 
 	//loop
 	while (gameisrunning) {
@@ -664,8 +696,9 @@ int main(int argc, char* argv[]) {
 		//game
 		/*Camera.setCameraPosition(vector3(Cloud.transform.position.x, Cloud.transform.position.y, Cloud.transform.position.z - 7.5));
 		Camera.cameraposition = vector3(bspherecloud.boundingsphere.collidertransform.position.x, bspherecloud.boundingsphere.collidertransform.position.y + 5.0f, bspherecloud.boundingsphere.collidertransform.position.z - 10.0f);*/
-		bspherecloud.boundingsphere.velocity = vector3(0, 0, 0);
-			if (Inputs.keyboardstate[Input::W].first == 1 && !Console.consoleOn()) {
+		currenttestphyobject->velocity = vector3(0, 0, 0);
+		//movement/camera
+		if (Inputs.keyboardstate[Input::W].first == 1 && !Console.consoleOn()) {
 			Camera.moveCamera(Camera.camerarotation.getForward(), deltatime * 20);	
 			}
 		if (Inputs.keyboardstate[Input::A].first == 1 && !Console.consoleOn()) {
@@ -677,77 +710,91 @@ int main(int argc, char* argv[]) {
 		if (Inputs.keyboardstate[Input::D].first == 1 && !Console.consoleOn()) {
 			Camera.moveCamera(Camera.camerarotation.getRight(), (deltatime * 20));
 		}
-		if (Inputs.keyboardstate[Input::M].first == 1 && Inputs.keyboardstate[Input::M].second == 0) { 
-			//testclip.playAudio();
-			}
-		if (Inputs.keyboardstate[Input::B].first == 1 && Inputs.keyboardstate[Input::B].second == 0) {
-			testclip.endAudio();
+		if (Inputs.getScrolldistance().y != 0) {
+			Camera.Zoom(Inputs.getScrolldistance().y);
 		}
-		if (Inputs.keyboardstate[Input::N].first == 1 && Inputs.keyboardstate[Input::N].second == 0) {
-			//testcliptwo.playAudio();
+		if (Inputs.getMouseMovementDistance().x != 0 || Inputs.getMouseMovementDistance().y != 0) {
+			Camera.rotateCamera(Inputs.getXMouseMovementDistance(), Inputs.getYMouseMovementDistance());
+			/*bspherecloud.boundingsphere.setPosition(Camera.cameraposition.add(Camera.camerarotation.getForward().multiply(7.0f)));
+			/*bspherecloud.boundingsphere.collidertransform.position = Camera.cameraposition.add(Camera.camerarotation.getForward().multiply(13.0f));
+			bspherecloud.boundingsphere.velocity.x = Inputs.getXMouseMovementDistance() * 20.0f;
+			bspherecloud.boundingsphere.velocity.y = Inputs.getYMouseMovementDistance() * 20.0f;*/
 		}
-		if (Inputs.keyboardstate[Input::V].first == 1 && Inputs.keyboardstate[Input::V].second == 0) {
-			testcliptwo.pauseAudio();
-		}
-		/*if (Inputs.keyboardstate[Input::C].first == 1 && Inputs.keyboardstate[Input::C].second == 0) {
-			sceneone.currentsong.endAudio();
-		}
-		if (Inputs.keyboardstate[Input::X].first == 1 && Inputs.keyboardstate[Input::X].second == 0) {
-			scenetwo.currentsong.endAudio();
-		}*/
 		if (Inputs.keyboardstate[Input::Keyup].first == 1) {
-			bspherecloud.boundingsphere.velocity = (Camera.camerarotation.getForward().multiply(50.0f));
+			currenttestphyobject->velocity = (Camera.camerarotation.getForward().multiply(50.0f));
 		}
 		if (Inputs.keyboardstate[Input::Keyleft].first == 1) {
-			bspherecloud.boundingsphere.velocity = (Camera.camerarotation.getLeft().multiply(13.0f));
+			currenttestphyobject->velocity = (Camera.camerarotation.getLeft().multiply(13.0f));
 		}
 		if (Inputs.keyboardstate[Input::Keydown].first == 1) {
-			bspherecloud.boundingsphere.velocity = (Camera.camerarotation.getBack().multiply(13.0f));
+			currenttestphyobject->velocity = (Camera.camerarotation.getBack().multiply(13.0f));
 		}
 		if (Inputs.keyboardstate[Input::Keyright].first == 1) {
-			bspherecloud.boundingsphere.velocity += (Camera.camerarotation.getRight().multiply(13.0f));
+			currenttestphyobject->velocity += (Camera.camerarotation.getRight().multiply(13.0f));
 		}
-		if (Inputs.keyboardstate[Input::P].first == 1 && Inputs.keyboardstate[Input::P].second == 0 && !Console.consoleOn()) {  //flashlight 
+		/*if (Inputs.keyboardstate[Input::Space].first == 1 && Inputs.keyboardstate[Input::Space].second == 0 && (!Console.consoleOn())) {
+			bspheremario.boundingsphere.velocity.y += 15;
+			bspheremario.boundingsphere.gravity.y = 9.81;
+		}*/
+
+		//sound tests
+		if (Inputs.keyboardstate[Input::M].first == 1 && Inputs.keyboardstate[Input::M].second == 0 && (!Console.consoleOn())) { 
+			testclip.playAudio();
+			}
+		if (Inputs.keyboardstate[Input::B].first == 1 && Inputs.keyboardstate[Input::B].second == 0 && (!Console.consoleOn())) {
+			testclip.endAudio();
+		}
+		if (Inputs.keyboardstate[Input::N].first == 1 && Inputs.keyboardstate[Input::N].second == 0 && (!Console.consoleOn())) {
+			testcliptwo.playAudio();
+		}
+		if (Inputs.keyboardstate[Input::V].first == 1 && Inputs.keyboardstate[Input::V].second == 0 && (!Console.consoleOn())) {
+			testcliptwo.pauseAudio();
+		}
+
+		//physics tests
+		if (Inputs.keyboardstate[Input::P].first == 1 && Inputs.keyboardstate[Input::P].second == 0 && !Console.consoleOn() && Inputs.keyboardstate[Input::Control].second) {  //flashlight 
 			vector3 right(0, 0, 10.0f);
-			if (Inputs.keyboardstate[Input::Rightshift].first) {
+			/*if (Inputs.keyboardstate[Input::Rightshift].first) {
 				if (right.z > 0) {
 					right.z = -right.z;
 				}
-			}
+			}*/
 			spheretwocollider.boundingsphere.velocity += right;
 		}
-		if (Inputs.keyboardstate[Input::L].first == 1 && Inputs.keyboardstate[Input::L].second == 0 && !Console.consoleOn()) {  //flashlight 
+		if (Inputs.keyboardstate[Input::O].first == 1 && Inputs.keyboardstate[Input::O].second == 0 && !Console.consoleOn() && Inputs.keyboardstate[Input::Control].second) {  //flashlight 
+			vector3 right(0, 0, -10.0f);
+			spheretwocollider.boundingsphere.velocity += right;
+		}
+		if (Inputs.keyboardstate[Input::I].first == 1 && Inputs.keyboardstate[Input::I].second == 0 && !Console.consoleOn() && Inputs.keyboardstate[Input::Control].second) {
+			sphereonecollider.boundingsphere.setPosition(16.0f, 40.0f, -14.0f);
+			sphereonecollider.boundingsphere.velocity = vector3(0, 0, 0);
+			sphereonecollider.boundingsphere.angularvelocity = vector3(0, 0, 0);
+			spheretwocollider.boundingsphere.setPosition(16.0f, 40.0f, -26.0f);
+			spheretwocollider.boundingsphere.velocity = vector3(0, 0, 0);
+			spheretwocollider.boundingsphere.angularvelocity = vector3(0, 0, 0);
+		}
+		if (Inputs.keyboardstate[Input::L].first == 1 && Inputs.keyboardstate[Input::L].second == 0 && !Console.consoleOn() && Inputs.keyboardstate[Input::Control].second) {  //flashlight 
 			vector3 right(0, 0, 10.0f);
-			if (Inputs.keyboardstate[Input::Rightshift].first) {
+			/*if (Inputs.keyboardstate[Input::Rightshift].first) {
 				if (right.z > 0) {
 					right.z = -right.z;
 				}
-			}
+			}*/
 			boxcollider2.AABB.velocity += right;
 		}
-		if (Window.resized) {
-			Camera.aspectratiowidth = Window.getWindowWidth();
-			Camera.aspectratioheight = Window.getWindowHeight();
+		if (Inputs.keyboardstate[Input::K].first == 1 && Inputs.keyboardstate[Input::K].second == 0 && !Console.consoleOn() && Inputs.keyboardstate[Input::Control].second) {  //flashlight 
+			vector3 right(0, 0, -10.0f);
+			boxcollider2.AABB.velocity += right;
 		}
-		if (Inputs.keyboardstate[Input::I].first == true) {
-			vector3 forward(0.1f, 0, 0);
-			if (Inputs.keyboardstate[Input::Rightshift].first) {
-				if (forward.x > 0) {
-					forward.x = -forward.x;
-				}
-			}
-			boxcollider2.AABB.acceleration += forward;
+		if (Inputs.keyboardstate[Input::J].first == 1 && Inputs.keyboardstate[Input::J].second == 0 && !Console.consoleOn() && Inputs.keyboardstate[Input::Control].second) {  //flashlight 
+			boxcollider1.AABB.setPosition(7.5f, 40.0f, -14.0f); //reset box test
+			boxcollider1.AABB.velocity = vector3(0, 0, 0);
+			boxcollider1.AABB.angularvelocity = vector3(0, 0, 0);
+			boxcollider2.AABB.setPosition(7.5f, 40.0f, -26.0f);
+			boxcollider2.AABB.velocity = vector3(0, 0, 0);
+			boxcollider2.AABB.angularvelocity = vector3(0, 0, 0);
 		}
-		if (Inputs.keyboardstate[Input::J].first == true) {
-			vector3 up(0, 0.1f, 0);
-			if (Inputs.keyboardstate[Input::Rightshift].first) {
-				if (up.y > 0) {
-					up.y = -up.y;
-			}
-			}
-			boxcollider2.AABB.acceleration += up;
-		}
-		if (Inputs.leftmouse.first == true) {
+		if (Inputs.leftmouse.first == true && (!Console.consoleOn())) {
 			if (held) {
 				held = false;
 			}
@@ -760,22 +807,47 @@ int main(int argc, char* argv[]) {
 			bspherecloud.boundingsphere.setPosition(Camera.cameraposition);*/
 		}
 		if (held) {
-			bspherecloud.boundingsphere.acceleration = vector3(0, 0, 0);
-			bspherecloud.boundingsphere.angularvelocity = vector3(0, 0, 0);
-			bspherecloud.boundingsphere.velocity = vector3(0, 0, 0);
-			bspherecloud.boundingsphere.collidertransform.rotation = Quaternion(0, 0, 0, 1);
-			bspherecloud.boundingsphere.setPosition(Camera.cameraposition.add(Camera.camerarotation.getForward().multiply(7.0f)));
+			currenttestphyobject->acceleration = vector3(0, 0, 0);
+			currenttestphyobject->angularvelocity = vector3(0, 0, 0);
+			currenttestphyobject->velocity = vector3(0, 0, 0);
+			currenttestphyobject->collidertransform.rotation = Quaternion(0, 0, 0, 1);
+			currenttestphyobject->setPosition(Camera.cameraposition.add(Camera.camerarotation.getForward().multiply(10.0f)));
+			//bspherecloud.boundingsphere.setPosition(bspherecloud.boundingsphere.getPosition().x, bspherecloud.boundingsphere.getPosition().y - 8.0f, bspherecloud.boundingsphere.getPosition().z + 6.0);
 		}
-		if (Inputs.getScrolldistance().y != 0) {
-			Camera.Zoom(Inputs.getScrolldistance().y);
+
+		//scene swapping
+		if (Inputs.keyboardstate[Input::One].first == 1 && Inputs.keyboardstate[Input::One].second == 0 && Inputs.keyboardstate[Input::Control].second && !Console.consoleOn()) {
+			swapScene(sceneone);
 		}
-		if (Inputs.getMouseMovementDistance().x != 0 || Inputs.getMouseMovementDistance().y != 0) {
-			Camera.rotateCamera(Inputs.getXMouseMovementDistance(), Inputs.getYMouseMovementDistance());
-			/*bspherecloud.boundingsphere.setPosition(Camera.cameraposition.add(Camera.camerarotation.getForward().multiply(7.0f))); 
-			/*bspherecloud.boundingsphere.collidertransform.position = Camera.cameraposition.add(Camera.camerarotation.getForward().multiply(13.0f));
-			bspherecloud.boundingsphere.velocity.x = Inputs.getXMouseMovementDistance() * 20.0f;
-			bspherecloud.boundingsphere.velocity.y = Inputs.getYMouseMovementDistance() * 20.0f;*/
+		if (Inputs.keyboardstate[Input::Two].first == 1 && Inputs.keyboardstate[Input::Two].second == 0 && Inputs.keyboardstate[Input::Control].second && !Console.consoleOn()) {
+			swapScene(scenetwo);
 		}
+		if (Inputs.keyboardstate[Input::Three].first == 1 && Inputs.keyboardstate[Input::Three].second == 0 && Inputs.keyboardstate[Input::Control].second && !Console.consoleOn()) {
+			swapScene(scenethree);
+		}
+		
+		//temporary lighting tests
+		if (Inputs.keyboardstate[Input::Four].first == 1 && Inputs.keyboardstate[Input::Three].second == 0 && Inputs.keyboardstate[Input::Control].second && !Console.consoleOn()) {
+			if (sceneone.directionallights.size() == 0) {}
+			sceneone.addDirectionalLight(SS.getDirectionalLight("dlight1"));
+			}
+		if (Inputs.keyboardstate[Input::Five].first == 1 && Inputs.keyboardstate[Input::Three].second == 0 && Inputs.keyboardstate[Input::Control].second && !Console.consoleOn()) {
+			if (sceneone.spotlights.size() == 0) {
+				sceneone.addSpotLight(SS.getSpotLight("slight1"));
+			}
+		}
+		if (Inputs.keyboardstate[Input::Six].first == 1 && Inputs.keyboardstate[Input::Three].second == 0 && Inputs.keyboardstate[Input::Control].second && !Console.consoleOn()) {
+			if (sceneone.pointlights.size() == 0) {
+				sceneone.addPointLight(SS.getPointLight("blueplight"));
+			}
+		}
+		if (Inputs.keyboardstate[Input::C].first == 1 && Inputs.keyboardstate[Input::C].second == 0 && Inputs.keyboardstate[Input::Control].second && !Console.consoleOn()) {
+			sceneone.directionallights.clear();
+			sceneone.pointlights.clear();
+			sceneone.spotlights.clear();
+		}
+		
+		//engine things
 		if (Inputs.keyboardstate[Input::Grave].first == 1 && Inputs.keyboardstate[Input::Grave].second == 0) {
 			if (!Console.consoleOn()) {
 				Console.useConsole();
@@ -785,37 +857,30 @@ int main(int argc, char* argv[]) {
 				Console.leaveConsole();
 			}
 		}
-		if (Inputs.keyboardstate[Input::One].first == 1 && Inputs.keyboardstate[Input::One].second == 0) {
-			swapScene(sceneone);
-		}
-		if (Inputs.keyboardstate[Input::Two].first == 1 && Inputs.keyboardstate[Input::Two].second == 0) {
-			swapScene(scenetwo);
-		}
-		if (Inputs.keyboardstate[Input::Three].first == 1 && Inputs.keyboardstate[Input::Three].second == 0) {
-			swapScene(scenethree);
+		if (Window.resized) {
+			Camera.aspectratiowidth = Window.getWindowWidth();
+			Camera.aspectratioheight = Window.getWindowHeight();
+			Window.resized = true;
 		}
 		if (Window.closeRequested() == true) {
 			endGame();
 		}
 
+
+
 		//enginetests
-		/*transform.setPosition(vector3(0.0f, -1.0f, 5.0f));
-		plights[0].setPosition(vector3(3.0f, 0.0f, 8.0 * (float)(sin(unitest) + 1.0f / 2.0f) + 10.0f));
-		plights[1].setPosition(vector3(7.0f, 0.0f, 8.0 * (float)(cos(unitest) + 1.0f / 2.0f) + 10.0f));*/
-		SS.getPointLight("orangeplight").setPosition(vector3(3.0f, 0.0f, 8.0 * (float)(sin(unitest) + 1.0f / 2.0f) + 10.0f));
-		SS.getPointLight("blueplight").setPosition(vector3(7.0f, 0.0f, 8.0 * (float)(cos(unitest) + 1.0f / 2.0f) + 10.0f));
+		transform.setPosition(vector3(0.0f, -6.0f, 5.0f));
+		SS.getPointLight("orangeplight").setPosition(vector3(3.0f, -1.0f, 8.0 * (float)(sin(unitest) + 1.0f / 2.0f) + 10.0f));
+		SS.getPointLight("blueplight").setPosition(vector3(14.0f, -1.0f, 8.0 * (float)(cos(unitest) + 1.0f / 2.0f) + 10.0f));
 		unitest += deltatime;
 		/*flashlight.setPosition(Camera.getCameraposition());
-		flashlight.setDirection(Camera.camerarotation.getForward());
-		shaderit.useShader();
-		shaderit.
-		(transform.newUnprojectedMatrix(), transform.newTransformationMatrix(), transform.position, fieldmaterials);
-		meshme.drawMesh();*/
+		flashlight.setDirection(Camera.camerarotation.getForward());*/
 		Physics.Update(*currentscene);
+		//shaderit.useShader();
+		//shaderit.updateUniforms(transform.newUnprojectedMatrix(), transform.newTransformationMatrix(), transform.position, fieldmaterials);
+		//meshme.drawMesh();
 		Renderer.renderScene(*currentscene);
-		Window.updateWindow();
 		Audio.audioUpdate(*currentscene);
-		/*text.renderComponent(transform, shaderit);*/     //interesting effect
 		Console.consoleUpdate(*currentscene, gameisrunning, framebyframe, stepframekey, exitframekey, framelock, fpscounter, deltatime, dtime, deltatimeweight);
 		frames++;
 		if (framecounter >= 1.0f) {
@@ -844,9 +909,7 @@ int main(int argc, char* argv[]) {
 				Renderer.Textrenderer.renderText("FPS: " + std::to_string(fps), 0, Window.getWindowHeight() * (3.0f / 4.0f), vector3(0.0, 1.0f, 0.0), 1.0);
 			}
 		}
-		/*Renderer.Textrenderer.renderText("texter", 510.0f,  300.0f, vector3(1.0f, 1.0f, 1.0f), .4f);
-		Renderer.Textrenderer.renderText("> The quick brown fox jumped over the lazy dog. 1234567890", 0.0f, 300.0f, vector3(0.4, 0.3, 0.8), .7f);*/
-		//Window.updateWindow();
+		Window.updateWindow();
 		Messages.messageSystemUpdate(Inputs, Window, Camera, Console);
 
 

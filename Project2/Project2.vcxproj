@@ -185,6 +185,7 @@
     <ClInclude Include="Messaging\Messagesystem.h" />
     <ClInclude Include="Mathlibrary\Quaternion.h" />
     <ClInclude Include="Rendering\Shader.h" />
+    <ClInclude Include="Components\ThreeDaudio.h" />
     <ClInclude Include="Time.h" />
     <ClInclude Include="Rendering\Transforming.h" />
     <ClInclude Include="Mathlibrary\vector3.h" />
@@ -194,8 +195,6 @@
   <ItemGroup>
     <ClCompile Include="Audio\Audioclip.cpp" />
     <ClCompile Include="Audio\Audiomanager.cpp" />
-    <ClCompile Include="Components\AABBcollider.cpp" />
-    <ClCompile Include="Components\Boundingspherecollider.cpp" />
     <ClCompile Include="Components\Modelrenderer.cpp" />
     <ClCompile Include="Audio\Music.cpp" />
     <ClCompile Include="Rendering\Model.cpp" />
@@ -235,6 +234,7 @@
     <ClCompile Include="Messaging\Messagesystem.cpp" />
     <ClCompile Include="Mathlibrary\Quaternion.cpp" />
     <ClCompile Include="Rendering\Shader.cpp" />
+    <ClCompile Include="Components\ThreeDaudio.cpp" />
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="Rendering\Transforming.cpp" />
     <ClCompile Include="Mathlibrary\vector3.cpp" />

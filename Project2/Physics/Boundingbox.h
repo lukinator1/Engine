@@ -29,6 +29,7 @@ public:
 	//void setRotation(Quaternion rot);
 	vector3 getMinextents();
 	vector3 getMaxextents();
+	Quaternion newrot;
 	Boundingbox();
 	~Boundingbox();
 };

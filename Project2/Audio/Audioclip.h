@@ -11,6 +11,7 @@ struct Audiodata {
 	Uint32 length;
 	Uint32 totallength;
 	Audioclip *parentclip;
+	bool volumeoff;
 };
 class Audioclip : public Logger
 {

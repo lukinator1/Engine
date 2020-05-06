@@ -63,6 +63,24 @@ bool Boundingsphere::Simulate(Physicsobject &physicsobject)
 		else if (sphere.z > physicsobject.getMaxextents().z) {
 			sqrtdistance += (sphere.z - physicsobject.getMaxextents().z) * (sphere.z - physicsobject.getMaxextents().z);
 		}
+		/*float x = std::max(physicsobject.getMinextents().x, std::min(sphere.x, physicsobject.getMaxextents().x));
+		float y = std::max(physicsobject.getMinextents().y, std::min(sphere.y, physicsobject.getMaxextents().y));
+		float z = std::max(physicsobject.getMinextents().z, std::min(sphere.z, physicsobject.getMaxextents().z));
+		float distance = ((x - sphere.x) * (x - sphere.x)) + ((y - sphere.y) * (y - sphere.y)) + ((z - sphere.z) * (z - sphere.z));
+		if (distance < (getRadius() * getRadius())) {
+			collided = true;
+			tempoldpos = oldpos;
+			tempvel = velocity;
+			Raytrace ray;
+			vector3 dir = oldpos - physicsobject.oldpos;
+			ray.Trace(physicsobject.oldpos, dir, oldpos, radius);
+			collisiondata.intersectionpoints.push_back(ray.intersectionpoint);
+			collisiondata.intersectionnormals.push_back(ray.normal);
+			collisiondata.otherobjects.push_back(&physicsobject);
+			std::pair <float, vector3> momentum = { physicsobject.mass, physicsobject.velocity };
+			collisiondata.momentia.push_back(momentum);
+			collisiondata.forces.push_back(acceleration.multiply(mass));
+		}*/
 
 		if ((sqrtdistance) < (getRadius() * getRadius())) {
 			collided = true;
@@ -142,11 +160,12 @@ void Boundingsphere::Integrate() {
 	vector3 newacceleration(acceleration.x, acceleration.y, acceleration.z);
 	newacceleration = newacceleration.Subtract(gravity);
 	Quaternion newangularvelocity(angularvelocity.x, angularvelocity.y, angularvelocity.z, 0);
-	velocity = velocity.add(acceleration.multiply(deltatime));
+	velocity = velocity.add(newacceleration.multiply(deltatime));
 	angularvelocity = angularvelocity.add(angularacceleration.multiply(deltatime));
 
 	setPosition(getPosition() + (velocity.multiply(deltatime)).add(newacceleration.multiply((deltatime * deltatime) / 0.5f)));
 	setRotation(getRotation() + (newangularvelocity.Multiply(getRotation()).Multiply(deltatime / 0.5f)));
+	//setRotation(getRotation() + newangularvelocity.Multiply(deltatime));
 }
 bool Boundingsphere::intersectionTest(float _radius, vector3 _position, float &cdistance) {
 	float radiusdistance = radius + _radius;
@@ -176,6 +195,9 @@ void Boundingsphere::handleConstraints()
 		while (!done && sleep != 5) {
 			done = true;
 			for (int i = 0; i < collisiondata.otherobjects.size(); i++) {
+				if ((mass - collisiondata.otherobjects[i]->mass) >= 50) {
+					continue;
+				}
 				collisiontester = calcCollision(*collisiondata.otherobjects[i]); //test if still colliding
 				if (collisiontester.second == false) {
 					continue;
@@ -238,7 +260,7 @@ std::pair<float, bool> Boundingsphere::calcCollision(Physicsobject &phy) {
 		break;
 	case 1:
 		sphere = getPosition();
-		if (sphere.x < phy.getMinextents().x) {
+		/*if (sphere.x < phy.getMinextents().x) {
 			spheredistance += (sphere.x - phy.getMinextents().x) * (sphere.x - phy.getMinextents().x);
 		}
 		else if (sphere.x > phy.getMaxextents().x) {
@@ -261,7 +283,30 @@ std::pair<float, bool> Boundingsphere::calcCollision(Physicsobject &phy) {
 
 		if ((spheredistance) < (getRadius() * getRadius())) {
 			returner.second = true;
+		}*/
+		if (sphere.x < (phy.getMinextents()).x) {
+			spheredistance += (sphere.x - phy.getMinextents().x) * (sphere.x - phy.getMinextents().x);
 		}
+		else if (sphere.x > (phy.getMaxextents()).x) {
+			spheredistance += (sphere.x - phy.getMaxextents().x) * (sphere.x - phy.getMaxextents().x);
+		}
+		if (sphere.y < (phy.getMinextents()).y) {
+			spheredistance += (sphere.y - phy.getMinextents().y) * (sphere.y - phy.getMinextents().y);
+		}
+		else if (sphere.y > (phy.getMaxextents()).y) {
+			spheredistance += (sphere.y - phy.getMaxextents().y) * (sphere.y - phy.getMaxextents().y);
+		}
+		if (sphere.z < (phy.getMinextents()).z) {
+			spheredistance += (sphere.z - phy.getMinextents().z) * (sphere.z - phy.getMinextents().z);
+		}
+		else if (sphere.z > (phy.getMaxextents()).z) {
+			spheredistance += (sphere.z - phy.getMaxextents().z) * (sphere.z - phy.getMaxextents().z);
+		}
+		returner.first = sqrt(spheredistance);
+		if (spheredistance < (phy.getRadius() * phy.getRadius())) {
+			returner.second = true;
+		}
+		return returner;
 		break;
 	default: 
 		return returner;

@@ -10,7 +10,16 @@ void audioCallback(void* userdata, Uint8*  stream, int len) {
 		length = aud->length;
 	}
 
+
+
 	SDL_memcpy(stream, aud->pos, length);
+
+	if (aud->volumeoff) {
+		for (int i = 0; i < (len * 8); i++) {
+			stream[i] = 0;
+		}
+	}
+
 
 	aud->pos += length;
 	aud->length -= length;

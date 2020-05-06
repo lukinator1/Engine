@@ -10,19 +10,19 @@ class AABBcollider : public Component
 public:
 	Boundingbox AABB;
 	Shader colliderdebugshader;
+	vector3 ontransformposition;
 	Mesh debugbox;
 	Materials debugcollidermaterials;
 	Texture collisiontexture;
 	Texture sleeptexture;
-	bool debugcollidermesh = false;
+	bool debugcollidermesh = true;
 	bool settotransform;
 	void (*collisioncallback)(int);
 
 	void componentPhysics(Transforming &t) {
 		if (settotransform) {
 			t.position = AABB.getPosition();
-			t.rotation = AABB.getRotation();
-			AABB.setRotation(Quaternion(0, 0, 0, 0));
+			t.rotation = AABB.newrot;
 		}
 		AABB.collisiondata.otherobjects.clear();
 		AABB.collisiondata.momentia.clear();
@@ -61,6 +61,9 @@ public:
 	}
 	void setToTransform(bool trans) {
 		settotransform = trans;
+	}
+	void setOnTransformPosition(vector3 ontransform) {
+		ontransformposition = ontransform;
 	}
 	/*void setCollisionCallback(void* function) {
 		collisioncallback = function;

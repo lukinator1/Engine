@@ -481,7 +481,7 @@ void Shader::updateUniforms(const matrix4f &worldmatrix, const matrix4f &project
 		setUniform("cameraposition", position);
 		material.texture.useTexture();
 	}*/
-	if (type == 0) {
+	if (type == 0) { //ambient
 		setUniform("transform", projectedmatrix);
 		setUniform("ambientintensity", ambientlight);
 		setUniform("color", material.getColor());
@@ -495,7 +495,7 @@ void Shader::updateUniforms(const matrix4f &worldmatrix, const matrix4f &project
 			material.texture.unbindTexture();
 		}
 	}
-	else if (type == 1) {
+	else if (type == 1) { //directional
 		setUniform("transform", worldmatrix);
 		setUniform("projectedtransform", projectedmatrix);
 		setUniform("color", material.getColor());
@@ -510,7 +510,7 @@ void Shader::updateUniforms(const matrix4f &worldmatrix, const matrix4f &project
 			material.texture.unbindTexture();
 		}
 	}
-	else if (type == 2) {
+	else if (type == 2) { //point
 		setUniform("transform", worldmatrix);
 		setUniform("projectedtransform", projectedmatrix);
 		setUniform("color", material.getColor());
@@ -525,7 +525,7 @@ void Shader::updateUniforms(const matrix4f &worldmatrix, const matrix4f &project
 			material.texture.unbindTexture();
 		}
 	}
-	else if (type == 3) {
+	else if (type == 3) { //spot
 		setUniform("transform", worldmatrix);
 		setUniform("projectedtransform", projectedmatrix);
 		setUniform("color", material.getColor());
@@ -540,7 +540,7 @@ void Shader::updateUniforms(const matrix4f &worldmatrix, const matrix4f &project
 			material.texture.unbindTexture();
 		}
 	}
-	else if (type == 6) {
+	else if (type == 6) { //colliderdebug
 		setUniform("transform", projectedmatrix);
 		setUniform("color", material.getColor());
 		if (material.texture.textureactive) {
@@ -559,9 +559,9 @@ void Shader::setAmbientLight(vector3 newambientlight) { //todo
 void Shader::setDirectionalLight(Directionallight newdlight) {
 	directionallight.setLight(newdlight);
 }
-/*void Shader::setPointLight(Pointlight* newplight) {
-	pointlights = newplight;
-}*/
+void Shader::setPointLight(Pointlight newplight) {
+	pointlight = newplight;
+}
 vector3 Shader::getAmbientLight() {
 	return ambientlight;
 }

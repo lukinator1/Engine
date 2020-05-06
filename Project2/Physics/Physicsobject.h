@@ -34,7 +34,7 @@ public:
 	float kineticfrictionconstant;
 	float elasticity;
 	bool collided;
-	vector3 resultingdirection;
+	bool terrain = false;
 	Collisiondata collisiondata;
 	static vector3 gravity;
 	virtual void Integrate();

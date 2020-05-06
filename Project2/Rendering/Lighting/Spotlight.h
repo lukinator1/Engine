@@ -25,6 +25,7 @@ public:
 		if (newdirection != vector3(0.0f, 0.0f, 0.0f)) {
 			direction = newdirection.Normalize();
 		}
+		intensity = newintensity;
 		range = newrange;
 		cutoff = newcutoff;
 		linearterm = newlinearterm;

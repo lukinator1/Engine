@@ -485,6 +485,7 @@ void Model::loadMaterials(std::string filename) {
 		while (getline(fileopener, bigbuffer)) {
 			if (fileopener.bad()) {
 				engineLog(__FILE__, __LINE__, "Warning: Material " + filename + " failed to import. A default error material was returned instead.", 2, 2, true);
+				//loadModel("Cube.obj");
 				return; //make an error model
 			}
 
