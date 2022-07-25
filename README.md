@@ -4,7 +4,7 @@ Demo video: https://www.dropbox.com/s/0mnmou66x7efq9q/egng.mov?dl=0
 
 Command list: [suspension system command list.pdf](https://github.com/lukinator1/Engine/files/7115045/suspension.system.command.list.pdf)
 
-Writeup: [engine.pdf](https://github.com/lukinator1/Engine/files/7115079/engine.pdf)
+Academic writeup: [engine.pdf](https://github.com/lukinator1/Engine/files/7115079/engine.pdf)
 
 To run it, go to Engine/x64/Debug then double click on Project2.exe, it has the icon with the 2 S's on them. If it gets stuck loading try going to the terminal window that opens up on the side and press any key. Press control and the 1/2/3 keys to switch between the 3 scenes. 
 
